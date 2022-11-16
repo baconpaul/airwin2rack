@@ -11,11 +11,8 @@
 	"sourceUrl": "",
 	"donateUrl": "",
 	"modules": [
-		{
-			"slug": "Galactic",
-			"name": "Galactic",
-			"description": "Airwindows Galactic",
-			"tags": [ ]
-		}
+			 {"slug": "Chamber", "name": "Chamber", "description": "Airwindows Chamber", "tags": [] },
+			 {"slug": "Galactic", "name": "Galactic", "description": "Airwindows Galactic", "tags": [] },
+			 {"slug": "Hombre", "name": "Hombre", "description": "Airwindows Hombre", "tags": [] }
 	]
 }

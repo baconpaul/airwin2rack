@@ -170,7 +170,4 @@ struct AW2RModuleWidget : rack::ModuleWidget {
   }
 };
 
-#include "autogen_airwin/Galactic.h"
-
-typedef AW2RModule<airwin2rack::Galactic::Galactic,airwin2rack::Galactic::kNumParameters> Galactic_model;
-int Galactic_res = addAirwin(rack::createModel<Galactic_model, AW2RModuleWidget<Galactic_model>>("Galactic"));
+#include "ModuleAdd.h"
