@@ -37,7 +37,7 @@ namespace airwin2rack::Galactic {
 
         ~Galactic();
 
-        virtual bool getEffectName(char *name);                       // The plug-in name
+        static bool getEffectName(char *name);                       // The plug-in name
         virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
         virtual bool
         getProductString(char *text);                    // This is a unique plug-in string provided by Steinberg

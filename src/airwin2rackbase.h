@@ -46,6 +46,8 @@ typedef AudioEffectX AudioEffect;
 inline void vst_strncpy(char *dst, const char *src, int n) {
    strncpy(dst, src, n);
 }
-inline void float2string(float, char *, int) {}
+inline void float2string(float f, char *txt, int n) {
+    snprintf(txt, n, "%8.4f", f);
+}
 
 #endif //AIRWIN2_RACK_HACK_AIRWIN2RACKBASE_H

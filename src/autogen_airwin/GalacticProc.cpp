@@ -6,7 +6,7 @@
 #ifndef __Galactic_H
 #include "Galactic.h"
 #endif
-
+#include <iostream>
 namespace airwin2rack::Galactic {
     void Galactic::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) {
        float *in1 = inputs[0];
@@ -46,6 +46,7 @@ namespace airwin2rack::Galactic {
        delayM = 256;
 
        while (--sampleFrames >= 0) {
+
           double inputSampleL = *in1;
           double inputSampleR = *in2;
           if (fabs(inputSampleL) < 1.18e-23) inputSampleL = fpdL * 1.18e-17;

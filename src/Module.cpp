@@ -7,6 +7,8 @@ struct AW2RModule : virtual rack::Module
     typedef T underlyer;
     static constexpr int nParams{n};
 
+    std::unique_ptr<underlyer> airwin;
+
     enum ParamIds
     {
         PARAM_0,
@@ -35,13 +37,45 @@ struct AW2RModule : virtual rack::Module
 
     AW2RModule()
     {
+        airwin = std::make_unique<underlyer>(0);
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+        memset(indat, 0, 2 * block * sizeof(float));
+        memset(outdat, 0, 2 * block * sizeof(float));
+        in[0] = &(indat[0]);
+        in[1] = &(indat[block]);
+        out[0] = &(outdat[0]);
+        out[1] = &(outdat[block]);
 
+        configBypass(INPUT_L, OUTPUT_L);
+        configBypass(INPUT_R, OUTPUT_R);
+
+        for (int i=0; i<nParams; ++i)
+            configParam(PARAM_0 + i, 0, 1, airwin->getParameter(i));
     }
 
+    static constexpr int block{4};
+
+    float *in[2], *out[2];
+    float indat[ 2 * block], outdat[2 * block];
+    int inPos{0}, outPos{0};
 
     void process(const ProcessArgs &args) override
     {
+        in[0][inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
+        in[1][inPos] = inputs[INPUT_R].getVoltageSum() * 0.2;
+        inPos ++;
+        if (inPos == block)
+        {
+            for (int i=0; i<nParams; ++i)
+                airwin->setParameter(i, params[PARAM_0 + i].getValue());
+            airwin->processReplacing(in, out, block);
+            outPos = 0;
+            inPos = 0;
+        }
+
+        outputs[OUTPUT_L].setVoltage(out[0][outPos] * 5);
+        outputs[OUTPUT_R].setVoltage(out[1][outPos] * 5);
+        outPos ++;
     }
 };
 
@@ -59,6 +93,28 @@ struct AWBG : rack::Widget
    }
 };
 
+struct AWLabel : rack::Widget
+{
+    float px{11};
+    std::string label{"label"};
+    std::string fontPath;
+    AWLabel()
+    {
+        fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
+    }
+    void draw(const DrawArgs &args) override {
+        auto vg = args.vg;
+        auto fid = APP->window->loadFont(fontPath)->handle;
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(220, 220, 220));
+        nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
+        nvgFontFaceId(vg, fid);
+        nvgFontSize(vg, px);
+
+        nvgText(vg, 0, 0, label.c_str(), nullptr);
+    }
+};
+
 template <typename M>
 struct AW2RModuleWidget : rack::ModuleWidget {
     AW2RModuleWidget(M *m) {
@@ -70,21 +126,51 @@ struct AW2RModuleWidget : rack::ModuleWidget {
        bg->box.size = box.size;
        addChild(bg);
 
+       char enm[256];
+       M::underlyer::getEffectName(enm);
+       auto tlab = new AWLabel;
+       tlab->px = 14;
+       tlab->box.pos.x = 2;
+       tlab->box.pos.y = 2;
+       tlab->box.size.y = 20;
+       tlab->box.size.x = box.size.x - 4;
+       tlab->label = enm;
+       addChild(tlab);
+
+       auto pPos = 20, dPP = 35;
        for (int i=0; i<M::nParams; ++i)
        {
-          char txt[256];
-          M::underlyer::getParameterName(i, txt);
-          std::cout << "Parameter " << i << " -> " << txt << std::endl;
+           char txt[256];
+           M::underlyer::getParameterName(i, txt);
+
+           auto tlab = new AWLabel;
+           tlab->px = 11;
+           tlab->box.pos.x = 2;
+           tlab->box.pos.y = pPos;
+           tlab->label = txt;
+           addChild(tlab);
+
+           addParam(rack::createParamCentered<rack::RoundSmallBlackKnob>(rack::Vec(box.size.x - 40,
+                                                                                   pPos + dPP * 0.5),
+                                                                         module,
+                                                                         M::PARAM_0 + i));
+           pPos += 35;
+
        }
+
+       auto q = RACK_HEIGHT - 80;
+       auto c1 = box.size.x * 0.25;
+       auto c2 = box.size.x * 0.75;
+       addInput(rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c1, q), module, M::INPUT_L));
+       addInput(rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c2, q), module, M::INPUT_R));
+       q += 40;
+       addOutput(rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c1, q), module, M::OUTPUT_L));
+       addOutput(rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2, q), module, M::OUTPUT_R));
+
   }
 };
 
 #include "autogen_airwin/Galactic.h"
 
 typedef AW2RModule<airwin2rack::Galactic::Galactic,airwin2rack::Galactic::kNumParameters> Galactic_model;
-int t = addAirwin(rack::createModel<Galactic_model, AW2RModuleWidget<Galactic_model>>("Galactic"));
-
-#if 0
-addAirwin(x);
-
-#endif
+int Galactic_res = addAirwin(rack::createModel<Galactic_model, AW2RModuleWidget<Galactic_model>>("Galactic"));
