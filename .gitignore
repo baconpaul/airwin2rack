@@ -1,0 +1,14 @@
+.DS_Store
+build/
+standalone/bld/*
+dist/
+plugin.dylib
+plugin.so
+plugin.dll
+standalone/exe_*
+pynb/.ipynb_checkpoints/*
+src/#*
+src/.#*
+.idea
+dep/
+cmake-build*

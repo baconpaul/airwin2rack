@@ -1,0 +1,21 @@
+{
+	"slug": "Airwin2Rack",
+	"name": "Airwindows To Rack",
+	"version": "2.0.0",
+	"license": "MIT",
+	"author": "@baconpaul, @airwindows",
+	"authorEmail": "",
+	"authorUrl": "",
+	"pluginUrl": "",
+	"manualUrl": "",
+	"sourceUrl": "",
+	"donateUrl": "",
+	"modules": [
+		{
+			"slug": "Galactic",
+			"name": "Galactic",
+			"description": "Airwindows Galactic",
+			"tags": [ ]
+		}
+	]
+}
