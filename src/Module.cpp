@@ -6,6 +6,11 @@
 #include <memory>
 #include <atomic>
 
+// @TODO: Save the FX chosen obviously but unstream that without value reset
+// @TODO: CV control and attenuverters
+// @TODO: A better knob and spacing
+// @TODO: Output labels
+// @TODO: Push to Github and add Actions with a build
 struct AW2RModule : virtual rack::Module
 {
     static constexpr int maxParams{14};

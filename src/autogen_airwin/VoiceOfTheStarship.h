@@ -1,11 +1,11 @@
 /* ========================================
  *  VoiceOfTheStarship - VoiceOfTheStarship.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, All rights reserved
+ *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __VoiceOfTheStarship_H
-#define __VoiceOfTheStarship_H
+#ifndef __VoiceOfTheStarship_VoiceOfTheStarship_H
+#define __VoiceOfTheStarship_VoiceOfTheStarship_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"

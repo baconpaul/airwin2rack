@@ -1,11 +1,11 @@
 /* ========================================
  *  ADClip7 - ADClip7.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, All rights reserved
+ *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ADClip7_H
-#define __ADClip7_H
+#ifndef __ADClip7_ADClip7_H
+#define __ADClip7_ADClip7_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"

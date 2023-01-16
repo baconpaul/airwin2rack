@@ -1,65 +1,358 @@
 # This is the file we read to configure the Airwindow FX. It has a very
 # simple format. Lines starting with # are ignored. Blank lines are ignored
-# All other lines are assumed to be an effect configuration. Effect
-# configuration is super easy; two columns separated by a ';'. The first
-# is the name of the effect and should match (including case) the
-# directory name given in libs/airwindows/plugins/MacVST. The second
-# is the group name for the rack menu. It can be anything you want.
-# For instance `Galactic;Reverbs and Ambience` is a fine entry which
-# would lead the rack selector menu to have a category called
-# `Reverbs and Ambience` which contains `Galactic`. If there is no semicolon
-# the effect is placed in group called 'Unclassified'. Dont use \" or
-# other special things in the category please. It will break.
+# All other lines are assumed to be either an effect name, which must match
+# the name in libs/airwindows/plugin/MacVST or a group name, which is preceeded
+# by a '!' and applies to all effects that follow until a new group is found.
 #
 # When you update this file run `perl scripts/configure.pl` to re-parse
 # and regenerate it.
 #
 
-Chamber;Reverbs
-Galactic;Reverbs
+!Reverbs
+Chamber
+Galactic
+MatrixVerb
 
-XBandpass;XYZ Filters
-XHighpass;XYZ Filters
-XLowpass;XYZ Filters
-XNotch;XYZ Filters
-XRegion;XYZ Filters
-YBandpass;XYZ Filters
-YHighpass;XYZ Filters
-YLowpass;XYZ Filters
-YNotch;XYZ Filters
-ZBandpass;XYZ Filters
-ZBandpass2;XYZ Filters
-ZHighpass;XYZ Filters
-ZHighpass2;XYZ Filters
-ZLowpass;XYZ Filters
-ZLowpass2;XYZ Filters
-ZNotch;XYZ Filters
-ZNotch2;XYZ Filters
-ZRegion;XYZ Filters
-ZRegion2;XYZ Filters
+!Ambience
+BrightAmbience
+BrightAmbience2
+BrightAmbience3
 
-VoiceOfTheStarship;Noise
+!Tape and Vinyl
+CrunchyGrooveWear
+IronOxide5
+IronOxideClassic
+IronOxideClassic2
+FromTape
+Tape
+TapeDelay
+TapeDelay2
+TapeDither
+TapeDust
+TapeFat
+ToTape5
+ToTape6
+ToVinyl4
 
-GrooveWear;Tape and Vinyl
-IronOxide5;Tape and Vinyl
-IronOxideClassic;Tape and Vinyl
-IronOxideClassic2;Tape and Vinyl
+!Console
+Console4Buss
+Console4Channel
+Console5Buss
+Console5Channel
+Console5DarkCh
+Console6Buss
+Console6Channel
+Console7Buss
+Console7Cascade
+Console7Channel
+Console7Crunch
+Console8BussHype
+Console8BussIn
+Console8BussOut
+Console8ChannelHype
+Console8ChannelIn
+Console8ChannelOut
+Console8SubHype
+Console8SubIn
+Console8SubOut
 
-Tape;Tape and Vinyl
-TapeDelay;Tape and Vinyl
-TapeDelay2;Tape and Vinyl
-TapeDither;Tape and Vinyl
-TapeDust;Tape and Vinyl
-TapeFat;Tape and Vinyl
+!Purest Variations
+PurestAir
+PurestConsole2Buss
+PurestConsole2Channel
+PurestConsoleBuss
+PurestConsoleChannel
+PurestDrive
+PurestEcho
+PurestFade
+PurestGain
+PurestSquish
+PurestWarm
+PurestWarm2
 
-ToTape5;Tape and Vinyl
-ToTape6;Tape and Vinyl
-ToVinyl4;Tape and Vinyl
+!EQs
+EQ
+ResEQ
 
-ADClip7;Distortion
-Cojones;Distortion
-Distortion;Distortion
+!XYZ Filters
+XBandpass
+XHighpass
+XLowpass
+XNotch
+XRegion
+YBandpass
+YHighpass
+YLowpass
+YNotch
+ZBandpass
+ZBandpass2
+ZHighpass
+ZHighpass2
+ZLowpass
+ZLowpass2
+ZNotch
+ZNotch2
+ZRegion
+ZRegion2
 
+
+!Unclassified
+ADClip7
+ADT
+AQuickVoiceClip
+Acceleration
+Acceleration2
+Air
+Air2
+Apicolypse
+AtmosphereBuss
+AtmosphereChannel
+Aura
+AutoPan
+AverMatrix
+Average
+Balanced
+BassAmp
+BassDrive
+BassKit
+Baxandall
+Baxandall2
+Beam
+BigAmp
+Biquad
+Biquad2
+BiquadDouble
+BiquadOneHalf
+BiquadPlus
+BiquadTriple
+BitGlitter
+BitShiftGain
+Bite
+BlockParty
+BrassRider
+
+BuildATPDF
+BussColors4
+ButterComp
+ButterComp2
+C5RawBuss
+C5RawChannel
+CStrip
+Cabs
+Calibre
+Capacitor
+Capacitor2
+Chamber2
+Channel4
+Channel5
+Channel6
+Channel7
+Channel8
+Channel9
+Chorus
+ChorusEnsemble
+ChromeOxide
+Cider
+ClipOnly2
+ClipSoftly
+Coils
+Coils2
+Cojones
+Compresaturator
+Crystal
+DCVoltage
+Dark
+DarkNoise
+DeBess
+DeEss
+DeHiss
+DeRez
+DeRez2
+Deckwrecka
+Density
+Density2
+Desk
+Desk4
+DigitalBlack
+Dirt
+Distance
+Distance2
+Distortion
+DitherFloat
+DitherMeDiskers
+DitherMeTimbers
+Ditherbox
+DoublePaul
+Doublelay
+Drive
+DrumSlam
+DubCenter
+DubSub
+Dubly
+DustBunny
+Dynamics
+Dyno
+EdIsDim
+Edge
+Elation
+ElectroHat
+Energy
+Energy2
+Ensemble
+EveryTrim
+Exciter
+Facet
+FathomFive
+FireAmp
+Flipity
+Floor
+Flutter
+Focus
+Fracture
+Gatelope
+GlitchShifter
+Golem
+GrindAmp
+Gringer
+GrooveWear
+GuitarConditioner
+HardVacuum
+HermeTrim
+Hermepass
+HighGlossDither
+HighImpact
+Highpass
+Highpass2
+Holt
+Holt2
 Hombre
+Hull
+Hype
+HypersonX
+Hypersonic
+Infinity
+Infinity2
+Infrasonic
+Interstage
+Isolator
+Isolator2
+LRFlipTimer
+LeadAmp
+LeftoMono
+LilAmp
+Logical4
+Loud
+Lowpass
+Lowpass2
+Luxor
+MV
+MackEQ
+Mackity
+Melt
+MidAmp
+MidSide
+MoNoam
+Mojo
+Monitoring
+Monitoring2
+Monitoring3
+MultiBandDistortion
+NCSeventeen
+NaturalizeDither
+Neverland
+Nikola
+NodeDither
+Noise
+NonlinearSpace
+NotJustAnotherCD
+NotJustAnotherDither
+OneCornerClip
+PDBuss
+PDChannel
+Pafnuty
+PaulDither
+PaulWide
+PeaksOnly
+PhaseNudge
+PitchDelay
+PitchNasty
+PocketVerbs
+Pockey
+Pockey2
+Podcast
+PodcastDeluxe
+Point
+Pop
+Pop2
+PowerSag
+PowerSag2
+Precious
+Preponderant
+Pressure4
+Pressure5
+Pyewacket
+RawGlitters
+RawTimbers
+Recurve
+Remap
+Reverb
+Righteous4
+RightoMono
+Shape
+SideDull
+Sidepass
+Silhouette
+SingleEndedTriode
+Slew
+Slew2
+Slew3
+SlewOnly
+Smooth
+SoftGate
+SpatializeDither
+Spiral
+Spiral2
+Srsly
+Srsly2
+StarChild
+StereoChorus
+StereoDoubler
+StereoEnsemble
+StereoFX
+StudioTan
+SubsOnly
+Surge
+SurgeTide
+Swell
+TPDFDither
+TPDFWide
+Texturize
+TexturizeMS
+Thunder
+ToneSlant
+TransDesk
+TremoSquare
+Tremolo
+TripleSpread
+Tube
+Tube2
+TubeDesk
+UltrasonX
+Ultrasonic
+UltrasonicLite
+UltrasonicMed
+UnBox
+VariMu
+Verbity
+Verbity2
+Vibrato
+VinylDither
+VoiceOfTheStarship
+VoiceTrick
+Wider
+curve
+uLawDecode
+uLawEncode
+
 
 # end of list

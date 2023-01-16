@@ -1,11 +1,11 @@
 /* ========================================
  *  ToVinyl4 - ToVinyl4.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, All rights reserved
+ *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ToVinyl4_H
-#define __ToVinyl4_H
+#ifndef __ToVinyl4_ToVinyl4_H
+#define __ToVinyl4_ToVinyl4_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"

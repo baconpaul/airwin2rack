@@ -51,5 +51,14 @@ inline void vst_strncpy(char *dst, const char *src, int n) {
 inline void float2string(float f, char *txt, int n) {
     snprintf(txt, n, "%8.4f", f);
 }
+inline void int2string( int i, char *t, size_t num ) {
+    snprintf( t, num, "%d", i );
+}
+inline void dB2string( float value, char *t, size_t num ) {
+    if (value <= 0.00001) // -100 dB, show -inf from that point onwards
+        vst_strncpy (t, "-inf", num);
+    else
+        float2string ((float)(20.0 * log10 (value)), t, num);
+}
 
 #endif //AIRWIN2_RACK_HACK_AIRWIN2RACKBASE_H

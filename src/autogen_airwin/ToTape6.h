@@ -1,11 +1,11 @@
 /* ========================================
  *  ToTape6 - ToTape6.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, All rights reserved
+ *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ToTape6_H
-#define __ToTape6_H
+#ifndef __ToTape6_ToTape6_H
+#define __ToTape6_ToTape6_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"

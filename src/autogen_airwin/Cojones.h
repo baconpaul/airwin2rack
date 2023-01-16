@@ -1,11 +1,11 @@
 /* ========================================
  *  Cojones - Cojones.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, All rights reserved
+ *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Cojones_H
-#define __Cojones_H
+#ifndef __Cojones_Cojones_H
+#define __Cojones_Cojones_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"

@@ -1,11 +1,11 @@
 /* ========================================
  *  ZRegion2 - ZRegion2.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, All rights reserved
+ *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ZRegion2_H
-#define __ZRegion2_H
+#ifndef __ZRegion2_ZRegion2_H
+#define __ZRegion2_ZRegion2_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"

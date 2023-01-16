@@ -1,11 +1,11 @@
 /* ========================================
  *  Distortion - Distortion.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, All rights reserved
+ *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Distortion_H
-#define __Distortion_H
+#ifndef __Distortion_Distortion_H
+#define __Distortion_Distortion_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"
