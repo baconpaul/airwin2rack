@@ -1,30 +1,23 @@
-# Just messin around
+# All the Airwindows
 
-What do I need to script:
-
-1. copy libs/airwindows/plugins/MacVST/(name)/source/*.cpp src/autogen_airwin
-
-Header File
-
-1. replace "audioeffectx.h" with "../airwin2rackbase.h"
-2. add a `namespace airwin2rack::(name)` at the first enum
-3. replace virtual void getParameterName with static void getParameterName
-4. Same for getEffectName
-
-.cpp file
-
-1. add a `namespace airwin2rack::(name)` after the endif
-
-Proc.cpp file
-
-1. add a `namespace airwin2rack::(name)` after the endif
+(todo: description)
 
 
-Module.cpp
+## Updating the airwindows sub-library
 
-```cpp
-#include "autogen_airwin/Galactic.h"
+To update the airwindows library
 
-typedef AW2RModule<airwin2rack::Galactic::Galactic,airwin2rack::Galactic::kNumParameters> Galactic_model;
-int Galactic_res = addAirwin(rack::createModel<Galactic_model, AW2RModuleWidget<Galactic_model>>("Galactic"));
+1. Pull to the latest airwindows plugins
+
+```bash
+cd libs/airwindows
+git pull origin master
+cd ../..
 ```
+
+2. For new plugins add them to `fxconfig.in`
+3. run `scripts/configure.pl`
+4. Do a test build
+5. Commit src libs and the infile and push to github
+6. voila
+

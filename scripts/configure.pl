@@ -10,11 +10,9 @@ while (<IN>) {
     next if (m/^#.*/);
     next if (m/^\s+$/);
 
-    if (m/^\!\s*(.*)$/) {
-        $cat = $1;
-    }
-    elsif (m/^(\S*)\s*$/) {
+    if (m/^(\S*)\s*;\s*(.*)$/) {
         $fx = $1;
+        $cat = $2;
 
         if (!-d "libs/airwindows/plugins/MacVST/$fx") {
             die "Can't find fx directory '$fx'";
@@ -27,7 +25,10 @@ while (<IN>) {
         print OFH "int ${fx}_unused = AW2RModule::registerAirwindow({\"${fx}\", \"${cat}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }});";
         print OFH "\n";
     }
-
+    else
+    {
+        print "ERROR : INVALID LINE $_\n";
+    }
 }
 
 print OFH "int unusedComplete = AW2RModule::completeRegistry();\n";

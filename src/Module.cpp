@@ -11,7 +11,6 @@
 // @TODO: Update README
 // @TODO: A dark and light mode
 // @TODO: Output labels and Areas on the grid
-// @TODO: Turn off all those annoying warnings more carefully in the cmake
 // @TODO: Split registry and module for faster compile turnaround
 struct AW2RModule : virtual rack::Module
 {
@@ -271,7 +270,8 @@ struct AWLabel : rack::Widget
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, px);
 
-        nvgText(vg, 0, 0, label.c_str(), nullptr);
+        nvgText(vg, 0, box.size.y * 0.5, label.c_str(), nullptr);
+
     }
 };
 
@@ -297,10 +297,10 @@ struct AWSelector : rack::Widget
         auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(220, 220, 220));
-        nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_CENTER);
+        nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 14);
-        nvgText(vg, box.size.x * 0.5, 4, nm.c_str(), nullptr);
+        nvgText(vg, box.size.x * 0.5, box.size.y * 0.5, nm.c_str(), nullptr);
     }
 
     void onButton(const ButtonEvent &e) override {
@@ -364,32 +364,31 @@ struct AW2RModuleWidget : rack::ModuleWidget
         bg->box.size = box.size;
         addChild(bg);
 
-        char enm[256];
-        if (m)
-            m->airwin->getEffectName(enm);
-        else
-            strncpy(enm, "Effect", 256);
+        int headerSize{35};
+
         auto tlab = new AWSelector;
         auto s = box;
-        s.size.y = 40;
+        s.size.y = headerSize;
         s = s.shrink(rack::Vec(5,5));
         tlab->box = s;
         tlab->module = m;
         addChild(tlab);
 
-        auto pPos = 45, dPP = 24;
+        auto pPos = headerSize + 2, dPP = 25;
 
         for (int i = 0; i < M::maxParams; ++i)
         {
             auto tlab = new AWLabel;
             tlab->px = 11;
             tlab->box.pos.x = 5;
-            tlab->box.pos.y = pPos + dPP * 0.5;
+            tlab->box.pos.y = pPos;
+            tlab->box.size.x = box.size.x - 80;
+            tlab->box.size.y = dPP;
             tlab->label = "Param " + std::to_string(i);
             parLabels[i] = tlab;
             addChild(tlab);
 
-            auto bp = box.size.x - 60;
+            auto bp = box.size.x - 65;
             parKnobs[i] = rack::createParamCentered<PixelKnob<18>>(
                 rack::Vec(bp, pPos + dPP * 0.5), module, M::PARAM_0 + i);
             addParam(parKnobs[i]);
@@ -398,7 +397,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
                 rack::Vec(bp + 22, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
             addParam(attenKnobs[i]);
 
-            cvPorts[i] = rack::createInputCentered<rack::PJ301MPort>(rack::Vec(bp + 42, pPos + dPP * 0.5), module, M::CV_0 + i);
+            cvPorts[i] = rack::createInputCentered<rack::PJ301MPort>(rack::Vec(bp + 45, pPos + dPP * 0.5), module, M::CV_0 + i);
             addInput(cvPorts[i]);
 
             pPos += dPP;
