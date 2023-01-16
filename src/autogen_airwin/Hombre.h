@@ -33,7 +33,7 @@ class Hombre :
 public:
     Hombre(audioMasterCallback audioMaster);
     ~Hombre();
-    static bool getEffectName(char* name);                       // The plug-in name
+    virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
     virtual bool getVendorString(char* text);                     // Vendor info
@@ -47,7 +47,7 @@ public:
     virtual float getParameter(VstInt32 index);                   // get the parameter value at the specified index
     virtual void setParameter(VstInt32 index, float value);       // set the parameter at index to value
     virtual void getParameterLabel(VstInt32 index, char *text);  // label for the parameter (eg dB)
-    static void getParameterName(VstInt32 index, char *text);    // name of the parameter
+    virtual void getParameterName(VstInt32 index, char *text);    // name of the parameter
     virtual void getParameterDisplay(VstInt32 index, char *text); // text description of the current value    
     virtual VstInt32 canDo(char *text);
 private:

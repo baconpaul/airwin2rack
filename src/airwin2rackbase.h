@@ -24,6 +24,7 @@ struct Airwin2RackBase {
 
     float getSampleRate() { return APP->engine->getSampleRate(); }
 
+    virtual bool getEffectName(char *name) { return false; }
     virtual void setNumInputs(int) {}
     virtual void setNumOutputs(int) {}
     virtual void setUniqueID(int) {}
@@ -36,6 +37,7 @@ struct Airwin2RackBase {
     virtual float getParameter(VstInt32 index) = 0;                   // get the parameter value at the specified index
     virtual void setParameter(VstInt32 index, float value) = 0;       // set the parameter at index to value
     virtual void getParameterLabel(VstInt32 index, char *text) = 0;  // label for the parameter (eg dB)
+    virtual void getParameterName(VstInt32 index, char *text) = 0;  // label for the parameter (eg dB)
     virtual void getParameterDisplay(VstInt32 index, char *text) = 0; // text description of the current value
 
 };

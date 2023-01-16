@@ -12,8 +12,6 @@ print "Importing " . $f . "\n";
 #
 # 1. replace "audioeffectx.h" with "../airwin2rackbase.h"
 # 2. add a `namespace airwin2rack::(name)` at the first enum
-# 3. replace virtual void getParameterName with static void getParameterName
-# 4. Same for getEffectName
 
 my $inh = "libs/airwindows/plugins/MacVST/$f/source/$f.h";
 my $outh = "src/autogen_airwin/$f.h";
@@ -32,8 +30,8 @@ while (<IFH>)
         print OFH "namespace airwin2rack::$f {\n";
     }
 
-    s/virtual void getParameterName/static void getParameterName/;
-    s/virtual bool getEffectName/static bool getEffectName/;
+    #s/virtual void getParameterName/static void getParameterName/;
+    #s/virtual bool getEffectName/static bool getEffectName/;
     s/audioeffectx.h/..\/airwin2rackbase.h/;
 
     print OFH;
