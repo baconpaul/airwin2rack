@@ -105,6 +105,6 @@ foreach my $h (@headers)
 {
     $h =~ s:src/autogen_airwin/(.*).h$:$1:;
     print OFH "#include \"autogen_airwin/${h}.h\"\n";
-    print OFH "int ${h}_unused = AW2RModule::registerAirwindow(\"${h}\", []() { return new airwin2rack::${h}::${h}(0); });";
+    print OFH "int ${h}_unused = AW2RModule::registerAirwindow({\"${h}\", airwin2rack::${h}::kNumParameters, []() { return std::make_unique<airwin2rack::${h}::${h}>(0); }});";
     print OFH "\n";
 }

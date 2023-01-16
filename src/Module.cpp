@@ -1,17 +1,29 @@
 #include "Airwin2Rack.hpp"
 #include "airwin2rackbase.h"
 #include <iostream>
+#include <array>
+#include <vector>
+#include <memory>
+#include <atomic>
 
 struct AW2RModule : virtual rack::Module
 {
     static constexpr int maxParams{14};
 
-    std::unique_ptr<Airwin2RackBase> airwin;
+    std::unique_ptr<Airwin2RackBase> airwin{};
+    std::atomic<int32_t> forceSelect{-1}, resetCount{0};
+    std::string selectedFX{};
 
-    static std::vector<std::pair<std::string, std::function<Airwin2RackBase *()>>> registry;
-    static int registerAirwindow(const std::string &name, std::function<Airwin2RackBase *()> f)
+    struct awReg
     {
-        registry.emplace_back(name, std::move(f));
+        std::string name;
+        int nParams;
+        std::function<std::unique_ptr<Airwin2RackBase>()> generator;
+    };
+    static std::vector<awReg> registry;
+    static int registerAirwindow(const awReg &r)
+    {
+        registry.emplace_back(r);
         return registry.size();
     }
 
@@ -45,8 +57,6 @@ struct AW2RModule : virtual rack::Module
     AW2RModule()
     {
         assert(!registry.empty());
-        airwin.reset(registry[0].second());
-        nParams = 5; // gotta get this from the enum
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
         memset(indat, 0, 2 * block * sizeof(float));
         memset(outdat, 0, 2 * block * sizeof(float));
@@ -58,8 +68,27 @@ struct AW2RModule : virtual rack::Module
         configBypass(INPUT_L, OUTPUT_L);
         configBypass(INPUT_R, OUTPUT_R);
 
-        for (int i = 0; i < nParams; ++i)
-            configParam(PARAM_0 + i, 0, 1, airwin->getParameter(i));
+        for (int i = 0; i < maxParams; ++i)
+            configParam(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
+
+        resetAirwindowTo(0);
+    }
+
+    void resetAirwindowTo(int registryIdx)
+    {
+        selectedFX = registry[registryIdx].name;
+        airwin = registry[registryIdx].generator();
+        nParams = registry[registryIdx].nParams;
+
+        for (int i=0; i<nParams; ++i)
+        {
+            char txt[256];
+            airwin->getParameterName(i, txt);
+            paramQuantities[i]->name = txt;
+            paramQuantities[i]->defaultValue = airwin->getParameter(i);
+        }
+
+        resetCount++;
     }
 
     static constexpr int block{4};
@@ -70,6 +99,12 @@ struct AW2RModule : virtual rack::Module
 
     void process(const ProcessArgs &args) override
     {
+        int resetTo{-1};
+        if (!forceSelect.compare_exchange_weak(resetTo, -1))
+        {
+            std::cout << "Got a reset to " << resetTo << std::endl;
+            resetAirwindowTo(resetTo);
+        }
         in[0][inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
         in[1][inPos] = inputs[INPUT_R].getVoltageSum() * 0.2;
         inPos++;
@@ -126,6 +161,9 @@ struct AWLabel : rack::Widget
 struct AW2RModuleWidget : rack::ModuleWidget
 {
     typedef AW2RModule M;
+
+    std::array<AWLabel *, M::maxParams> parLabels;
+    std::array<rack::ParamWidget *, M::maxParams> parKnobs;
     AW2RModuleWidget(M *m)
     {
         setModule(m);
@@ -151,24 +189,22 @@ struct AW2RModuleWidget : rack::ModuleWidget
         addChild(tlab);
 
         auto pPos = 20, dPP = 35;
-        /*
-               for (int i=0; i<M::nParams; ++i)
-               {
-                   char txt[256];
-                   M::underlyer::getParameterName(i, txt);
 
-                   auto tlab = new AWLabel;
-                   tlab->px = 11;
-                   tlab->box.pos.x = 2;
-                   tlab->box.pos.y = pPos;
-                   tlab->label = txt;
-                   addChild(tlab);
+        for (int i = 0; i < M::maxParams; ++i)
+        {
+            auto tlab = new AWLabel;
+            tlab->px = 11;
+            tlab->box.pos.x = 2;
+            tlab->box.pos.y = pPos;
+            tlab->label = "Param " + std::to_string(i);
+            parLabels[i] = tlab;
+            addChild(tlab);
 
-                   addParam(rack::createParamCentered<rack::RoundSmallBlackKnob>(rack::Vec(box.size.x
-           - 40, pPos + dPP * 0.5), module, M::PARAM_0 + i)); pPos += 35;
-
-               }
-               */
+            parKnobs[i] = rack::createParamCentered<rack::RoundSmallBlackKnob>(
+                rack::Vec(box.size.x - 40, pPos + dPP * 0.5), module, M::PARAM_0 + i);
+            addParam(parKnobs[i]);
+            pPos += 35;
+        }
 
         auto q = RACK_HEIGHT - 80;
         auto c1 = box.size.x * 0.25;
@@ -181,9 +217,49 @@ struct AW2RModuleWidget : rack::ModuleWidget
         addOutput(
             rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2, q), module, M::OUTPUT_R));
     }
+
+    int resetCountCache{-1};
+    void step() override
+    {
+        if (module)
+        {
+            auto awm = dynamic_cast<AW2RModule *>(module);
+            if (awm && awm->resetCount != resetCountCache)
+            {
+                resetCountCache = awm->resetCount;
+                resetAirwinDisplay();
+            }
+        }
+
+        rack::ModuleWidget::step();
+    }
+
+    void resetAirwinDisplay()
+    {
+        std::cout << "Resetting Airwindows Display" << std::endl;
+        auto awm = dynamic_cast<AW2RModule *>(module);
+
+        if (!awm)
+            return; // should never happen but hey
+
+        int np = awm->nParams;
+        for (int i=0; i<np; ++i)
+        {
+            parLabels[i]->setVisible(true);
+            char txt[256];
+            awm->airwin->getParameterName(i, txt);
+            parLabels[i]->label = txt;
+            parKnobs[i]->setVisible(true);
+        }
+        for (int i=np; i<M::maxParams; ++i)
+        {
+            parLabels[i]->setVisible(false);
+            parKnobs[i]->setVisible(false);
+        }
+    }
 };
 
-std::vector<std::pair<std::string, std::function<Airwin2RackBase *()>>> AW2RModule::registry;
+std::vector<AW2RModule::awReg> AW2RModule::registry;
 
 #include "ModuleAdd.h"
 
