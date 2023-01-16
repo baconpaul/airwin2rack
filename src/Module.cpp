@@ -99,11 +99,11 @@ struct AW2RModule : virtual rack::Module
 
     void process(const ProcessArgs &args) override
     {
-        int resetTo{-1};
-        if (!forceSelect.compare_exchange_weak(resetTo, -1))
+        if (forceSelect != -1) // a UI action doesn't warrant the compare_exchange rigamarole
         {
-            std::cout << "Got a reset to " << resetTo << std::endl;
-            resetAirwindowTo(resetTo);
+            std::cout << "Got a reset to " << forceSelect << std::endl;
+            resetAirwindowTo(forceSelect);
+            forceSelect = -1;
         }
         in[0][inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
         in[1][inPos] = inputs[INPUT_R].getVoltageSum() * 0.2;
@@ -127,6 +127,7 @@ struct AWBG : rack::Widget
 {
     void draw(const DrawArgs &args) override
     {
+        // @TODO: Double Buffer
         auto vg = args.vg;
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(0, 30, 0));
@@ -146,6 +147,7 @@ struct AWLabel : rack::Widget
     AWLabel() { fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf"); }
     void draw(const DrawArgs &args) override
     {
+        // @TODO: Double Buffer
         auto vg = args.vg;
         auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
@@ -155,6 +157,62 @@ struct AWLabel : rack::Widget
         nvgFontSize(vg, px);
 
         nvgText(vg, 0, 0, label.c_str(), nullptr);
+    }
+};
+
+struct AWSelector : rack::Widget
+{
+    AW2RModule *module;
+    std::string fontPath;
+    AWSelector() { fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf"); }
+
+    void draw(const DrawArgs &args) override
+    {
+        auto vg = args.vg;
+        // auto fid = APP->window->loadFont(fontPath)->handle;
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(0, 0, 0));
+        nvgStrokeColor(vg, nvgRGB(100,100,200));
+        nvgRect(vg, 0, 0, box.size.x, box.size.y);
+        nvgFill(vg);
+        nvgStrokeWidth(vg, 1);
+        nvgStroke(vg);
+
+        auto nm = (module ? module->selectedFX : "Airwindows");
+        auto fid = APP->window->loadFont(fontPath)->handle;
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(220, 220, 220));
+        nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_CENTER);
+        nvgFontFaceId(vg, fid);
+        nvgFontSize(vg, 14);
+        nvgText(vg, box.size.x * 0.5, 4, nm.c_str(), nullptr);
+    }
+
+    void onButton(const ButtonEvent &e) override {
+        if (module && e.action == GLFW_PRESS)
+        {
+            showSelectorMenu();
+            e.consume(this);
+        }
+        Widget::onButton(e);
+    }
+
+    void showSelectorMenu()
+    {
+        if (!module)
+            return;
+
+        auto m = rack::createMenu();
+        m->addChild(rack::createMenuLabel("Airwindows Selector"));
+        m->addChild(new rack::MenuSeparator);
+        int idx = 0;
+        for (const auto &item : AW2RModule::registry)
+        {
+            auto checked = item.name == module->selectedFX;
+            m->addChild(rack::createMenuItem(item.name, CHECKMARK(checked),
+                                             [this, idx](){module->forceSelect = idx;}));
+            idx++;
+        }
     }
 };
 
@@ -179,22 +237,21 @@ struct AW2RModuleWidget : rack::ModuleWidget
             m->airwin->getEffectName(enm);
         else
             strncpy(enm, "Effect", 256);
-        auto tlab = new AWLabel;
-        tlab->px = 14;
-        tlab->box.pos.x = 2;
-        tlab->box.pos.y = 2;
-        tlab->box.size.y = 20;
-        tlab->box.size.x = box.size.x - 4;
-        tlab->label = enm;
+        auto tlab = new AWSelector;
+        auto s = box;
+        s.size.y = 40;
+        s = s.shrink(rack::Vec(5,5));
+        tlab->box = s;
+        tlab->module = m;
         addChild(tlab);
 
-        auto pPos = 20, dPP = 35;
+        auto pPos = 45, dPP = 22;
 
         for (int i = 0; i < M::maxParams; ++i)
         {
             auto tlab = new AWLabel;
             tlab->px = 11;
-            tlab->box.pos.x = 2;
+            tlab->box.pos.x = 5;
             tlab->box.pos.y = pPos;
             tlab->label = "Param " + std::to_string(i);
             parLabels[i] = tlab;
@@ -206,16 +263,17 @@ struct AW2RModuleWidget : rack::ModuleWidget
             pPos += 35;
         }
 
-        auto q = RACK_HEIGHT - 80;
+        // @TODO: paint labels
+        auto q = RACK_HEIGHT - 40;
         auto c1 = box.size.x * 0.25;
+        auto dc = box.size.x * 0.11;
         auto c2 = box.size.x * 0.75;
-        addInput(rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c1, q), module, M::INPUT_L));
-        addInput(rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c2, q), module, M::INPUT_R));
-        q += 40;
+        addInput(rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c1 - dc, q), module, M::INPUT_L));
+        addInput(rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c1 + dc, q), module, M::INPUT_R));
         addOutput(
-            rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c1, q), module, M::OUTPUT_L));
+            rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2 - dc, q), module, M::OUTPUT_L));
         addOutput(
-            rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2, q), module, M::OUTPUT_R));
+            rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2 + dc, q), module, M::OUTPUT_R));
     }
 
     int resetCountCache{-1};
