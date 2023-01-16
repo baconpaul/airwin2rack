@@ -1,18 +1,25 @@
 #include "Airwin2Rack.hpp"
+#include "airwin2rackbase.h"
 #include <iostream>
 
-template<typename T, int n>
 struct AW2RModule : virtual rack::Module
 {
-    typedef T underlyer;
-    static constexpr int nParams{n};
+    static constexpr int maxParams{14};
 
-    std::unique_ptr<underlyer> airwin;
+    std::unique_ptr<Airwin2RackBase> airwin;
+
+    static std::vector<std::pair<std::string, std::function<Airwin2RackBase *()>>> registry;
+    static int registerAirwindow(const std::string &name,
+                                  std::function<Airwin2RackBase *()> f)
+    {
+        registry.emplace_back(name, std::move(f));
+        return registry.size();
+    }
 
     enum ParamIds
     {
         PARAM_0,
-        NUM_PARAMS = PARAM_0 + n
+        NUM_PARAMS = PARAM_0 + maxParams
     };
 
     enum InputIds
@@ -20,7 +27,7 @@ struct AW2RModule : virtual rack::Module
         INPUT_L,
         INPUT_R,
         CV_0,
-        NUM_INPUTS = CV_0 + n
+        NUM_INPUTS = CV_0 + maxParams
     };
 
     enum OutputIds
@@ -35,9 +42,12 @@ struct AW2RModule : virtual rack::Module
         NUM_LIGHTS
     };
 
+    int nParams{0};
     AW2RModule()
     {
-        airwin = std::make_unique<underlyer>(0);
+        assert(!registry.empty());
+        airwin.reset(registry[0].second());
+        nParams = 5; // gotta get this from the enum
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
         memset(indat, 0, 2 * block * sizeof(float));
         memset(outdat, 0, 2 * block * sizeof(float));
@@ -115,8 +125,8 @@ struct AWLabel : rack::Widget
     }
 };
 
-template <typename M>
 struct AW2RModuleWidget : rack::ModuleWidget {
+    typedef AW2RModule M;
     AW2RModuleWidget(M *m) {
        setModule(m);
        box.size = rack::Vec(SCREW_WIDTH * 9, RACK_HEIGHT);
@@ -127,7 +137,8 @@ struct AW2RModuleWidget : rack::ModuleWidget {
        addChild(bg);
 
        char enm[256];
-       M::underlyer::getEffectName(enm);
+       //M::underlyer::getEffectName(enm);
+       strncpy(enm, "Foo", 256);
        auto tlab = new AWLabel;
        tlab->px = 14;
        tlab->box.pos.x = 2;
@@ -138,6 +149,7 @@ struct AW2RModuleWidget : rack::ModuleWidget {
        addChild(tlab);
 
        auto pPos = 20, dPP = 35;
+/*
        for (int i=0; i<M::nParams; ++i)
        {
            char txt[256];
@@ -157,6 +169,7 @@ struct AW2RModuleWidget : rack::ModuleWidget {
            pPos += 35;
 
        }
+       */
 
        auto q = RACK_HEIGHT - 80;
        auto c1 = box.size.x * 0.25;
@@ -170,4 +183,8 @@ struct AW2RModuleWidget : rack::ModuleWidget {
   }
 };
 
+std::vector<std::pair<std::string, std::function<Airwin2RackBase *()>>> AW2RModule::registry;
+
 #include "ModuleAdd.h"
+
+rack::Model *airwin2RackModel = rack::createModel<AW2RModule, AW2RModuleWidget>("Airwin2Rack");

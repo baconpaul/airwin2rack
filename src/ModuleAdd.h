@@ -1,12 +1,6 @@
 #include "autogen_airwin/Chamber.h"
-typedef AW2RModule<airwin2rack::Chamber::Chamber, airwin2rack::Chamber::kNumParameters> Chamber_model;
-int Chamber_throwaway = addAirwin(rack::createModel<Chamber_model, AW2RModuleWidget<Chamber_model>>("Chamber"));
-
+int Chamber_unused = AW2RModule::registerAirwindow("Chamber", []() { return new airwin2rack::Chamber::Chamber(0); });
 #include "autogen_airwin/Galactic.h"
-typedef AW2RModule<airwin2rack::Galactic::Galactic, airwin2rack::Galactic::kNumParameters> Galactic_model;
-int Galactic_throwaway = addAirwin(rack::createModel<Galactic_model, AW2RModuleWidget<Galactic_model>>("Galactic"));
-
+int Galactic_unused = AW2RModule::registerAirwindow("Galactic", []() { return new airwin2rack::Galactic::Galactic(0); });
 #include "autogen_airwin/Hombre.h"
-typedef AW2RModule<airwin2rack::Hombre::Hombre, airwin2rack::Hombre::kNumParameters> Hombre_model;
-int Hombre_throwaway = addAirwin(rack::createModel<Hombre_model, AW2RModuleWidget<Hombre_model>>("Hombre"));
-
+int Hombre_unused = AW2RModule::registerAirwindow("Hombre", []() { return new airwin2rack::Hombre::Hombre(0); });

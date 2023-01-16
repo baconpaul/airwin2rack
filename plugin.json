@@ -11,8 +11,7 @@
 	"sourceUrl": "",
 	"donateUrl": "",
 	"modules": [
-			 {"slug": "Chamber", "name": "Chamber", "description": "Airwindows Chamber", "tags": [] },
-			 {"slug": "Galactic", "name": "Galactic", "description": "Airwindows Galactic", "tags": [] },
-			 {"slug": "Hombre", "name": "Hombre", "description": "Airwindows Hombre", "tags": [] }
+			 {"slug": "Airwin2Rack", "name": "Airwindows for Rack",
+				 "description": "Airwindows Chamber", "tags": [] }
 	]
 }

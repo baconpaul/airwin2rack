@@ -57,7 +57,7 @@ print "Converting $inh to $outh\n";
 open(OFH, "> $outh") || die "Can't open $outh for writing";
 open(IFH, "< $inh") || die "Can't open $inh for reading";
 
-my $namespaced = 0;
+$namespaced = 0;
 while (<IFH>)
 {
     print OFH;
@@ -85,7 +85,7 @@ print "Converting $inh to $outh\n";
 open(OFH, "> $outh") || die "Can't open $outh for writing";
 open(IFH, "< $inh") || die "Can't open $inh for reading";
 
-my $namespaced = 0;
+$namespaced = 0;
 while (<IFH>)
 {
     print OFH;
@@ -101,39 +101,12 @@ close(IFH);
 
 my @headers = <src/autogen_airwin/*.h>;
 
-# Rebuild the json
-open(IFH, "< plugin.json.shell") || die "can't read json shell";
-open(OFH, "> plugin.json") || die "can't write plugin.json";
-
-while(<IFH>)
-{
-    if (m/---REPLACE/)
-    {
-        my $pfx = "\t\t\t";
-        foreach my $h (@headers)
-        {
-            $h =~ s:src/autogen_airwin/(.*).h$:$1:;
-            print OFH "${pfx} {\"slug\": \"$h\", \"name\": \"$h\", \"description\": \"Airwindows $h\", \"tags\": [] }";
-            $pfx = ",\n\t\t\t";
-        }
-        print OFH "\n";
-    }
-    else
-    {
-        print OFH;
-    }
-}
-
-close (IFH);
-close (OFH);
-
 open (OFH, "> src/ModuleAdd.h");
 
 foreach my $h (@headers)
 {
     $h =~ s:src/autogen_airwin/(.*).h$:$1:;
     print OFH "#include \"autogen_airwin/${h}.h\"\n";
-    print OFH "typedef AW2RModule<airwin2rack::${h}::${h}, airwin2rack::${h}::kNumParameters> ${h}_model;\n";
-    print OFH "int ${h}_throwaway = addAirwin(rack::createModel<${h}_model, AW2RModuleWidget<${h}_model>>(\"$h\"));\n";
+    print OFH "int ${h}_unused = AW2RModule::registerAirwindow(\"${h}\", []() { return new airwin2rack::${h}::${h}(0); });";
     print OFH "\n";
 }

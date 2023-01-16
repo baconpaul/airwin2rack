@@ -7,7 +7,5 @@
 #define RACK_HEIGHT 380
 
 extern rack::Plugin *pluginInstance;
-
-extern int addAirwin(rack::Model *);
-
+extern rack::Model *airwin2RackModel;
 #endif
