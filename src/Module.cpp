@@ -6,11 +6,13 @@
 #include <memory>
 #include <atomic>
 
-// @TODO: Save the FX chosen obviously but unstream that without value reset
-// @TODO: CV control and attenuverters
-// @TODO: A better knob and spacing
-// @TODO: Output labels
+// @TODO: Param Smoothing
+// @TODO: A ParamQuantity which uses the formatting
+// @TODO: A Cleaner UI of course
+// @TODO: Update README
 // @TODO: Push to Github and add Actions with a build
+// @TODO: A dark and light mode
+// @TODO: Output labels and Areas on the grid
 struct AW2RModule : virtual rack::Module
 {
     static constexpr int maxParams{14};
@@ -43,7 +45,8 @@ struct AW2RModule : virtual rack::Module
     enum ParamIds
     {
         PARAM_0,
-        NUM_PARAMS = PARAM_0 + maxParams
+        ATTENUVERTER_0 = PARAM_0 + maxParams,
+        NUM_PARAMS = ATTENUVERTER_0 + maxParams
     };
 
     enum InputIds
@@ -82,12 +85,14 @@ struct AW2RModule : virtual rack::Module
         configBypass(INPUT_R, OUTPUT_R);
 
         for (int i = 0; i < maxParams; ++i)
+        {
             configParam(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
-
+            configParam(ATTENUVERTER_0 + i, -1, 1, 0, "CV Scale " + std::to_string(i));
+        }
         resetAirwindowTo(0);
     }
 
-    void resetAirwindowTo(int registryIdx)
+    void resetAirwindowTo(int registryIdx, bool resetValues = true)
     {
         selectedFX = registry[registryIdx].name;
         airwin = registry[registryIdx].generator();
@@ -97,12 +102,35 @@ struct AW2RModule : virtual rack::Module
         {
             char txt[256];
             airwin->getParameterName(i, txt);
-            paramQuantities[i]->name = txt;
-            paramQuantities[i]->defaultValue = airwin->getParameter(i);
-            paramQuantities[i]->setValue(paramQuantities[i]->defaultValue);
+            paramQuantities[PARAM_0 + i]->name = txt;
+            paramQuantities[ATTENUVERTER_0 + i]->name = std::string(txt) + " CV Scale";
+            paramQuantities[PARAM_0 + i]->defaultValue = airwin->getParameter(i);
+            if (resetValues)
+                paramQuantities[PARAM_0 + i]->setValue(paramQuantities[i]->defaultValue);
         }
 
         resetCount++;
+    }
+
+    json_t *dataToJson() override {
+        auto res = json_object();
+        json_object_set(res, "airwindowSelectedFX", json_string(selectedFX.c_str()));
+        return res;
+    }
+
+    void dataFromJson(json_t *rootJ) override {
+        auto awfx = json_object_get(rootJ, "airwindowSelectedFX");
+        if (awfx)
+        {
+            std::string sfx = json_string_value(awfx);
+            for (auto i=0U; i<registry.size(); ++i)
+            {
+                if (registry[i].name == sfx)
+                {
+                    resetAirwindowTo(i, false);
+                }
+            }
+        }
     }
 
     static constexpr int block{4};
@@ -124,7 +152,16 @@ struct AW2RModule : virtual rack::Module
         if (inPos == block)
         {
             for (int i = 0; i < nParams; ++i)
-                airwin->setParameter(i, params[PARAM_0 + i].getValue());
+            {
+                auto pv = params[PARAM_0 + i].getValue();
+                if (inputs[CV_0 + i].isConnected())
+                {
+                    auto v = inputs[CV_0 + i].getVoltage() * 0.2 *
+                        params[ATTENUVERTER_0 + i].getValue();
+                    pv = std::clamp(pv + v, 0., 1.);
+                }
+                airwin->setParameter(i, pv);
+            }
             airwin->processReplacing(in, out, block);
             outPos = 0;
             inPos = 0;
@@ -133,6 +170,48 @@ struct AW2RModule : virtual rack::Module
         outputs[OUTPUT_L].setVoltage(out[0][outPos] * 5);
         outputs[OUTPUT_R].setVoltage(out[1][outPos] * 5);
         outPos++;
+    }
+};
+
+template <int px, bool bipolar = false>
+struct PixelKnob : rack::Knob
+{
+    PixelKnob()
+    {
+        box.size = rack::Vec(px, px);
+        float angleSpreadDegrees = 40.0;
+
+        minAngle = -M_PI * (180 - angleSpreadDegrees) / 180;
+        maxAngle = M_PI * (180 - angleSpreadDegrees) / 180;
+    }
+
+    void draw(const DrawArgs &args)
+    {
+        auto vg = args.vg;
+        float radius = box.size.x * 0.48;
+        nvgBeginPath(vg);
+        nvgEllipse(vg, box.size.x * 0.5, box.size.y * 0.5, radius, radius);
+        nvgFillColor(vg, nvgRGB(255,0,0));
+        nvgFill(vg);
+
+        auto pq = getParamQuantity();
+        if (!pq)
+            return;
+
+        nvgBeginPath(vg);
+        float angle = rack::math::rescale(pq->getValue(), pq->getMinValue(), pq->getMaxValue(), minAngle, maxAngle);
+        float startAngle = minAngle;
+        if (bipolar)
+            startAngle = 0;
+
+        nvgBeginPath(vg);
+        nvgArc(vg, box.size.x * 0.5, box.size.y * 0.5, radius, startAngle - M_PI_2, angle - M_PI_2,
+               startAngle < angle ? NVG_CW : NVG_CCW);
+        nvgStrokeWidth(vg, 2);
+        nvgStrokeColor(vg, nvgRGB(255,255,255));
+        nvgLineCap(vg, NVG_ROUND);
+        nvgStroke(vg);
+
     }
 };
 
@@ -165,7 +244,7 @@ struct AWLabel : rack::Widget
         auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(220, 220, 220));
-        nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
+        nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_LEFT);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, px);
 
@@ -250,11 +329,12 @@ struct AW2RModuleWidget : rack::ModuleWidget
     typedef AW2RModule M;
 
     std::array<AWLabel *, M::maxParams> parLabels;
-    std::array<rack::ParamWidget *, M::maxParams> parKnobs;
+    std::array<rack::ParamWidget *, M::maxParams> parKnobs, attenKnobs;
+    std::array<rack::PortWidget *, M::maxParams> cvPorts;
     AW2RModuleWidget(M *m)
     {
         setModule(m);
-        box.size = rack::Vec(SCREW_WIDTH * 9, RACK_HEIGHT);
+        box.size = rack::Vec(SCREW_WIDTH * 11, RACK_HEIGHT);
 
         auto bg = new AWBG;
         bg->box.pos = rack::Vec(0.0);
@@ -274,22 +354,31 @@ struct AW2RModuleWidget : rack::ModuleWidget
         tlab->module = m;
         addChild(tlab);
 
-        auto pPos = 45, dPP = 22;
+        auto pPos = 45, dPP = 24;
 
         for (int i = 0; i < M::maxParams; ++i)
         {
             auto tlab = new AWLabel;
             tlab->px = 11;
             tlab->box.pos.x = 5;
-            tlab->box.pos.y = pPos;
+            tlab->box.pos.y = pPos + dPP * 0.5;
             tlab->label = "Param " + std::to_string(i);
             parLabels[i] = tlab;
             addChild(tlab);
 
-            parKnobs[i] = rack::createParamCentered<rack::RoundSmallBlackKnob>(
-                rack::Vec(box.size.x - 40, pPos + dPP * 0.5), module, M::PARAM_0 + i);
+            auto bp = box.size.x - 60;
+            parKnobs[i] = rack::createParamCentered<PixelKnob<18>>(
+                rack::Vec(bp, pPos + dPP * 0.5), module, M::PARAM_0 + i);
             addParam(parKnobs[i]);
-            pPos += 35;
+
+            attenKnobs[i] = rack::createParamCentered<PixelKnob<12, true>>(
+                rack::Vec(bp + 22, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
+            addParam(attenKnobs[i]);
+
+            cvPorts[i] = rack::createInputCentered<rack::PJ301MPort>(rack::Vec(bp + 42, pPos + dPP * 0.5), module, M::CV_0 + i);
+            addInput(cvPorts[i]);
+
+            pPos += dPP;
         }
 
         // @TODO: paint labels
@@ -336,11 +425,15 @@ struct AW2RModuleWidget : rack::ModuleWidget
             awm->airwin->getParameterName(i, txt);
             parLabels[i]->label = txt;
             parKnobs[i]->setVisible(true);
+            attenKnobs[i]->setVisible(true);
+            cvPorts[i]->setVisible(true);
         }
         for (int i=np; i<M::maxParams; ++i)
         {
             parLabels[i]->setVisible(false);
             parKnobs[i]->setVisible(false);
+            attenKnobs[i]->setVisible(false);
+            cvPorts[i]->setVisible(false);
         }
     }
 };
