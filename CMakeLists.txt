@@ -1,31 +1,25 @@
-cmake_minimum_required(VERSION 3.20)
-set(CMAKE_OSX_ARCHITECTURES "x86_64")
-project(airwin2-rack-hack VERSION 1.0 LANGUAGES C CXX)
+cmake_minimum_required(VERSION 3.16)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
+project(Airwin2Rack VERSION 1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-file(GLOB RACK_SOURCES src/*.cpp src/autogen_airwin/*.cpp)
-set(RACK_DIR "/Users/paul/dev/music/rack/Rack-SDK")
+set(PLUGIN_NAME ${PROJECT_NAME})
+set(ADDITIONAL_PLUGIN_DISTRIBUTABLES res LICENSE.md README.md)
+include(RackSDK.cmake)
 
-add_library(${PROJECT_NAME} STATIC ${RACK_SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ${RACK_DIR}/include
-        ${RACK_DIR}/dep/include
-        )
+message(STATUS "AirwinRackAdapter for Rack Build Process" )
+message(STATUS "Installing into '${CMAKE_INSTALL_PREFIX}'")
 
-add_custom_command(TARGET ${PROJECT_NAME}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND RACK_DIR=${RACK_DIR} arch -x86_64 make -j
-        COMMAND ${CMAKE_COMMAND} -E copy plugin.dylib /Users/paul/Documents/Rack2/plugins/Airwin2Rack
-        USES_TERMINAL)
+file(GLOB SOURCES src/*.cpp src/autogen_airwin/*.cpp)
+add_compile_options(-fvisibility=hidden -fvisibility-inlines-hidden)
 
+target_include_directories(${RACK_PLUGIN_LIB} PRIVATE src src/autogen_airwin/)
+target_sources(${RACK_PLUGIN_LIB} PRIVATE
+        ${SOURCES})
 
-# This is the full build
-add_custom_target(${PROJECT_NAME}_FULL)
-add_dependencies(${PROJECT_NAME}_FULL ${PROJECT_NAME})
-add_custom_command(TARGET ${PROJECT_NAME}_FULL
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND RACK_DIR=${RACK_DIR} arch -x86_64 make dist -j
-        COMMAND RACK_DIR=${RACK_DIR} arch -x86_64 make install -j
-        USES_TERMINAL)
+if (APPLE)
+   target_compile_options(${RACK_PLUGIN_LIB} PRIVATE -Wno-unused-value)
+endif()
 

@@ -13,7 +13,8 @@ int addAirwin(rack::Model *m)
    return 0;
 }
 
-void init(rack::Plugin *p)
+
+__attribute__((__visibility__("default"))) void init(rack::Plugin *p)
 {
     pluginInstance = p;
 

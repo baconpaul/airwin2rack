@@ -3,6 +3,7 @@ build/
 standalone/bld/*
 dist/
 plugin.dylib
+plugin-arm64.dylib
 plugin.so
 plugin.dll
 standalone/exe_*

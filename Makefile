@@ -1,53 +1,46 @@
+RACK_DIR ?= ../..
+include $(RACK_DIR)/arch.mk
 
-# FLAGS will be passed to both the C and C++ compiler
-FLAGS +=
-CFLAGS +=
-CXXFLAGS += -std=c++17 -Wno-array-bounds -Wno-strict-aliasing -Ilibs/midifile/include -Ilibs/open303-code/Source/DSPCode/
+EXTRA_CMAKE :=
+RACK_PLUGIN := plugin.so
 
+ifdef ARCH_WIN
+  RACK_PLUGIN := plugin.dll
+endif
 
-# Careful about linking to shared libraries, since you can't assume much about the user's environment and library search path.
-# Static libraries are fine.
-LDFLAGS +=
+ifdef ARCH_MAC
+  EXTRA_CMAKE := -DCMAKE_OSX_ARCHITECTURES="x86_64"
+  RACK_PLUGIN := plugin.dylib
+  ifdef ARCH_ARM64
+    EXTRA_CMAKE := -DCMAKE_OSX_ARCHITECTURES="arm64"
+    RACK_PLUGIN := plugin-arm64.dylib
+  endif
+endif
 
-# Add .cpp and .c files to the build
-SOURCES += $(wildcard src/*.cpp)
-SOURCES += $(wildcard src/autogen_airwin/*.cpp)
+CMAKE_BUILD ?= dep/cmake-build
+cmake_rack_plugin := $(CMAKE_BUILD)/$(RACK_PLUGIN)
+
+$(info cmake_rack_plugin target is '$(cmake_rack_plugin)')
+
+# create empty plugin lib to skip the make target execution
+$(shell touch $(RACK_PLUGIN))
+
+# trigger CMake build when running `make dep`
+DEPS += $(cmake_rack_plugin)
+
+$(cmake_rack_plugin): CMakeLists.txt
+	$(CMAKE) -B $(CMAKE_BUILD) -DRACK_SDK_DIR=$(RACK_DIR) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(CMAKE_BUILD)/dist $(EXTRA_CMAKE)
+	cmake --build $(CMAKE_BUILD) -- -j $(shell getconf _NPROCESSORS_ONLN)
+	cmake --install $(CMAKE_BUILD)
+
+rack_plugin: $(cmake_rack_plugin)
+	cp -vf $(cmake_rack_plugin) .
 
 # Add files to the ZIP package when running `make dist`
-# The compiled plugin is automatically added.
-DISTRIBUTABLES += $(wildcard LICENSE*) res README.md
+dist: rack_plugin res
+
+DISTRIBUTABLES += $(wildcard LICENSE*) res README.md 
 
 # Include the VCV plugin Makefile framework
-RACK_DIR ?= ../..
 include $(RACK_DIR)/plugin.mk
-
-
-CXXFLAGS := $(filter-out -std=c++11,$(CXXFLAGS))
-
-shadist:	dist
-	openssl sha256 dist/$(SLUG)-$(VERSION)-$(ARCH).zip > dist/$(SLUG)-$(VERSION)-$(ARCH).zip.sha256
-
-
-COMMUNITY_ISSUE=https://github.com/VCVRack/community/issues/433
-
-community:
-	open $(COMMUNITY_ISSUE)
-
-issue_blurb:	dist
-	git diff --exit-code
-	git diff --cached --exit-code
-	@echo
-	@echo "Paste this into github issue " $(COMMUNITY_ISSUE)
-	@echo
-	@echo "* Version: v$(VERSION)"
-	@echo "* Transaction: " `git rev-parse HEAD`
-	@echo "* Branch: " `git rev-parse --abbrev-ref HEAD`
-
-install_local:	dist
-	unzip -o dist/$(SLUG)-$(VERSION)-$(ARCH).zip -d ~/Documents/Rack/plugins
-
-push_git:
-	@echo "Pushing current branch to git and dropbox"
-	git push dropbox `git rev-parse --abbrev-ref HEAD`
-	git push github `git rev-parse --abbrev-ref HEAD`
 
