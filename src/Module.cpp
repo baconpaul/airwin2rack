@@ -17,6 +17,7 @@ struct AW2RModule : virtual rack::Module
     struct awReg
     {
         std::string name;
+        std::string category;
         int nParams;
         std::function<std::unique_ptr<Airwin2RackBase>()> generator;
     };
@@ -25,6 +26,10 @@ struct AW2RModule : virtual rack::Module
     {
         registry.emplace_back(r);
         return registry.size();
+    }
+    static int completeRegistry()
+    {
+        return 0;
     }
 
     enum ParamIds
@@ -86,6 +91,7 @@ struct AW2RModule : virtual rack::Module
             airwin->getParameterName(i, txt);
             paramQuantities[i]->name = txt;
             paramQuantities[i]->defaultValue = airwin->getParameter(i);
+            paramQuantities[i]->setValue(paramQuantities[i]->defaultValue);
         }
 
         resetCount++;
@@ -101,7 +107,6 @@ struct AW2RModule : virtual rack::Module
     {
         if (forceSelect != -1) // a UI action doesn't warrant the compare_exchange rigamarole
         {
-            std::cout << "Got a reset to " << forceSelect << std::endl;
             resetAirwindowTo(forceSelect);
             forceSelect = -1;
         }
@@ -294,7 +299,6 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
     void resetAirwinDisplay()
     {
-        std::cout << "Resetting Airwindows Display" << std::endl;
         auto awm = dynamic_cast<AW2RModule *>(module);
 
         if (!awm)

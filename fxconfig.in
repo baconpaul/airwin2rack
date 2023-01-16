@@ -1,0 +1,65 @@
+# This is the file we read to configure the Airwindow FX. It has a very
+# simple format. Lines starting with # are ignored. Blank lines are ignored
+# All other lines are assumed to be an effect configuration. Effect
+# configuration is super easy; two columns separated by a ';'. The first
+# is the name of the effect and should match (including case) the
+# directory name given in libs/airwindows/plugins/MacVST. The second
+# is the group name for the rack menu. It can be anything you want.
+# For instance `Galactic;Reverbs and Ambience` is a fine entry which
+# would lead the rack selector menu to have a category called
+# `Reverbs and Ambience` which contains `Galactic`. If there is no semicolon
+# the effect is placed in group called 'Unclassified'. Dont use \" or
+# other special things in the category please. It will break.
+#
+# When you update this file run `perl scripts/configure.pl` to re-parse
+# and regenerate it.
+#
+
+Chamber;Reverbs
+Galactic;Reverbs
+
+XBandpass;XYZ Filters
+XHighpass;XYZ Filters
+XLowpass;XYZ Filters
+XNotch;XYZ Filters
+XRegion;XYZ Filters
+YBandpass;XYZ Filters
+YHighpass;XYZ Filters
+YLowpass;XYZ Filters
+YNotch;XYZ Filters
+ZBandpass;XYZ Filters
+ZBandpass2;XYZ Filters
+ZHighpass;XYZ Filters
+ZHighpass2;XYZ Filters
+ZLowpass;XYZ Filters
+ZLowpass2;XYZ Filters
+ZNotch;XYZ Filters
+ZNotch2;XYZ Filters
+ZRegion;XYZ Filters
+ZRegion2;XYZ Filters
+
+VoiceOfTheStarship;Noise
+
+GrooveWear;Tape and Vinyl
+IronOxide5;Tape and Vinyl
+IronOxideClassic;Tape and Vinyl
+IronOxideClassic2;Tape and Vinyl
+
+Tape;Tape and Vinyl
+TapeDelay;Tape and Vinyl
+TapeDelay2;Tape and Vinyl
+TapeDither;Tape and Vinyl
+TapeDust;Tape and Vinyl
+TapeFat;Tape and Vinyl
+
+ToTape5;Tape and Vinyl
+ToTape6;Tape and Vinyl
+ToVinyl4;Tape and Vinyl
+
+ADClip7;Distortion
+Cojones;Distortion
+Distortion;Distortion
+
+Hombre
+
+# end of list
