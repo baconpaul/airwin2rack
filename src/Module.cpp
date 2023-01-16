@@ -22,6 +22,7 @@ struct AW2RModule : virtual rack::Module
         std::function<std::unique_ptr<Airwin2RackBase>()> generator;
     };
     static std::vector<awReg> registry;
+    static std::set<std::string> categories;
     static int registerAirwindow(const awReg &r)
     {
         registry.emplace_back(r);
@@ -29,6 +30,8 @@ struct AW2RModule : virtual rack::Module
     }
     static int completeRegistry()
     {
+        for (const auto &r : registry)
+            categories.insert(r.category);
         return 0;
     }
 
@@ -210,13 +213,29 @@ struct AWSelector : rack::Widget
         auto m = rack::createMenu();
         m->addChild(rack::createMenuLabel("Airwindows Selector"));
         m->addChild(new rack::MenuSeparator);
+        for (const auto &cat : AW2RModule::categories)
+        {
+            m->addChild(rack::createSubmenuItem(
+                cat, "", [this, cat](auto *m) { createCategoryMenu(m, cat); }));
+        }
+    }
+    void createCategoryMenu(rack::Menu *m, const std::string &cat)
+    {
+        std::map<std::string, int> contents;
         int idx = 0;
         for (const auto &item : AW2RModule::registry)
         {
-            auto checked = item.name == module->selectedFX;
-            m->addChild(rack::createMenuItem(item.name, CHECKMARK(checked),
-                                             [this, idx](){module->forceSelect = idx;}));
+            if (item.category == cat)
+            {
+                contents[item.name] = idx;
+            }
             idx++;
+        }
+        for (const auto &[name, idx] : contents)
+        {
+            auto checked = name == module->selectedFX;
+            m->addChild(rack::createMenuItem(name, CHECKMARK(checked),
+                                             [this, i = idx](){module->forceSelect = i;}));
         }
     }
 };
@@ -322,6 +341,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 };
 
 std::vector<AW2RModule::awReg> AW2RModule::registry;
+std::set<std::string> AW2RModule::categories;
 
 #include "ModuleAdd.h"
 
