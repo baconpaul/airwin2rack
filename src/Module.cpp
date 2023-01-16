@@ -7,19 +7,41 @@
 #include <atomic>
 
 // @TODO: Param Smoothing
-// @TODO: A ParamQuantity which uses the formatting
 // @TODO: A Cleaner UI of course
 // @TODO: Update README
-// @TODO: Push to Github and add Actions with a build
 // @TODO: A dark and light mode
 // @TODO: Output labels and Areas on the grid
+// @TODO: Turn off all those annoying warnings more carefully in the cmake
+// @TODO: Split registry and module for faster compile turnaround
 struct AW2RModule : virtual rack::Module
 {
     static constexpr int maxParams{14};
 
-    std::unique_ptr<Airwin2RackBase> airwin{};
+    std::unique_ptr<Airwin2RackBase> airwin{}, airwin_display{};
     std::atomic<int32_t> forceSelect{-1}, resetCount{0};
     std::string selectedFX{};
+
+    struct AWParamQuantity : public rack::ParamQuantity
+    {
+        std::string getDisplayValueString() override
+        {
+            auto awm = dynamic_cast<AW2RModule *>(module);
+            if (awm && awm->airwin_display)
+            {
+                int idx = paramId - PARAM_0;
+                if (idx < awm->nParams)
+                {
+                    char txt[256]{0}, lab[256]{0};
+                    awm->airwin_display->setParameter(idx, getValue());
+                    awm->airwin_display->getParameterDisplay(idx, txt);
+                    awm->airwin_display->getParameterLabel(idx, lab);
+                    auto ls = std::string(lab);
+                    return std::string(txt) + (ls.empty() ? "" : " " + ls);
+                }
+            }
+            return ParamQuantity::getDisplayValueString();
+        }
+    };
 
     struct awReg
     {
@@ -86,7 +108,7 @@ struct AW2RModule : virtual rack::Module
 
         for (int i = 0; i < maxParams; ++i)
         {
-            configParam(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
+            configParam<AWParamQuantity>(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
             configParam(ATTENUVERTER_0 + i, -1, 1, 0, "CV Scale " + std::to_string(i));
         }
         resetAirwindowTo(0);
@@ -96,6 +118,7 @@ struct AW2RModule : virtual rack::Module
     {
         selectedFX = registry[registryIdx].name;
         airwin = registry[registryIdx].generator();
+        airwin_display = registry[registryIdx].generator();
         nParams = registry[registryIdx].nParams;
 
         for (int i=0; i<nParams; ++i)
