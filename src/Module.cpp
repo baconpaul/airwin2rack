@@ -6,12 +6,15 @@
 #include <memory>
 #include <atomic>
 
+#include "AirwinRegistry.h"
+
 // @TODO: Param Smoothing
 // @TODO: A Cleaner UI of course
 // @TODO: Update README
 // @TODO: A dark and light mode
 // @TODO: Output labels and Areas on the grid
-// @TODO: Split registry and module for faster compile turnaround
+// @TODO: Use Chris' logo
+// @TODO: Cleanup plugin.json
 struct AW2RModule : virtual rack::Module
 {
     static constexpr int maxParams{14};
@@ -42,26 +45,6 @@ struct AW2RModule : virtual rack::Module
         }
     };
 
-    struct awReg
-    {
-        std::string name;
-        std::string category;
-        int nParams;
-        std::function<std::unique_ptr<Airwin2RackBase>()> generator;
-    };
-    static std::vector<awReg> registry;
-    static std::set<std::string> categories;
-    static int registerAirwindow(const awReg &r)
-    {
-        registry.emplace_back(r);
-        return registry.size();
-    }
-    static int completeRegistry()
-    {
-        for (const auto &r : registry)
-            categories.insert(r.category);
-        return 0;
-    }
 
     enum ParamIds
     {
@@ -93,7 +76,7 @@ struct AW2RModule : virtual rack::Module
     int nParams{0};
     AW2RModule()
     {
-        assert(!registry.empty());
+        assert(!AirwinRegistry::registry.empty());
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
         memset(indat, 0, 2 * block * sizeof(float));
         memset(outdat, 0, 2 * block * sizeof(float));
@@ -110,15 +93,15 @@ struct AW2RModule : virtual rack::Module
             configParam<AWParamQuantity>(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
             configParam(ATTENUVERTER_0 + i, -1, 1, 0, "CV Scale " + std::to_string(i));
         }
-        resetAirwindowTo(0);
+        resetAirwinByName("Galactic", true);
     }
 
     void resetAirwindowTo(int registryIdx, bool resetValues = true)
     {
-        selectedFX = registry[registryIdx].name;
-        airwin = registry[registryIdx].generator();
-        airwin_display = registry[registryIdx].generator();
-        nParams = registry[registryIdx].nParams;
+        selectedFX = AirwinRegistry::registry[registryIdx].name;
+        airwin = AirwinRegistry::registry[registryIdx].generator();
+        airwin_display = AirwinRegistry::registry[registryIdx].generator();
+        nParams = AirwinRegistry::registry[registryIdx].nParams;
 
         for (int i=0; i<nParams; ++i)
         {
@@ -145,12 +128,17 @@ struct AW2RModule : virtual rack::Module
         if (awfx)
         {
             std::string sfx = json_string_value(awfx);
-            for (auto i=0U; i<registry.size(); ++i)
+            resetAirwinByName(sfx, false);
+        }
+    }
+
+    void resetAirwinByName(const std::string &sfx, bool reset)
+    {
+        for (auto i=0U; i<AirwinRegistry::registry.size(); ++i)
+        {
+            if (AirwinRegistry::registry[i].name == sfx)
             {
-                if (registry[i].name == sfx)
-                {
-                    resetAirwindowTo(i, false);
-                }
+                resetAirwindowTo(i, reset);
             }
         }
     }
@@ -320,7 +308,7 @@ struct AWSelector : rack::Widget
         auto m = rack::createMenu();
         m->addChild(rack::createMenuLabel("Airwindows Selector"));
         m->addChild(new rack::MenuSeparator);
-        for (const auto &cat : AW2RModule::categories)
+        for (const auto &cat : AirwinRegistry::categories)
         {
             m->addChild(rack::createSubmenuItem(
                 cat, "", [this, cat](auto *m) { createCategoryMenu(m, cat); }));
@@ -330,7 +318,7 @@ struct AWSelector : rack::Widget
     {
         std::map<std::string, int> contents;
         int idx = 0;
-        for (const auto &item : AW2RModule::registry)
+        for (const auto &item : AirwinRegistry::registry)
         {
             if (item.category == cat)
             {
@@ -459,10 +447,5 @@ struct AW2RModuleWidget : rack::ModuleWidget
         }
     }
 };
-
-std::vector<AW2RModule::awReg> AW2RModule::registry;
-std::set<std::string> AW2RModule::categories;
-
-#include "ModuleAdd.h"
 
 rack::Model *airwin2RackModel = rack::createModel<AW2RModule, AW2RModuleWidget>("Airwin2Rack");
