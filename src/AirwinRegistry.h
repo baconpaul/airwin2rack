@@ -10,6 +10,7 @@
 #include <utility>
 #include "airwin2rackbase.h"
 #include <set>
+#include <iostream>
 
 struct AirwinRegistry
 {
@@ -25,7 +26,14 @@ struct AirwinRegistry
     static std::set<std::string> categories;
     static int registerAirwindow(const awReg &r)
     {
-        registry.emplace_back(r);
+        if (r.nParams > 11)
+        {
+            // std::cout << "PROBLEM : " << r.name << " " << r.nParams << std::endl;
+        }
+        else
+        {
+            registry.emplace_back(r);
+        }
         return registry.size();
     }
     static int completeRegistry()

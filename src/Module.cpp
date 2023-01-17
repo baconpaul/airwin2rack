@@ -9,6 +9,8 @@
 #include "AirwinRegistry.h"
 
 // @TODO: A dark and light mode
+// @TODO: Unused modules go semi-transparent
+// @TODO: Double Buffering Selector and Label
 
 struct BufferedDrawFunctionWidget : virtual rack::FramebufferWidget
 {
@@ -480,7 +482,6 @@ struct AW2RModuleWidget : rack::ModuleWidget
             pPos += dPP;
         }
 
-        // @TODO: paint labels
         auto q = RACK_HEIGHT - 42;
         auto c1 = box.size.x * 0.25;
         auto dc = box.size.x * 0.11;
@@ -562,8 +563,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
         {
             nvgSave(vg);
             float t[6];
-            nvgTranslate(vg, 0, 235);
-            nvgScale(vg, 0.26, 0.26);
+            nvgTranslate(vg, 0, 269);
+            nvgScale(vg, 0.14, 0.14);
             nvgAlpha(vg, 0.73);
             clipperSvg->draw(vg);
             nvgRestore(vg);
