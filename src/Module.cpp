@@ -43,7 +43,7 @@ struct AW2RModule : virtual rack::Module
 
     std::unique_ptr<Airwin2RackBase> airwin{}, airwin_display{};
     std::atomic<int32_t> forceSelect{-1}, resetCount{0};
-    std::string selectedFX{};
+    std::string selectedFX{}, selectedWhat{};
 
     struct AWParamQuantity : public rack::ParamQuantity
     {
@@ -121,6 +121,7 @@ struct AW2RModule : virtual rack::Module
     void resetAirwindowTo(int registryIdx, bool resetValues = true)
     {
         selectedFX = AirwinRegistry::registry[registryIdx].name;
+        selectedWhat = AirwinRegistry::registry[registryIdx].whatText;
         airwin = AirwinRegistry::registry[registryIdx].generator();
         airwin_display = AirwinRegistry::registry[registryIdx].generator();
         nParams = AirwinRegistry::registry[registryIdx].nParams;
@@ -374,6 +375,37 @@ struct AWSelector : rack::Widget
                                              [this, i = idx](){module->forceSelect = i;}));
         }
     }
+
+    void onHover(const HoverEvent &e) override {
+        e.consume(this);
+    }
+    void onEnter(const EnterEvent &e) override {
+        e.consume(this);
+        if (!module)
+            return;
+        if (module->selectedWhat.empty())
+            return;
+
+        if (!rack::settings::tooltips)
+            return;
+        if (toolTip)
+            return;
+
+        toolTip = new rack::ui::Tooltip;
+        toolTip->text = module->selectedWhat;
+        APP->scene->addChild(toolTip);
+    }
+    void onLeave(const LeaveEvent &e) override {
+        e.consume(this);
+        if (!toolTip)
+            return;
+        APP->scene->removeChild(toolTip);
+        delete toolTip;
+        toolTip = nullptr;
+    }
+
+    rack::ui::Tooltip *toolTip{nullptr};
+
 };
 
 struct AW2RModuleWidget : rack::ModuleWidget
