@@ -9,7 +9,8 @@
 #include "AirwinRegistry.h"
 
 // @TODO: Unused modules go semi-transparent
-// @TODO: Double Buffering Selector and Label
+// @TODO: Poly
+// @TODO: Total ordering and Jog Buttons
 
 struct BufferedDrawFunctionWidget : virtual rack::FramebufferWidget
 {
@@ -41,7 +42,7 @@ struct AW2RModule : virtual rack::Module
 
     std::unique_ptr<Airwin2RackBase> airwin{}, airwin_display{};
     std::atomic<int32_t> forceSelect{-1}, resetCount{0};
-    std::string selectedFX{}, selectedWhat{};
+    std::string selectedFX{}, selectedWhat{}, selectedCat{};
 
     struct AWParamQuantity : public rack::ParamQuantity
     {
@@ -124,6 +125,7 @@ struct AW2RModule : virtual rack::Module
     void resetAirwindowTo(int registryIdx, bool resetValues = true)
     {
         selectedFX = AirwinRegistry::registry[registryIdx].name;
+        selectedCat = AirwinRegistry::registry[registryIdx].category;
         selectedWhat = AirwinRegistry::registry[registryIdx].whatText;
         airwin = AirwinRegistry::registry[registryIdx].generator();
         airwin_display = AirwinRegistry::registry[registryIdx].generator();
@@ -367,11 +369,18 @@ struct AWLabel : rack::Widget
     float px{11};
     std::string label{"label"};
     std::string fontPath;
-    AWLabel() { fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf"); }
-    void draw(const DrawArgs &args) override
+    BufferedDrawFunctionWidget *bdw{nullptr};
+    AWLabel() {
+        fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
+    }
+    void setup()
     {
-        // @TODO: Double Buffer
-        auto vg = args.vg;
+        bdw = new BufferedDrawFunctionWidget(rack::Vec(0,0), box.size,
+                                             [this](auto vg){drawLabel(vg);});
+        addChild(bdw);
+    }
+    void drawLabel(NVGcontext *vg)
+    {
         auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
         if (skinManager.skin == AWSkin::DARK)
@@ -397,6 +406,24 @@ struct AWLabel : rack::Widget
         nvgStrokeWidth(vg, 0.5);
         nvgStroke(vg);
     }
+
+    AWSkin::Skin lastSkin{AWSkin::DARK};
+    std::string lastLabel{};
+    void step() override
+    {
+        if (bdw)
+        {
+            if (lastLabel != label ||
+                lastSkin != skinManager.skin)
+            {
+                bdw->dirty = true;
+            }
+            lastLabel = label;
+            lastSkin = skinManager.skin;
+        }
+        rack::Widget::step();
+    }
+
 };
 
 struct AWSelector : rack::Widget
@@ -407,9 +434,16 @@ struct AWSelector : rack::Widget
         fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
     }
 
-    void draw(const DrawArgs &args) override
+    BufferedDrawFunctionWidget *bdw{nullptr};
+    void setup()
     {
-        auto vg = args.vg;
+        bdw = new BufferedDrawFunctionWidget(rack::Vec(0,0), box.size,
+                                             [this](auto vg) { drawSelector(vg);});
+        addChild(bdw);
+    }
+
+    void drawSelector(NVGcontext *vg)
+    {
         // auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(20, 20, 20));
@@ -419,14 +453,38 @@ struct AWSelector : rack::Widget
         nvgStrokeWidth(vg, 1);
         nvgStroke(vg);
 
-        auto nm = (module ? module->selectedFX : "Airwindows");
         auto fid = APP->window->loadFont(fontPath)->handle;
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(240, 240, 240));
+        nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
+        nvgFontFaceId(vg, fid);
+        nvgFontSize(vg, 15);
+        nvgText(vg, box.size.x * 0.5, box.size.y * 0.67, lastName.c_str(), nullptr);
+
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(220, 220, 220));
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
-        nvgFontSize(vg, 14);
-        nvgText(vg, box.size.x * 0.5, box.size.y * 0.5, nm.c_str(), nullptr);
+        nvgFontSize(vg, 8);
+        nvgText(vg, box.size.x * 0.5, box.size.y * 0.21, lastCat.c_str(), nullptr);
+    }
+
+    AWSkin::Skin lastSkin{AWSkin::DARK};
+    std::string lastName{"Airwindows"}, lastCat{"Multi-Effect"};
+    void step() override
+    {
+        if (module && bdw)
+        {
+            if (lastName != module->selectedFX || lastCat != module->selectedCat ||
+                lastSkin != skinManager.skin)
+            {
+                bdw->dirty = true;
+            }
+            lastName = module->selectedFX;
+            lastCat = module->selectedCat;
+            lastSkin = skinManager.skin;
+        }
+        rack::Widget::step();
     }
 
     void onButton(const ButtonEvent &e) override {
@@ -530,7 +588,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         bg->box.size = box.size;
         addChild(bg);
 
-        int headerSize{35};
+        int headerSize{38};
 
         auto tlab = new AWSelector;
         auto s = box;
@@ -538,9 +596,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
         s = s.shrink(rack::Vec(5,5));
         tlab->box = s;
         tlab->module = m;
+        tlab->setup();
         addChild(tlab);
 
-        auto pPos = headerSize + 2, dPP = 25;
+        auto pPos = headerSize + 1, dPP = 25;
 
         for (int i = 0; i < M::maxParams; ++i)
         {
@@ -551,6 +610,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             tlab->box.size.x = box.size.x - 80;
             tlab->box.size.y = dPP;
             tlab->label = "Param " + std::to_string(i);
+            tlab->setup();
             parLabels[i] = tlab;
             addChild(tlab);
 
@@ -668,7 +728,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
             float t[6];
             nvgTranslate(vg, 0, 269);
             nvgScale(vg, 0.14, 0.14);
-            nvgAlpha(vg, 0.73);
+            if (skinManager.skin == AWSkin::DARK)
+                nvgAlpha(vg, 0.73);
+            else
+                nvgAlpha(vg, 0.23);
             clipperSvg->draw(vg);
             nvgRestore(vg);
         }
