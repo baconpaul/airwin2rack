@@ -1,13 +1,13 @@
 {
 	"slug": "Airwin2Rack",
-	"name": "Airwindows To Rack",
+	"name": "Airwindows for Rack",
 	"version": "2.0.0",
 	"license": "MIT",
 	"author": "@baconpaul, @airwindows",
 	"authorEmail": "",
-	"authorUrl": "",
+	"authorUrl": "https://www.airwindows.com/",
 	"pluginUrl": "",
-	"manualUrl": "",
+	"manualUrl": "https://www.airwindows.com/wp-content/uploads/Airwindopedia.txt",
 	"sourceUrl": "",
 	"donateUrl": "",
 	"modules": [

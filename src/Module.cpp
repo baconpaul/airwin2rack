@@ -8,10 +8,7 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: Param Smoothing
-// @TODO: Update README
 // @TODO: A dark and light mode
-// @TODO: Cleanup plugin.json
 
 struct BufferedDrawFunctionWidget : virtual rack::FramebufferWidget
 {
@@ -112,8 +109,13 @@ struct AW2RModule : virtual rack::Module
 
         for (int i = 0; i < maxParams; ++i)
         {
-            configParam<AWParamQuantity>(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
-            configParam(ATTENUVERTER_0 + i, -1, 1, 0, "CV Scale " + std::to_string(i));
+            auto pq = configParam<AWParamQuantity>(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
+            pq->smoothEnabled = true;
+
+            auto av = configParam(ATTENUVERTER_0 + i, -1, 1, 0, "CV Scale " + std::to_string(i));
+            av->randomizeEnabled = false;
+
+            configInput(CV_0 + i, "CV " + std::to_string(i));
         }
         resetAirwinByName("Galactic", true);
     }
@@ -133,8 +135,14 @@ struct AW2RModule : virtual rack::Module
             paramQuantities[PARAM_0 + i]->name = txt;
             paramQuantities[ATTENUVERTER_0 + i]->name = std::string(txt) + " CV Scale";
             paramQuantities[PARAM_0 + i]->defaultValue = airwin->getParameter(i);
+            inputInfos[CV_0 + i]->name = std::string(txt) + " CV";
             if (resetValues)
                 paramQuantities[PARAM_0 + i]->setValue(paramQuantities[i]->defaultValue);
+        }
+
+        for (int i=nParams; i<maxParams; ++i)
+        {
+            inputInfos[CV_0 + i]->name = "Unused CV";
         }
 
         resetCount++;
@@ -187,7 +195,7 @@ struct AW2RModule : virtual rack::Module
         {
             for (int i = 0; i < nParams; ++i)
             {
-                auto pv = params[PARAM_0 + i].getValue();
+                auto pv = paramQuantities[PARAM_0 + i]->getSmoothValue();
                 if (inputs[CV_0 + i].isConnected())
                 {
                     auto v = inputs[CV_0 + i].getVoltage() * 0.2 *
@@ -554,8 +562,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
         {
             nvgSave(vg);
             float t[6];
-            nvgTranslate(vg, 0, 218);
-            nvgScale(vg, 0.31, 0.31);
+            nvgTranslate(vg, 0, 235);
+            nvgScale(vg, 0.26, 0.26);
             nvgAlpha(vg, 0.73);
             clipperSvg->draw(vg);
             nvgRestore(vg);
@@ -608,7 +616,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             parLabels[i]->setVisible(false);
             parKnobs[i]->setVisible(false);
             attenKnobs[i]->setVisible(false);
-            cvPorts[i]->setVisible(false);
+            cvPorts[i]->setVisible(true);
         }
     }
 };
