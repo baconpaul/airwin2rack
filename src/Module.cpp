@@ -9,15 +9,37 @@
 #include "AirwinRegistry.h"
 
 // @TODO: Param Smoothing
-// @TODO: A Cleaner UI of course
 // @TODO: Update README
 // @TODO: A dark and light mode
-// @TODO: Output labels and Areas on the grid
-// @TODO: Use Chris' logo
 // @TODO: Cleanup plugin.json
+
+struct BufferedDrawFunctionWidget : virtual rack::FramebufferWidget
+{
+    typedef std::function<void(NVGcontext *)> drawfn_t;
+    drawfn_t drawf;
+
+    struct InternalBDW : rack::TransparentWidget
+    {
+        drawfn_t drawf;
+        InternalBDW(rack::Rect box_, drawfn_t draw_) : drawf(draw_) { box = box_; }
+
+        void draw(const DrawArgs &args) override { drawf(args.vg); }
+    };
+
+    InternalBDW *kid = nullptr;
+    BufferedDrawFunctionWidget(rack::Vec pos, rack::Vec sz, drawfn_t draw_) : drawf(draw_)
+    {
+        box.pos = pos;
+        box.size = sz;
+        auto kidBox = rack::Rect(rack::Vec(0, 0), box.size);
+        kid = new InternalBDW(kidBox, drawf);
+        addChild(kid);
+    }
+};
+
 struct AW2RModule : virtual rack::Module
 {
-    static constexpr int maxParams{14};
+    static constexpr int maxParams{11};
 
     std::unique_ptr<Airwin2RackBase> airwin{}, airwin_display{};
     std::atomic<int32_t> forceSelect{-1}, resetCount{0};
@@ -156,8 +178,9 @@ struct AW2RModule : virtual rack::Module
             resetAirwindowTo(forceSelect);
             forceSelect = -1;
         }
+        auto rc = inputs[INPUT_R].isConnected() ? INPUT_R : INPUT_L;
         in[0][inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
-        in[1][inPos] = inputs[INPUT_R].getVoltageSum() * 0.2;
+        in[1][inPos] = inputs[rc].getVoltageSum() * 0.2;
         inPos++;
         if (inPos == block)
         {
@@ -201,8 +224,13 @@ struct PixelKnob : rack::Knob
         float radius = box.size.x * 0.48;
         nvgBeginPath(vg);
         nvgEllipse(vg, box.size.x * 0.5, box.size.y * 0.5, radius, radius);
-        nvgFillColor(vg, nvgRGB(255,0,0));
+        nvgFillPaint(vg, nvgRadialGradient(vg, box.size.x * 0.5, box.size.y * 0.5,
+                                           box.size.x * 0.1, box.size.x * 0.4,
+                                           nvgRGB(110,110,120), nvgRGB(110,110,130)));
+        nvgStrokeColor(vg, nvgRGB(20,20,20));
+        nvgStrokeWidth(vg, 0.5);
         nvgFill(vg);
+        nvgStroke(vg);
 
         auto pq = getParamQuantity();
         if (!pq)
@@ -217,27 +245,32 @@ struct PixelKnob : rack::Knob
         nvgBeginPath(vg);
         nvgArc(vg, box.size.x * 0.5, box.size.y * 0.5, radius, startAngle - M_PI_2, angle - M_PI_2,
                startAngle < angle ? NVG_CW : NVG_CCW);
-        nvgStrokeWidth(vg, 2);
+        nvgStrokeWidth(vg, 1);
         nvgStrokeColor(vg, nvgRGB(255,255,255));
         nvgLineCap(vg, NVG_ROUND);
         nvgStroke(vg);
 
-    }
-};
+        auto ox = std::sin(angle) * radius + box.size.x / 2;
+        auto oy = box.size.y - (std::cos(angle) * radius + box.size.y / 2);
 
-struct AWBG : rack::Widget
-{
-    void draw(const DrawArgs &args) override
-    {
-        // @TODO: Double Buffer
-        auto vg = args.vg;
+        auto ix = std::sin(angle) * radius * 0.4 + box.size.x / 2;
+        auto iy = box.size.y - (std::cos(angle) * radius * 0.4 + box.size.y / 2);
+
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(0, 30, 0));
-        nvgStrokeColor(vg, nvgRGB(100, 100, 100));
-        nvgStrokeWidth(vg, 0.5);
-        nvgRect(vg, 0, 0, box.size.x, box.size.y);
-        nvgFill(vg);
+        nvgMoveTo(vg, ox, oy);
+        nvgLineTo(vg, ix, iy);
+        nvgStrokeColor(vg, nvgRGB(220,220,230));
+        nvgStrokeWidth(vg, 1);
         nvgStroke(vg);
+
+        nvgBeginPath(vg);
+        nvgEllipse(vg, ox, oy, 1.5, 1.5);
+        nvgFillColor(vg, nvgRGB(255,255,255));
+        nvgStrokeColor(vg, nvgRGB(20,20,20));
+        nvgStrokeWidth(vg, 0.5);
+        nvgStroke(vg);
+        nvgFill(vg);
+
     }
 };
 
@@ -259,7 +292,13 @@ struct AWLabel : rack::Widget
         nvgFontSize(vg, px);
 
         nvgText(vg, 0, box.size.y * 0.5, label.c_str(), nullptr);
-
+        float bnd[4];
+        nvgTextBounds(vg, 0, box.size.y*0.5, label.c_str(), nullptr, bnd);
+        nvgBeginPath(vg);
+        nvgMoveTo(vg, bnd[2] + 4, box.size.y * 0.5);
+        nvgLineTo(vg, box.size.x - 4, box.size.y * 0.5);
+        nvgStrokeColor(vg, nvgRGB(110,110,120));
+        nvgStroke(vg);
     }
 };
 
@@ -267,16 +306,18 @@ struct AWSelector : rack::Widget
 {
     AW2RModule *module;
     std::string fontPath;
-    AWSelector() { fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf"); }
+    AWSelector() {
+        fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
+    }
 
     void draw(const DrawArgs &args) override
     {
         auto vg = args.vg;
         // auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(0, 0, 0));
-        nvgStrokeColor(vg, nvgRGB(100,100,200));
-        nvgRect(vg, 0, 0, box.size.x, box.size.y);
+        nvgFillColor(vg, nvgRGB(20, 20, 20));
+        nvgStrokeColor(vg, nvgRGB(140,140,160));
+        nvgRoundedRect(vg, 0, 0, box.size.x, box.size.y, 3);
         nvgFill(vg);
         nvgStrokeWidth(vg, 1);
         nvgStroke(vg);
@@ -342,12 +383,20 @@ struct AW2RModuleWidget : rack::ModuleWidget
     std::array<AWLabel *, M::maxParams> parLabels;
     std::array<rack::ParamWidget *, M::maxParams> parKnobs, attenKnobs;
     std::array<rack::PortWidget *, M::maxParams> cvPorts;
+    std::string fontPath;
+
+    std::shared_ptr<rack::Svg> clipperSvg;
+
     AW2RModuleWidget(M *m)
     {
         setModule(m);
         box.size = rack::Vec(SCREW_WIDTH * 11, RACK_HEIGHT);
 
-        auto bg = new AWBG;
+        fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
+        clipperSvg = rack::Svg::load(rack::asset::plugin(pluginInstance, "res/clipper.svg"));
+
+        auto bg = new BufferedDrawFunctionWidget(rack::Vec(0,0), box.size,
+                                                 [this](auto vg) {drawBG(vg); });
         bg->box.pos = rack::Vec(0.0);
         bg->box.size = box.size;
         addChild(bg);
@@ -392,7 +441,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         }
 
         // @TODO: paint labels
-        auto q = RACK_HEIGHT - 40;
+        auto q = RACK_HEIGHT - 42;
         auto c1 = box.size.x * 0.25;
         auto dc = box.size.x * 0.11;
         auto c2 = box.size.x * 0.75;
@@ -402,6 +451,90 @@ struct AW2RModuleWidget : rack::ModuleWidget
             rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2 - dc, q), module, M::OUTPUT_L));
         addOutput(
             rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2 + dc, q), module, M::OUTPUT_R));
+    }
+
+    void drawBG(NVGcontext *vg)
+    {
+        auto cutPoint{58};
+
+        // Main Gradient Background
+        nvgBeginPath(vg);
+        nvgFillPaint(vg, nvgLinearGradient(vg, 0, 50, 0, box.size.y - cutPoint,
+                                           nvgRGB(50,50,60), nvgRGB(70,70,75)));
+        nvgRect(vg, 0, 0, box.size.x, box.size.y - cutPoint);
+        nvgFill(vg);
+        nvgStroke(vg);
+
+
+        // Draw the bottom region
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(160,160,170));
+        nvgStrokeColor(vg, nvgRGB(0,0,0));
+        nvgStrokeWidth(vg, 0.5);
+        nvgRect(vg, 0, box.size.y - cutPoint, box.size.x, cutPoint);
+        nvgFill(vg);
+        nvgStroke(vg);
+
+        // Input region
+        auto fid = APP->window->loadFont(fontPath)->handle;
+        nvgBeginPath(vg);
+        nvgStrokeColor(vg, nvgRGB(140,140,150));
+        nvgFillColor(vg, nvgRGB(190,190,200));
+        nvgStrokeWidth(vg, 1);
+        nvgRoundedRect(vg, 4, box.size.y - cutPoint + 3,
+                       box.size.x * 0.5 - 8, 37, 2);
+        nvgFill(vg);
+        nvgStroke(vg);
+
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(40,40,50));
+        nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
+        nvgFontFaceId(vg, fid);
+        nvgFontSize(vg, 10);
+        nvgText(vg, box.size.x * 0.25, box.size.y - cutPoint + 38, "L  IN  R", nullptr);
+
+        // Output region
+        nvgBeginPath(vg);
+        nvgStrokeColor(vg, nvgRGB(40,40,50));
+        nvgFillColor(vg, nvgRGB(60,60,70));
+        nvgStrokeWidth(vg, 1);
+        nvgRoundedRect(vg, box.size.x * 0.5 + 4, box.size.y - cutPoint + 3,
+                       box.size.x * 0.5 - 8, 37, 2);
+        nvgFill(vg);
+        nvgStroke(vg);
+
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(190,190,200));
+        nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
+        nvgFontFaceId(vg, fid);
+        nvgFontSize(vg, 10);
+        nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "L  OUT  R", nullptr);
+
+        // Brand
+        nvgBeginPath(vg);
+        nvgFillColor(vg, nvgRGB(0,0,0));
+        nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
+        nvgFontFaceId(vg, fid);
+        nvgFontSize(vg, 14);
+        nvgText(vg, box.size.x * 0.5, box.size.y - 2, "Airwindows", nullptr);
+
+        if (clipperSvg)
+        {
+            nvgSave(vg);
+            float t[6];
+            nvgTranslate(vg, 0, 218);
+            nvgScale(vg, 0.31, 0.31);
+            nvgAlpha(vg, 0.73);
+            clipperSvg->draw(vg);
+            nvgRestore(vg);
+        }
+
+        // Outline the module
+        nvgBeginPath(vg);
+        nvgStrokeColor(vg, nvgRGB(100, 100, 100));
+        nvgStrokeWidth(vg, 1);
+        nvgRect(vg, 0, 0, box.size.x, box.size.y);
+        nvgStroke(vg);
     }
 
     int resetCountCache{-1};

@@ -11,7 +11,9 @@
 	"sourceUrl": "",
 	"donateUrl": "",
 	"modules": [
-			 {"slug": "Airwin2Rack", "name": "Airwindows for Rack",
-				 "description": "Airwindows Chamber", "tags": [] }
+			 {"slug": "Airwin2Rack",
+				 "name": "Airwindows for Rack",
+				 "description": "Airwindows is a collection of effects; this module contains all of them",
+				 "tags": [ "Effect", "Multiple" ] }
 	]
 }
