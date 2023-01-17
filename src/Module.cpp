@@ -8,7 +8,6 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: A dark and light mode
 // @TODO: Unused modules go semi-transparent
 // @TODO: Double Buffering Selector and Label
 
@@ -217,6 +216,69 @@ struct AW2RModule : virtual rack::Module
     }
 };
 
+
+struct AWSkin
+{
+    enum Skin
+    {
+        LIGHT,
+        DARK
+    } skin{DARK};
+
+    void changeTo(Skin s, bool write)
+    {
+        skin = s;
+
+        if (write)
+        {
+            std::string defaultsDir = rack::asset::user("Airwin2Rack/");
+            if (!rack::system::isDirectory(defaultsDir))
+                rack::system::createDirectory(defaultsDir);
+            std::string defaultsFile = rack::asset::user("Airwin2Rack/default-skin.json");
+
+            json_t *rootJ = json_object();
+            json_object_set_new(rootJ, "defaultSkin", json_integer(skin));
+
+            FILE *f = std::fopen(defaultsFile.c_str(), "w");
+            if (f)
+            {
+                json_dumpf(rootJ, f, JSON_INDENT(2));
+                std::fclose(f);
+            }
+            json_decref(rootJ);
+        }
+    }
+
+    AWSkin()
+    {
+        std::string defaultsFile = rack::asset::user("Airwin2Rack/default-skin.json");
+        json_error_t error;
+        json_t *fd{nullptr};
+        auto *fptr = std::fopen(defaultsFile.c_str(), "r");
+        if (fptr)
+        {
+            fd = json_loadf(fptr, 0, &error);
+            DEFER({ std::fclose(fptr); });
+        }
+        if (!fd)
+        {
+            changeTo(DARK, false);
+        }
+        else
+        {
+            json_t *defj = json_object_get(fd, "defaultSkin");
+            int skinId{DARK};
+            if (defj)
+                skinId = json_integer_value(defj);
+            if (skinId != DARK && skinId != LIGHT)
+                skinId = DARK;
+            changeTo((Skin)skinId, false);
+        }
+    }
+};
+
+AWSkin skinManager;
+
 template <int px, bool bipolar = false>
 struct PixelKnob : rack::Knob
 {
@@ -235,10 +297,20 @@ struct PixelKnob : rack::Knob
         float radius = box.size.x * 0.48;
         nvgBeginPath(vg);
         nvgEllipse(vg, box.size.x * 0.5, box.size.y * 0.5, radius, radius);
-        nvgFillPaint(vg, nvgRadialGradient(vg, box.size.x * 0.5, box.size.y * 0.5,
-                                           box.size.x * 0.1, box.size.x * 0.4,
-                                           nvgRGB(110,110,120), nvgRGB(110,110,130)));
-        nvgStrokeColor(vg, nvgRGB(20,20,20));
+        if (skinManager.skin == AWSkin::DARK)
+        {
+            nvgFillPaint(vg, nvgRadialGradient(vg, box.size.x * 0.5, box.size.y * 0.5,
+                                               box.size.x * 0.1, box.size.x * 0.4,
+                                               nvgRGB(110, 110, 120), nvgRGB(110, 110, 130)));
+            nvgStrokeColor(vg, nvgRGB(20, 20, 20));
+        }
+        else
+        {
+            nvgFillPaint(vg, nvgRadialGradient(vg, box.size.x * 0.5, box.size.y * 0.5,
+                                               box.size.x * 0.1, box.size.x * 0.4,
+                                               nvgRGB(185, 186, 220), nvgRGB(190, 190, 220)));
+            nvgStrokeColor(vg, nvgRGB(50, 50, 60));
+        }
         nvgStrokeWidth(vg, 0.5);
         nvgFill(vg);
         nvgStroke(vg);
@@ -253,11 +325,16 @@ struct PixelKnob : rack::Knob
         if (bipolar)
             startAngle = 0;
 
+
+        auto valueFill = nvgRGB(240,240,240);
+        if (skinManager.skin == AWSkin::LIGHT)
+            valueFill = nvgRGB(20,20,20);
+
         nvgBeginPath(vg);
         nvgArc(vg, box.size.x * 0.5, box.size.y * 0.5, radius, startAngle - M_PI_2, angle - M_PI_2,
                startAngle < angle ? NVG_CW : NVG_CCW);
         nvgStrokeWidth(vg, 1);
-        nvgStrokeColor(vg, nvgRGB(255,255,255));
+        nvgStrokeColor(vg, valueFill);
         nvgLineCap(vg, NVG_ROUND);
         nvgStroke(vg);
 
@@ -270,13 +347,13 @@ struct PixelKnob : rack::Knob
         nvgBeginPath(vg);
         nvgMoveTo(vg, ox, oy);
         nvgLineTo(vg, ix, iy);
-        nvgStrokeColor(vg, nvgRGB(220,220,230));
+        nvgStrokeColor(vg, valueFill);
         nvgStrokeWidth(vg, 1);
         nvgStroke(vg);
 
         nvgBeginPath(vg);
         nvgEllipse(vg, ox, oy, 1.5, 1.5);
-        nvgFillColor(vg, nvgRGB(255,255,255));
+        nvgFillColor(vg, valueFill);
         nvgStrokeColor(vg, nvgRGB(20,20,20));
         nvgStrokeWidth(vg, 0.5);
         nvgStroke(vg);
@@ -297,7 +374,11 @@ struct AWLabel : rack::Widget
         auto vg = args.vg;
         auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(220, 220, 220));
+        if (skinManager.skin == AWSkin::DARK)
+            nvgFillColor(vg, nvgRGB(220, 220, 220));
+        else
+            nvgFillColor(vg, nvgRGB(20, 20, 20));
+
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_LEFT);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, px);
@@ -308,7 +389,12 @@ struct AWLabel : rack::Widget
         nvgBeginPath(vg);
         nvgMoveTo(vg, bnd[2] + 4, box.size.y * 0.5);
         nvgLineTo(vg, box.size.x - 4, box.size.y * 0.5);
-        nvgStrokeColor(vg, nvgRGB(110,110,120));
+        if (skinManager.skin == AWSkin::DARK)
+            nvgStrokeColor(vg, nvgRGB(110,110,120));
+        else
+            nvgStrokeColor(vg, nvgRGB(150,150,160));
+
+        nvgStrokeWidth(vg, 0.5);
         nvgStroke(vg);
     }
 };
@@ -428,6 +514,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
     std::string fontPath;
 
     std::shared_ptr<rack::Svg> clipperSvg;
+    BufferedDrawFunctionWidget *bg{nullptr};
 
     AW2RModuleWidget(M *m)
     {
@@ -437,7 +524,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
         clipperSvg = rack::Svg::load(rack::asset::plugin(pluginInstance, "res/clipper.svg"));
 
-        auto bg = new BufferedDrawFunctionWidget(rack::Vec(0,0), box.size,
+        bg = new BufferedDrawFunctionWidget(rack::Vec(0,0), box.size,
                                                  [this](auto vg) {drawBG(vg); });
         bg->box.pos = rack::Vec(0.0);
         bg->box.size = box.size;
@@ -494,14 +581,30 @@ struct AW2RModuleWidget : rack::ModuleWidget
             rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2 + dc, q), module, M::OUTPUT_R));
     }
 
+    void appendContextMenu(rack::Menu *menu) override {
+        menu->addChild(new rack::MenuSeparator);
+        menu->addChild(rack::createMenuItem("Light Skin", CHECKMARK(skinManager.skin == AWSkin::LIGHT),
+                                            [](){skinManager.changeTo(AWSkin::LIGHT, true);}));
+        menu->addChild(rack::createMenuItem("Dark Skin", CHECKMARK(skinManager.skin == AWSkin::DARK),
+                                            [](){skinManager.changeTo(AWSkin::DARK, true);}));
+    }
+
     void drawBG(NVGcontext *vg)
     {
         auto cutPoint{58};
 
         // Main Gradient Background
         nvgBeginPath(vg);
-        nvgFillPaint(vg, nvgLinearGradient(vg, 0, 50, 0, box.size.y - cutPoint,
-                                           nvgRGB(50,50,60), nvgRGB(70,70,75)));
+        if (skinManager.skin == AWSkin::DARK)
+        {
+            nvgFillPaint(vg, nvgLinearGradient(vg, 0, 50, 0, box.size.y - cutPoint,
+                                               nvgRGB(50, 50, 60), nvgRGB(70, 70, 75)));
+        }
+        else
+        {
+            nvgFillPaint(vg, nvgLinearGradient(vg, 0, 50, 0, box.size.y - cutPoint,
+                                               nvgRGB(225, 225, 230), nvgRGB(235, 235, 245)));
+        }
         nvgRect(vg, 0, 0, box.size.x, box.size.y - cutPoint);
         nvgFill(vg);
         nvgStroke(vg);
@@ -579,6 +682,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
     }
 
     int resetCountCache{-1};
+    AWSkin::Skin lastSkin{AWSkin::DARK};
     void step() override
     {
         if (module)
@@ -589,6 +693,13 @@ struct AW2RModuleWidget : rack::ModuleWidget
                 resetCountCache = awm->resetCount;
                 resetAirwinDisplay();
             }
+        }
+
+        if (lastSkin != skinManager.skin)
+        {
+            lastSkin = skinManager.skin;
+            if (bg)
+                bg->dirty = true;
         }
 
         rack::ModuleWidget::step();
