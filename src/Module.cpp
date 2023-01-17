@@ -8,9 +8,10 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: Total ordering and Jog Buttons
 // @TODO: Adjustable Block Size for CPU
 // @TODO: A Type Lock Setting
+// @TODO: Show Poly in display
+// @TODO: UnScrunch VoiceOfTheStarship render
 // @TODO: Undo!
 // @TODO: Unused modules go semi-transparent
 // @TODO: Selector Hover Paint Difference for Clicks
@@ -538,6 +539,54 @@ struct AWLabel : rack::Widget
     }
 };
 
+struct AWJog : rack::Widget
+{
+    AW2RModule *module;
+    int dir{1};
+    BufferedDrawFunctionWidget *bdw{nullptr};
+    void setup()
+    {
+        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+                                             [this](auto vg) { drawArrow(vg); });
+        addChild(bdw);
+    }
+    void drawArrow(NVGcontext *vg)
+    {
+        auto cy = box.size.y * 0.5;
+        auto xp = 3;
+        auto sx = box.size.x - 1.8 * xp;
+        nvgBeginPath(vg);
+        if (dir == -1)
+        {
+            nvgMoveTo(vg, xp, cy);
+            nvgLineTo(vg, xp + sx, cy - sx * 0.5);
+            nvgLineTo(vg, xp + sx, cy + sx * 0.5);
+            nvgLineTo(vg, xp , cy);
+        }
+        else
+        {
+            nvgMoveTo(vg, xp + sx, cy);
+            nvgLineTo(vg, xp, cy - sx * 0.5);
+            nvgLineTo(vg, xp, cy + sx * 0.5);
+            nvgLineTo(vg, xp + sx, cy);
+        }
+        nvgFillColor(vg, nvgRGB(190,190,190));
+        nvgStrokeColor(vg, nvgRGB(220,220,220));
+        nvgFill(vg);
+        nvgStroke(vg);
+    }
+
+    void onButton(const ButtonEvent &e) override {
+        Widget::onButton(e);
+        if (module && e.action == GLFW_PRESS && e.button == GLFW_MOUSE_BUTTON_LEFT)
+        {
+            auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
+            module->forceSelect = n;
+            e.consume(this);
+        }
+    }
+};
+
 struct AWSelector : rack::Widget
 {
     AW2RModule *module;
@@ -545,11 +594,32 @@ struct AWSelector : rack::Widget
     AWSelector() { fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf"); }
 
     BufferedDrawFunctionWidget *bdw{nullptr};
+    AWJog *leftJ{nullptr}, *rightJ{nullptr};
     void setup()
     {
         bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                              [this](auto vg) { drawSelector(vg); });
         addChild(bdw);
+
+        auto asz{11};
+        leftJ = new AWJog;
+        leftJ->module = module;
+        leftJ->dir = -1;
+        leftJ->box.pos = {1,0};
+        leftJ->box.size = box.size;
+        leftJ->box.size.x = asz;
+        leftJ->setup();
+        addChild(leftJ);
+
+        rightJ = new AWJog;
+        rightJ->module = module;
+        rightJ->dir = 1;
+        rightJ->box.pos = {0,0};
+        rightJ->box.size = box.size;
+        rightJ->box.size.x = asz;
+        rightJ->box.pos.x = box.size.x - asz - 2;
+        rightJ->setup();
+        addChild(rightJ);
     }
 
     void drawSelector(NVGcontext *vg)
@@ -599,12 +669,12 @@ struct AWSelector : rack::Widget
 
     void onButton(const ButtonEvent &e) override
     {
-        if (module && e.action == GLFW_PRESS)
+        Widget::onButton(e);
+        if (!e.isConsumed() && module && e.action == GLFW_PRESS)
         {
             showSelectorMenu();
             e.consume(this);
         }
-        Widget::onButton(e);
     }
 
     void showSelectorMenu()
