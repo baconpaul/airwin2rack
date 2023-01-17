@@ -9,8 +9,11 @@
 #include "AirwinRegistry.h"
 
 // @TODO: Total ordering and Jog Buttons
-// @TODO: Poly
+// @TODO: Adjustable Block Size for CPU
+// @TODO: A Type Lock Setting
+// @TODO: Undo!
 // @TODO: Unused modules go semi-transparent
+// @TODO: Selector Hover Paint Difference for Clicks
 
 #define MAX_POLY 16
 
@@ -200,6 +203,7 @@ struct AW2RModule : virtual rack::Module
             return;
 
         polyphonic = isPoly;
+        nextPoly = isPoly;
 
         resetAirwinByName(selectedFX, false);
         if (polyphonic)
@@ -564,15 +568,15 @@ struct AWSelector : rack::Widget
         nvgFillColor(vg, nvgRGB(240, 240, 240));
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
-        nvgFontSize(vg, 15);
+        nvgFontSize(vg, 14.5);
         nvgText(vg, box.size.x * 0.5, box.size.y * 0.67, lastName.c_str(), nullptr);
 
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(220, 220, 220));
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
-        nvgFontSize(vg, 8);
-        nvgText(vg, box.size.x * 0.5, box.size.y * 0.21, lastCat.c_str(), nullptr);
+        nvgFontSize(vg, 8.5);
+        nvgText(vg, box.size.x * 0.5, box.size.y * 0.22, lastCat.c_str(), nullptr);
     }
 
     AWSkin::Skin lastSkin{AWSkin::DARK};
@@ -683,7 +687,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
     AW2RModuleWidget(M *m)
     {
         setModule(m);
-        box.size = rack::Vec(SCREW_WIDTH * 11, RACK_HEIGHT);
+        box.size = rack::Vec(SCREW_WIDTH * 10, RACK_HEIGHT);
 
         fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
         clipperSvg = rack::Svg::load(rack::asset::plugin(pluginInstance, "res/clipper.svg"));
@@ -710,27 +714,27 @@ struct AW2RModuleWidget : rack::ModuleWidget
         for (int i = 0; i < M::maxParams; ++i)
         {
             auto tlab = new AWLabel;
-            tlab->px = 11;
+            tlab->px = 10;
             tlab->box.pos.x = 5;
             tlab->box.pos.y = pPos;
-            tlab->box.size.x = box.size.x - 80;
+            tlab->box.size.x = box.size.x - 73;
             tlab->box.size.y = dPP;
             tlab->label = "Param " + std::to_string(i);
             tlab->setup();
             parLabels[i] = tlab;
             addChild(tlab);
 
-            auto bp = box.size.x - 65;
-            parKnobs[i] = rack::createParamCentered<PixelKnob<18>>(rack::Vec(bp, pPos + dPP * 0.5),
+            auto bp = box.size.x - 58;
+            parKnobs[i] = rack::createParamCentered<PixelKnob<17>>(rack::Vec(bp, pPos + dPP * 0.5),
                                                                    module, M::PARAM_0 + i);
             addParam(parKnobs[i]);
 
             attenKnobs[i] = rack::createParamCentered<PixelKnob<12, true>>(
-                rack::Vec(bp + 22, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
+                rack::Vec(bp + 18, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
             addParam(attenKnobs[i]);
 
             cvPorts[i] = rack::createInputCentered<rack::PJ301MPort>(
-                rack::Vec(bp + 45, pPos + dPP * 0.5), module, M::CV_0 + i);
+                rack::Vec(bp + 40, pPos + dPP * 0.5), module, M::CV_0 + i);
             addInput(cvPorts[i]);
 
             pPos += dPP;
