@@ -9,7 +9,8 @@
 #include "AirwinRegistry.h"
 
 // @TODO: Mono 1 vs Poly performance and voltage sum
-// @TODO: Maybe complete that help widget
+// @TODO: Scroll the Help Area
+// @TODO: Newline in the tooltip text
 
 
 #define MAX_POLY 16
@@ -948,6 +949,8 @@ struct AWSelector : rack::Widget
         toolTip->text = module->selectedWhat;
         APP->scene->addChild(toolTip);
     }
+
+
     void onLeave(const LeaveEvent &e) override
     {
         rack::Widget::onLeave(e);
@@ -1114,12 +1117,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
 #endif
 
-            /*
-             * Incomplete start on a help slideout
             menu->addChild(rack::createMenuItem(helpShowing ? "Hide Help" : "Show Help", "",
                                                 [this](){toggleHelp();}));
-                                                */
-
         }
     }
 
@@ -1135,17 +1134,96 @@ struct AW2RModuleWidget : rack::ModuleWidget
         float pct = 0;
         void draw(const DrawArgs &args) override {
             auto vg = args.vg;
-            for (int i=0; i<100; i += 10)
+            int margin{3};
+            nvgBeginPath(vg);
+            nvgRect(vg, 0, 0, box.size.x, box.size.y);
+            nvgFillColor(vg, nvgRGB(180,180,180));
+            nvgFill(vg);
+
+            nvgBeginPath(vg);
+            nvgRect(vg, margin, margin, box.size.x - 2 * margin, box.size.y - 2 * margin);
+            nvgFillColor(vg, nvgRGB(20,20,20));
+            nvgFill(vg);
+
+            int yp = 3;
+            auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+
+            nvgBeginPath(vg);
+            nvgFillColor(vg, nvgRGB(225,225,230));
+            nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
+
+            nvgSave(vg);
+            nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
+            nvgFontSize(vg, 10);
+            nvgFontFaceId(vg, fid);
+            nvgScissor(vg, margin + 2, margin + 2, box.size.x/APP->scene->rackScroll->getZoom() - 2 * (margin + 2), box.size.y / APP->scene->rackScroll->getZoom() - 2 * (margin + 2));
+            nvgTextBox(vg, margin + 2, margin + 2, box.size.x/APP->scene->rackScroll->getZoom() - 2 * (margin + 2), helpText.c_str(), nullptr);
+            nvgRestore(vg);
+        }
+
+        std::string helpText;
+        void setFX(const std::string &s)
+        {
+            helpText= "";
+            auto fxp = rack::asset::plugin(pluginInstance, "res/awpdoc/" + s + ".txt");
+            auto fp = fopen(fxp.c_str(), "r");
+            if (fp)
             {
-                nvgBeginPath(vg);
-                nvgFillColor(vg, nvgRGB(255 - i * 2, 0, 0));
-                nvgRect(vg, i, i, (box.size.x - 2 * i), box.size.y - 2 * i);
-                nvgFill(vg);
+                std::ostringstream oss;
+                while (!feof(fp))
+                {
+                    char *ln{nullptr};
+                    size_t sz{0};
+                    auto res = getline(&ln, &sz, fp);
+
+                    if (res > 0)
+                    {
+                        auto curr = ln;
+                        while (*curr != '\0')
+                        {
+                            if (*curr == '\r' || *curr == '\n')
+                                *curr = '\0';
+                            else
+                                curr ++;
+                        }
+                        if (ln[0] == '#')
+                            oss << ln + 2 << "\n";
+                        else
+                            oss << ln << "\n";
+                    }
+                    if (ln)
+                        free(ln);
+                }
+                helpText = oss.str();
+                fclose(fp);
             }
+            else
+            {
+                helpText = "No Help Available for " + s;
+            }
+
+            resetBounds();
+        }
+
+
+        void resetBounds()
+        {
+
+        }
+
+        float lastZoom{1.f};
+        void step() override
+        {
+            if (APP->scene->rackScroll->getZoom() != lastZoom)
+            {
+                resetBounds();
+            }
+            lastZoom = APP->scene->rackScroll->getZoom();
         }
     };
 
-    rack::Widget *helpWidget{nullptr};
+
+    HelpWidget *helpWidget{nullptr};
     bool helpShowing{false};
     void toggleHelp()
     {
@@ -1162,12 +1240,16 @@ struct AW2RModuleWidget : rack::ModuleWidget
         else
         {
             assert(!helpWidget);
-            helpWidget = new HelpWidget;
-            helpWidget->box.pos = getAbsoluteOffset(rack::Vec(box.size.x,0));
-            helpShowing = true;
-            std::cout << "MP " << APP->scene->getMousePos().x << " " << APP->scene->getMousePos().y << std::endl;
-            std::cout << helpWidget->box.pos.x <<" " << helpWidget->box.pos.y << std::endl;
-            APP->scene->addChild(helpWidget);
+            auto awm = dynamic_cast<AW2RModule *>(module);
+            if (awm)
+            {
+                helpWidget = new HelpWidget;
+                helpWidget->box.pos = getAbsoluteOffset(rack::Vec(box.size.x, 0));
+                helpWidget->box.size.y = RACK_HEIGHT * APP->scene->rackScroll->getZoom();
+                helpWidget->setFX(awm->selectedFX);
+                helpShowing = true;
+                APP->scene->addChild(helpWidget);
+            }
         }
     }
 
@@ -1286,6 +1368,11 @@ struct AW2RModuleWidget : rack::ModuleWidget
             }
         }
 
+        if (helpWidget)
+        {
+            helpWidget->box.pos = getAbsoluteOffset(rack::Vec(box.size.x, 0));
+            helpWidget->box.size.y = RACK_HEIGHT * APP->scene->rackScroll->getZoom();
+        }
         if (lastSkin != skinManager.skin)
         {
             lastSkin = skinManager.skin;
@@ -1321,6 +1408,12 @@ struct AW2RModuleWidget : rack::ModuleWidget
             attenKnobs[i]->setVisible(false);
             cvPorts[i]->setVisible(true);
         }
+
+        if (helpWidget)
+        {
+            helpWidget->setFX(awm->selectedFX);
+        }
+
     }
 };
 
