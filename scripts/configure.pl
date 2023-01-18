@@ -62,7 +62,7 @@ foreach my $fx (@plugins) {
     }
 
     print "${fx} ${cat}\n";
-    system("perl scripts/import.pl $fx");
+    #system("perl scripts/import.pl $fx");
 
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
     print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", \"${what}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }});";
@@ -89,7 +89,9 @@ close IN;
 
 foreach my $dfx ( keys %helpText)
 {
-    open (DC, "> res/awpdoc/${dfx}.txt");
+    my $fn = ${dfx};
+    $fn =~ s/[^A-Za-z0-9\-]+//g;
+    open (DC, "> res/awpdoc/${fn}.txt");
     print DC $helpText{$dfx} . "\n";
     close DC;
 
