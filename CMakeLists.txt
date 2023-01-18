@@ -19,5 +19,8 @@ target_include_directories(${RACK_PLUGIN_LIB} PRIVATE src src/autogen_airwin/)
 target_sources(${RACK_PLUGIN_LIB} PRIVATE
         ${SOURCES})
 
-target_compile_options(${RACK_PLUGIN_LIB} PRIVATE -Wno-suggest-override -Wno-multichar -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
+target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-suggest-override -Wno-multichar -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-stringop-truncation)
+endif()
