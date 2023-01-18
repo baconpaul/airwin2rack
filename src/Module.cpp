@@ -9,12 +9,14 @@
 #include "AirwinRegistry.h"
 
 // @TODO: Adjustable Block Size for CPU
-// @TODO: A Type Lock Setting
 // @TODO: Show Poly in display
 // @TODO: UnScrunch VoiceOfTheStarship render
 // @TODO: Undo!
 // @TODO: Unused modules go semi-transparent
 // @TODO: Selector Hover Paint Difference for Clicks
+// @TODO: Double Buffer PixelKnob
+// @TODO: Strip Typeins from Knob for Param
+// @TODO: Arrows transpernt when locked
 
 #define MAX_POLY 16
 
@@ -44,7 +46,7 @@ struct BufferedDrawFunctionWidget : virtual rack::FramebufferWidget
 
 struct AW2RModule : virtual rack::Module
 {
-    static constexpr int maxParams{11};
+    static constexpr int maxParams{10};
 
     std::unique_ptr<Airwin2RackBase> airwin{}, airwin_display{};
     std::array<std::unique_ptr<Airwin2RackBase>, MAX_POLY> poly_airwin;
@@ -76,7 +78,8 @@ struct AW2RModule : virtual rack::Module
     enum ParamIds
     {
         PARAM_0,
-        ATTENUVERTER_0 = PARAM_0 + maxParams,
+        MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS = PARAM_0 + maxParams,
+        ATTENUVERTER_0,
         NUM_PARAMS = ATTENUVERTER_0 + maxParams
     };
 
@@ -101,7 +104,7 @@ struct AW2RModule : virtual rack::Module
     };
 
     int nParams{0};
-    std::atomic<bool> polyphonic{false};
+    std::atomic<bool> polyphonic{false}, lockedType{false};
     AW2RModule()
     {
         assert(!AirwinRegistry::registry.empty());
@@ -109,6 +112,8 @@ struct AW2RModule : virtual rack::Module
 
         configBypass(INPUT_L, OUTPUT_L);
         configBypass(INPUT_R, OUTPUT_R);
+
+        configParam(MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS,0,1,0,"Unused");
 
         for (int i = 0; i < maxParams; ++i)
         {
@@ -165,6 +170,10 @@ struct AW2RModule : virtual rack::Module
             inputInfos[CV_0 + i]->name = "Unused CV";
         }
 
+        monoIO.reset();
+        for (int c=0; c<MAX_POLY; ++c)
+            polyIO[c].reset();
+
         resetCount++;
     }
 
@@ -173,6 +182,7 @@ struct AW2RModule : virtual rack::Module
         auto res = json_object();
         json_object_set(res, "airwindowSelectedFX", json_string(selectedFX.c_str()));
         json_object_set(res, "polyphonic", json_boolean(polyphonic));
+        json_object_set(res, "lockedType", json_boolean(lockedType));
         return res;
     }
 
@@ -189,6 +199,12 @@ struct AW2RModule : virtual rack::Module
         {
             auto bl = json_boolean_value(awpl);
             resetPolyphony(bl);
+        }
+        auto awlt = json_object_get(rootJ, "lockedType");
+        if (awlt)
+        {
+            auto bl = json_boolean_value(awlt);
+            lockedType = bl;
         }
     }
 
@@ -578,7 +594,7 @@ struct AWJog : rack::Widget
 
     void onButton(const ButtonEvent &e) override {
         Widget::onButton(e);
-        if (module && e.action == GLFW_PRESS && e.button == GLFW_MOUSE_BUTTON_LEFT)
+        if (module && !module->lockedType && e.action == GLFW_PRESS && e.button == GLFW_MOUSE_BUTTON_LEFT)
         {
             auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
             module->forceSelect = n;
@@ -690,6 +706,10 @@ struct AWSelector : rack::Widget
             m->addChild(rack::createSubmenuItem(
                 cat, "", [this, cat](auto *m) { createCategoryMenu(m, cat); }));
         }
+
+        m->addChild(new rack::MenuSeparator);
+        m->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(module->lockedType),
+                                            [this]() { module->lockedType = !module->lockedType;}));
     }
     void createCategoryMenu(rack::Menu *m, const std::string &cat)
     {
@@ -706,8 +726,10 @@ struct AWSelector : rack::Widget
         for (const auto &[name, idx] : contents)
         {
             auto checked = name == module->selectedFX;
-            m->addChild(rack::createMenuItem(name, CHECKMARK(checked),
-                                             [this, i = idx]() { module->forceSelect = i; }));
+            auto mi = rack::createMenuItem(name, CHECKMARK(checked),
+                                             [this, i = idx]() { module->forceSelect = i; });
+            mi->disabled = module->lockedType;
+            m->addChild(mi);
         }
     }
 
@@ -779,7 +801,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         tlab->setup();
         addChild(tlab);
 
-        auto pPos = headerSize + 1, dPP = 25;
+        auto pPos = headerSize + 1, dPP = 27;
 
         for (int i = 0; i < M::maxParams; ++i)
         {
@@ -842,6 +864,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
                                                 [awm]() { awm->stagePolyReset(false); }));
             menu->addChild(rack::createMenuItem("Polyphonic", CHECKMARK(awm->polyphonic),
                                                 [awm]() { awm->stagePolyReset(true); }));
+
+            menu->addChild(new rack::MenuSeparator);
+            menu->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(awm->lockedType),
+                                                [awm]() { awm->lockedType = !awm->lockedType;}));
         }
     }
 

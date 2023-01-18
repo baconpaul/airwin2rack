@@ -33,9 +33,16 @@ struct AirwinRegistry
 
     static int registerAirwindow(const awReg &r)
     {
-        if (r.nParams > 11)
+        if (r.nParams > 10)
         {
-            // std::cout << "PROBLEM : " << r.name << " " << r.nParams << std::endl;
+            if (r.name == "CStrip" || r.name == "Pafnuty")
+            {
+                // I know about these
+            }
+            else
+            {
+                std::cout << "PROBLEM : " << r.name << " " << r.nParams << std::endl;
+            }
         }
         else
         {
