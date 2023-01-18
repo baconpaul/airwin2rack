@@ -20,6 +20,6 @@ target_sources(${RACK_PLUGIN_LIB} PRIVATE
         ${SOURCES})
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-      target_compile_options(${RACK_PLUGIN_LIB} PRIVATE -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
+      target_compile_options(${RACK_PLUGIN_LIB} PRIVATE -Wno-suggest-override -Wno-multichar -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
 endif()
 
