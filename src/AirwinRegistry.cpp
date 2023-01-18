@@ -16,10 +16,10 @@ void AirwinRegistry::dumpStatsToStdout()
 {
     std::cout << "Airwin Registry Stats\n";
 
-#define LONGEST_LABEL 1
-#ifdef LONGEST_LABEL
+#define LONGEST_LABEL 0
+#if LONGEST_LABEL
     std::set<std::string> params;
-    int longest{0};
+    size_t longest{0};
     for (const auto &r : registry)
     {
         auto fx = r.generator();
@@ -39,6 +39,23 @@ void AirwinRegistry::dumpStatsToStdout()
     }
 
     std::cout << "Longest is " << longest << " chars\n";
+#endif
+
+#define LABEL_BY_PLUG 1
+#if LABEL_BY_PLUG
+
+    for (const auto &ord : fxOrdering)
+    {
+        const auto &r = registry[ord];
+        auto fx = r.generator();
+        std::cout << r.name << " (" << r.category << ")\n";
+        for (int i=0; i<r.nParams; ++i)
+        {
+            char txt[256];
+            fx->getParameterName(i, txt);
+            std::cout << "    " << i << ": " << txt << "\n";
+        }
+    }
 #endif
 
     std::cout << std::endl;

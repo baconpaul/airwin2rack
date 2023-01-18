@@ -9,8 +9,6 @@
 #include "AirwinRegistry.h"
 
 // @TODO: Adjustable Block Size for CPU
-// @TODO: Undo!
-// @TODO: Unused ports go semi-transparent
 // @TODO: Mono 1 vs Poly performance and voltage sum
 
 
@@ -424,6 +422,25 @@ struct AWSkin
 
 AWSkin skinManager;
 
+void pushFXChange(AW2RModule *module, int newIndex)
+{
+    auto h = new rack::history::ModuleChange;
+    h->name = "change preset to " + AirwinRegistry::registry[newIndex].name;
+    h->moduleId = module->id;
+    h->oldModuleJ = module->toJson();
+
+
+    module->forceSelect = newIndex;
+    // Wait for process to flush
+    int ct{0}, ctMax{100000};
+    while (module->forceSelect == -1 && ct < ctMax) { ct++; }
+    if (ct == ctMax)
+    {
+    }
+    h->newModuleJ = module->toJson();
+    APP->history->push(h);
+}
+
 template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
 {
     BufferedDrawFunctionWidget *bdw{nullptr};
@@ -658,8 +675,9 @@ struct AWJog : rack::Widget
         Widget::onButton(e);
         if (module && !module->lockedType && e.action == GLFW_PRESS && e.button == GLFW_MOUSE_BUTTON_LEFT)
         {
+            // FIXME : move to a static helper somewhere
             auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
-            module->forceSelect = n;
+            pushFXChange(module, n);
             e.consume(this);
         }
     }
@@ -879,7 +897,7 @@ struct AWSelector : rack::Widget
         {
             auto checked = name == module->selectedFX;
             auto mi = rack::createMenuItem(name, CHECKMARK(checked),
-                                             [this, i = idx]() { module->forceSelect = i; });
+                                             [this, i = idx]() { pushFXChange(module, i); });
             mi->disabled = module->lockedType;
             m->addChild(mi);
         }
