@@ -1,0 +1,5 @@
+# XBandpass is a distorted digital EQ, inspired by retro sampler DSP.
+
+Hi! This is the bandpass version of the X series Airwindows filters. If you know what a bandpass is you can probably figure out what’s going on here. More detail in the other filter types: the X filters mean experimental, and they're also written before I was interpolating coefficients, so these filters may produce zipper noise when adjusting them on the fly. However, that also means they are more CPU-efficient: it's a tradeoff.
+
+

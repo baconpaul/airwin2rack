@@ -1,0 +1,9 @@
+# BiquadTriple is a handy Airwindows cascaded biquad filter: steeper roll-off before resonance.
+
+Here’s another utility plugin! This is the same as BiquadDouble, except it’s three stacked biquads. Otherwise the same: you get to set the frequency, Q etc. for all the filters in parallel. This saves time over doing three instances of Biquad, plus they’re run in series inside Console inside the plugin, so there will be a deeper tone out of this one.
+
+It’s for if you wanted to get steeper filter slopes without the cutoff going resonant. This, like BiquadDouble, is very much ‘tools to make tools’, for if you’re mocking up some kind of effect and know you’re going to be using filters. You can test out what you’ll use in your effect, this way. Note: seems like the inv/dry/wet is really just wet/dry/wet, and I have too many new and more worthwhile plugins to put out to fuss over it so I’d advise just taking BiquadTriple as it is. I’d be using it as full-wet anyway though you can bleed in dry for more of a shelf effect if you’re doing a steep rolloff of some kind.
+
+I expect to be doing some more variations on this as there are known ways to stack filters where the Q factors are very specific and staggered: however, those will be more aimed at the mixer/end user, and probably will be called isolators (that being a common term for this type of steep crossover-like filter). And again, I’ve got other things to put out that are more interesting, so more will be revealed as I do those experiments. I think an Airwindows isolator-style effect would be good. Bear in mind the biquads can be fussy about extreme settings and moving the sliders abruptly.
+
+

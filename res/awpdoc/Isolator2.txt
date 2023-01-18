@@ -1,0 +1,5 @@
+# Isolator2 is Isolator, but with control smoothing and a new resonance booster.
+
+Isolator2 is Isolator, my very steep lowpass or highpass or shelf filter, but now it’s got smoothed coefficients so you can automate it and make it move better. Also, it’s even steeper. Also, it now has the power to give you added resonance! So you can put an edge on your filter/isolator sweeps, for a really narrow high-resonance sound that’s very striking as a ‘synth filter’ tone.
+
+

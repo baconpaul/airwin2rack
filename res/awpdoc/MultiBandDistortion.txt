@@ -1,0 +1,9 @@
+# MultiBandDistortion is an old weird gnarly sound wrecker :)
+
+Some plugins just want to watch the world burn :)
+
+I don’t have all that much to say about this one. I’ve been needing to post it: I’ve got folks who ask me for soundgoodizer/OTT type things and try to get a ‘slammed’, deeply unnatural, multiband kind of effect going… and all my life I’ve been learning how to get AWAY from that kind of sonic disassociation and audio gibberish towards stuff with a very different texture. So I’m not a natural match for that kind of thing, and yet I get asked for my take on plugins like that.
+
+So, long ago, I made MultiBandDistortion. I figured if you were going to wreck your sound, let’s REALLY wreck it, and I did some very gnarly things in there that I now don’t entirely understand. I know that if you turn ‘stable’ down, you get a choppy effect not unlike the ZVex Fuzz Factory pedal, only not: the interaction between the bands can get sketchy. Again, I don’t remember how this worked and don’t expect to be revising it or making it more controllable or cleaner: that kind of misses the point. If you’re trying to get a slick version of this kind of thing you start by not using this kind of thing :)
+
+

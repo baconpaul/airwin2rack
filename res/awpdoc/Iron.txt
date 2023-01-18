@@ -1,0 +1,25 @@
+# Iron Oxide 5 is the old school, heavily colored Airwindows tape emulation.
+
+The legacy of this plugin goes way back. Many years ago, I was coding some of my first AU plugins, and some friends of mine were having bad experiences with a company that sold the big tape emulation plugin of the day. Outraged, I charged into the fray: I would code a replacement for them, one that did the same things and sounded better and sold for $60 (later $50). And that was Iron Oxide. It had one ‘ips’ control, a Drive, and an output level.
+
+Then, I expanded on that with Iron Oxide 2. That one split the ‘ips’ top and bottom cutoffs, so you could vary the ‘bandpassy’ quality it had. It used the same unusual algorithm, but made it more flexible. It also incorporated an unusual sort of anti-aliasing in the form of a ‘tape noise’ factor that blurred slew.
+
+Iron Oxide 3 added flutter. At this point, we stepped away from strictly zero latency: instead, the plugin declares zero latency but produces a fuzzy smear across one or two samples, the range the flutter covers. That persists with Iron Oxide 4 and 5, and is how the current free VST Iron Oxide works.
+
+Iron Oxide 4 added something else that (come to find out) is also present in the Delta Labs Effectron: inv/dry/wet control. That persists with Iron Oxide 5. The way you use it is, set up an Iron Oxide tone that accentuates a frequency range (like mids). Drive it, or leave it clean… but begin setting the control to inv (the inverted position). You’ll subtract it from dry, causing a dip rather than a boost, but if you’re saturating the ‘tape’ then the dip will leave dynamic energy in the area being cancelled: it will cut out fat, leaving punch. Overdrive the ‘tape’ section harder (and turn down ‘inv’) to get more punch out, or leave it clean and use it just to cancel out the area. It’s an unusual effect, but it works.
+
+Iron Oxide 5 is all of this, plus lessons from the ‘Purest’ line of plugins (mostly still in line to be released later) to produce the same thing as Iron Oxide 4, but even more pure and resonant and intense. None of these are really ‘mix buss’ plugins (though I’m not the boss of you): they’re far too intensely colored and distorted. They’re more about ‘make that snare really bark’ and so on. Though of course, since I’m not the boss of you, I can’t prevent you from trying to use it on the full mix. All I can do is say that ToTape is coming, and that’s the MODERN tape emulation. This is the old school, rowdy, obvious tape emulation, full of grunge and bark :)
+
+# Iron Oxide Classic is the purer, simpler, early form of Iron Oxide before all the features.
+
+As promised, here is the 2017-ized version of the pure, sweet, original Iron Oxide. No more grit or tape flutter or noise!
+
+It’s funny how this works. If you’re a commercial developer, and you release a plugin that’s real popular, one thing that happens is people begin asking for more. More features, more variations, this and that and the other. The flutter in Iron Oxide 5 came about that way: it migrated over from ToTape (which is also coming to free VST).
+
+Every new thing added is something lost. But since I’m no longer doing strictly commercial development (it’s steadily all becoming free, backed by my Patreon which allows all this to happen) I can do things like confuse the ‘market’ and release both the feature-full Iron Oxide 5, and the stripped-down Iron Oxide Classic. This one is just like the original: input trim, ips control, and output trim. Better yet, it has the pure unsullied tone of the very first Iron Oxide, only brought up to date so it noise shapes to the 32 bit buss etc.
+
+Even if you liked the grunge factor of the very adjustable Iron Oxide 5 (more controls may be added but bear in mind I have a commitment to release plugins like BussColors, not just keep revising Iron Oxide!) you might want to check this out. And if later versions of Iron Oxide wandered away from what works for you, for instance if you’re making electronic music and needed much cleaner handling of synthetic tones… this is your lucky day!
+
+Hope you like Iron Oxide Classic. It is, truly, one of the Airwindows classics, now for free VST and brought up to date. :)
+
+

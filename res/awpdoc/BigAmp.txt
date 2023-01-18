@@ -1,0 +1,5 @@
+# BigAmp is a very flexible amplike thing with a taste for the bizarre.
+
+Let’s go a little farther! BigAmp steps even farther away from what you might call ‘realistic’ amp sim behavior. It’s more like the Z series filters, or perhaps the X filters: you can make it act sort of ‘normal’, but it also lets you twist the knobs way beyond what’s realistic. So, you can use BigAmp for layering, or to supplement a sound, or just do strange things. There’s one more amp sim before I get into other, different plugins (and indeed different whole things like the sample instruments I’m developing, as heard in ‘Skronk’ and these demos) but BigAmp is perhaps the widest-ranging of the lot.
+
+

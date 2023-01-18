@@ -1,0 +1,7 @@
+# Channel8 is Channel7 with updates from Capacitor2 and Slew3. More and better of what Channel is.
+
+Channel8 is a subtle ‘analogifier’ that applies saturation boosts, subtle highpass filtering, and slew clipping. What that means is, there’s a ‘drive’ knob you can turn up to boost things, and you can pick three ‘flavors’ you might recognize. They’re not really the consoles associated with those things, but they are calibrated to take effect about the same way, and when you use Channel8 (on tracks, on the mix buss, wherever) you add a little ‘analog flavor’ by restricting what the audio can do, in ways that are characteristic of real analog gear’s limitations. This restricting can help make things sound bigger and more solid.
+
+This is basically the newest evolution of Channel, which has always been one of my most popular plugins. It uses the improvements in Capacitor2 and Slew3, so basically it’s still relatively subtle, still very much Channel, but it’s taken on a new level in quality and natural tone. I’m real happy with it, and I’ll be returning to trying to fix up my video setup etc (and finishing up the dither re-releases, etc etc) knowing that I’ve dropped a nice audio bomb on the world. If you ever liked Channel, this should make you real happy.
+
+

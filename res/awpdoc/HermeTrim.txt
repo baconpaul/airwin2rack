@@ -1,0 +1,9 @@
+# HermeTrim is Very Fine Adjustments, otherwise just like EveryTrim.
+
+If you’ve seen EveryTrim, you know how this works: it’s the all-possible-trims trim. +- 12dB of left, right, mid, side, and master volume. By request, and a handy little tool for all manner of stereo tweaking. It’s very nearly as clear and accurate as PurestGain, which itself is very nearly as accurate as BitShiftGain (and most people will find any of these more than acceptable, because this is uber-pickiness land and none of you are likely to be able to tell these from your standard utility gain plugin from your DAW, ten out of ten. I just know I’ve implemented mine with extra rigorousness)
+
+Thing is, the person who’d requested this is the same one who requested Hermepass… and in this case, I fumbled it a bit. On many DAWs, and all my Mac Audio Unit stuff, you can hold option to get tiny fine adjustments. But my user with the enlightening (and accessible) requests isn’t using a host that can do that… and needed to have much, much finer adjustments on tap.
+
+So, now Hermepass has a companion, HermeTrim. This is exactly the same as EveryTrim, only it’s 1.5 dB plus and minus. It’s more a mastering tool: make tiny little tweaks to get the master just right. EveryTrim will sound just as good, but this one’s geared towards non-mixing purposes. Hope you like it.
+
+

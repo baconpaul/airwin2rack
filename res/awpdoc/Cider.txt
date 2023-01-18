@@ -1,0 +1,5 @@
+# Cider is a re-release of another old Character plugin.
+
+Cider is another Character plugin. Works like the last few, sounds kinda like an MCI console? This plugin was posted on a week full of troubles, so there's very little instruction about it. It's a tone coloring plugin, and you can find a more current version of this sound in BussColors4 on the Dark setting.
+
+

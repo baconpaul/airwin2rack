@@ -1,0 +1,5 @@
+# Neverland is a re-release of my old Neve-style color adder, exacly as it was.
+
+Neverland is my old Neve emulation from 2007. It’s out of the Character collection, and I’m re-releasing these in 64 bit and VST because there are people asking me to do that. If I make it exactly like how it was, you can open old mixes and retain the settings you had, so the Character plugins are kept exactly the same (though they do get denormalization fixes, and the dithering to 32 bit floating point where applicible).
+
+

@@ -1,0 +1,19 @@
+# Verbity is my new best reverb, which uses feedforward reverb topology.
+
+Late nights of reverb hacking (ok, Monday mornings?) give rise to a new best reverb. At least, best for me. Perhaps it’ll count as ‘best’ in general, we shall see, that is rather a matter of taste but it’s my new favorite and is inspiring me a lot.
+
+Meet Verbity.
+
+This came from experiments in feedforward reverb topology, something Casey from Bricasti likes to recommend. Well, I can see why! Verbity uses the same Householder reverb matrices as the previous Reverb and MatrixVerb, but instead of each bank feeding back on itself, each bank feeds another bank and only the very last one of three, feeds back to the start again. I’m going to call this innovative not because it’s such a novel concept, but because it’s innovative to me, as I’d never figured that stuff out before. There are interesting things having to do with how you arrange the delay times across the three banks, and I’ve got some concepts from MV going for less sustainy spaces that should help spatial plausibility, and I’ve made some choices around the wetness and filter controls that are a little unusual.
+
+Bottom line is, listen to this thing! I’m real happy with the tone of it. I feel it sort of kills all my previous reverbs, which is awkward when I named one of them ‘Reverb’, but my namespace issues won’t affect your reverb tones. Just listen! Casey’s a wise man, and was certainly right about the usefulness of feedforward networks. I haven’t got any of his code or any other hints from him… but all the same, that one detail made a huge difference.
+
+The Darkness control has one quirk to be aware of: you can adjust it all the way to total darkness, 1.0 which translates to complete lowpass filter. Be aware that if you do that, you can trap DC energy inside the filter, so if you’re going for extreme filtration try to adjust so that the value is nearly 1.0 without actually being it. For most purposes that should work: I just don’t like to restrict the controls. For any normal use you won’t have Darkness nearly that high anyhow.
+
+The Wetness control is not exactly a traditional Dry/Wet, so I’m using Wetness as the name. What it does is, as you increase it you add Wet up to 0.5 setting without turning down Dry AT ALL. Verbity can be used on stems and busses in a Console mix to put excellent custom reverb spaces on things, and set up this way you’re not constantly shifting your dry-signal level when adjusting, you’re just adjusting the verb level in there. If you go beyond 0.5, you start attenuating Dry while leaving Wet at full crank, and for sends you’ll want Wetness to be 1.0 just as it would be with a Dry/Wet.
+
+This is a dual mono verb, so for now you don’t gain anything adding Srsly2 unless you have actual stereo content going in. Centered stuff is going to stay centered. You might not notice right off since it’s so deep, so I’m telling you. This is consistent with my other reverbs, except that MatrixVerb and Reverb are able to add stereo pitch bending which will spread center content. Verbity is your basic Airwindows Bricasti-style reverb, which also means it doesn’t have pitch shifting: Casey doesn’t like it, and this is an exploration into the things Casey’s talked about publically, to see if his wisdom leads to better reverbs.
+
+Signs point to yes :)
+
+

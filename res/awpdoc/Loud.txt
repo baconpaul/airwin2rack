@@ -1,0 +1,11 @@
+# Loud is distortion and demolition of air molecules, modeled.
+
+Here’s something rather special. What if you could distort like air molecules distort?
+
+I studied recordings of competitive tractor pulls, of Space Shuttle launches, various recordings that represented the way air can be mangled and break apart. The result is Loud… a step into a much louder world. It’s a distortion that can be slammed to unthinkable ‘heart of a supernova’ dB levels, but can also be subtly introduced to give the sonic coloration of a big LOUD noise in open air. Makes for a very interesting ‘glue’ at zero boost!
+
+Here’s how it’s done: rather than apply a consistent transfer function like a normal distortion, Loud knows whether you’re compressing the air, or letting it rebound. And if it’s snapping back, it can do it with the speed of lightning, but if it’s compressing, the air can be squished to practically solid, increasing heat. This extreme nonlinearity is why Loud sounds the way it does. It can sit on a whole mix to give it scope and authority, or it can be pushed harder on individual tracks like guitars and drums to amp up the ferocity.
+
+Remember, if you’ve got it totally fuzzing out, you are probably already beyond any sound level achievable by human means. The completely fried sound of cranked-up Loud is not meant to seem like acoustic phenomena as we know it. It turns up that loud because I grew up reading Douglas Adams’ “Hitchhiker’s Guide to the Galaxy”, and because in no other way can you accurately emulate a Disaster Area concert. :)
+
+

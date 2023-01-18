@@ -1,0 +1,13 @@
+# Hype is a treble softening experiment gone strangely awry :)
+
+I may have mentioned that Console8 attempted a treble softening thing that went terribly wrong and acted like an aural exciter?
+
+This is it :)
+
+No controls, and in fact it fought my attempts to add any. If you use external controls, for instance the dry/wet you can get in Reaper, it will not behave nicely and will do weird things at intermediate settings. I have no idea what will happen if you try and oversample it: it, and you, may die, so you have been warned. This is the Airwindows experiment that went TOO weird to use as the treble softening in Console8, which is already pushing the limits of reasonableness in certain ways.
+
+Can’t even describe this, just drop it into your mix anywhere and see what it does. It’s like it tries to do a treble soften, but doesn’t get the concept entirely. In the video I made, you can see that stacking about six to eight of these up gets you into obvious distorted crackling territory. The original use in Console8 had three of these stacked, and I knew there was trouble when instead of softening the tone subtly and nicely, it was like a light turned on inside things. Don’t stack up too many of them if you want things to be more reasonable.
+
+I also can’t blend between this and the final Console8 treble softening. Nor am I interested in adding a switch so all Console8 (‘in’ plugs) have this, it’s just too eccentric, more like what Console7Cascade was, except Console8 now leans a little bit in the direction of what Console7Cascade was. That said, simply adding this to Console8 doesn’t replicate what the original experiment did, this is just that part of it stripped out and isolated in a sort of featureless plugin test-tube so you can play with the effect all by itself.
+
+

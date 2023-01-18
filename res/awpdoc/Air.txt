@@ -1,0 +1,5 @@
+# Air is a different bright EQ from any other. Requires 44.1K.
+
+See Air2 for more on this. Air is the same, but simpler, and restricted to one sample rate so that if you're at a higher sample rate, the effects will shift up in frequency, possibly making them inaudible.
+
+

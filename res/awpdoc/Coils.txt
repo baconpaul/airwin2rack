@@ -1,0 +1,7 @@
+# Coils models the types of distortion you'll find in transformers.
+
+Coils is like the inverse of Focus. Instead of boosting/distorting UP the mids, it saturates DOWN the extreme highs and lows leaving the mids untouched. Because it’s a fixed mid shape mimicking the Neve transformer picture I was shown, the biquad doesn’t have to run inside Console as it’s not a high-Q filter at all (you’ll notice way more of an effect on steep filters) so it trades off that effect for less processing. The saturation is the Density algorithm, but without clipping, so if you trash it you get wrap-around on the transfer function curve, which works out to be kinda transformery.
+
+The top control increasingly distorts (still kinda subtle), the middle one DC biases the core (second harmonics!) which does more when you’re less saturated, and then there’s a dry/wet. Enjoy :)
+
+

@@ -1,0 +1,7 @@
+# EveryTrim is Left/Right, Mid/Side, and Master in one plugin.
+
+EveryTrim is like PurestGain only more so: it is very simply every basic stereo trim you can have (in loudness terms, anyhow!) You get left, right, mid/side, and a master level control. It works on stereo tracks only, as mid/side is meaningless without stereo.
+
+It’s also efficiently coded, suppresses denormal numbers, and uses the same noise shaping to the floating point buss you get in PurestGain. If you need a nice basic gain trim that does all those things (and nothing fancy: Wider is much more sophisticated, and I’ve got an idea for a still more sophisticated stereo-widener plugin that is in the works) then EveryTrim will come in handy. Begone, dull pan-pots! EveryTrim will also be simpler than using EdIsDim and MidSide just to adjust mid/side balances: while you can do that with that pair of plugins, they’re really for doing processing between them using another plugin (any plugin, doesn’t have to be M/S). With EveryTrim, you can tweak mid and side levels directly, in a more obvious way.
+
+

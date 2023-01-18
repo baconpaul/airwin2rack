@@ -1,0 +1,5 @@
+# Luxor is a re-release of another old Character plugin.
+
+Luxor is the Character plugin that’s based off Manley impulses. It does NOT sound like a Manley anything. Instead, it does a weird and maybe cool thing: you might treat it like an amp sim or something, see what you can get out of it. Cranking syn drums through it ought to be good. It is what it is, namely ‘a weird plugin not like anything else’ and I hope you like it.
+
+

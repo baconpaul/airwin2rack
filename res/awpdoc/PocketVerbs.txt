@@ -1,0 +1,11 @@
+# PocketVerbs is my popular old special effects reverbs plugin!
+
+This plugin is a bit of a big deal. It’s been hotly anticipated, and is one of the last two ‘old stock’ plugins (at least, out of my main list) to be brought up to date and ported to VST/Windows/Linux. The other one is Cabs, and I think Cabs isn’t really very good. I’ll put it out anyhow, but I’ve dragged my feet because it’s a pain to work on and it’s not great at ‘being a speaker cab plugin’, not truly special just weird.
+
+But this is PocketVerbs, and PocketVerbs IS special. It’s a precursor to what I’m doing with MV, what I’ll do more of in the future… but the reason I dragged my feet on this one is, it’s cumbersome. There’s more code in it than the size of some novels, and I had to port that! It’s not even brilliant code… but it had to be done just as it was, to maintain the tone qualities PocketVerbs has. It’s huge because it has multiple reverbs to switch between, and the way I implemented that was not easy on me. I’ve honored that in the current version.
+
+You get chambers, rooms, springs. You get a PaulStretch type effect. You get Zarathustra, which is like that but dark and distant and vast. You get a strange gating effect not present in any other plugin, just as it was: this lets you completely and totally reinvent drum sounds even on a stereo mix. It’s a dual-mono design so you get stereo localization out of the space-ified, gated, reinvented drum sounds. Or, you can try whatever other crazy tricks tickle your fancy.
+
+It’s PocketVerbs. It’s here, it’s free, it’s yours. Go bonkers… and have fun.
+
+

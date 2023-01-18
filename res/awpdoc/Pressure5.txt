@@ -1,0 +1,9 @@
+# Pressure5 expands Pressure4 with after-boost and built-in ClipOnly2.
+
+This plugin builds on 2017’s Pressure4 in numerous ways. I made it for my own use: I was mixing an album in Console7 that had to follow a previous album I’d mixed on an analog board, and I needed extensive 2-buss management and the ability to deliver a final output and control mix density across a lot of parameters measured by a meter I’ve invented (which isn’t available, it’s just for my personal use and doesn’t work properly in a releasable way). And now Pressure5 is out and you can have it!
+
+Pressure is a compressor with some unusual controls: there’s a ‘mewiness’ control that manages the way the ratio engages. You can dial in the intensity with which it ‘dynamic inverts’ and super-squishes the audio. It’s got a very wide speed range that can go real fast for a dense, distorted sort of sound, and it’s now got an additional control that nobody else has: ‘PawClaw’. This manages the way ‘mewiness’ handles transients, the intent being to extra-squish the spiky transients on ‘Paw’ or to let them through more on ‘Claw’. It’s very subtle, but it’s there to tailor the way stuff hits the compression in an entirely unique way. I don’t think anything else has a ‘PawClaw’ control, but now you have one :)
+
+The other part of Pressure5 is the output stage: Pressure5’s output control has the capacity to boost, into a built-in ClipOnly2. So it’s got that chunky, non-edgy hard clipping drive, that works at all sample rates, as part of the plugin. I intend Pressure5 to be used as a final buss comp/clip stage letting you dial in whatever you need, and then just taking the output and dithering it and being done. If you don’t want to go direct to final release, pad the output control so you’re not clipping anymore and ClipOnly2 will bypass itself like it’s not even there, serving as only a safety clipper.
+
+

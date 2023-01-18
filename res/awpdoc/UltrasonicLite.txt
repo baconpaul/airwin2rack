@@ -1,0 +1,2 @@
+# UltrasonicLite is just one stage of supersonic filter, for using inside digital mixes.
+

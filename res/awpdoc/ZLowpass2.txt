@@ -1,0 +1,17 @@
+# ZLowpass2 acts more like the Emu e6400 Ultra lowpass in motion, with coefficient interpolation.
+
+Need I even say more?
+
+My Z series filters were hotly sought after by a specific crew of localized Airwindows fans :D but they paid for their relatively high CPU efficiency with a dose of zipper noise, and that’s not really a ‘close emulation of the classic Emu e6400 Z-Plane filters’. At the time I hadn’t worked out the tech involved.
+
+A bunch of plugins and a set of Y series filters (which have their own interesting qualities, in their own right) later… and the Y plugins were the ones I chose to learn the ways of filter coefficient interpolation, and all of it implemented with the Airwindows sound… we have… ZLowpass2!
+
+Oh, and I think some changes I had to make to alter the biquad distortion factors, actually got me CLOSER to the classic-sampler sound.
+
+So this is a sampler filter, designed to give you a seamless blend through several options the real unit offered. It also gives you a HUGE amount of gain on tap, because the DnB folks liked to internally clip stuff in the sampler and then hit the filter with it. Even with the first ZLowpass, I got some special quirks of the sampler represented in the sound. This one’s even better, particularly if you’re sweeping the controls around to ‘play’ the sampler EQ. If you want a more glitchy effect for some neuro-sparkle, or if you just want more CPU free, ZLowpass (original) is still there for you. I think if I got ZLowpass2 sounding better for static, unchanging settings, it’s not by a lot: it’s mostly in motion that this one is meant to shine.
+
+Hope you like it! I’ll be working through some of the not-posted yet plugins and will not be addressing the other Z2 filters just yet. I want to hear whether this one’s doing its job for you all, as this is probably the keeper (if you automate the controls, and why wouldn’t you).
+
+Thank you for bearing with me! There will be more to come. My Patreon keeps me able to do this work :)
+
+

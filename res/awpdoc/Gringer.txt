@@ -1,0 +1,9 @@
+# Gringer is a full-wave rectifier plugin, like a Green Ringer guitar effect.
+
+Here’s another no-controls wonder… that ‘models’ an actual obscure guitar effect that also has no controls! And it makes horrible unmusical noises, just like the original obscure effect makes horrible unmusical noises! Whee!
+
+Seriously, though, here’s Gringer. It’s like an emulation of the old Dan Armstrong Green Ringer, kinda. No attempt was made to exactly circuit model anything, but it does the full-wave rectification thing that characterizes this effect, you can bypass it by bypassing the plugin, and it’s got a couple of biquad bandpasses (with VERY wide bandwidth) to mimic having analog circuitry and DC-blocking capacitors on input and output.
+
+Stick it on your guitar solo and see what you get. Please don’t stick it on your mastering console. No good will come of that.
+
+

@@ -1,0 +1,7 @@
+# Flipity is a channel phase flipper/swapper utility.
+
+This is per a request. Someone asked for a plugin to flip the phase of the left channel :) well, how about flip the phase of the left or the right channel? Or the phase of the left AND the right channel? Or swap the channels, L for R, R for L? Or, swap the channels and then flip the phase of what is now the left channel? Or swap the channels and then flip the phase of what is now the right channel? Or flip both?
+
+That's Flipity. Utility plugin that apparently isn't available on some DAWs. Fair enough then :)
+
+

@@ -1,0 +1,13 @@
+# Desk4 is distinctive analog coloration (a tuneable version of the control-less Desk plugins)
+
+Though I’ve put out BussColors to mimic existing audio hardware, it was always my intention to create analog-ifying plugins that weren’t about cloning existing gear: that produced their own distinctive sound. The first Desk plugins (Desk, TransDesk, TubeDesk) were made in this way, using audio DSP which isn’t typical.
+
+As this line of experimentation evolved, it led me to what we’ve got here. Desk4 is the latest refinement of the Desk line, now for Mac and PC VST (as well as AU)… and free.
+
+The drive control is a boost as you might expect. Turn it up for more slam and dirt. It’s very soft, textured, rich-in-nutrients dirt, but it’s basically ‘distortion’.
+
+Treble Choke is more unusual: don’t overcrank this control or you’ll generate artifacts such as uncontrolled DC. It’s not a normal algorithm and not a traditional EQ or even a saturation: as you can tell from the weird behavior when you crank it. Use it subtly and you’ll have a brightness conditioner not found outside quality analog gear. Since it’s a plugin, you can also push the extremes of the behavior, just don’t get too carried away. It’s designed to let you break it with extreme settings, so it’ll be flexible across different kinds of audio.
+
+The power sag and frequency controls are the heart of some behaviors in the earlier TubeDesk and TransDesk: you can make your imaginary analog hardware overload its power supply. Cranking the frequency slider moves the area of interest down, for tube power supply sag behaviors. Tiny settings work over a tiny range of samples, causing the effect to hit higher frequencies. If you hear an obvious effect, you’re probably applying too much… unless you intentionally want to crap out the audio, in which case this is a uniquely aggressive way of doing that. It’ll add grunge in an entirely different way from simple distortion, so you can do both.
+
+

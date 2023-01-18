@@ -1,0 +1,7 @@
+# PurestWarm2 adds dual dry/wet controls for each side of the waveform.
+
+PurestWarm2 is PurestWarm, but better. I was asked for a version of PurestWarm with a dry/wet (which would make it even more subtle and gentle) and then I thought, why not TWO dry/wets, one for either side of the waveform? That way you could massage both the positive and negative sides of the wave (seen briefly in the video: I wiggle the cursor around to show which side’s being reined in by which slider) to taste, or both at once.
+
+And so that’s what PurestWarm2 is (plus, ultrasonic filtering added for use at high sample rates). It’s also using a performance tweak I hit on, defining the filter coefficients when the plugin’s instantiated, rather than once every sample buffer. Not a complicated thing, but for anyone who made use of PurestWarm, this should count as a nice upgrade. And it’s a direct request: since I was asked for PurestWarm but with a dry/wet, how could I not?
+
+

@@ -1,0 +1,9 @@
+# Reverb is simplified and tuned MatrixVerb, adjusting everything for each optimum verb size.
+
+In some ways I think this is even better, but I know people like to fiddle with knobs, so MatrixVerb had to go first. And yet…
+
+Reverb is my new go-to reverb. Why? Because it takes all the interactivity of MatrixVerb and boils it down to ONE slider, and a dry/wet. It does all the same things: centered sounds spread, there’s a subtle detune as if sound was passing through temperature differences in the room, high frequency stuff falls away accurate to the sound of real air in reference concrete cavern recordings: it IS MatrixVerb, in every detail. Except it’s adapting all of that, on the fly, to best suit whatever size of reverb space you seek. Think in terms of ‘bigness’ and just go: if things are too cavernous, get smaller, if they’re not reverberant enough get bigger. Reverb always does its best for whatever size of space you’re making. If you need to get crazier, MatrixVerb still exists. You’ll get results faster with Reverb… so much so, that I’ve replaced MV in the Airwindows Starter Kit with Reverb. That’s how much I like it: it’s the space-maker I would show newcomers first, the most approachable way to audio ambience.
+
+(followup: subsequent reverbs like Verbity, Galactic and Chamber employed a feedforward configuration and got a richer sound. Reverb and Matrixverb turn out to be the 'plugin-style' reverb options, which is not to say they can't be useful too)
+
+

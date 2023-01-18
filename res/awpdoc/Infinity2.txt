@@ -1,0 +1,17 @@
+# Infinity2 expands Infinity with more tone shaping and a much-requested kill-switch!
+
+Here’s a much-requested upgrade! Infinity has been working out surprisingly well for people (surprising me, anyway, I got so excited about the feedforward reverb topologies that I thought Infinity was far too old school) except there’s quite a few DAWs that keep the plugin ‘live’ permanently if you’ve got it loaded. That, I didn’t expect. And so, there’s folks who are still sitting there waiting for their Infinity to clear out so they can add some new sounds to it.
+
+And since it’s Infinity, they’ll be waiting a very very long time.
+
+Until now!
+
+Infinity2 is carefully kept to allow exactly the same tones as before. No undersampling, no changes, just the addition of a Feedback control as well as the Damping control, so you can shut the thing off (or turn it to a traditional dual-mono reverb if you wish).
+
+But of course that would be too easy: so, more controls! Damping now works on all the reverb paths so to get the previous amount, set it to 0.125 or so. Zero is still full brightness, and now turning it up to 1 gives you a more significant treble fall-off effect. It’s possible that this can interact with frequencies to cause feedback reinforcement, so keep an eye out for that.
+
+The allpasses at the beginning (which spread and smooth incoming audio) can now be bypassed with another control, for brighter, more transient-rich input sounds.
+
+The maximum verb size (tied to sample rate like the original) is still exactly the same, but Infinity2 now lets you crank the pitch up to a LOT higher for when you’re doing weird effects with the plugin. That seemed like a nice tweak: if you don’t like it, try to not move the slider that far to the left :)
+
+

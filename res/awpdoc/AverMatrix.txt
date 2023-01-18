@@ -1,0 +1,9 @@
+# AverMatrix turns averaging into a full-featured EQ.
+
+My Average plugin is pretty handy. It gives you from one to ten taps of simple averaging, as a continuously variable thing. At higher settings, there are comb-filtery artifacts that come in as a result of how averaging works, but you can tune them with the filter setting and they sound pretty natural… and averaging has very good time response because it doesn’t have an IIR ‘tail’, so it’s very clean-sounding in ways normal filters aren’t.
+
+AverMatrix takes that, and gives you one to ten POLES of filtering like in the first Average. That’s continuous too: you can have three and a half poles, no trouble (it just generates the third pole and then fades halfway into it) so the subtlety of adjustment is great.
+
+AND, also by request, AverMatrix uses the Inv/Dry/Wet trick some of my other plugins use, and it’s a great idea to include. Go to full ‘inverse’ and AverMatrix is made to keep the dry and subtract the inverted wet from it… which means, now it’s a highpass. An amazing-sounding highpass, with great clarity and airy-ness and just as clean transient behavior, and just like applying dry/wet on the regular averaging, you can apply dry/inverse to give only a subtle treble lift. I think this is going to work real well for people. And one more thing: since native averaging at high numbers of taps gives a funny notch that you can tune, and since this is inverse, you can use this behavior to give a highs boost with a funny, tuneable peak. Set it wrongly and maybe it’ll make your mic sound nasty (don’t reinforce existing spikes in the mic’s response) but place it just right and you can get treble lift that neatly avoids the resonances of your mic… and enjoy the response of a much fancier microphone. (your settings will be sample-rate dependent so tune it again if you change sample rate)
+
+

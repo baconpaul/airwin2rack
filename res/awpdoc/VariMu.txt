@@ -1,0 +1,15 @@
+# VariMu is a more organic variation on Pressure (a compressor)
+
+I’ve got something nice: everybody likes yet another compressor, right? I’ve got ButterComp, Swell, Logical4, the one in CStrip, Surge, SurgeTide, Pyewacket, Thunder, and of course Pressure4. All those are free (and I’m working on getting them open source as well, but first I want to get the actual plugins out).
+
+So clearly what we need is YET ANOTHER free compressor as we plainly don’t have nearly enough. We must run all the compressors, in a row, until everything is so compressed we can’t even stand ourselves! :D
+
+No… there’s a non-joke reason. And that reason is, all those sound very different. They won’t all work for everyone: for instance, Pyewacket is all about retaining the attack transients of things and just stepping on the tails of envelopes. Swell is about stomping out those very attack transients until they’re all gone. Surge is about very smooth gain shifts that are totally transparent and more like an automatic gain control. SurgeTide is the same but more so, it’s almost completely unmanageable. Logical4 is about acting like a hardware stereo 2-buss compressor, and so on.
+
+VariMu comes from Pressure, originally. What it does differently is trigger using different math: it uses the square of the input signal, not just the signal alone, and it also handles brief transients differently. This makes it sound very different from Pressure, so if you like Pressure you should try it… and if you didn’t like Pressure, you should also try it, because it sounds different.
+
+That’s really the essence of all these Airwindows compressors (perhaps more than any other class of plugin). They’re all different algorithms, often pretty weird ones, and sound very different from each other. So you have to pick which ones fit with your type of music… but also, you don’t have to pick, because they’re all available to you for experimenting with, and if I come up with something weird and non-useful (SurgeTide comes to mind) then thanks to the Patreon I can put it out anyway, without worrying that it would kill the buzz and have people wondering if Airwindows has lost it. Even if it’s useful to just one person, I can release anything, no matter how weird.
+
+But this time, I don’t think I’ll be making excuses like that. VariMu has a good sound to it. I hope you like it :)
+
+

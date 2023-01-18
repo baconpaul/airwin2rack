@@ -1,0 +1,17 @@
+# Pop2 adds control and punch to Pop.
+
+Back in the day, I said I would get an Allen and Heath compressor to do Pop2. That is not what happened here, and Pop2 is not a hardware emulation (even though I'm demonstrating it against a Heritage Audio Successor using a sidechain filter on the hardware comp that Pop2 doesn't even have)
+
+What happened is this: Pop was the best testbed for some experiments I needed to do. I needed to split out attack and decay speeds (as much as I could, on this crazy algorithm!) and I needed to build ClipOnly2 into the output stage.
+
+This is because there's a trick you can do if you know how. If you compress in such a way that a huge spikey attack pokes out, and then you clip that attack, you can get and control a sort of distorted 'splat' on the attack that highlights it usefully. (I didn't make this up: Paul Frindle talked about it publically as a useful thing to do)
+
+The result of these experiments is Pop2, a software compressor so intense that you have to shoot it out with a rackmount compressor which will set you back $1700… and even then, it's not a given which wins. The hardware will give you more midrange sonority (that Successor is fully transformer balanced and a really nice piece of kit) and hangs on to decays in a characteristic way… but Pop2 stands up for itself damn well, plus you can run one on all 16 inserts of your hybrid analog/digital recording setup, plus there's a bit of a price difference.
+
+On a personal note I apologize for the delay and lack of plugin last week: I was at a hospital but not over myself or my lady, in this case it's my best friend out here in Vermont. Suffice to say I am studio building like a madman because it is my way of coping with grief and loss, and I'll rest at times too, but he would appreciate me turning to my lifework at such a time, as he's been an inspiration to me in turn: and that's enough of that for now. Just know: maybe sometimes go for your dreams and don't wait, because you never know when your life or those near you will be just taken away.
+
+I am proud to still be here helping you go for YOUR dreams, and hope that Pop2 helps you do that. Please help support my Patreon and I'll continue to charge forth doing everything I can, and it also helps me be there for my friends and loved ones when I need to drop everything and drive or fly to somebody's side (which we will hope does not become a constant refrain!)
+
+Love you folks, talk to you later :)
+
+

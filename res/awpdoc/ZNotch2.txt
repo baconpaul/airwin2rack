@@ -1,0 +1,9 @@
+# ZNotch2 acts more like the Emu e6400 Ultra phaser in motion, with coefficient interpolation.
+
+This completes the reboot of my original Z-style filters! These are all based on study of a real hardware Emu e6400 sampler. (If my Patreon does well, I’ll be able to study more interesting hardware gear like I did this one). ZNotch is based on the ‘phaser’ settings, and ZNotch2 brings the coefficient interpolation people longed to have in this filter.
+
+Bear in mind, ZNotch also has its place. It’s meant to sound exactly the same (I may possibly have improved the tone a tiny bit with ZNotch2, not sure of that) but the original ZNotch does NOT have coefficient smoothing. That means it started out less than the real hardware filter, ‘not as good yet’, BUT if you’re not modulating the controls, you can get the same tone with a lot less CPU by choosing the Z filter that is not the 2 version. The originals will use less CPU because they’re not recalculating so much every sample, and that means you should probably have both installed if you like this type of filter. I demonstrate ZNotch2 on an electronic kick drum to great effect, and there’s nothing I’m doing there which I couldn’t do with the original ZNotch at lower CPU cost.
+
+That said, this one will move more fluidly, and the ‘Phaser’ sound is very special in motion! I hope you like it. We’re starting 2022 with the full DnB arsenal available ITB: Mackity, MackEQ, and the Z-style filters! I hope people have a lot of fun with this.
+
+

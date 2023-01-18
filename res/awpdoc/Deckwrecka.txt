@@ -1,0 +1,11 @@
+# Deckwrecka fattens and dirties up beats.
+
+Back in the day, I was asked by composer Alan Gold to create a special plugin. How special? To give you some idea, you might recognize the name quicker as Agzilla… or the DECKWRECKA. And so, that became the name of the plugin, appearing on the Deckwrecka blog, then lost to time.
+
+Until now! Hope this sits well with the eponymous Deckwrecka. It was always free and now it’s doubly free because it’s open source too. Now it’s brought up to date with the most recent Airwindows technologies, and it’s available in VST form for the first time ever. :D
+
+So what exactly is this thing? It’s like a thunderousness overdrive. It’s huge, slamming, dirty bass, like spinning records on a turntable run through 1000 watts and a pile of monster bassbins. Technically it’s like extra bass plus overdrive plus certain types of dirt and grunge all rolled up together into a pile of funk. Or at least that’s the endeavour.
+
+You can use it how you please, but you can throw it on kick drums for EDM and hip-hop, or whatever elements need to be more beefy and sub-rattling.
+
+

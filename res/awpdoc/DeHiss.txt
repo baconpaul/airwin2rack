@@ -1,0 +1,5 @@
+# DeHiss tries to suppress background hiss, like a hiss gate.
+
+This acts like a filtery gate. It tries to apply a lowpass filter to suppress quiet background noise whenever loud bright treble isn’t happening. You can use it in creative ways, but it really was designed to suppress hiss from a cheap USB condenser mic. Sort of an experiment. It’s got a dry/wet now in case that comes in handy. I’m not sure how much else is out there specifically like this, but then I’m not sure how much call there is for it in the first place :)
+
+

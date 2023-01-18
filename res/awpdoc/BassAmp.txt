@@ -1,0 +1,7 @@
+# BassAmp is an old plugin with new tweaks, that gives some bass guitar tones.
+
+This is BassAmp. (I’ve been asked to do amp sim type plugins, so it’s a start). Back in the day I experimented with some of these things, though I’ve always been more interested in wiring up physical hardware, especially for guitar distortions and things. I’ve brought this one up to date in some ways, debugging a problem with the ‘dub’ channel and using my modern techniques for dithering to the floating point bus, and so on.
+
+It’s got basically a bright channel, midrange (which is just dry, as a slider), a bass channel with a characteristic woolly tone that has a kind of noisy blur on the small amount of treble it does have, and a ‘sub’ channel that really doesn’t work, so use it as a crazy special effect. BassKit might get you a cleaner sub-octave, but this will give you a trashy sub-octave that’s mostly garbage, even on a single-note line. So you’ll be leaving it off, I think.
+
+

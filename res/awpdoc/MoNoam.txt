@@ -1,0 +1,9 @@
+# MoNoam gives you variations on mono, mid, and side in different channels.
+
+Here's MoNoam. It’s named sort of after the person who wanted something like it, and sort of after the concept ‘Mono’. Because all it does, is switch around some mid/side type things for your convenience.
+
+You see, the new Monitoring is getting ‘Aurat’ settings that give you that but as mono coming from literally one speaker (you pick). Seemed like a good way to replicate what is literally a mono mix check speaker. But I got requests for that on straight mono audio… and on side, for that matter… and a lot of stuff I can’t put in Monitoring without it getting way complicated. The thing is, if I do a ‘massmarket’ generally useful plugin like Monitoring, part of that is me choosing to leave stuff out, and what’s left in takes on greater importance as stuff I think you should be doing. But there are always exceptions…
+
+So, MoNoam (almost symmetrical, like a palindrome) gives you mono/mid and side (directly) in such a way that you could sum them to get the stereo back again. But it also gives you mono in either one or the other channel, to come out of only one speaker. And it gives you ‘mono-ized’ side: this will be fuller-sounding than the true side, because the true side is out of phase between channels. And you can put the mono-ized side in one or the other channel if you want. If you’re recombining things it’ll get weird, but if you just want to hear it then this is your chance. And maybe you might have tricky situations having to do with mid/side, or you’re doing odd things in Blue Cat Patchwork, or just making complicated signal routings, and need one of these options. They’re odd enough to require a lot of fiddling if you were doing them just in the DAW. Now they’re one simple plugin :)
+
+

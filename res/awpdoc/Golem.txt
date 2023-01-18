@@ -1,0 +1,17 @@
+# Golem lets you blend a stereo track of two mics on an amp.
+
+Golem takes in a stereo track, typically two mics on a guitar cab (a popular technique among metalheads), and mixes them to mono in the middle of the track.
+
+But wait, there’s (very slightly) more!
+
+Golem lets you balance the respective inputs so you hear more of L or R, and most importantly, Golem lets you apply a delay to only the side that you want to delay. The other side is always no-latency, straight through, but the one you’re delaying gets its little sample delay. Either one, it automatically switches.
+
+Almost done…
+
+The way this control is implemented, means that small adjustments give you a tiny, tiny linear-interpolated delay. I think linear interpolating is best for guitars because it’ll scrub off the tiniest amount of ‘hiss and rattiness’ while giving the least processed sound. That said, interpolating between samples in the way this does, allows you to dial in the subtlest imaginable phase relationships between your mics, and THAT has profound effects on the subtleties of your miked guitar tone. You are tuning where the cancellations between mics are, on a very fine level, in order to do specific things in the sound, and you need easily controllable subsample delays at your fingertips. Enter Golem, your simple tool for exactly that.
+
+There are some options for allowing a larger range of delay, or inverting one of the channels, but it’s basically just mixing two tracks and being able to micro-delay one of them. Some folks will be deeply unimpressed because you have to be a bit of a fanatic to get that worked up about delaying one of the guitar cab mics five-eighths of a sample in order to place a cancellation node JUST EXACTLY where you need it to be.
+
+But you’re talking to someone who noise shapes a long double to the floating-point buss, so yay fanatics! You know who you are. This plugin is for you.
+
+

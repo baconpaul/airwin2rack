@@ -1,0 +1,11 @@
+# Channel7 improves slew clipping and lets you blend Channel 6 and 5.
+
+Short and sweet. You know how Interstage got an update because the slew clipping was too intense on high sample rates? This applied to Channel, too. So, Channel7 now handles high sample rates better than any previous Channel.
+
+There’s more: Channel5 was the last one with the ‘Density’ algorithm, that’s extra fat-sounding. Channel6 got the Spiral algorithm, much purer and clearer… but without that fatness effect Density gets. My attempts to make a special algorithm that does both gave me Mojo and Dyno… neither of which are Channel or a replacement for either Spiral or Density.
+
+So, Channel7 simply goes to 200%, not 100%. Up to 100% it’s the same as Channel6, but with the slew clipping fix. From 100% to 200% it does a crossfade into Channel5’s Density algorithm—so it ends up being best of all possible worlds. You can seamlessly go from perfectly clean, to the purest saturation there is, and beyond that to add any degree of fatness you like to the sound (and it fades between Spiral and Density, so there’s extra subtlety to the way it transitions).
+
+Channel7: yeah, you’re pretty much going to want this upgrade no matter which Channel you liked. It is all of the best, more effective than ever.
+
+

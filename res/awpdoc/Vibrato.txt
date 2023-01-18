@@ -1,0 +1,9 @@
+# Vibrato lets you vibrato, chorus, flange, and make odd FM noises.
+
+The heart of Vibrato is the Airwindows moving-delay-tap interpolation code also found in Chorus and Flanger, but here there’s some extra functionality plus ways to partially simulate those other plugins: while you can make the full-wet sound do a nice vibrato (automate to taste), there are other fun things to do. You can use the dry/wet to get a chorusing effect, or with less depth, a flange: or set it to ‘inverse’ to get the same but with a through-zero flange that’ll cancel almost totally to silence. This can also be used as an interesting sort of highpass (or of course, using normal wet, as a sort of lowpassy effect). That’s all with the main vibrato control, which has an extremely wide speed range.
+
+Or, if that’s not enough, you can bring in the FM vibrato. This has the same type of speed control, and a depth control of its own, but instead of affecting the audio directly, it affects the speed of the main vibrato. You can use this at low speeds to provide an interesting modulation to the main vibrato, flange or chorus, or crank it up to produce distinctive overtones. And again, automate it to do even more interesting things.
+
+Vibrato is a nice little utility plugin, and I think it deserves a place as a go-to ‘time modulation’ plugin for people who have a solid understanding of how these effects work. It’s not hugely complex, or specialized, and it’s just complicated enough to be sophisticated. Want a lush chorus? Vibrato. Warbly effect? Vibrato. Thin things out in a way that sounds airy and interesting? Vibrato, inverse-zone, near 0.5 for maximum effect. Funny overtones and resonances? Vibrato, full-wet, up in the audio range. Even more metallic? Bring in some FM.
+
+

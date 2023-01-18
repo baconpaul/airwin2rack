@@ -1,0 +1,11 @@
+# BuildATPDF is a dither-making toolkit.
+
+I've explained how DoublePaul was made: taking a TPDF highpass dither, and including additional nearby samples to cause the tone of the noise to be more high-pitched.
+
+Wouldn’t be fair if I didn’t give you a chance to play with it yourself :)
+
+To use BuildATPDF the way I used it, set the middle sliders to -1 and +1. Then adjust the other sliders until you’ve tailored the sound of the noise in a way you like. With the other sliders at 0, you have PaulDither. If the surrounding sliders ‘oscillate’ (going minus, plus, minus, plus) you have more of what DoublePaul is. Tailor the highpass in ways gentle or obvious, or even darken the highpass while leaving its dither functionality intact! It’s the combination of a -1 and +1 tap that gives you highpassed TPDF. (This won’t work with +1 and +1, because it’s the same random noise passing through the plugin: it needs to play a positive node against a negative node)
+
+Or, you can set up the -1 and +1 taps, and then just play with the sliders to see what it sounds like!
+
+

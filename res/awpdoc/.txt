@@ -1,0 +1,48 @@
+Welcome to Airwindopedia! This is a complilation of the plugin-related bits from all my plugin posts. As such, this is as close to a full documentation of the Airwindows plugins as you'll find. In some cases I'll have added explanation, or I might be able to expand on things as this develops. Bear with me as I must do this while also doing everything else, and it will always be on me: as an open source dev, my experience is that people don't really step up to do the tedious stuff across entire libraries, so Airwindopedia is there because I went through all the posts to consolidate them in one place for you :)
+
+We will start with some basic categorization: you can look these up below for further instruction. We'll use the categorization that was used in Surge Synthesizer when organizing my plugins for their purposes, but I will continue and mention plugins not used in Surge Synthesizer if I feel they fit the category. They won't be in alphabetical order, but in order of how well they fit the category and how good they are, and there will be plugins showing up in multiple categories and ones that don't appear at all.
+
+
+# Categories
+
+Ambience: Galactic, Verbity, Chamber, Infinity2, TapeDelay2, PitchDelay, GlitchShifter, NonlinearSpace, BrightAmbience3, Infinity, MatrixVerb, Melt, PocketVerbs, PurestEcho, TapeDelay, StarChild, Chorus, ChorusEnsemble, Reverb, BrightAmbience2, BrightAmbience, MV, ADT
+
+Amp Sims: GrindAmp, FireAmp, LeadAmp, LilAmp, MidAmp, BigAmp, XRegion, Cabs, Golem
+
+Biquads: Biquad, Biquad2, BiquadDouble, BiquadOneHalf, BiquadPlus, BiquadTriple
+
+Clipping: ClipOnly2, ClipSoftly, OneCornerClip, ADClip7, Mackity, Edge, Crystal, AQuickVoiceClip, ClipOnly, Slew3, Slew2, Slew
+
+Consoles: Console8BussHype, Console8BussIn, Console8BussOut, Console8ChannelHype, Console8ChannelIn, Console8ChannelOut, Console8SubHype, Console8SubIn, Console8SubOut, PurestConsole2Buss, PurestConsole2Channel,Console7Buss, Console7Channel, Console7Cascade, Console7Crunch, PurestConsoleBuss, PurestConsoleChannel,Console6Buss, Console6Channel, PDBuss, PDChannel, Console5Buss, Console5Channel, Console5DarkChannel, AtmosphereBuss, AtmosphereChannel, 
+Console4Buss, Console4Channel, uLawEncode, uLawDecode
+
+Dithers: Monitoring2, Monitoring, Dark, PaulWide, PaulDither, TPDFWide, TPDFDither, NotJustAnotherDither, Beam, TapeDither, SpatializeDither, VinylDither, DoublePaul, Ditherbox, BuildATPDF, NodeDither, StudioTan, DitherMeTimbers, DitherMeDiskers, RawTimbers, NaturalizeDither, HighGlossDither, DitherFloat
+
+Dynamics: Pop2, Pressure5, Dynamics, Pop, Logical, VariMu, ButterComp2, curve, Recurve, Pyewacket, BlockParty, SoftGate, Thunder, Compresaturator, Smooth, DrumSlam, BrassRider, Point, Gatelope, PodcastDeluxe, Podcast, TremoSquare, Tremolo, Swell, Pressure4, Surge
+
+Effects: Doublelay, PitchDelay, PitchNasty, GlitchShifter, Exciter
+
+Filter: Capacitor2, Isolator2, Holt2, Baxandall2, DeBess, Holt, Energy2, AverMatrix, Average, MackEQ, Hermepass, Baxandall, Hull, Aura, EQ, Hombre, Air2, Capacitor, BassKit, Isolator, TapeFat, Energy, ResEQ, DubCenter, DubSub, Preponderant, Lowpass2, Highpass2, DeEss, Floor, FathomFive, Distance2, Distance, Air, Lowpass, Highpass
+
+Lo-Fi: Pockey2, CrunchyGrooveWear, GrooveWear, Pockey, DeRez2, BitGlitter, DeRez, Cojones, Fracture, Vibrato, Bite, Deckwrecka, DustBunny, Nikola
+
+Noise: Noise, Texturize, TexturizeMS, Voice Of The Starship, DarkNoise, ElectroHat, Facet, Fracture, PowerSag2, PowerSag, Silhouette, DustBunny, Gringer
+
+Saturation: Mackity, Tube2, Tube, Density2, Spiral2, BussColors4, PurestDrive, Density, Drive, Hard Vacuum, Distortion, Focus, Edge, Dirt, Mojo, Dyno, Loud, SingleEndedTriode, Spiral, HighImpact, BassDrive, Cojones, Fracture, NC-17, Unbox, Desk4, Facet, APIcolypse, Calibre, Cider, Crystal, Precious, Luxor
+
+Stereo: StereoFX, Srsly, Srsly2, Wider, StereoChorus, AutoPan, BrightAmbience3, StereoEnsemble, StereoDoubler, TripleSpread, BrightAmbience2, LRFlipTimer
+
+Subtlety: BitShiftGain, PurestGain, PurestFade, EveryTrim, HermeTrim, Acceleration2, Hype, Shape, PurestWarm2, PurestWarm, GuitarConditioner, Coils2, Interstage, SurgeTide, PhaseNudge, Hypersonic, HypersonX, Ultrasonic, UltrasonX, Remap, SingleEndedTriode, Coils, Texturize, Smooth, Acceleration, Desk, TransDesk, TubeDesk
+
+Tape: ToTape6, TapeDelay2, FromTape, Tape, IronOxideClassic2, IronOxide5, ToTape5, TapeDelay, IronOxideClassic
+
+X Filters: XBandpass. XHighpass, XLowpass, XNotch, XRegion
+
+Y FIlters: YBandpass, YHighpass, YLowpass, YNotch
+ 
+Z Filters: ZBandpass, ZBandpass2, ZHighpass, ZHighpass2, ZLowpass, ZLowpass2, ZNotch, ZNotch2, ZRegion, ZRegion2
+
+
+
+
+

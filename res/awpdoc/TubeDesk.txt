@@ -1,0 +1,11 @@
+# TubeDesk is a tube recording console type tone coloring.
+
+More classic Airwindows analog modeling with TubeDesk!
+
+Tubes aren’t necessarily ‘mellow’. They’re also known for clarity, realism. TubeDesk isn’t a mud-ifier, but it might bring you some effects reminiscent of vintage recordings.
+
+Like the other Desk plugins, it’s got a kind of saturation going on, a distinct flavor to how it distorts. However, unlike TransDesk, its power supply is very different. TubeDesk is so old school it acts like there’s a vintage tube rectifier, imparting an obvious rectifier sag. This conditions the sound, affecting how dynamics work through the plugin.
+
+You have a distinct ‘analog modeling’ tone then, which is no specific console, no arbitrary color: just sort of retro vibe, generalized. It’s not calibrated to work with Console (that’s the for-pay version of Desk that consolidated these and calibrated them all) and it doesn’t have special requirements for where it should go. Place it where you want that style of tone coloring: like Desk, you can use it on auxes and submixes (including ones ‘inside’ Console) to better emulate running through a lot of circuitry.
+
+

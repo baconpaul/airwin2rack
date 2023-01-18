@@ -1,0 +1,9 @@
+# Dynamics is a combination compressor gate.
+
+Dynamics started with a request: the gate, from CStrip, on its own. Then I thought, what if I included the compression too? I could tweak both and see if I could make 'em better for the new plugin. And then I thought, what would it be like if I combined them into a single dynamics object?
+
+I think it worked.
+
+Dynamics can be very transparent, or you can crank the speed and intensity to be hyper-squished… but since it's a single plugin, you can hypercompress AND gate as a unit. That means you're triggering the gate off the source audio, you're able to control the closing of the gate like it's raw sound, but the sound you're gating is the compressed one. And that means terrific control and cleanness on the sculpted, tightened sounds. I've designed it so you can make it gate on almost anything, and squish very aggressively. It's unlinked so you can use it on a stereo submix with distinct parts for each side, or put it on a mono track to control and shape it.
+
+

@@ -1,0 +1,11 @@
+# Average is a distinctive sort of lowpass filter.
+
+This plugin is an exploration of a fascinating filter type that, I think, is really underrated. It’s a straight-up extremely simple averaging filter. If you set it to integer values, it exactly averages that number of taps on the input audio (adjacent samples). If you pick in-between values it interpolates, causing the ‘frequency’ of the filter to smoothly blend between the values.
+
+There’s a reason you don’t see this filter used for lowpasses: it’s not technically correct. In fact it whacks a great big cancellation node into the high frequencies, and the tone (while pleasing) is very obviously affected by this. It’s a bit of a flangey quality.
+
+BUT, we know better than to be limited by technical concepts, right? After all, the classic Scream Tracker resonant lowpass is known to be broken, and that has a real character to it. And even the Roland Supersaw is known to have some quirks that make it what it is…
+
+Average has a fantastic tonality once you accept the response quirks. You can dial in the notches to suppress unwanted content, and (in a post-video revision) it’s got a dry-wet control so you can moderate the effect—and, typically for Airwindows, if this dry/wet is set to full wet, the calculations for doing that drop out of the plugin entirely so you’re not doing an unnecessary multiply.
+
+

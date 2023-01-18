@@ -1,0 +1,5 @@
+# Calibre is a re-release of another old Character plugin.
+
+Calibre is another Character plugin, re-released in AU and VST form. This one’s got kind of a steely quality and if you hype the Character control there’s a point where bass cancels out: weird variation on a tone control! Also, that means if you duplicated the track (or used Blue Cat Patchwork or something) and flipped phase, you’d get a really unusual lowpass and would have only the bass and a lot of strange color.
+
+

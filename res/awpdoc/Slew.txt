@@ -1,0 +1,7 @@
+# Slew is a slew clipper, which darkens treble in an unusual way.
+
+Slew is the very first plugin I made for Airwindows (or at least the first one listed on this website).
+
+Slew is a simple plugin to let you do slew clipping. You can use it to morph and transform percussive sounds or hats, you can give a unique and interesting ‘grind’ to instruments or glue stuff together into a retro, old-school-sampler, grungey grind, or you can use it on things like reverb sends to really amp up the sense of distant loud sound in a room or space.
+
+

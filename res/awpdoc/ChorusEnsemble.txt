@@ -1,0 +1,5 @@
+# ChorusEnsemble is a more complex, multi-tap mono chorus.
+
+Here we can fill out the Airwindows palette of modulation plugins a bit… like Chorus, this is using my special slightly dark interpolation with a little pre-sparkle to get an adaptable, rich chorusing effect. But ChorusEnsemble uses a bank of chorus taps to get a more complex, textured sound that’s farther from the original. You can set it wrongly, so don’t assume all the settings are appropriate: that said, a little care should give you nice lush chorusing that’ll work great on pads and backgrounds. The reason I allow for the ‘ugly’ settings is, who’s to say you might not have a use for them, and if you find that use you’ll have a tonal element that other people don’t have on tap (generally, it’s so hard to sell plugins that can sound wrong and broken that people will tend to shun that and limit you to ‘nice’).
+
+

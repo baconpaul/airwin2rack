@@ -1,0 +1,11 @@
+# Wider is Airwindows stereo space shaping.
+
+Here’s a nice little building block. It’s stereo-only for obvious reasons (in AU, you won’t see it available on mono tracks): it’s a stereo space adjuster.
+
+It works like this: you’ve got mid and side channels, but taken up several notches. Instead of being adjusted by level controls, the sliders use the Density algorithm. That means if you’re boosting, they get fattened up, and if you cut, they retain some of the edge and definition. This technique from Density has a way of moving audio’s position in space: boost comes forward, and cut moves backward. It turns out that’s perfect for manipulating the shape of a stereo space.
+
+But that’s not all: as a final space-manipulating technique, Wider applies an itty-bitty time delay and interpolation (it can be as small as sub-sample) to whichever is the least forward, mid or side. That causes a delicate roll-off and sits the relevant part just a tiny bit back, spatially… and then the audio’s recombined into stereo again. It’s a bold thing to try, but it’s done very subtly so you wouldn’t know it was happening except I’ve just told you, so my secret is out :)
+
+The result is this: you can kinda-sorta use Wider to produce extreme stereo effects (look for StereoFX, coming soon, as a better way to get aggressive with space) but it really comes into its own when used to redesign stereo soundfields. With tiny, small adjustments, you can get hugely effective results that sound totally natural. This is the mastering-grade one, where you can transform the source in a convincing and musical way, and not lose anything in the process. The effectiveness and transparency, especially when used for tiny corrections, will make this a go-to plugin for real stereo work.
+
+

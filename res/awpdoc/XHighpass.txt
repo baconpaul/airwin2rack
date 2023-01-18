@@ -1,0 +1,9 @@
+# XHighpass is a distorted digital EQ, inspired by retro sampler DSP.
+
+Continuing the weird filter pursuits while I work on the M1 compiled VSTs! This is another distorted filter, except that if you distort the insides of a biquad highpass it makes NASTY zapping noises.
+
+So… yay?
+
+Those who like that sort of thing might like this. It’s pretty good at making really mean aggressive highpasses, except that you can’t clean up the results by dropping the frequency down into the bass and subs: it will just clip easier, which will cause more horrible zap noises. So I guess, only try this if you like that sort of thing. They can’t all be zingers, though this one is quite literally a zapper :)
+
+

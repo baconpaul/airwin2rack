@@ -8,8 +8,8 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: Adjustable Block Size for CPU
 // @TODO: Mono 1 vs Poly performance and voltage sum
+// @TODO: Maybe complete that help widget
 
 
 #define MAX_POLY 16
@@ -182,6 +182,7 @@ struct AW2RModule : virtual rack::Module
         json_object_set(res, "airwindowSelectedFX", json_string(selectedFX.c_str()));
         json_object_set(res, "polyphonic", json_boolean(polyphonic));
         json_object_set(res, "lockedType", json_boolean(lockedType));
+        json_object_set(res, "blockSize", json_integer(blockSize));
         return res;
     }
 
@@ -204,6 +205,12 @@ struct AW2RModule : virtual rack::Module
         {
             auto bl = json_boolean_value(awlt);
             lockedType = bl;
+        }
+        auto awbs = json_object_get(rootJ, "blockSize");
+        if (awbs)
+        {
+            auto bl = json_integer_value(awbs);
+            forceBlockSize = bl;
         }
     }
 
@@ -246,22 +253,24 @@ struct AW2RModule : virtual rack::Module
         }
     }
 
-    static constexpr int block{4};
+    static constexpr int maxBlockSize{64};
+    int blockSize{4};
+    std::atomic<int> forceBlockSize{-1};
 
     struct IOHolder
     {
         IOHolder() { reset(); }
         void reset() {
-            memset(indat, 0, 2 * block * sizeof(float));
-            memset(outdat, 0, 2 * block * sizeof(float));
+            memset(indat, 0, 2 * maxBlockSize * sizeof(float));
+            memset(outdat, 0, 2 * maxBlockSize * sizeof(float));
             in[0] = &(indat[0]);
-            in[1] = &(indat[block]);
+            in[1] = &(indat[maxBlockSize]);
             out[0] = &(outdat[0]);
-            out[1] = &(outdat[block]);
+            out[1] = &(outdat[maxBlockSize]);
         }
 
         float *in[2], *out[2];
-        float indat[2 * block], outdat[2 * block];
+        float indat[2 * maxBlockSize], outdat[2 * maxBlockSize];
         int inPos{0}, outPos{0};
     } monoIO, polyIO[MAX_POLY];
 
@@ -276,6 +285,15 @@ struct AW2RModule : virtual rack::Module
             resetAirwindowTo(forceSelect);
             forceSelect = -1;
         }
+        if (forceBlockSize != -1)
+        {
+            blockSize = forceBlockSize;
+            monoIO.reset();
+            for (int i=0; i<MAX_POLY; ++i)
+                polyIO[i].reset();
+            forceBlockSize = -1;
+        }
+
 
         if (polyphonic)
         {
@@ -292,7 +310,7 @@ struct AW2RModule : virtual rack::Module
         monoIO.in[0][monoIO.inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
         monoIO.in[1][monoIO.inPos] = inputs[rc].getVoltageSum() * 0.2;
         monoIO.inPos++;
-        if (monoIO.inPos == block)
+        if (monoIO.inPos == blockSize)
         {
             for (int i = 0; i < nParams; ++i)
             {
@@ -305,7 +323,7 @@ struct AW2RModule : virtual rack::Module
                 }
                 airwin->setParameter(i, pv);
             }
-            airwin->processReplacing(monoIO.in, monoIO.out, block);
+            airwin->processReplacing(monoIO.in, monoIO.out, blockSize);
             monoIO.outPos = 0;
             monoIO.inPos = 0;
         }
@@ -328,7 +346,7 @@ struct AW2RModule : virtual rack::Module
             polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2;
             polyIO[c].in[1][polyIO[c].inPos] = inputs[rc].getVoltage(c) * 0.2;
             polyIO[c].inPos++;
-            if (polyIO[c].inPos == block)
+            if (polyIO[c].inPos == blockSize)
             {
                 for (int i = 0; i < nParams; ++i)
                 {
@@ -341,7 +359,7 @@ struct AW2RModule : virtual rack::Module
                     }
                     poly_airwin[c]->setParameter(i, pv);
                 }
-                poly_airwin[c]->processReplacing(polyIO[c].in, polyIO[c].out, block);
+                poly_airwin[c]->processReplacing(polyIO[c].in, polyIO[c].out, blockSize);
                 polyIO[c].outPos = 0;
                 polyIO[c].inPos = 0;
             }
@@ -1032,6 +1050,36 @@ struct AW2RModuleWidget : rack::ModuleWidget
                                                                M::OUTPUT_R));
     }
 
+    ~AW2RModuleWidget() {
+        if (helpWidget)
+        {
+            APP->scene->removeChild(helpWidget);
+            delete helpWidget;
+        }
+    }
+
+    void blockSizeMenu(rack::Menu *menu)
+    {
+        auto awm = dynamic_cast<AW2RModule *>(module);
+
+        if (!awm)
+            return;
+
+        menu->addChild(rack::createMenuLabel("Block Size"));
+        menu->addChild(new rack::MenuSeparator);
+        int bs = 4;
+        while (bs <= AW2RModule::maxBlockSize)
+        {
+            auto s = std::to_string(bs);
+            if (bs == 4)
+                s += " (Lowest Latency)";
+            if (bs == AW2RModule::maxBlockSize)
+                s += " (Less CPU)";
+            menu->addChild(rack::createMenuItem(s, CHECKMARK(awm->blockSize == bs),
+                                                [awm, bs](){awm->forceBlockSize = bs;}));
+            bs = bs << 1;
+        }
+    }
     void appendContextMenu(rack::Menu *menu) override
     {
         menu->addChild(new rack::MenuSeparator);
@@ -1051,6 +1099,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
             menu->addChild(rack::createMenuItem("Polyphonic", CHECKMARK(awm->polyphonic),
                                                 [awm]() { awm->stagePolyReset(true); }));
 
+            auto s = "Block Size (" + std::to_string(awm->blockSize) + ")";
+            menu->addChild(rack::createSubmenuItem(s, "",
+                                                   [this](auto m) { blockSizeMenu(m);}));
+
             menu->addChild(new rack::MenuSeparator);
             menu->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(awm->lockedType),
                                                 [awm]() { awm->lockedType = !awm->lockedType;}));
@@ -1062,6 +1114,60 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
 #endif
 
+            /*
+             * Incomplete start on a help slideout
+            menu->addChild(rack::createMenuItem(helpShowing ? "Hide Help" : "Show Help", "",
+                                                [this](){toggleHelp();}));
+                                                */
+
+        }
+    }
+
+    struct HelpWidget : rack::Widget
+    {
+        double ctime;
+        HelpWidget()
+        {
+            box.size = rack::Vec(400,200);
+            ctime = rack::system::getTime();
+        }
+
+        float pct = 0;
+        void draw(const DrawArgs &args) override {
+            auto vg = args.vg;
+            for (int i=0; i<100; i += 10)
+            {
+                nvgBeginPath(vg);
+                nvgFillColor(vg, nvgRGB(255 - i * 2, 0, 0));
+                nvgRect(vg, i, i, (box.size.x - 2 * i), box.size.y - 2 * i);
+                nvgFill(vg);
+            }
+        }
+    };
+
+    rack::Widget *helpWidget{nullptr};
+    bool helpShowing{false};
+    void toggleHelp()
+    {
+        if (helpShowing)
+        {
+            if (helpWidget)
+            {
+                APP->scene->removeChild(helpWidget);
+                delete helpWidget;
+                helpWidget = nullptr;
+            }
+            helpShowing = false;
+        }
+        else
+        {
+            assert(!helpWidget);
+            helpWidget = new HelpWidget;
+            helpWidget->box.pos = getAbsoluteOffset(rack::Vec(box.size.x,0));
+            helpShowing = true;
+            std::cout << "MP " << APP->scene->getMousePos().x << " " << APP->scene->getMousePos().y << std::endl;
+            std::cout << helpWidget->box.pos.x <<" " << helpWidget->box.pos.y << std::endl;
+            APP->scene->addChild(helpWidget);
         }
     }
 

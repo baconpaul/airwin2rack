@@ -1,0 +1,9 @@
+# StereoChorus is a nice basic stereo chorus.
+
+Hi! This plugin is actually the one that kicked off the work that gave you StereoEnsemble. I got a request: please give me StereoChorus, like you used to have back in the Kagi days, I need to use it as nothing else will do.
+
+It’s a bit funny as I didn’t remember it being that special. I mean, it’s got some odd tricks in the interpolation, it scales according to chorus speed so all the settings feel about equally intense, but it didn’t seem to me like anything that amazing, so I hadn’t got round to porting it to VST and open-sourcing it.
+
+So now I have. It’s still got some of the interesting choices I made back when I coded it: for instance, it’s actually running a fixed point buffer at a rather long word length. Maybe this has something to do with the sound my user wanted to have back? However, I’ve added a few things. It’s now got modern dithering to floating point (on 32 bit busses) and I’ve added undersampling… so that it can sound the way it was meant to, even at elevated sample rates, while using lower CPU to do it. All in all it’s not the most outrageous plugin, but you know I’ve got folks fond of specifically it, and so I’ve brought it to VST form and open-sourced it just as it was, and maybe you too will find something special in it.
+
+

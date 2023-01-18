@@ -1,0 +1,5 @@
+# PowerSag2 is my improved circuit-starve plugin, now with inverse effect!
+
+This is PowerSag (my circuit-power-supply-starve plugin), but the internals are coded differently for more efficiency on modern CPUs, it gets twice as much maximum effect range (which will help if you’re using it at high sample rates) and it now has an inverse/wet control. That means that you can hear what’s being taken AWAY (which is typically a grungey, gatey effect) and fade into that if it helps you get more meat into some of your sounds.
+
+

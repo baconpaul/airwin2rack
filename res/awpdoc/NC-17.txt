@@ -1,0 +1,11 @@
+# NC-17 is Dirty Loud!
+
+NC-17 was designed as the loudenator-killer. It uses the same technology as ADClip’s energy redistribution stuff, but on a soft-clipper, and instead of just feeding the energy back in, it uses it to modulate a Chebyshev filter: sort of complicated, but it’s definitely one of those Airwindows things. First to use such a soft clipper as the primary loudness maximizer, and secondly to use such a weird technology after it. Why a Chebyshev? To produce second harmonic. Why do that? To feed deep bass back in despite the loudenating. Okay, so the whole idea is pretty strange.
+
+What happens?
+
+Firstly, the whole tone changes, whether you’re pushing loudness or not. Check that first. You might immediately dislike the result, or if you seek ‘glue’ maybe you’ll like it, or use it to replace some other ‘glue’ effect. If you’re still with NC-17 after checking that, proceed to turn it up (or mix hotter into it). You’ll find no specific ‘break point’: instead, it just gets dirtier and dirtier the harder you push. The whole texture of loudness dynamics is altered, so you get the loudness cues of distortion but with a bass foundation mere distortion won’t permit, and a continuous spectrum between ‘more or less clean’ and ‘impossibly too loud’.
+
+This one will also handle cleaner synthesizer tones, EDM, the kinds of sounds that reveal the artifacts of other loudenators ruthlessly. With NC-17, instead you get a slight ‘grungening’ but then it refuses to break up in the normal sense, just stretches to fit. (this one might be the one you want on drum submixes, too)
+
+

@@ -1,0 +1,5 @@
+# MidAmp is a clean amp sim meant to work like a loud Twin or something of that nature.
+
+MidAmp is another amp sim, this one going for a high-powered clean combo sound. You know, a Twin kind of sound. It’s got a wide range of EQ and can be rolled off real far, and it can be extra bright and spiky if you want that. I demonstrate it in the video on a Tele part, then unexpectedly to dirty up a thumping bass (which it does really well) and lastly on some very aggressive drums to make them even crazier.
+
+

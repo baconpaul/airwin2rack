@@ -71,3 +71,26 @@ foreach my $fx (@plugins) {
 
 print OFH "int unusedComplete = AirwinRegistry::completeRegistry();\n";
 close OFH;
+
+open(IN, "< libs/airwindows/Airwindopedia.txt");
+my %helpText;
+my $current = "";
+while(<IN>)
+{
+    if (m/##### (\S+)/)
+    {
+        $current = $1;
+        s/(#+)/#/;
+    }
+
+    $helpText{$current} .= $_;
+}
+close IN;
+
+foreach my $dfx ( keys %helpText)
+{
+    open (DC, "> res/awpdoc/${dfx}.txt");
+    print DC $helpText{$dfx} . "\n";
+    close DC;
+
+}

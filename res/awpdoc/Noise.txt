@@ -1,0 +1,7 @@
+# Noise is the Airwindows deep noise oscillator, as a sound reinforcer.
+
+Noise started out as a plugin called Voice Of The Starship. It’s an algorithm that generates brownian-motion noise which won’t ‘wander’ into excessive DC offset, but without a highpass filter needed! The original Voice Of The Starship can be made to do any sort of deep rumble, including purely subsonic rumble that still works as an audio stream.
+
+Noise is like Voice Of The Spaceship, except it also triggers on input sounds. It can pretty closely track rhythms coming in, and you can combine it with underlying stuff with Dry/Wet, and the Distance control applies to both Dry AND Wet, to blend and darken them together.
+
+

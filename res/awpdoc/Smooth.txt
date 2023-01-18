@@ -1,0 +1,13 @@
+# Smooth can tame pointy sounds or make drums explode.
+
+Here’s one of the classic Airwindows secret weapons, up to date and VST and free (yes, Patreon blah blah, you know the drill). It can be subtle or incredibly aggressive, and it’s named Smooth.
+
+You can use it on things like spikey acoustic guitars, overly edgy mics, anywhere the treble is just getting obnoxious: it’s as good as ToVinyl or Acceleration for that but is more of a clipper than a slew limiter. In that role it’s like buttering the highs up just a bit, and you can set it carefully to just snip off the stray edges super-transparently. Used right, Smooth is better than anything at dialing back individual instruments’ edginess without hurting the tone.
+
+You can also crank on large amounts of Smooth on sources like drums, to produce a huge explosive effect that’s comparable to OneCornerClip: this’ll produce obvious distortions on tonal sources (which might be fine for all I know) but on drums and percussion it sort of blends with and thickens the drum sound. It’ll bring out mids and lows, and at extreme settings it’ll go into a ‘dynamic inversion’ thing that’s like hyper-distortion.
+
+You get that, an output level, and dry/wet: with the range of possible adjustments, this ought to count as another ‘indispensable plugin’ for more than a few of you. Smooth is really approachable if you remember that, like my Acceleration limiter, it shouldn’t sound like you’re using anything if you use it subtly. You can always pull back Smooth until it sounds like it isn’t doing anything, even on the 2-buss if you like. Treat that and ‘smooth smash’ as separate uses and you should be good: in the one case you’re not supposed to hear it removing anything except by comparison, and in the other case you’re laughing and watching the world burn.
+
+As one does, these days :)
+
+

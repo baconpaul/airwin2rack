@@ -1,0 +1,15 @@
+# GlitchShifter is a really gnarly, raw-sounding pitch shifter with a dose of insanity!
+
+And then some days it’s NOT BORING… :D
+
+This is one of the craziest secret weapons I’ve ever done. In fact, I’ve got plans for refining this one and making it do subtler things that are of use in pop mixing… but right now, this is Glitch Shifter! It is an audio monster, and it’s all yours.
+
+You can do equal-temperament pitch shifting, unquantized, or both. You can tell it to feed back, or keep it as a tightly tracked subtle dry/wet blend. But that’s just the start… that’s the top two sliders, the top one being Note (in semitones) and the bottom being trim (unquantized: if you’re on VST and can’t reset it to its default easily, be careful not to change it unless you want detuned effects). That gives you the base pitch shifting, like any pitch shifter plugin. Its tone comes from the algorithm: instead of smoothing the transitions, it always tries to find a spot where it can switch inside the position of its buffer in just a sample or two, seamlessly. That gives it a distinctive raw tone, less processed, but still essentially a pitch shifter plugin.
+
+Except this is NOT like other pitch shifter plugins, because it’s got that Tightness control, and that takes Glitch Shifter into full glitch in two different ways. If you’re trying to do a ‘nice’ pitch shift you’ll be wanting to tune this to your underlying track, but if you want to create sonic mayhem here is how you do it.
+
+Turning up Tightness all the way shortens the buffer zone in which the plugin finds its transitions. It makes the pitch shifted sound track the underlying sound more tightly… or MUCH more tightly… or so tightly that it glitches out and turns into a harsh de-rezzing bitscrunch sound, because the buffer’s not nearly long enough to contain a seamless loop of the underlying sound. Back off the Tightness, to get back to a ‘nice’ pitch shift, or turn it up for tightly tracked, robotic, nasty artifacts. All the way up and the pitch shifting is totally defeated.
+
+Turning DOWN Tightness has yet another effect. Since the larger buffer occupies more time, it’s easier and easier for the pitch shifter to find spots to seamlessly transition, so you can quickly get smooth legato effects without grind, and the lower the Tightness the smoother the pitch shift effect. Except, it’s not that simple. As the buffer size expands ever outward, the pitch shifter loses track of where it is. It decouples, unhooks from the underlying sound, and begins to delay and sample-chop the audio randomly. Not really randomly: it’s finding the most seamless transitions. But it starts acting like a granular effect… except it is NOT a granular effect, because those fade their grains in and out (typically) and GlitchShifter works entirely by splicing audio WITHOUT fades to smooth things. So when you drop Tightness super low, you get an uncontrollable pitch-delay thing going on. And then, if you add feedback, you’ve got many layers of stacked pitch-delay going on, unpredictably…
+
+

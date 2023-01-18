@@ -1,0 +1,9 @@
+# Compresaturator fades between compressing and soft clipping.
+
+One of the final plugins from the Kagi era, this stopped being available for a while when Kagi went out of business. It’s like a soft-saturator in which you can dial in even more cleanness, but couple it with a weird springy quality that’s very dynamic. It occupies more of the role of a stem or buss compressor than a peak limiter, but makes for a very powerful loudenator. The idea is that you can get a loud punchy sound but with more attitude than usual.
+
+Since it’s one of those strange Airwindows algorithms, be aware you can push it too far and get it to ‘flutter’ or oscillate like a tremolo or do other odd things: in normal use that shouldn’t ever be a concern, I’m just saying that this plugin isn’t normal and doesn’t sound or act quite like other plugins.
+
+In other words, classic Airwindows :) hope you like it!
+
+

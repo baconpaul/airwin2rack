@@ -1,0 +1,7 @@
+# Elation is a re-release of another old Character plugin.
+
+This is Elation, which is NOT REALLY a sort of LA-2A like thing. That’s because it builds a distinct sound out of LA-2A convolution impulses, makes it already not an LA-2A, and then doesn’t properly compress :D it does something, but it doesn’t count as compressing. I’m not sure what I was up to here.
+
+But it’s got the Character plugin ‘character slider’ that lets you greatly accentuate the tonal effect (this is another one that steals bass if that interests you) and a drive slider that lets you crunch things, and unlike typical plugins it has a dry/wet on the top for some reason! So, if you’re looking for a ‘analog-ifier’ based on dynamic convolution that can hype up a sound in an interesting way, and it’s important to you that you use something other people won’t have or aren’t using, this is your silver bullet: like the other Character plugins, it’s a weird secret weapon that won’t sound like other peoples’ plugin chains. If you can work with what this one has, then you can bring a bit of color that people won’t have constantly heard.
+
+

@@ -1,0 +1,7 @@
+# Density2 is a different color for Density, some old code I had that people wanted.
+
+So in the absence of somebody coming forth and saying ‘this is on my quadrillion selling hit record’… weirder things have happened, occasionally to me… you should consider this as an alternate tone for Density. It’s been around for a while, but people wanted to see it again: specifically, to see it run on modern machines and in VST and so on. How could I say no? I’ve altered it as little as possible: there were always some weird things about it, but I refactored it to retain EVERYTHING unintentional or unusual. I gave it modern Airwindows handling of denormalized numbers, and it dithers to floating point instead of using the noise shaping to floating point that I used back then. Everything else is just as it was: no ‘fixing’ or making it do what I ‘meant to do’.
+
+…this is on somebody's quadrillion selling hit record. I'm still not going to tell you who, or how they used it. <3
+
+

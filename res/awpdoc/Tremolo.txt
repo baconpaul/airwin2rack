@@ -1,0 +1,11 @@
+# Tremolo is fluctuating saturation curves for a tubey tremolo.
+
+So, you’ve probably got a tremolo built in to your DAW.
+
+But, if you’ve heard tremolo effects off classic records, it’s a whole different animal. DAW tremolos are neat little volume animations, capable of many cool effects (try making ’em squarewaves synced to the tempo for a nifty sequencey effect). But they don’t have that organic pulsating thing that takes a sound and gives it a whole new character.
+
+So I made this!
+
+This Tremolo uses saturation and antisaturation curves like you’d find in Density, and does the tremolo with that. It’s the same trick I use on the compressor ‘Pyewacket’. The result is, the loud parts develop a density and thickness mere volume won’t give you, and the lean parts hang on to a skeletal form of the transient attacks so your music comes through. This is not just ‘analog color’ like a coat of paint, Tremolo works quite differently from your DAW tremolo. It doesn’t sync to tempo, but that’s partly because I don’t know what to read (in AU and VST) that’d give me that information: could be added in future if the secrets are forthcoming, but there’s no sense withholding Tremolo just because of that!
+
+

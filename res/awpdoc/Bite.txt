@@ -1,0 +1,5 @@
+# Bite is an unusual edge-maker.
+
+Bite puts on a sort of midrange edge. At high sample rates it’ll be more of a trebly edge. It’s no specific frequency, so much as it’s just a harshening factor: you can also use it inversely, to take out midrange edge. It runs a couple samples of latency: on VST that works as a couple samples of delay. Again: an experiment, a science project.
+
+

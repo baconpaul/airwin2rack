@@ -1,0 +1,11 @@
+# BrightAmbience3 adds undersampling for high sample rates, and better feedback.
+
+BrightAmbience is a very old plugin. The original was all about taking sounds coming in, and transforming them into lengths of extruded and very bright reverb. BrightAmbience2 transformed that, in turn, into a more adaptable creation that used inter-aural delays to create a subtle stereo effect like an aura around mono content.
+
+BrightAmbience3 adds undersampling. Now high sample rate mixes retain a consistent tone and reverb length to what the CD-rate plugin would do… and it’s more CPU-efficient running at the elevated rates… and the subtle darkening in tone makes it worth a re-listen.
+
+But now, on top of all that, we’ve got a new way to apply feedback at the ‘wider’ reverb settings, which allows you to feed THOSE back too. And that means, BrightAmbience3 has just taken on a new life for a variety of vibey, distinctly analog-feeling blurred delay effects. Even the really wide reverb settings will still feed back at full crank (though they just give you a sort of droney resonant quality) and the medium settings produce a variety of unusual sounds that are a little bit like when you have a crummy old antique echo effect, and it has no clarity, but when you turn up the feedback strong retro flavors begin to take over… you can’t get clean infinite regeneration that way, but tune it to taste and dial back the feedback control until you have enough echo for your purposes.
+
+Or, ignore the feedback and just use it as BrightAmbience, but with a greater range of effect at higher sample rates, and a richer tone thanks to the undersampling.
+
+

@@ -1,0 +1,15 @@
+# PaulWide is a highpassed TPDF wide dither. (quieter, airier AND wider)
+
+Return Of The Son Of Monster Dither :D
+
+So if you tuned in last week for TPDFWide you probably thought that was all I had, in the dither tank, for now.
+
+But guess what? Happy accidents occurred. I thought it might be fun to try this same principle not on TPDFDither, but on PaulDither.
+
+PaulDither is of course a simple highpassed dither. It does the Airwindows-style very tiny offset to make the dither noisefloor sit across one extra possible value, and now PaulWide is the same thing except it rerolls the randomness if it’s going to seem too much like mono. It’s still TPDF, it’s still just random one bit noise sources, it’s still technically correct as far as dithering accurately (some might freak out at the offset, but it’s on purpose and WAY too quiet to hurt you, as it’s less than one significant bit), but now it’s also widened while remaining purely TPDF in nature.
+
+So this is your ‘hot-rod’ industry-standard dither. If you need TPDF and fancy at the same time, here you go. It is silky in texture just like Paul Frindle’s preferred dithers because it’s the highpass dither, it’s slightly richer in texture because it’s offset a teeny amount like Airwindows TPDF, and then it’s widened through discarding random values that lead to ‘mono-like’ results: except it turns out, when you apply that to a highpassed dither, you get MUCH MORE wideness than you do with the regular highpass.
+
+Enjoy the most boutique, decked-out, hot-rod ‘regular ordinary dither’ you’re ever likely to see. I’m not sure what else can be even done here without ceasing to be TPDF anymore.
+
+

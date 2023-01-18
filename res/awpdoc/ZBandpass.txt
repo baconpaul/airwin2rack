@@ -1,0 +1,5 @@
+# ZBandpass is a bandpass made to sound and act like the Emu e6400 Ultra bandpass.
+
+On we go! If you’re following this project, well, this is the Bandpass version. This and ZHighpass have been adjusted to allow for more output gain (so you can work with less distorted things and balance them better with dry signal, using the left half of the Poles control to do it).
+
+

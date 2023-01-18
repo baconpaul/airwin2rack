@@ -1,0 +1,15 @@
+# Channel6 uses the Spiral algorithm.
+
+I use the plugin Channel to test out my latest code regarding things like how to prevent denormalized numbers, what’s the best noise shaping to return to the floating point buss, and so on. That’s because after a fairly brief debug period (at first, the model-choosing popup wasn’t actually changing anything and you always got SSL behavior) the plugin was established as a totally complete plugin: it always used the same ‘Density’ algorithm for the saturation, it always blended that with dry signal using a drive control that was really a dry/wet control (which gave it its openness at partial settings), and it always used the same slew clipping and simple IIR highpass code each time, which was so simple that it couldn’t be improved.
+
+And it’s always been ‘one’ of my most popular and successful plugins, through all those variations. Once there was a big blind shootout on the most popular plugin forum (back when people did that) and someone put up my stuff against several contenders including the most hyped plugins out there. At the time I was selling plugins for $50 a pop, and I’d hoped someone would pick BussColors and do a comparison against my flagship tone-emulator, and have it clobber its rivals in blind testing.
+
+Instead they picked the latest Channel, and used its settings of ‘API’ and ‘Neve’ and ‘SSL’ (in other words ‘slew clipping and a simple highpass and Density’, no real ’emulation’ just shaping set to calibrated amounts), and that free plugin was the one that clobbered the pricey rivals. And soon blind testing went out of fashion, because such shenanigans get embarrassing I guess :) And I didn’t get any sales out of it as Channel was free, but it was fun to watch.
+
+So will this be…
+
+Channel is back in version 6, and there’s one key change. The distortion algorithm which I thought was unbeatable has now been beaten by Spiral… so now Channel uses Spiral, not Density, for its distortion model! For once this should be a plainly audible change: Spiral’s less fat-sounding than the Density algorithm. (I fixed the bug with the dry/wet control in the video: now dry doesn’t clip)
+
+What won’t change is this: you’d be surprised how little ‘processing’ can give you a great, analog-style sound. Literally all Channel does is apply a very simple IIR highpass, add a distortion that’s very clear and pure-sounding, and do a slew clipping set so high that it will almost never kick in. The highpass isn’t very steep, because it’s just one stage of interleaved IIR filter (a trick I use in a more complicated way in Capacitor). These are subtle, gentle differences… but they’re done with absolutely minimal processing, not tons of processing, and the data integrity is kept pristine through long double math and noise shaping to the floating point buss. In simpler terms: this doesn’t suck your tone like heavy digital processing does, this applies ‘hardware-like’ changes calibrated to measurements of real hardware, and this does it at impressively low CPU compared to other plugins of this type.
+
+

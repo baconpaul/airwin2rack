@@ -1,0 +1,7 @@
+# BiquadOneHalf is an interleaved biquad filter like Biquad.
+
+BiquadOneHalf is tech that’s going into my future plugins. You have to set the frequency twice as high as you would using Biquad, and it can only go up to 1/4 Nyquist, but the way it interacts with the sampling frequency is special and works very well for some types of filtering. You’ll be getting more developed plugins of that nature soon, and all through January, but for now I got this: working version of the new Biquad filter variation, that you can use on stuff.
+
+It’s the first version, not the ‘sweepable’ version, because this is going to find its way into fixed-frequency EQs, ‘head bump’ etc… compare it to Biquad remembering to use twice the frequency you otherwise would. It’s happiest on bass or midrange: much like regular Biquad, trying to force it to get real close to its high frequency limit can get messy.
+
+

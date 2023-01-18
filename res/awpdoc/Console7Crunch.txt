@@ -1,0 +1,7 @@
+# Console7Crunch shows you Cascade but with its EQ weighted for more edge and grit.
+
+Console7Crunch is a variation on Console7Cascade, to experiment with something. Cascade stacked up distortion algorithms inside an instance of Ultrasonic, basically. For that reason, it distorted the super-highs very early on, and compensated for this in later stages, rolling off brightness and smoothing the distortion out. Well, with experiments like UltrasonX, and some upcoming even-more-intense filtering of that nature, I wanted to do a variation on Console7Cascade where the ONLY thing I changed was the order of the filtering. They’re supposed to combine to a perfectly flat multistage filter, and they do… but the way it hits nonlinearities and clipping is a whole other story.
+
+The result is a Console7Cascade that’s more crunchy, with more obvious clipping and an additional ability to deliver distorted punch in the extreme highs: Console7Crunch. It’s not wildly different (all this is meant to be ultrasonic! But of course it affects everything anyhow) but it’s a noticeably different color for when you’re looking for higher gain in the Console7 system. I hope you like it, and I found the experiment interesting.
+
+

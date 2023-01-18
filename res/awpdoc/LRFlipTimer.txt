@@ -1,0 +1,7 @@
+# LRFlipTimer is a utility that swaps Left with Right every few (1-10) minutes.
+
+I don’t know how useful this’ll be for you: a person asked me for it, and I was able to do it. This just does one thing.
+
+Every few minutes (as in, one minute to ten minutes) it swaps the L and R channels. It sweeps them across in about a tenth of a second, to prevent any sort of pop or anything. When it’s in LR or RL mode, it is 100% direct pass-through of the audio data word, so this is as clean as stuff like LeftToMono: it’s one of those ones that just copies the data over, not even touching it. That said, this doesn’t belong in your mix: the idea is that if you’re mixing and you do stuff asymmetrically, it’s like visual arts: you might need to flip the canvas left-to-right to see if things are off balance. That’s all this plugin does. You set how many minutes will elapse before it flips or re-flips.
+
+

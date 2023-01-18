@@ -1,0 +1,11 @@
+# YNotch is soft and smooth to nasty, edgy texture-varying filtering.
+
+Let’s get through the December doldrums with a new plugin and some new sounds… because Y Not? (-ch)
+
+YNotch is the final incarnation of the Y series plugins, done to give me more experience with smoothing plugin controls. It’s got a smoothed biquad filter with more than a little extra: the Y filters all have a ResEdge control. This defaults to 0.1 (like the gain control) but it can be lowered to 0 for a softer, somewhat more organic tone… or, turned up and up and up until the filter begins to distort and act weird in very unusual ways.
+
+This is NOT like a sampler model. It’s a whole other algorithm, putting weird edges on the way the filter resonates when the Resonance is turned up. You can basically dial in the sharpness of the edge, like with the other Y filters. But unlike the other Y filters, the Resonance control goes a little further. Not in sharpness, but in dullness… you can drop resonance down to where it’s basically an ultra-shallow slope cut, put the frequency to either extreme, and use the very first hints of the Resonance control to dial in an extreme low or high cut.
+
+And then either soften or sharpen the hell out of the edge, to get tones that don’t really exist anywhere else. Demoed with a Moog Sub Phatty using a M32 as a spare oscillator with a different portamento speed, filter wide open so the YNotch can do all the filtering and produce a mad hybrid bass grind sound.
+
+

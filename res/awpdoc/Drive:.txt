@@ -1,0 +1,15 @@
+# Drive: the angry distortion!
+
+If you know how to use Airwindows Density, you know how to use this. It’s exactly the same layout, except that it doesn’t go to negative values: this one’s just for slam.
+
+Why bother with such a similar plugin? Because of the tone!
+
+Density gets a thick, full, fluid tone because it’s got a super-smooth transfer function. In fact it’s the theoretical optimum distortion transfer function for having no grit or crunch: it ‘hides’ the distortion very well.
+
+Drive hides nothing. It’s all about grit and crunch, not smooth. Go ahead and try it and see. If your sole purpose for an overdrive plugin is to make stuff ‘big and fat and thick’ then you want Density. But if you’re reaching for a distortion because you have some sound, a bass, a snaredrum, and you just want to make it sound ANGRY: not so much fat or forward or gritty or edgy, but just plain straight up pissed off… then you may want to have Drive around.
+
+It does have the highpass, the output trim, the dry/wet just like Density does. That means it can be adapted to different contexts. But the sound remains the same: angry overdrive, a real nasty bark. Neither too smooth, nor too edgy and trebly. Drive will work on pretty much anything you want to make really mad, and the ease of getting that tone color will make you the opposite of mad. :D
+
+Note: you can get this algorithm in the Distortion plugin, smoothed out with averaging filters.
+
+

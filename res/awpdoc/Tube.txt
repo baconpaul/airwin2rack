@@ -1,0 +1,21 @@
+# Tube is a tube style SoundBetterIzer using a new algorithm for analog modeling!
+
+ntroducing… Airwindows TUBE.
+
+This is your new go-to soundbetterizer! It will make anything you put it on HUGE, and is a new algorithm that’s going to inform everything I do going forward, as well as building on everything I’ve learned to date!
+
+Just try it. Either keep it restrained, or boost it a little, or CRANK it all the way, and then TURN IT ON. No matter what your audio is, this should blow your mind :D
+
+Go try! If you want the full soundbetterizer experience go now and use it! It will never let you down! :D :D ;D
+
+:)
+
+Okay, good. Who’s still here? For those of you who’re still reading, and those who like to know how things work, let me nerd out a little and explain (a) why all that is true, and (b) exactly how it’s done. Tube is a combination of things. It’s the fruit of some work I’m doing on dialing in distortion types, based on stuff I made for Mackity etc. and it lets you dial in the same clip style I used for Mackity, but scale it up and down, make it simpler or more and more complex and linear. The maximum linearity it can do is when it’s set to zero: then it’s a soft-clip with a nice clean center region. The minimum linearity it can do is at full crank, and then it’s inputSample – inputSample*fabs(inputSample), scaled just right… and then gain-adjusted right back up again.
+
+And that’s the whole secret. It’s a distortion… a very simple distortion with the fewest possible calculations, even simpler than using sin() to distort… and at full crank it distorts a LOT and then applies makeup gain. Most of what you’re hearing is marketing volume. Not only that, since it’s a distortion, there’s a carefully calculated pre-boost in there too, and it’s set up so that at full crank, it takes the RMS loudness of a triangle wave (not unlike music content) and boosts it EXACTLY to where it’s now the RMS loudness of a sine wave. Everything else is just applying these things with the Airwindows house sound… in fact it’s a new high-water mark for the Airwindows house sound, nothing short of BitShiftGain is quite as good as far as ‘minimal processing to get the result, and insane overkill for word length and linearity’.
+
+It goes even beyond that. Unlike my normal ‘mimic the sound of hardware’ plugins, which use (more complicated) biquad filters to get exact voicings of tone, Tube is designed to be dropped in literally anywhere. So, instead of the usual approach, I’ve got a radical approach to aliasing suppression: since it’s already so soft, at 88.2k and up we just do a single averaging of adjacent samples before the clipping, and then a single averaging after the clipping. Period. That’s all. This is shall we say not as effective as brickwall filters and Ultrasonic… but it’s applying a linearizing effect, twice, that applies to all the audible frequencies and does basically nothing else. It’s not the ideal thing for handling problem aliasing cases, but for your tubey midrange lushness there is NO other possible approach that performs as well. And, again, the most aggressively minimal approach you could have. That’s key to how I get plugins to sound right.
+
+So, there you have it… and you do, I hope you enjoy Tube. I’ll be using the algorithms a lot, and using it to dial in more sophisticated plugins. And some folks will lose their minds and believe the magic… and some will get cross I didn’t set it up for proper A/Bing, which kind of defeats the purpose for the first crew… and in the final analysis, what TUBE gives you is this: some of the most extremely Airwindows tone you could possibly have, free and easy to drop into any track, mix, or mastering that you just want… bigger.
+
+
