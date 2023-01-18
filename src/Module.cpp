@@ -9,14 +9,10 @@
 #include "AirwinRegistry.h"
 
 // @TODO: Adjustable Block Size for CPU
-// @TODO: Show Poly in display
-// @TODO: UnScrunch VoiceOfTheStarship render
 // @TODO: Undo!
-// @TODO: Unused modules go semi-transparent
-// @TODO: Selector Hover Paint Difference for Clicks
-// @TODO: Double Buffer PixelKnob
-// @TODO: Strip Typeins from Knob for Param
-// @TODO: Arrows transpernt when locked
+// @TODO: Unused ports go semi-transparent
+// @TODO: Mono 1 vs Poly performance and voltage sum
+
 
 #define MAX_POLY 16
 
@@ -110,6 +106,10 @@ struct AW2RModule : virtual rack::Module
         assert(!AirwinRegistry::registry.empty());
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
+        configInput(INPUT_L, "Left / Mono Input");
+        configInput(INPUT_L, "Right Input");
+        configOutput(OUTPUT_L, "Left Output");
+        configOutput(OUTPUT_L, "Right Output");
         configBypass(INPUT_L, OUTPUT_L);
         configBypass(INPUT_R, OUTPUT_R);
 
@@ -126,6 +126,7 @@ struct AW2RModule : virtual rack::Module
 
             configInput(CV_0 + i, "CV " + std::to_string(i));
         }
+
         resetAirwinByName("Galactic", true);
     }
 
@@ -386,8 +387,15 @@ struct AWSkin
         }
     }
 
-    AWSkin()
-    {
+    std::string fontPath;
+    bool initialized{false};
+    AWSkin() {}
+
+    void intialize() {
+        if (initialized) return;
+        initialized = true;
+
+        fontPath = rack::asset::plugin(pluginInstance, "res/PlusJakartaSans-SemiBold.ttf");
         std::string defaultsFile = rack::asset::user("Airwin2Rack/default-skin.json");
         json_error_t error;
         json_t *fd{nullptr};
@@ -418,19 +426,24 @@ AWSkin skinManager;
 
 template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
 {
+    BufferedDrawFunctionWidget *bdw{nullptr};
+    bool stripMenuTypein{false};
     PixelKnob()
     {
-        box.size = rack::Vec(px, px);
+        box.size = rack::Vec(px+3, px+3);
         float angleSpreadDegrees = 40.0;
 
         minAngle = -M_PI * (180 - angleSpreadDegrees) / 180;
         maxAngle = M_PI * (180 - angleSpreadDegrees) / 180;
+
+        bdw = new BufferedDrawFunctionWidget(rack::Vec(0,0), box.size,
+                                             [this](auto vg) { drawKnob(vg);});
+        addChild(bdw);
     }
 
-    void draw(const DrawArgs &args)
+    void drawKnob(NVGcontext *vg)
     {
-        auto vg = args.vg;
-        float radius = box.size.x * 0.48;
+        float radius = px * 0.48;
         nvgBeginPath(vg);
         nvgEllipse(vg, box.size.x * 0.5, box.size.y * 0.5, radius, radius);
         if (skinManager.skin == AWSkin::DARK)
@@ -495,15 +508,46 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
         nvgStroke(vg);
         nvgFill(vg);
     }
+
+    AWSkin::Skin lastSkin{AWSkin::DARK};
+    float lastVal{0.f};
+    void step() override
+    {
+        bool dirty{false};
+        if (lastSkin != skinManager.skin)
+            dirty = true;
+        lastSkin = skinManager.skin;
+
+        auto pq = getParamQuantity();
+        if (pq)
+        {
+            if (lastVal != pq->getValue())
+                dirty = true;
+            lastVal = pq->getValue();
+        }
+
+        if (bdw && dirty)
+            bdw->dirty = dirty;
+
+        rack::Widget::step();
+    }
+
+    void appendContextMenu(rack::Menu *menu) override {
+        if (stripMenuTypein && menu->children.size() >= 2)
+        {
+            auto tgt = std::next(menu->children.begin());
+            menu->removeChild(*tgt);
+            delete *tgt;
+        }
+    }
 };
 
 struct AWLabel : rack::Widget
 {
     float px{11};
     std::string label{"label"};
-    std::string fontPath;
     BufferedDrawFunctionWidget *bdw{nullptr};
-    AWLabel() { fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf"); }
+    AWLabel() {  }
     void setup()
     {
         bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
@@ -512,7 +556,7 @@ struct AWLabel : rack::Widget
     }
     void drawLabel(NVGcontext *vg)
     {
-        auto fid = APP->window->loadFont(fontPath)->handle;
+        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
         nvgBeginPath(vg);
         if (skinManager.skin == AWSkin::DARK)
             nvgFillColor(vg, nvgRGB(220, 220, 220));
@@ -559,6 +603,7 @@ struct AWJog : rack::Widget
 {
     AW2RModule *module;
     int dir{1};
+    bool hovered{false};
     BufferedDrawFunctionWidget *bdw{nullptr};
     void setup()
     {
@@ -568,6 +613,10 @@ struct AWJog : rack::Widget
     }
     void drawArrow(NVGcontext *vg)
     {
+        bool transparent{false};
+        if (module && module->lockedType)
+            transparent = true;
+
         auto cy = box.size.y * 0.5;
         auto xp = 3;
         auto sx = box.size.x - 1.8 * xp;
@@ -586,10 +635,23 @@ struct AWJog : rack::Widget
             nvgLineTo(vg, xp, cy + sx * 0.5);
             nvgLineTo(vg, xp + sx, cy);
         }
-        nvgFillColor(vg, nvgRGB(190,190,190));
-        nvgStrokeColor(vg, nvgRGB(220,220,220));
-        nvgFill(vg);
-        nvgStroke(vg);
+        if (transparent)
+        {
+            nvgStrokeColor(vg, nvgRGB(60, 60, 60));
+            nvgFillColor(vg, nvgRGB(40, 40, 40));
+            nvgFill(vg);
+            nvgStroke(vg);
+        }
+        else
+        {
+            if (hovered)
+                nvgFillColor(vg, nvgRGB(240, 240, 100));
+            else
+                nvgFillColor(vg, nvgRGB(190, 190, 190));
+            nvgStrokeColor(vg, nvgRGB(220, 220, 220));
+            nvgFill(vg);
+            nvgStroke(vg);
+        }
     }
 
     void onButton(const ButtonEvent &e) override {
@@ -601,23 +663,83 @@ struct AWJog : rack::Widget
             e.consume(this);
         }
     }
+
+    bool cacheLock{false};
+    std::string lastSelected{false};
+    void step() override
+    {
+        if (module && module->lockedType != cacheLock)
+        {
+            cacheLock = module->lockedType;
+            bdw->dirty = true;
+        }
+        if (module && module->selectedFX != lastSelected)
+        {
+            bdw->dirty = true;
+            setTooltipText();
+            lastSelected = module->selectedFX;
+        }
+        rack::Widget::step();
+    }
+
+    void onHover(const HoverEvent &e) override { e.consume(this); }
+    void onEnter(const EnterEvent &e) override
+    {
+        e.consume(this);
+        hovered = true;
+        bdw->dirty = true;
+
+        if (!rack::settings::tooltips)
+            return;
+        if (toolTip)
+            return;
+
+        toolTip = new rack::ui::Tooltip;
+        setTooltipText();
+        APP->scene->addChild(toolTip);
+    }
+    void onLeave(const LeaveEvent &e) override
+    {
+        e.consume(this);
+        hovered = false;
+        bdw->dirty = true;
+
+        if (!toolTip)
+            return;
+        APP->scene->removeChild(toolTip);
+        delete toolTip;
+        toolTip = nullptr;
+    }
+
+    void setTooltipText()
+    {
+        if (!module)
+            return;
+
+        if (!toolTip)
+            return;
+        auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
+        const auto &r = AirwinRegistry::registry[n];
+        toolTip->text = "Load " + r.name + " (" + r.category + ")";
+    }
+
+    rack::ui::Tooltip *toolTip{nullptr};
 };
 
 struct AWSelector : rack::Widget
 {
     AW2RModule *module;
-    std::string fontPath;
-    AWSelector() { fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf"); }
 
     BufferedDrawFunctionWidget *bdw{nullptr};
     AWJog *leftJ{nullptr}, *rightJ{nullptr};
+    static constexpr int jogButttonSize{12};
     void setup()
     {
         bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                              [this](auto vg) { drawSelector(vg); });
         addChild(bdw);
 
-        auto asz{11};
+        auto asz{jogButttonSize - 1};
         leftJ = new AWJog;
         leftJ->module = module;
         leftJ->dir = -1;
@@ -649,13 +771,31 @@ struct AWSelector : rack::Widget
         nvgStrokeWidth(vg, 1);
         nvgStroke(vg);
 
-        auto fid = APP->window->loadFont(fontPath)->handle;
+        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+
+        // Find font size to make sure we fit in the box
+        auto fontSize = 14.5;
+        bool fits{false};
+        while (!fits && fontSize > 9)
+        {
+            nvgFontFaceId(vg, fid);
+            nvgFontSize(vg, fontSize);
+            float bnd[4];
+            nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
+            nvgTextBounds(vg, box.size.x * 0.5, box.size.y * 0.65, lastName.c_str(), nullptr, bnd);
+
+            if (bnd[0] < jogButttonSize + 5)
+                fontSize -= 0.5;
+            else
+                fits = true;
+        }
+
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(240, 240, 240));
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
-        nvgFontSize(vg, 14.5);
-        nvgText(vg, box.size.x * 0.5, box.size.y * 0.67, lastName.c_str(), nullptr);
+        nvgFontSize(vg, fontSize);
+        nvgText(vg, box.size.x * 0.5, box.size.y * 0.65, lastName.c_str(), nullptr);
 
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(220, 220, 220));
@@ -663,19 +803,31 @@ struct AWSelector : rack::Widget
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 8.5);
         nvgText(vg, box.size.x * 0.5, box.size.y * 0.22, lastCat.c_str(), nullptr);
+
+        if (lastPoly)
+        {
+            nvgBeginPath(vg);
+            nvgFillColor(vg, nvgRGB(140,140,140));
+            nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_RIGHT);
+            nvgFontFaceId(vg, fid);
+            nvgFontSize(vg, 6.5);
+            nvgText(vg, box.size.x - 3, box.size.y - 3, "poly", nullptr);
+        }
     }
 
     AWSkin::Skin lastSkin{AWSkin::DARK};
     std::string lastName{"Airwindows"}, lastCat{"Multi-Effect"};
+    bool lastPoly{false};
     void step() override
     {
         if (module && bdw)
         {
             if (lastName != module->selectedFX || lastCat != module->selectedCat ||
-                lastSkin != skinManager.skin)
+                lastSkin != skinManager.skin || lastPoly != module->polyphonic)
             {
                 bdw->dirty = true;
             }
+            lastPoly = module->polyphonic;
             lastName = module->selectedFX;
             lastCat = module->selectedCat;
             lastSkin = skinManager.skin;
@@ -733,9 +885,18 @@ struct AWSelector : rack::Widget
         }
     }
 
-    void onHover(const HoverEvent &e) override { e.consume(this); }
+    void onHover(const HoverEvent &e) override {
+        rack::Widget::onHover(e);
+        if (!e.isConsumed())
+            e.consume(this);
+    }
     void onEnter(const EnterEvent &e) override
     {
+        rack::Widget::onEnter(e);
+        if (e.isConsumed())
+        {
+            return;
+        }
         e.consume(this);
         if (!module)
             return;
@@ -753,6 +914,12 @@ struct AWSelector : rack::Widget
     }
     void onLeave(const LeaveEvent &e) override
     {
+        rack::Widget::onLeave(e);
+        if (e.isConsumed())
+        {
+            return;
+        }
+
         e.consume(this);
         if (!toolTip)
             return;
@@ -771,17 +938,16 @@ struct AW2RModuleWidget : rack::ModuleWidget
     std::array<AWLabel *, M::maxParams> parLabels;
     std::array<rack::ParamWidget *, M::maxParams> parKnobs, attenKnobs;
     std::array<rack::PortWidget *, M::maxParams> cvPorts;
-    std::string fontPath;
 
     std::shared_ptr<rack::Svg> clipperSvg;
     BufferedDrawFunctionWidget *bg{nullptr};
 
     AW2RModuleWidget(M *m)
     {
+        skinManager.intialize();
         setModule(m);
         box.size = rack::Vec(SCREW_WIDTH * 10, RACK_HEIGHT);
 
-        fontPath = rack::asset::plugin(pluginInstance, "res/FiraMono-Regular.ttf");
         clipperSvg = rack::Svg::load(rack::asset::plugin(pluginInstance, "res/clipper.svg"));
 
         bg = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
@@ -806,27 +972,29 @@ struct AW2RModuleWidget : rack::ModuleWidget
         for (int i = 0; i < M::maxParams; ++i)
         {
             auto tlab = new AWLabel;
-            tlab->px = 10;
+            tlab->px = 12;
             tlab->box.pos.x = 5;
             tlab->box.pos.y = pPos;
-            tlab->box.size.x = box.size.x - 73;
+            tlab->box.size.x = box.size.x - 76;
             tlab->box.size.y = dPP;
             tlab->label = "Param " + std::to_string(i);
             tlab->setup();
             parLabels[i] = tlab;
             addChild(tlab);
 
-            auto bp = box.size.x - 58;
-            parKnobs[i] = rack::createParamCentered<PixelKnob<17>>(rack::Vec(bp, pPos + dPP * 0.5),
+            auto bp = box.size.x - 60;
+            auto k = rack::createParamCentered<PixelKnob<20>>(rack::Vec(bp, pPos + dPP * 0.5),
                                                                    module, M::PARAM_0 + i);
+            k->stripMenuTypein = true;
+            parKnobs[i] = k;
             addParam(parKnobs[i]);
 
             attenKnobs[i] = rack::createParamCentered<PixelKnob<12, true>>(
-                rack::Vec(bp + 18, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
+                rack::Vec(bp + 20, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
             addParam(attenKnobs[i]);
 
             cvPorts[i] = rack::createInputCentered<rack::PJ301MPort>(
-                rack::Vec(bp + 40, pPos + dPP * 0.5), module, M::CV_0 + i);
+                rack::Vec(bp + 42, pPos + dPP * 0.5), module, M::CV_0 + i);
             addInput(cvPorts[i]);
 
             pPos += dPP;
@@ -868,6 +1036,14 @@ struct AW2RModuleWidget : rack::ModuleWidget
             menu->addChild(new rack::MenuSeparator);
             menu->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(awm->lockedType),
                                                 [awm]() { awm->lockedType = !awm->lockedType;}));
+
+#define SHOW_STATS 0
+#if SHOW_STATS
+            menu->addChild(rack::createMenuItem("Library Stats to Stdout", "",
+                                                []() { AirwinRegistry::dumpStatsToStdout();}));
+
+#endif
+
         }
     }
 
@@ -901,7 +1077,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgStroke(vg);
 
         // Input region
-        auto fid = APP->window->loadFont(fontPath)->handle;
+        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
         nvgBeginPath(vg);
         nvgStrokeColor(vg, nvgRGB(140, 140, 150));
         nvgFillColor(vg, nvgRGB(190, 190, 200));
@@ -910,12 +1086,17 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgFill(vg);
         nvgStroke(vg);
 
+
+        auto dc = box.size.x * 0.11;
+
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGB(40, 40, 50));
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 10);
-        nvgText(vg, box.size.x * 0.25, box.size.y - cutPoint + 38, "L  IN  R", nullptr);
+        nvgText(vg, box.size.x * 0.25, box.size.y - cutPoint + 38, "IN", nullptr);
+        nvgText(vg, box.size.x * 0.25 - dc, box.size.y - cutPoint + 38, "L", nullptr);
+        nvgText(vg, box.size.x * 0.25 + dc, box.size.y - cutPoint + 38, "R", nullptr);
 
         // Output region
         nvgBeginPath(vg);
@@ -932,7 +1113,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 10);
-        nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "L  OUT  R", nullptr);
+        nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "OUT", nullptr);
+        nvgText(vg, box.size.x * 0.75 - dc, box.size.y - cutPoint + 38, "L", nullptr);
+        nvgText(vg, box.size.x * 0.75 + dc, box.size.y - cutPoint + 38, "R", nullptr);
+
 
         // Brand
         nvgBeginPath(vg);
