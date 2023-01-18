@@ -46,6 +46,10 @@ struct AirwinRegistry
         }
         else
         {
+            if (r.nParams >= 9)
+            {
+                //std::cout << r.category << " / " << r.name << " (paramCount=" << r.nParams << ")" << std::endl;
+            }
             registry.emplace_back(r);
         }
         return registry.size();
