@@ -25,3 +25,12 @@ RACK_DIR=(path-to-sdk) make -j install
 ```
 4. Commit src libs and the infile and push to github
 
+## Licensing
+
+This is MIT licensed, like Airwin, but the combined work with rack is of course
+GPL3 as distributed here.
+
+The clipper airwindows graphic is freely distributed by airwindows
+
+the jakarta and fira mono font are both openSIL
+https://tokotype.github.io/plusjakarta-sans/

@@ -87,5 +87,7 @@ struct AirwinRegistry
     {
         return neighborIndexFor(nameToIndex[s], dir);
     }
+
+    static void dumpStatsToStdout();
 };
 #endif // AIRWIN2RACK_AIRWINREGISTRY_H
