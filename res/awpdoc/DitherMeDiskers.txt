@@ -1,4 +1,4 @@
-# DitherMeTimbers is dark deep 'dither' in 24 bit version.
+# DitherMeDiskers is dark deep 'dither' in 16 bit version.
 
 What is a dither? Dither is a way of changing one type of noise, quantization, to a different type, just plain noise. It’s all about manipulating a situation where your waveform must decide between two options, ‘up’ or ‘down’, and pick one of a very limited number of positions in a lower-resolution space. In the strictest sense, dither is adding two sources of calibrated noise in order to make the resulting noise floor completely unrelated to the audio signal.
 

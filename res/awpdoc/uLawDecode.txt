@@ -1,0 +1,25 @@
+# uLawDecode is a Console-like encode/decode pair, but much more extreme.
+
+Sometimes you do a plugin that’s not all that sensible.
+
+Those can be special, though, because those are the ones people can’t get anywhere else.
+
+There’s a process called uLaw compansion. It’s not really compression and expansion, though: it’s like a kind of distortion that can be reversed. It’s used for telephone transmission, and showed up in some of the earliest digital audio processors: back in the day, you had so few bits that you had to make them count.
+
+uLaw comes in two parts. The encoding applies a hideous distortion, making all the quietest sounds unreasonably loud and squishing the dynamic range up into the extreme near-clipping zone. The decoding neatly inverts this process and puts it all back. uLaw (the Airwindows plugin) does the high-resolution calculation of this process, so you can get exactly the compansion to a high degree of accuracy.
+
+What you do then, is you put a bitcrusher like DeRez in between the two uLaw plugins, and it suddenly sounds a lot cleaner with less roaring bit noise, because you’ve remapped where the quantization points are. It’s in the video, and easy to do with DeRez.
+
+And then… you can do all manner of other strange things, because you can put any plugin between uLawEncode and uLawDecode. Not just a bitcrusher. But, anything you put there is going to turn into a monster in a rather pronounced way. For instance, if you put an EQ in there, it will go crazy and any changes you make become loud, distorted parodies of what you meant. If you put a delay or ambience, it’ll get warped very harshly. If you put pitch shifts, flanges, who-knows-what in there, you get shockingly horrible versions back out.
+
+So, you can stick to the bitcrushers (mine or any other one you like: it’s a discrete pair for sandwiching any other plugin or plugins!) or you can treat it as a terrifying new building block that wasn’t directly available (far as I know) before. The plugins have gain and wet/dry controls which normally ought to be all set at 1.0, where they default. I can’t tell you how to use these controls to tame the behavior because it’ll vary with whichever plugin you try, and the controls don’t really belong and won’t necessarily give sensible results. You’re on your own.
+
+Also, you can’t frame a mix using uLaw the way you could using Console: the effect is far too ugly and intense. But there’s one common point: like PurestConsole, if you have just one track playing, it ought to come through pristine and perfect, no matter which single track it is. Then if any other track so much as whispers its presence, you’ll have heinous distortion of an unusual kind. I would say ‘Autechre’ but they’ve probably already done this before in Max/MSP. :)
+
+I make these things because I have a Patreon that frees me from starving, and also frees me from having to release popular and sensible plugins that are nice and approachable. Mind you, some of my plugins can be approachable, and I like making those too… I have progress on the mono-bass version of DubSub, and I’m happy with BassKit, the streamlined and polished mono-bass-enhancer that lets you beef up tapey or bassbin-y fatness in mono or add literal subsonic thunderousness with the octave divider… but thanks to the freedom of the Patreon I can make things that are truly themselves, with no nod to popularity whatsoever.
+
+uLaw is like that. You probably don’t have it because it’s ugly and strange and needs to be designed into a more sensible configuration, typically with a bitcrusher and nothing else, because nearly anything else you do with it produces horrible noises.
+
+I’m genuinely happy to bring you this audio chainsaw. You never can tell what will be handy, either as the pair, or individually: logarithmic processing may well find creative uses. Have fun!
+
+

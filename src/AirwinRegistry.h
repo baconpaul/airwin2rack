@@ -22,7 +22,7 @@ struct AirwinRegistry
         std::string category;
         std::string whatText;
         int nParams{0};
-        std::function<std::unique_ptr<Airwin2RackBase>()> generator{[](){return nullptr;}};
+        std::function<std::unique_ptr<Airwin2RackBase>()> generator{[]() { return nullptr; }};
         int ordering{-1};
     };
     static std::vector<awReg> registry;
@@ -44,14 +44,15 @@ struct AirwinRegistry
                 std::cout << "PROBLEM : " << r.name << " " << r.nParams << std::endl;
             }
         }
+        else if (r.whatText.empty())
+        {
+            // std::cout << r.name << " / " << r.category << " missing what text" << std::endl;
+        }
         else
         {
-            if (r.nParams >= 9)
-            {
-                //std::cout << r.category << " / " << r.name << " (paramCount=" << r.nParams << ")" << std::endl;
-            }
             registry.emplace_back(r);
         }
+
         return registry.size();
     }
     static int completeRegistry()
@@ -83,8 +84,10 @@ struct AirwinRegistry
     {
         auto pos = registry[t].ordering;
         pos += dir;
-        if (pos < 0) pos = fxOrdering.size()-1;
-        if (pos >= (int)fxOrdering.size()) pos = 0;
+        if (pos < 0)
+            pos = fxOrdering.size() - 1;
+        if (pos >= (int)fxOrdering.size())
+            pos = 0;
         return fxOrdering[pos];
     }
     static int neighborIndexFor(const std::string &s, int dir)

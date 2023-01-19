@@ -15,9 +15,9 @@ int Air2_unused = AirwinRegistry::registerAirwindow({"Air2", "Filter", "Air2 is 
 #include "autogen_airwin/Apicolypse.h"
 int Apicolypse_unused = AirwinRegistry::registerAirwindow({"Apicolypse", "Unclassified", "Apicolypse is a re-release of my old API-style color adder, exacly as it was.", airwin2rack::Apicolypse::kNumParameters, []() { return std::make_unique<airwin2rack::Apicolypse::Apicolypse>(0); }});
 #include "autogen_airwin/AtmosphereBuss.h"
-int AtmosphereBuss_unused = AirwinRegistry::registerAirwindow({"AtmosphereBuss", "Consoles", "", airwin2rack::AtmosphereBuss::kNumParameters, []() { return std::make_unique<airwin2rack::AtmosphereBuss::AtmosphereBuss>(0); }});
+int AtmosphereBuss_unused = AirwinRegistry::registerAirwindow({"AtmosphereBuss", "Consoles", "AtmosphereBuss is Console5 processing with powerful new acoustic distance effects.", airwin2rack::AtmosphereBuss::kNumParameters, []() { return std::make_unique<airwin2rack::AtmosphereBuss::AtmosphereBuss>(0); }});
 #include "autogen_airwin/AtmosphereChannel.h"
-int AtmosphereChannel_unused = AirwinRegistry::registerAirwindow({"AtmosphereChannel", "Consoles", "", airwin2rack::AtmosphereChannel::kNumParameters, []() { return std::make_unique<airwin2rack::AtmosphereChannel::AtmosphereChannel>(0); }});
+int AtmosphereChannel_unused = AirwinRegistry::registerAirwindow({"AtmosphereChannel", "Consoles", "AtmosphereChannel is Console5 processing with powerful new acoustic distance effects.", airwin2rack::AtmosphereChannel::kNumParameters, []() { return std::make_unique<airwin2rack::AtmosphereChannel::AtmosphereChannel>(0); }});
 #include "autogen_airwin/Aura.h"
 int Aura_unused = AirwinRegistry::registerAirwindow({"Aura", "Filter", "Aura is a new kind of resonant lowpass EQ.", airwin2rack::Aura::kNumParameters, []() { return std::make_unique<airwin2rack::Aura::Aura>(0); }});
 #include "autogen_airwin/AutoPan.h"
@@ -73,15 +73,15 @@ int BrightAmbience3_unused = AirwinRegistry::registerAirwindow({"BrightAmbience3
 #include "autogen_airwin/BuildATPDF.h"
 int BuildATPDF_unused = AirwinRegistry::registerAirwindow({"BuildATPDF", "Dithers", "BuildATPDF is a dither-making toolkit.", airwin2rack::BuildATPDF::kNumParameters, []() { return std::make_unique<airwin2rack::BuildATPDF::BuildATPDF>(0); }});
 #include "autogen_airwin/BussColors4.h"
-int BussColors4_unused = AirwinRegistry::registerAirwindow({"BussColors4", "Saturation", "", airwin2rack::BussColors4::kNumParameters, []() { return std::make_unique<airwin2rack::BussColors4::BussColors4>(0); }});
+int BussColors4_unused = AirwinRegistry::registerAirwindow({"BussColors4", "Saturation", "BussColors4 is the Airwindows console emulations, now working up to 192K correctly.", airwin2rack::BussColors4::kNumParameters, []() { return std::make_unique<airwin2rack::BussColors4::BussColors4>(0); }});
 #include "autogen_airwin/ButterComp.h"
 int ButterComp_unused = AirwinRegistry::registerAirwindow({"ButterComp", "Unclassified", "ButterComp is my softest, smoothest compressor.", airwin2rack::ButterComp::kNumParameters, []() { return std::make_unique<airwin2rack::ButterComp::ButterComp>(0); }});
 #include "autogen_airwin/ButterComp2.h"
 int ButterComp2_unused = AirwinRegistry::registerAirwindow({"ButterComp2", "Dynamics", "ButterComp2 is improved ButterComp with an output control and sound upgrades.", airwin2rack::ButterComp2::kNumParameters, []() { return std::make_unique<airwin2rack::ButterComp2::ButterComp2>(0); }});
 #include "autogen_airwin/C5RawBuss.h"
-int C5RawBuss_unused = AirwinRegistry::registerAirwindow({"C5RawBuss", "Unclassified", "", airwin2rack::C5RawBuss::kNumParameters, []() { return std::make_unique<airwin2rack::C5RawBuss::C5RawBuss>(0); }});
+int C5RawBuss_unused = AirwinRegistry::registerAirwindow({"C5RawBuss", "Unclassified", "C5RawBuss is the original Console5 algorithm, with optional very gentle DC suppression.", airwin2rack::C5RawBuss::kNumParameters, []() { return std::make_unique<airwin2rack::C5RawBuss::C5RawBuss>(0); }});
 #include "autogen_airwin/C5RawChannel.h"
-int C5RawChannel_unused = AirwinRegistry::registerAirwindow({"C5RawChannel", "Unclassified", "", airwin2rack::C5RawChannel::kNumParameters, []() { return std::make_unique<airwin2rack::C5RawChannel::C5RawChannel>(0); }});
+int C5RawChannel_unused = AirwinRegistry::registerAirwindow({"C5RawChannel", "Unclassified", "C5RawChannel is the original Console5 algorithm, with optional very gentle DC suppression.", airwin2rack::C5RawChannel::kNumParameters, []() { return std::make_unique<airwin2rack::C5RawChannel::C5RawChannel>(0); }});
 #include "autogen_airwin/CStrip.h"
 int CStrip_unused = AirwinRegistry::registerAirwindow({"CStrip", "Unclassified", "CStrip is an Airwindows channel strip.", airwin2rack::CStrip::kNumParameters, []() { return std::make_unique<airwin2rack::CStrip::CStrip>(0); }});
 #include "autogen_airwin/Cabs.h"
@@ -113,7 +113,7 @@ int Chorus_unused = AirwinRegistry::registerAirwindow({"Chorus", "Ambience", "Ch
 #include "autogen_airwin/ChorusEnsemble.h"
 int ChorusEnsemble_unused = AirwinRegistry::registerAirwindow({"ChorusEnsemble", "Ambience", "ChorusEnsemble is a more complex, multi-tap mono chorus.", airwin2rack::ChorusEnsemble::kNumParameters, []() { return std::make_unique<airwin2rack::ChorusEnsemble::ChorusEnsemble>(0); }});
 #include "autogen_airwin/ChromeOxide.h"
-int ChromeOxide_unused = AirwinRegistry::registerAirwindow({"ChromeOxide", "Unclassified", "", airwin2rack::ChromeOxide::kNumParameters, []() { return std::make_unique<airwin2rack::ChromeOxide::ChromeOxide>(0); }});
+int ChromeOxide_unused = AirwinRegistry::registerAirwindow({"ChromeOxide", "Unclassified", "ChromeOxide is an alternate path to vibey old tape sonics.", airwin2rack::ChromeOxide::kNumParameters, []() { return std::make_unique<airwin2rack::ChromeOxide::ChromeOxide>(0); }});
 #include "autogen_airwin/Cider.h"
 int Cider_unused = AirwinRegistry::registerAirwindow({"Cider", "Saturation", "Cider is a re-release of another old Character plugin.", airwin2rack::Cider::kNumParameters, []() { return std::make_unique<airwin2rack::Cider::Cider>(0); }});
 #include "autogen_airwin/ClipOnly2.h"
@@ -129,45 +129,45 @@ int Cojones_unused = AirwinRegistry::registerAirwindow({"Cojones", "Saturation",
 #include "autogen_airwin/Compresaturator.h"
 int Compresaturator_unused = AirwinRegistry::registerAirwindow({"Compresaturator", "Dynamics", "Compresaturator fades between compressing and soft clipping.", airwin2rack::Compresaturator::kNumParameters, []() { return std::make_unique<airwin2rack::Compresaturator::Compresaturator>(0); }});
 #include "autogen_airwin/Console4Buss.h"
-int Console4Buss_unused = AirwinRegistry::registerAirwindow({"Console4Buss", "Unclassified", "", airwin2rack::Console4Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console4Buss::Console4Buss>(0); }});
+int Console4Buss_unused = AirwinRegistry::registerAirwindow({"Console4Buss", "Consoles", "Console4Buss is the original Airwindows ITB mixing system, a two-plugin mix buss replacement for DAWs.", airwin2rack::Console4Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console4Buss::Console4Buss>(0); }});
 #include "autogen_airwin/Console4Channel.h"
-int Console4Channel_unused = AirwinRegistry::registerAirwindow({"Console4Channel", "Unclassified", "", airwin2rack::Console4Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console4Channel::Console4Channel>(0); }});
+int Console4Channel_unused = AirwinRegistry::registerAirwindow({"Console4Channel", "Consoles", "Console4Channel is the original Airwindows ITB mixing system, a two-plugin mix buss replacement for DAWs.", airwin2rack::Console4Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console4Channel::Console4Channel>(0); }});
 #include "autogen_airwin/Console5Buss.h"
-int Console5Buss_unused = AirwinRegistry::registerAirwindow({"Console5Buss", "Consoles", "", airwin2rack::Console5Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console5Buss::Console5Buss>(0); }});
+int Console5Buss_unused = AirwinRegistry::registerAirwindow({"Console5Buss", "Consoles", "Console5Buss is a richer, warmer Console system.", airwin2rack::Console5Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console5Buss::Console5Buss>(0); }});
 #include "autogen_airwin/Console5Channel.h"
-int Console5Channel_unused = AirwinRegistry::registerAirwindow({"Console5Channel", "Consoles", "", airwin2rack::Console5Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console5Channel::Console5Channel>(0); }});
+int Console5Channel_unused = AirwinRegistry::registerAirwindow({"Console5Channel", "Consoles", "Console5Channel is a richer, warmer Console system.", airwin2rack::Console5Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console5Channel::Console5Channel>(0); }});
 #include "autogen_airwin/Console5DarkCh.h"
-int Console5DarkCh_unused = AirwinRegistry::registerAirwindow({"Console5DarkCh", "Unclassified", "", airwin2rack::Console5DarkCh::kNumParameters, []() { return std::make_unique<airwin2rack::Console5DarkCh::Console5DarkCh>(0); }});
+int Console5DarkCh_unused = AirwinRegistry::registerAirwindow({"Console5DarkCh", "Unclassified", "Console5DarkCh is a richer, warmer Console system.", airwin2rack::Console5DarkCh::kNumParameters, []() { return std::make_unique<airwin2rack::Console5DarkCh::Console5DarkCh>(0); }});
 #include "autogen_airwin/Console6Buss.h"
-int Console6Buss_unused = AirwinRegistry::registerAirwindow({"Console6Buss", "Consoles", "", airwin2rack::Console6Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console6Buss::Console6Buss>(0); }});
+int Console6Buss_unused = AirwinRegistry::registerAirwindow({"Console6Buss", "Consoles", "Console6Buss is a new more intense Console that peaks at lower dB.", airwin2rack::Console6Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console6Buss::Console6Buss>(0); }});
 #include "autogen_airwin/Console6Channel.h"
-int Console6Channel_unused = AirwinRegistry::registerAirwindow({"Console6Channel", "Consoles", "", airwin2rack::Console6Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console6Channel::Console6Channel>(0); }});
+int Console6Channel_unused = AirwinRegistry::registerAirwindow({"Console6Channel", "Consoles", "Console6Channel is a new more intense Console that peaks at lower dB.", airwin2rack::Console6Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console6Channel::Console6Channel>(0); }});
 #include "autogen_airwin/Console7Buss.h"
-int Console7Buss_unused = AirwinRegistry::registerAirwindow({"Console7Buss", "Consoles", "", airwin2rack::Console7Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console7Buss::Console7Buss>(0); }});
+int Console7Buss_unused = AirwinRegistry::registerAirwindow({"Console7Buss", "Consoles", "Console7Buss adds anti-alias filtering and special saturation curves.", airwin2rack::Console7Buss::kNumParameters, []() { return std::make_unique<airwin2rack::Console7Buss::Console7Buss>(0); }});
 #include "autogen_airwin/Console7Cascade.h"
 int Console7Cascade_unused = AirwinRegistry::registerAirwindow({"Console7Cascade", "Consoles", "Console7Cascade is a drop-in replacement for Console7Channel that allows for MUCH higher gain.", airwin2rack::Console7Cascade::kNumParameters, []() { return std::make_unique<airwin2rack::Console7Cascade::Console7Cascade>(0); }});
 #include "autogen_airwin/Console7Channel.h"
-int Console7Channel_unused = AirwinRegistry::registerAirwindow({"Console7Channel", "Consoles", "", airwin2rack::Console7Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console7Channel::Console7Channel>(0); }});
+int Console7Channel_unused = AirwinRegistry::registerAirwindow({"Console7Channel", "Consoles", "Console7Channel adds anti-alias filtering and special saturation curves.", airwin2rack::Console7Channel::kNumParameters, []() { return std::make_unique<airwin2rack::Console7Channel::Console7Channel>(0); }});
 #include "autogen_airwin/Console7Crunch.h"
 int Console7Crunch_unused = AirwinRegistry::registerAirwindow({"Console7Crunch", "Consoles", "Console7Crunch shows you Cascade but with its EQ weighted for more edge and grit.", airwin2rack::Console7Crunch::kNumParameters, []() { return std::make_unique<airwin2rack::Console7Crunch::Console7Crunch>(0); }});
 #include "autogen_airwin/Console8BussHype.h"
-int Console8BussHype_unused = AirwinRegistry::registerAirwindow({"Console8BussHype", "Consoles", "", airwin2rack::Console8BussHype::kNumParameters, []() { return std::make_unique<airwin2rack::Console8BussHype::Console8BussHype>(0); }});
+int Console8BussHype_unused = AirwinRegistry::registerAirwindow({"Console8BussHype", "Consoles", "Console8BussHype swaps out just the In section of Console8BussIn, for a brighter sparklier circuit.", airwin2rack::Console8BussHype::kNumParameters, []() { return std::make_unique<airwin2rack::Console8BussHype::Console8BussHype>(0); }});
 #include "autogen_airwin/Console8BussIn.h"
-int Console8BussIn_unused = AirwinRegistry::registerAirwindow({"Console8BussIn", "Consoles", "", airwin2rack::Console8BussIn::kNumParameters, []() { return std::make_unique<airwin2rack::Console8BussIn::Console8BussIn>(0); }});
+int Console8BussIn_unused = AirwinRegistry::registerAirwindow({"Console8BussIn", "Consoles", "Console8BussIn moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8BussIn::kNumParameters, []() { return std::make_unique<airwin2rack::Console8BussIn::Console8BussIn>(0); }});
 #include "autogen_airwin/Console8BussOut.h"
-int Console8BussOut_unused = AirwinRegistry::registerAirwindow({"Console8BussOut", "Consoles", "", airwin2rack::Console8BussOut::kNumParameters, []() { return std::make_unique<airwin2rack::Console8BussOut::Console8BussOut>(0); }});
+int Console8BussOut_unused = AirwinRegistry::registerAirwindow({"Console8BussOut", "Consoles", "Console8BussOut moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8BussOut::kNumParameters, []() { return std::make_unique<airwin2rack::Console8BussOut::Console8BussOut>(0); }});
 #include "autogen_airwin/Console8ChannelHype.h"
-int Console8ChannelHype_unused = AirwinRegistry::registerAirwindow({"Console8ChannelHype", "Consoles", "", airwin2rack::Console8ChannelHype::kNumParameters, []() { return std::make_unique<airwin2rack::Console8ChannelHype::Console8ChannelHype>(0); }});
+int Console8ChannelHype_unused = AirwinRegistry::registerAirwindow({"Console8ChannelHype", "Consoles", "Console8ChannelHype swaps out just the In section of Console8ChannelIn, for a brighter sparklier circuit.", airwin2rack::Console8ChannelHype::kNumParameters, []() { return std::make_unique<airwin2rack::Console8ChannelHype::Console8ChannelHype>(0); }});
 #include "autogen_airwin/Console8ChannelIn.h"
-int Console8ChannelIn_unused = AirwinRegistry::registerAirwindow({"Console8ChannelIn", "Consoles", "", airwin2rack::Console8ChannelIn::kNumParameters, []() { return std::make_unique<airwin2rack::Console8ChannelIn::Console8ChannelIn>(0); }});
+int Console8ChannelIn_unused = AirwinRegistry::registerAirwindow({"Console8ChannelIn", "Consoles", "Console8ChannelIn moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8ChannelIn::kNumParameters, []() { return std::make_unique<airwin2rack::Console8ChannelIn::Console8ChannelIn>(0); }});
 #include "autogen_airwin/Console8ChannelOut.h"
-int Console8ChannelOut_unused = AirwinRegistry::registerAirwindow({"Console8ChannelOut", "Consoles", "", airwin2rack::Console8ChannelOut::kNumParameters, []() { return std::make_unique<airwin2rack::Console8ChannelOut::Console8ChannelOut>(0); }});
+int Console8ChannelOut_unused = AirwinRegistry::registerAirwindow({"Console8ChannelOut", "Consoles", "Console8ChannelOut moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8ChannelOut::kNumParameters, []() { return std::make_unique<airwin2rack::Console8ChannelOut::Console8ChannelOut>(0); }});
 #include "autogen_airwin/Console8SubHype.h"
-int Console8SubHype_unused = AirwinRegistry::registerAirwindow({"Console8SubHype", "Consoles", "", airwin2rack::Console8SubHype::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubHype::Console8SubHype>(0); }});
+int Console8SubHype_unused = AirwinRegistry::registerAirwindow({"Console8SubHype", "Consoles", "Console8SubHype swaps out just the In section of Console8SubIn, for a brighter sparklier circuit.", airwin2rack::Console8SubHype::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubHype::Console8SubHype>(0); }});
 #include "autogen_airwin/Console8SubIn.h"
-int Console8SubIn_unused = AirwinRegistry::registerAirwindow({"Console8SubIn", "Consoles", "", airwin2rack::Console8SubIn::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubIn::Console8SubIn>(0); }});
+int Console8SubIn_unused = AirwinRegistry::registerAirwindow({"Console8SubIn", "Consoles", "Console8SubIn moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8SubIn::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubIn::Console8SubIn>(0); }});
 #include "autogen_airwin/Console8SubOut.h"
-int Console8SubOut_unused = AirwinRegistry::registerAirwindow({"Console8SubOut", "Consoles", "", airwin2rack::Console8SubOut::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubOut::Console8SubOut>(0); }});
+int Console8SubOut_unused = AirwinRegistry::registerAirwindow({"Console8SubOut", "Consoles", "Console8SubOut moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8SubOut::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubOut::Console8SubOut>(0); }});
 #include "autogen_airwin/CrunchyGrooveWear.h"
 int CrunchyGrooveWear_unused = AirwinRegistry::registerAirwindow({"CrunchyGrooveWear", "Lo-Fi", "CrunchyGrooveWear is a version of GrooveWear for more edge and distortion.", airwin2rack::CrunchyGrooveWear::kNumParameters, []() { return std::make_unique<airwin2rack::CrunchyGrooveWear::CrunchyGrooveWear>(0); }});
 #include "autogen_airwin/Crystal.h"
@@ -211,9 +211,9 @@ int Distortion_unused = AirwinRegistry::registerAirwindow({"Distortion", "Satura
 #include "autogen_airwin/DitherFloat.h"
 int DitherFloat_unused = AirwinRegistry::registerAirwindow({"DitherFloat", "Dithers", "DitherFloat is a demo of floating point truncation: can also dither to 32 bit float output.", airwin2rack::DitherFloat::kNumParameters, []() { return std::make_unique<airwin2rack::DitherFloat::DitherFloat>(0); }});
 #include "autogen_airwin/DitherMeDiskers.h"
-int DitherMeDiskers_unused = AirwinRegistry::registerAirwindow({"DitherMeDiskers", "Dithers", "", airwin2rack::DitherMeDiskers::kNumParameters, []() { return std::make_unique<airwin2rack::DitherMeDiskers::DitherMeDiskers>(0); }});
+int DitherMeDiskers_unused = AirwinRegistry::registerAirwindow({"DitherMeDiskers", "Dithers", "DitherMeDiskers is dark deep 'dither' in a 16 bit version.", airwin2rack::DitherMeDiskers::kNumParameters, []() { return std::make_unique<airwin2rack::DitherMeDiskers::DitherMeDiskers>(0); }});
 #include "autogen_airwin/DitherMeTimbers.h"
-int DitherMeTimbers_unused = AirwinRegistry::registerAirwindow({"DitherMeTimbers", "Dithers", "DitherMeTimbers is dark deep 'dither' (includes 16 bit version, DitherMeDiskers)", airwin2rack::DitherMeTimbers::kNumParameters, []() { return std::make_unique<airwin2rack::DitherMeTimbers::DitherMeTimbers>(0); }});
+int DitherMeTimbers_unused = AirwinRegistry::registerAirwindow({"DitherMeTimbers", "Dithers", "DitherMeTimbers is dark deep 'dither' in a 24 bit version.", airwin2rack::DitherMeTimbers::kNumParameters, []() { return std::make_unique<airwin2rack::DitherMeTimbers::DitherMeTimbers>(0); }});
 #include "autogen_airwin/Ditherbox.h"
 int Ditherbox_unused = AirwinRegistry::registerAirwindow({"Ditherbox", "Dithers", "Ditherbox is a switchable selection of dithers in 16 and 24 bit, plus monitoring tools.", airwin2rack::Ditherbox::kNumParameters, []() { return std::make_unique<airwin2rack::Ditherbox::Ditherbox>(0); }});
 #include "autogen_airwin/DoublePaul.h"
@@ -221,7 +221,7 @@ int DoublePaul_unused = AirwinRegistry::registerAirwindow({"DoublePaul", "Dither
 #include "autogen_airwin/Doublelay.h"
 int Doublelay_unused = AirwinRegistry::registerAirwindow({"Doublelay", "Effects", "Doublelay is StereoDoubler with independent delays and feedback.", airwin2rack::Doublelay::kNumParameters, []() { return std::make_unique<airwin2rack::Doublelay::Doublelay>(0); }});
 #include "autogen_airwin/Drive.h"
-int Drive_unused = AirwinRegistry::registerAirwindow({"Drive", "Saturation", "", airwin2rack::Drive::kNumParameters, []() { return std::make_unique<airwin2rack::Drive::Drive>(0); }});
+int Drive_unused = AirwinRegistry::registerAirwindow({"Drive", "Saturation", "Drive is the angry distortion!", airwin2rack::Drive::kNumParameters, []() { return std::make_unique<airwin2rack::Drive::Drive>(0); }});
 #include "autogen_airwin/DrumSlam.h"
 int DrumSlam_unused = AirwinRegistry::registerAirwindow({"DrumSlam", "Dynamics", "DrumSlam is a heavy-processing tape modeler.", airwin2rack::DrumSlam::kNumParameters, []() { return std::make_unique<airwin2rack::DrumSlam::DrumSlam>(0); }});
 #include "autogen_airwin/DubCenter.h"
@@ -289,9 +289,9 @@ int Gringer_unused = AirwinRegistry::registerAirwindow({"Gringer", "Noise", "Gri
 #include "autogen_airwin/GrooveWear.h"
 int GrooveWear_unused = AirwinRegistry::registerAirwindow({"GrooveWear", "Lo-Fi", "GrooveWear is for scrubbing highs off mechanically like a stylus would.", airwin2rack::GrooveWear::kNumParameters, []() { return std::make_unique<airwin2rack::GrooveWear::GrooveWear>(0); }});
 #include "autogen_airwin/GuitarConditioner.h"
-int GuitarConditioner_unused = AirwinRegistry::registerAirwindow({"GuitarConditioner", "Subtlety", "", airwin2rack::GuitarConditioner::kNumParameters, []() { return std::make_unique<airwin2rack::GuitarConditioner::GuitarConditioner>(0); }});
+int GuitarConditioner_unused = AirwinRegistry::registerAirwindow({"GuitarConditioner", "Subtlety", "GuitarConditioner is like a Tube Screamer voicing without the squishiness and indistinctness.", airwin2rack::GuitarConditioner::kNumParameters, []() { return std::make_unique<airwin2rack::GuitarConditioner::GuitarConditioner>(0); }});
 #include "autogen_airwin/HardVacuum.h"
-int HardVacuum_unused = AirwinRegistry::registerAirwindow({"HardVacuum", "Saturation", "", airwin2rack::HardVacuum::kNumParameters, []() { return std::make_unique<airwin2rack::HardVacuum::HardVacuum>(0); }});
+int HardVacuum_unused = AirwinRegistry::registerAirwindow({"HardVacuum", "Saturation", "HardVacuum is tube style saturation effects.", airwin2rack::HardVacuum::kNumParameters, []() { return std::make_unique<airwin2rack::HardVacuum::HardVacuum>(0); }});
 #include "autogen_airwin/HermeTrim.h"
 int HermeTrim_unused = AirwinRegistry::registerAirwindow({"HermeTrim", "Subtlety", "HermeTrim is Very Fine Adjustments, otherwise just like EveryTrim.", airwin2rack::HermeTrim::kNumParameters, []() { return std::make_unique<airwin2rack::HermeTrim::HermeTrim>(0); }});
 #include "autogen_airwin/Hermepass.h"
@@ -299,7 +299,7 @@ int Hermepass_unused = AirwinRegistry::registerAirwindow({"Hermepass", "Filter",
 #include "autogen_airwin/HighGlossDither.h"
 int HighGlossDither_unused = AirwinRegistry::registerAirwindow({"HighGlossDither", "Dithers", "HighGlossDither is a hybrid between shiny dither and truncation! Unnatural science experiment.", airwin2rack::HighGlossDither::kNumParameters, []() { return std::make_unique<airwin2rack::HighGlossDither::HighGlossDither>(0); }});
 #include "autogen_airwin/HighImpact.h"
-int HighImpact_unused = AirwinRegistry::registerAirwindow({"HighImpact", "Saturation", "", airwin2rack::HighImpact::kNumParameters, []() { return std::make_unique<airwin2rack::HighImpact::HighImpact>(0); }});
+int HighImpact_unused = AirwinRegistry::registerAirwindow({"HighImpact", "Saturation", "HighImpact is distorted grit and punch without fatness.", airwin2rack::HighImpact::kNumParameters, []() { return std::make_unique<airwin2rack::HighImpact::HighImpact>(0); }});
 #include "autogen_airwin/Highpass.h"
 int Highpass_unused = AirwinRegistry::registerAirwindow({"Highpass", "Filter", "Highpass is a time warp, for retro midrangey sounds.", airwin2rack::Highpass::kNumParameters, []() { return std::make_unique<airwin2rack::Highpass::Highpass>(0); }});
 #include "autogen_airwin/Highpass2.h"
@@ -327,9 +327,9 @@ int Infrasonic_unused = AirwinRegistry::registerAirwindow({"Infrasonic", "Unclas
 #include "autogen_airwin/Interstage.h"
 int Interstage_unused = AirwinRegistry::registerAirwindow({"Interstage", "Subtlety", "Interstage is a subtle and sophisticated analogifier.", airwin2rack::Interstage::kNumParameters, []() { return std::make_unique<airwin2rack::Interstage::Interstage>(0); }});
 #include "autogen_airwin/IronOxide5.h"
-int IronOxide5_unused = AirwinRegistry::registerAirwindow({"IronOxide5", "Tape", "", airwin2rack::IronOxide5::kNumParameters, []() { return std::make_unique<airwin2rack::IronOxide5::IronOxide5>(0); }});
+int IronOxide5_unused = AirwinRegistry::registerAirwindow({"IronOxide5", "Tape", "IronOxide5 is the old school, heavily colored Airwindows tape emulation.", airwin2rack::IronOxide5::kNumParameters, []() { return std::make_unique<airwin2rack::IronOxide5::IronOxide5>(0); }});
 #include "autogen_airwin/IronOxideClassic.h"
-int IronOxideClassic_unused = AirwinRegistry::registerAirwindow({"IronOxideClassic", "Tape", "", airwin2rack::IronOxideClassic::kNumParameters, []() { return std::make_unique<airwin2rack::IronOxideClassic::IronOxideClassic>(0); }});
+int IronOxideClassic_unused = AirwinRegistry::registerAirwindow({"IronOxideClassic", "Tape", "IronOxideClassic is the purer, simpler, early form of Iron Oxide before all the features.", airwin2rack::IronOxideClassic::kNumParameters, []() { return std::make_unique<airwin2rack::IronOxideClassic::IronOxideClassic>(0); }});
 #include "autogen_airwin/IronOxideClassic2.h"
 int IronOxideClassic2_unused = AirwinRegistry::registerAirwindow({"IronOxideClassic2", "Tape", "IronOxideClassic2 is my bandpassy tape sim, updated for high sample rate and aliasing control.", airwin2rack::IronOxideClassic2::kNumParameters, []() { return std::make_unique<airwin2rack::IronOxideClassic2::IronOxideClassic2>(0); }});
 #include "autogen_airwin/Isolator.h"
@@ -341,7 +341,7 @@ int LRFlipTimer_unused = AirwinRegistry::registerAirwindow({"LRFlipTimer", "Ster
 #include "autogen_airwin/LeadAmp.h"
 int LeadAmp_unused = AirwinRegistry::registerAirwindow({"LeadAmp", "Amp Sims", "LeadAmp is an amp sim with a clear, penetrating, vocal tone.", airwin2rack::LeadAmp::kNumParameters, []() { return std::make_unique<airwin2rack::LeadAmp::LeadAmp>(0); }});
 #include "autogen_airwin/LeftoMono.h"
-int LeftoMono_unused = AirwinRegistry::registerAirwindow({"LeftoMono", "Unclassified", "", airwin2rack::LeftoMono::kNumParameters, []() { return std::make_unique<airwin2rack::LeftoMono::LeftoMono>(0); }});
+int LeftoMono_unused = AirwinRegistry::registerAirwindow({"LeftoMono", "Unclassified", "LeftoMono copies one channel to both, losslessly.", airwin2rack::LeftoMono::kNumParameters, []() { return std::make_unique<airwin2rack::LeftoMono::LeftoMono>(0); }});
 #include "autogen_airwin/LilAmp.h"
 int LilAmp_unused = AirwinRegistry::registerAirwindow({"LilAmp", "Amp Sims", "LilAmp is a tiny amp sim, like a little bitty practice amp without that much gain.", airwin2rack::LilAmp::kNumParameters, []() { return std::make_unique<airwin2rack::LilAmp::LilAmp>(0); }});
 #include "autogen_airwin/Logical4.h"
@@ -367,7 +367,7 @@ int Melt_unused = AirwinRegistry::registerAirwindow({"Melt", "Ambience", "Melt i
 #include "autogen_airwin/MidAmp.h"
 int MidAmp_unused = AirwinRegistry::registerAirwindow({"MidAmp", "Amp Sims", "MidAmp is a clean amp sim meant to work like a loud Twin or something of that nature.", airwin2rack::MidAmp::kNumParameters, []() { return std::make_unique<airwin2rack::MidAmp::MidAmp>(0); }});
 #include "autogen_airwin/MidSide.h"
-int MidSide_unused = AirwinRegistry::registerAirwindow({"MidSide", "Unclassified", "", airwin2rack::MidSide::kNumParameters, []() { return std::make_unique<airwin2rack::MidSide::MidSide>(0); }});
+int MidSide_unused = AirwinRegistry::registerAirwindow({"MidSide", "Unclassified", "MidSide is the other side of the EdIsDim mid/side conversion utility plugin.", airwin2rack::MidSide::kNumParameters, []() { return std::make_unique<airwin2rack::MidSide::MidSide>(0); }});
 #include "autogen_airwin/MoNoam.h"
 int MoNoam_unused = AirwinRegistry::registerAirwindow({"MoNoam", "Unclassified", "MoNoam gives you variations on mono, mid, and side in different channels.", airwin2rack::MoNoam::kNumParameters, []() { return std::make_unique<airwin2rack::MoNoam::MoNoam>(0); }});
 #include "autogen_airwin/Mojo.h"
@@ -381,7 +381,7 @@ int Monitoring3_unused = AirwinRegistry::registerAirwindow({"Monitoring3", "Uncl
 #include "autogen_airwin/MultiBandDistortion.h"
 int MultiBandDistortion_unused = AirwinRegistry::registerAirwindow({"MultiBandDistortion", "Unclassified", "MultiBandDistortion is an old weird gnarly sound wrecker :)", airwin2rack::MultiBandDistortion::kNumParameters, []() { return std::make_unique<airwin2rack::MultiBandDistortion::MultiBandDistortion>(0); }});
 #include "autogen_airwin/NCSeventeen.h"
-int NCSeventeen_unused = AirwinRegistry::registerAirwindow({"NCSeventeen", "Unclassified", "", airwin2rack::NCSeventeen::kNumParameters, []() { return std::make_unique<airwin2rack::NCSeventeen::NCSeventeen>(0); }});
+int NCSeventeen_unused = AirwinRegistry::registerAirwindow({"NCSeventeen", "Unclassified", "NCSeventeen is Dirty Loud!", airwin2rack::NCSeventeen::kNumParameters, []() { return std::make_unique<airwin2rack::NCSeventeen::NCSeventeen>(0); }});
 #include "autogen_airwin/NaturalizeDither.h"
 int NaturalizeDither_unused = AirwinRegistry::registerAirwindow({"NaturalizeDither", "Dithers", "NaturalizeDither is deterministic dither that uses Benford Realness calculations for each sample.", airwin2rack::NaturalizeDither::kNumParameters, []() { return std::make_unique<airwin2rack::NaturalizeDither::NaturalizeDither>(0); }});
 #include "autogen_airwin/Neverland.h"
@@ -395,15 +395,15 @@ int Noise_unused = AirwinRegistry::registerAirwindow({"Noise", "Noise", "Noise i
 #include "autogen_airwin/NonlinearSpace.h"
 int NonlinearSpace_unused = AirwinRegistry::registerAirwindow({"NonlinearSpace", "Ambience", "NonlinearSpace is a flexible reverb plugin.", airwin2rack::NonlinearSpace::kNumParameters, []() { return std::make_unique<airwin2rack::NonlinearSpace::NonlinearSpace>(0); }});
 #include "autogen_airwin/NotJustAnotherCD.h"
-int NotJustAnotherCD_unused = AirwinRegistry::registerAirwindow({"NotJustAnotherCD", "Unclassified", "", airwin2rack::NotJustAnotherCD::kNumParameters, []() { return std::make_unique<airwin2rack::NotJustAnotherCD::NotJustAnotherCD>(0); }});
+int NotJustAnotherCD_unused = AirwinRegistry::registerAirwindow({"NotJustAnotherCD", "Unclassified", "NotJustAnotherCD is a next-gen wordlength reducers for 16 bit with DeRez.", airwin2rack::NotJustAnotherCD::kNumParameters, []() { return std::make_unique<airwin2rack::NotJustAnotherCD::NotJustAnotherCD>(0); }});
 #include "autogen_airwin/NotJustAnotherDither.h"
-int NotJustAnotherDither_unused = AirwinRegistry::registerAirwindow({"NotJustAnotherDither", "Dithers", "NotJustAnotherDither is a next-gen wordlength reducers (24 and 16 bit, and DeRez).", airwin2rack::NotJustAnotherDither::kNumParameters, []() { return std::make_unique<airwin2rack::NotJustAnotherDither::NotJustAnotherDither>(0); }});
+int NotJustAnotherDither_unused = AirwinRegistry::registerAirwindow({"NotJustAnotherDither", "Dithers", "NotJustAnotherDither is a next-gen wordlength reducers for 24 bit with DeRez.", airwin2rack::NotJustAnotherDither::kNumParameters, []() { return std::make_unique<airwin2rack::NotJustAnotherDither::NotJustAnotherDither>(0); }});
 #include "autogen_airwin/OneCornerClip.h"
 int OneCornerClip_unused = AirwinRegistry::registerAirwindow({"OneCornerClip", "Clipping", "OneCornerClip is an ultimate full-bandwidth clipper.", airwin2rack::OneCornerClip::kNumParameters, []() { return std::make_unique<airwin2rack::OneCornerClip::OneCornerClip>(0); }});
 #include "autogen_airwin/PDBuss.h"
-int PDBuss_unused = AirwinRegistry::registerAirwindow({"PDBuss", "Consoles", "", airwin2rack::PDBuss::kNumParameters, []() { return std::make_unique<airwin2rack::PDBuss::PDBuss>(0); }});
+int PDBuss_unused = AirwinRegistry::registerAirwindow({"PDBuss", "Consoles", "PDBuss is Console5 and PurestDrive, sittin’ in a tree… (i.e. both at once, on channels and buss)", airwin2rack::PDBuss::kNumParameters, []() { return std::make_unique<airwin2rack::PDBuss::PDBuss>(0); }});
 #include "autogen_airwin/PDChannel.h"
-int PDChannel_unused = AirwinRegistry::registerAirwindow({"PDChannel", "Consoles", "", airwin2rack::PDChannel::kNumParameters, []() { return std::make_unique<airwin2rack::PDChannel::PDChannel>(0); }});
+int PDChannel_unused = AirwinRegistry::registerAirwindow({"PDChannel", "Consoles", "PDChannel is Console5 and PurestDrive, sittin’ in a tree… (i.e. both at once, on channels and buss)", airwin2rack::PDChannel::kNumParameters, []() { return std::make_unique<airwin2rack::PDChannel::PDChannel>(0); }});
 #include "autogen_airwin/Pafnuty.h"
 int Pafnuty_unused = AirwinRegistry::registerAirwindow({"Pafnuty", "Unclassified", "Pafnuty is a Chebyshev filter, that adds harmonics.", airwin2rack::Pafnuty::kNumParameters, []() { return std::make_unique<airwin2rack::Pafnuty::Pafnuty>(0); }});
 #include "autogen_airwin/PaulDither.h"
@@ -449,13 +449,13 @@ int Pressure5_unused = AirwinRegistry::registerAirwindow({"Pressure5", "Dynamics
 #include "autogen_airwin/PurestAir.h"
 int PurestAir_unused = AirwinRegistry::registerAirwindow({"PurestAir", "Unclassified", "PurestAir is a brightness experiment.", airwin2rack::PurestAir::kNumParameters, []() { return std::make_unique<airwin2rack::PurestAir::PurestAir>(0); }});
 #include "autogen_airwin/PurestConsole2Buss.h"
-int PurestConsole2Buss_unused = AirwinRegistry::registerAirwindow({"PurestConsole2Buss", "Consoles", "", airwin2rack::PurestConsole2Buss::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsole2Buss::PurestConsole2Buss>(0); }});
+int PurestConsole2Buss_unused = AirwinRegistry::registerAirwindow({"PurestConsole2Buss", "Consoles", "PurestConsole2Buss is the anti-aliasing version of PurestConsole.", airwin2rack::PurestConsole2Buss::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsole2Buss::PurestConsole2Buss>(0); }});
 #include "autogen_airwin/PurestConsole2Channel.h"
-int PurestConsole2Channel_unused = AirwinRegistry::registerAirwindow({"PurestConsole2Channel", "Consoles", "", airwin2rack::PurestConsole2Channel::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsole2Channel::PurestConsole2Channel>(0); }});
+int PurestConsole2Channel_unused = AirwinRegistry::registerAirwindow({"PurestConsole2Channel", "Consoles", "PurestConsole2Channel is the anti-aliasing version of PurestConsole.", airwin2rack::PurestConsole2Channel::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsole2Channel::PurestConsole2Channel>(0); }});
 #include "autogen_airwin/PurestConsoleBuss.h"
-int PurestConsoleBuss_unused = AirwinRegistry::registerAirwindow({"PurestConsoleBuss", "Consoles", "", airwin2rack::PurestConsoleBuss::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsoleBuss::PurestConsoleBuss>(0); }});
+int PurestConsoleBuss_unused = AirwinRegistry::registerAirwindow({"PurestConsoleBuss", "Consoles", "PurestConsoleBuss is the most free from coloration Console system.", airwin2rack::PurestConsoleBuss::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsoleBuss::PurestConsoleBuss>(0); }});
 #include "autogen_airwin/PurestConsoleChannel.h"
-int PurestConsoleChannel_unused = AirwinRegistry::registerAirwindow({"PurestConsoleChannel", "Consoles", "", airwin2rack::PurestConsoleChannel::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsoleChannel::PurestConsoleChannel>(0); }});
+int PurestConsoleChannel_unused = AirwinRegistry::registerAirwindow({"PurestConsoleChannel", "Consoles", "PurestConsoleChannel is the most free from coloration Console system.", airwin2rack::PurestConsoleChannel::kNumParameters, []() { return std::make_unique<airwin2rack::PurestConsoleChannel::PurestConsoleChannel>(0); }});
 #include "autogen_airwin/PurestDrive.h"
 int PurestDrive_unused = AirwinRegistry::registerAirwindow({"PurestDrive", "Saturation", "PurestDrive is the magic saturation plugin of subtlety and French House tone.", airwin2rack::PurestDrive::kNumParameters, []() { return std::make_unique<airwin2rack::PurestDrive::PurestDrive>(0); }});
 #include "autogen_airwin/PurestEcho.h"
@@ -473,7 +473,7 @@ int PurestWarm2_unused = AirwinRegistry::registerAirwindow({"PurestWarm2", "Subt
 #include "autogen_airwin/Pyewacket.h"
 int Pyewacket_unused = AirwinRegistry::registerAirwindow({"Pyewacket", "Dynamics", "Pyewacket is an old school compressor for high definition transients. Adds no fatness, just energy.", airwin2rack::Pyewacket::kNumParameters, []() { return std::make_unique<airwin2rack::Pyewacket::Pyewacket>(0); }});
 #include "autogen_airwin/RawGlitters.h"
-int RawGlitters_unused = AirwinRegistry::registerAirwindow({"RawGlitters", "Unclassified", "", airwin2rack::RawGlitters::kNumParameters, []() { return std::make_unique<airwin2rack::RawGlitters::RawGlitters>(0); }});
+int RawGlitters_unused = AirwinRegistry::registerAirwindow({"RawGlitters", "Unclassified", "RawGlitters is just the quantization from Dither Me Timbers… and the opposite, as a brightener.", airwin2rack::RawGlitters::kNumParameters, []() { return std::make_unique<airwin2rack::RawGlitters::RawGlitters>(0); }});
 #include "autogen_airwin/RawTimbers.h"
 int RawTimbers_unused = AirwinRegistry::registerAirwindow({"RawTimbers", "Dithers", "RawTimbers is just the quantization from Dither Me Timbers… and the opposite, as a brightener.", airwin2rack::RawTimbers::kNumParameters, []() { return std::make_unique<airwin2rack::RawTimbers::RawTimbers>(0); }});
 #include "autogen_airwin/Recurve.h"
@@ -487,7 +487,7 @@ int Reverb_unused = AirwinRegistry::registerAirwindow({"Reverb", "Ambience", "Re
 #include "autogen_airwin/Righteous4.h"
 int Righteous4_unused = AirwinRegistry::registerAirwindow({"Righteous4", "Unclassified", "Righteous4 is a final output stage for targeting dynamic range.", airwin2rack::Righteous4::kNumParameters, []() { return std::make_unique<airwin2rack::Righteous4::Righteous4>(0); }});
 #include "autogen_airwin/RightoMono.h"
-int RightoMono_unused = AirwinRegistry::registerAirwindow({"RightoMono", "Unclassified", "", airwin2rack::RightoMono::kNumParameters, []() { return std::make_unique<airwin2rack::RightoMono::RightoMono>(0); }});
+int RightoMono_unused = AirwinRegistry::registerAirwindow({"RightoMono", "Unclassified", "RightoMono copies one channel to both, losslessly.", airwin2rack::RightoMono::kNumParameters, []() { return std::make_unique<airwin2rack::RightoMono::RightoMono>(0); }});
 #include "autogen_airwin/Shape.h"
 int Shape_unused = AirwinRegistry::registerAirwindow({"Shape", "Subtlety", "Shape is an asymmetrical waveshaper for peak manipulating.", airwin2rack::Shape::kNumParameters, []() { return std::make_unique<airwin2rack::Shape::Shape>(0); }});
 #include "autogen_airwin/SideDull.h"
@@ -593,7 +593,7 @@ int UltrasonicLite_unused = AirwinRegistry::registerAirwindow({"UltrasonicLite",
 #include "autogen_airwin/UltrasonicMed.h"
 int UltrasonicMed_unused = AirwinRegistry::registerAirwindow({"UltrasonicMed", "Unclassified", "UltrasonicMed is two stages of supersonic filter, for using inside digital mixes.", airwin2rack::UltrasonicMed::kNumParameters, []() { return std::make_unique<airwin2rack::UltrasonicMed::UltrasonicMed>(0); }});
 #include "autogen_airwin/UnBox.h"
-int UnBox_unused = AirwinRegistry::registerAirwindow({"UnBox", "Unclassified", "", airwin2rack::UnBox::kNumParameters, []() { return std::make_unique<airwin2rack::UnBox::UnBox>(0); }});
+int UnBox_unused = AirwinRegistry::registerAirwindow({"UnBox", "Unclassified", "UnBox is a distortion where only the harmonics that don't alias are allowed to distort.", airwin2rack::UnBox::kNumParameters, []() { return std::make_unique<airwin2rack::UnBox::UnBox>(0); }});
 #include "autogen_airwin/VariMu.h"
 int VariMu_unused = AirwinRegistry::registerAirwindow({"VariMu", "Dynamics", "VariMu is a more organic variation on Pressure (a compressor)", airwin2rack::VariMu::kNumParameters, []() { return std::make_unique<airwin2rack::VariMu::VariMu>(0); }});
 #include "autogen_airwin/Verbity.h"
@@ -605,15 +605,15 @@ int Vibrato_unused = AirwinRegistry::registerAirwindow({"Vibrato", "Lo-Fi", "Vib
 #include "autogen_airwin/VinylDither.h"
 int VinylDither_unused = AirwinRegistry::registerAirwindow({"VinylDither", "Dithers", "VinylDither is a high-performance dither that converts digital noise to ‘groove noise’.", airwin2rack::VinylDither::kNumParameters, []() { return std::make_unique<airwin2rack::VinylDither::VinylDither>(0); }});
 #include "autogen_airwin/VoiceOfTheStarship.h"
-int VoiceOfTheStarship_unused = AirwinRegistry::registerAirwindow({"VoiceOfTheStarship", "Noise", "", airwin2rack::VoiceOfTheStarship::kNumParameters, []() { return std::make_unique<airwin2rack::VoiceOfTheStarship::VoiceOfTheStarship>(0); }});
+int VoiceOfTheStarship_unused = AirwinRegistry::registerAirwindow({"VoiceOfTheStarship", "Noise", "VoiceOfTheStarship is a deep noise tone source.", airwin2rack::VoiceOfTheStarship::kNumParameters, []() { return std::make_unique<airwin2rack::VoiceOfTheStarship::VoiceOfTheStarship>(0); }});
 #include "autogen_airwin/VoiceTrick.h"
 int VoiceTrick_unused = AirwinRegistry::registerAirwindow({"VoiceTrick", "Unclassified", "VoiceTrick lets you record vocals while monitoring over speakers.", airwin2rack::VoiceTrick::kNumParameters, []() { return std::make_unique<airwin2rack::VoiceTrick::VoiceTrick>(0); }});
 #include "autogen_airwin/Wider.h"
 int Wider_unused = AirwinRegistry::registerAirwindow({"Wider", "Stereo", "Wider is Airwindows stereo space shaping.", airwin2rack::Wider::kNumParameters, []() { return std::make_unique<airwin2rack::Wider::Wider>(0); }});
 #include "autogen_airwin/XBandpass.h"
-int XBandpass_unused = AirwinRegistry::registerAirwindow({"XBandpass", "Unclassified", "XBandpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::XBandpass::XBandpass>(0); }});
+int XBandpass_unused = AirwinRegistry::registerAirwindow({"XBandpass", "X Filters", "XBandpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::XBandpass::XBandpass>(0); }});
 #include "autogen_airwin/XHighpass.h"
-int XHighpass_unused = AirwinRegistry::registerAirwindow({"XHighpass", "Unclassified", "XHighpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::XHighpass::XHighpass>(0); }});
+int XHighpass_unused = AirwinRegistry::registerAirwindow({"XHighpass", "X Filters", "XHighpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::XHighpass::XHighpass>(0); }});
 #include "autogen_airwin/XLowpass.h"
 int XLowpass_unused = AirwinRegistry::registerAirwindow({"XLowpass", "X Filters", "XLowpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::XLowpass::XLowpass>(0); }});
 #include "autogen_airwin/XNotch.h"
@@ -651,7 +651,7 @@ int ZRegion2_unused = AirwinRegistry::registerAirwindow({"ZRegion2", "Z Filters"
 #include "autogen_airwin/curve.h"
 int curve_unused = AirwinRegistry::registerAirwindow({"curve", "Dynamics", "curve is the simplest, purest form of Recurve with no extra boosts.", airwin2rack::curve::kNumParameters, []() { return std::make_unique<airwin2rack::curve::curve>(0); }});
 #include "autogen_airwin/uLawDecode.h"
-int uLawDecode_unused = AirwinRegistry::registerAirwindow({"uLawDecode", "Unclassified", "", airwin2rack::uLawDecode::kNumParameters, []() { return std::make_unique<airwin2rack::uLawDecode::uLawDecode>(0); }});
+int uLawDecode_unused = AirwinRegistry::registerAirwindow({"uLawDecode", "Consoles", "uLawDecode is a Console-like encode/decode pair, but much more extreme.", airwin2rack::uLawDecode::kNumParameters, []() { return std::make_unique<airwin2rack::uLawDecode::uLawDecode>(0); }});
 #include "autogen_airwin/uLawEncode.h"
-int uLawEncode_unused = AirwinRegistry::registerAirwindow({"uLawEncode", "Unclassified", "", airwin2rack::uLawEncode::kNumParameters, []() { return std::make_unique<airwin2rack::uLawEncode::uLawEncode>(0); }});
+int uLawEncode_unused = AirwinRegistry::registerAirwindow({"uLawEncode", "Consoles", "uLawEncode is a Console-like encode/decode pair, but much more extreme.", airwin2rack::uLawEncode::kNumParameters, []() { return std::make_unique<airwin2rack::uLawEncode::uLawEncode>(0); }});
 int unusedComplete = AirwinRegistry::completeRegistry();

@@ -1,6 +1,6 @@
 # Tube is a tube style SoundBetterIzer using a new algorithm for analog modeling!
 
-ntroducing… Airwindows TUBE.
+Introducing… Airwindows TUBE.
 
 This is your new go-to soundbetterizer! It will make anything you put it on HUGE, and is a new algorithm that’s going to inform everything I do going forward, as well as building on everything I’ve learned to date!
 

@@ -19,6 +19,7 @@ for my $p (@pluginPotentials) {
 # Step 2: Read the categories from airwindopedia
 open(AW, "< libs/airwindows/Airwindopedia.txt") || die "Cant open $!";
 my %cats;
+my $goingcat = $1;
 my $going = 0;
 while (<AW>) {
     next if (m/^\s*$/);
@@ -26,12 +27,22 @@ while (<AW>) {
 
     if ($going) {
         if (m/^(.*):\s*(.*)$/) {
-            my $cat = $1;
-            my @plist = split(",", $2);
+            $goingcat = $1;
+            # Work around typos in the pedia
+            my @plist = split(/[\,\.]/, $2);
 
             foreach my $p (@plist) {
                 $p =~ s/\s*//g;
-                $cats{$p} = $cat;
+                $cats{$p} = $goingcat;
+            }
+        }
+        elsif (m/,/)
+        {
+            my @plist = split(/[\,\.]/);
+
+            foreach my $p (@plist) {
+                $p =~ s/\s*//g;
+                $cats{$p} = $goingcat;
             }
         }
     }
@@ -61,7 +72,8 @@ foreach my $fx (@plugins) {
         die "Can't find fx directory '$fx'";
     }
 
-    print "${fx} ${cat}\n";
+    print "UNCLASSIFIED : $fx\n" if ($cat =~  m/Unclassified/);
+
     #system("perl scripts/import.pl $fx");
 
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
@@ -74,16 +86,34 @@ close OFH;
 
 open(IN, "< libs/airwindows/Airwindopedia.txt");
 my %helpText;
-my $current = "";
+my @currents;
+my $inCurrent = 0;
 while(<IN>)
 {
     if (m/##### (\S+)/)
     {
-        $current = $1;
+        my $current = $1;
         s/(#+)/#/;
-    }
 
-    $helpText{$current} .= $_;
+        if ($inCurrent == 0) {
+            $helpText{$current} .= $_;
+            @currents =($current);
+        }
+        else
+        {
+            $helpText{$current} .= $_;
+            push(@currents, $current);
+        }
+        $inCurrent = 1;
+    }
+    else
+    {
+        $inCurrent = 0;
+        foreach my $cc (@currents) {
+            $helpText{$cc} .= $_;
+        }
+
+    }
 }
 close IN;
 
