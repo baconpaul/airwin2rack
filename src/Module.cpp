@@ -10,8 +10,6 @@
 
 // @TODO: Mono 1 vs Poly performance and voltage sum
 // @TODO: Scroll the Help Area
-// @TODO: Newline in the tooltip text
-
 
 #if ARCH_WIN
 // Sigh. https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472
@@ -194,6 +192,10 @@ struct AW2RModule : virtual rack::Module
             configInput(CV_0 + i, "CV " + std::to_string(i));
         }
 
+        resetAirwinByName("Galactic", true);
+    }
+
+    void onReset(const ResetEvent &e) override {
         resetAirwinByName("Galactic", true);
     }
 
@@ -825,10 +827,68 @@ struct AWJog : rack::Widget
             return;
         auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
         const auto &r = AirwinRegistry::registry[n];
-        toolTip->text = "Load " + r.name + " (" + r.category + ")";
+        toolTip->text = r.name + "\n(" + r.category + ")";
     }
 
     rack::ui::Tooltip *toolTip{nullptr};
+};
+
+struct AWHelp : rack::Widget
+{
+    std::function<bool()> isOpen{[](){return false;}};
+    std::function<void()> toggleHelp{[](){}};
+
+    BufferedDrawFunctionWidget *bdw{nullptr};
+    void setup()
+    {
+        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+                                             [this](auto vg) { drawHelp(vg); });
+        addChild(bdw);
+    }
+    void drawHelp(NVGcontext *vg)
+    {
+        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+
+        if (isOpen())
+        {
+            nvgBeginPath(vg);
+            nvgFillColor(vg, nvgRGB(120, 120, 120));
+            nvgFontFaceId(vg, fid);
+            nvgFontSize(vg, 12);
+            nvgTextAlign(vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+            nvgText(vg, box.size.x * 0.5, box.size.y * 0.5, "?", nullptr);
+        }
+        else
+        {
+            nvgBeginPath(vg);
+            nvgFillColor(vg, nvgRGB(220,220,220));
+            nvgFontFaceId(vg, fid);
+            nvgFontSize(vg, 12);
+            nvgTextAlign(vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+            nvgText(vg, box.size.x * 0.5, box.size.y * 0.5, "?", nullptr);
+        }
+
+    }
+
+    void onButton(const ButtonEvent &e) override {
+        if (e.action == GLFW_PRESS && e.button == GLFW_MOUSE_BUTTON_LEFT)
+        {
+            toggleHelp();
+            e.consume(this);
+        }
+        Widget::onButton(e);
+    }
+
+    bool cacheOpen{false};
+    void step() override
+    {
+        if (cacheOpen != isOpen())
+        {
+            cacheOpen = isOpen();
+            bdw->dirty = true;
+        }
+        rack::Widget::step();
+    }
 };
 
 struct AWSelector : rack::Widget
@@ -845,12 +905,15 @@ struct AWSelector : rack::Widget
         addChild(bdw);
 
         auto asz{jogButttonSize - 1};
+        auto downShift{10};
         leftJ = new AWJog;
         leftJ->module = module;
         leftJ->dir = -1;
         leftJ->box.pos = {1,0};
         leftJ->box.size = box.size;
         leftJ->box.size.x = asz;
+        leftJ->box.pos.y += downShift;
+        leftJ->box.size.y -= downShift;
         leftJ->setup();
         addChild(leftJ);
 
@@ -861,6 +924,8 @@ struct AWSelector : rack::Widget
         rightJ->box.size = box.size;
         rightJ->box.size.x = asz;
         rightJ->box.pos.x = box.size.x - asz - 2;
+        rightJ->box.pos.y += downShift;
+        rightJ->box.size.y -= downShift;
         rightJ->setup();
         addChild(rightJ);
     }
@@ -913,10 +978,10 @@ struct AWSelector : rack::Widget
         {
             nvgBeginPath(vg);
             nvgFillColor(vg, nvgRGB(140,140,140));
-            nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_RIGHT);
+            nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
             nvgFontFaceId(vg, fid);
-            nvgFontSize(vg, 6.5);
-            nvgText(vg, box.size.x - 3, box.size.y - 3, "poly", nullptr);
+            nvgFontSize(vg, 8.5);
+            nvgText(vg, 3, 1, "poly", nullptr);
         }
     }
 
@@ -1014,10 +1079,30 @@ struct AWSelector : rack::Widget
             return;
 
         toolTip = new rack::ui::Tooltip;
-        toolTip->text = module->selectedWhat;
+        toolTip->text = splitTo(module->selectedWhat, 32);
         APP->scene->addChild(toolTip);
     }
 
+
+    std::string splitTo(const std::string &s, int n)
+    {
+        auto q = s;
+        std::ostringstream res;
+        while ((int)q.size() > n)
+        {
+            auto ps = n;
+            while (q[ps] != ' ' && ps > 0)
+                ps--;
+
+            if (ps == 0)
+                return s;
+
+            res << q.substr(0, ps) << "\n";
+            q = q.substr(ps + 1);
+        }
+        res << q;
+        return res.str();
+    }
 
     void onLeave(const LeaveEvent &e) override
     {
@@ -1073,6 +1158,15 @@ struct AW2RModuleWidget : rack::ModuleWidget
         tlab->module = m;
         tlab->setup();
         addChild(tlab);
+
+        auto hs = new AWHelp;
+        hs->box.size = rack::Vec(12,12);
+        hs->box.pos.x = tlab->box.pos.x + tlab->box.size.x - 14;
+        hs->box.pos.y = tlab->box.pos.y + 1;
+        hs->isOpen = [this]() { return helpShowing; };
+        hs->toggleHelp = [this]() { toggleHelp(); };
+        hs->setup();
+        addChild(hs);
 
         auto pPos = headerSize + 1, dPP = 27;
 
@@ -1184,9 +1278,6 @@ struct AW2RModuleWidget : rack::ModuleWidget
                                                 []() { AirwinRegistry::dumpStatsToStdout();}));
 
 #endif
-
-            menu->addChild(rack::createMenuItem(helpShowing ? "Hide Help" : "Show Help", "",
-                                                [this](){toggleHelp();}));
         }
     }
 
