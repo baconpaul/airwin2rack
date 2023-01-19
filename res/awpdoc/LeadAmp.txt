@@ -2,6 +2,6 @@
 
 LeadAmp acts like one of the ‘normal’ ampsims, but leaning more towards the vocal, fluid, Vox-y side of things. It’s a distinctive voice and even though they’re all pretty simple and direct, it’s really obvious how LeadAmp isn’t the same flavor as FireAmp or GrindAmp: distinctly different vibe even though they are all cut from the Airwindows super-direct amp sim cloth.
 
-The Airwindows amp sims are all fairly simple designs: highpass, cascading gain stages with ultrasonic filtering between them (often tuneable so you can suppress aliasing even at low sample rates, but they're meant for 96k use) and a cab simulator on the end that's dynamically convolved but also a truncated, brief section of tone color
+The Airwindows amp sims are all fairly simple designs: highpass, cascading gain stages with ultrasonic filtering between them (often tuneable so you can suppress aliasing even at low sample rates, but they're meant for 96k use) and a cab simulator on the end that's dynamically convolved but also a truncated, brief section of tone color.
 
 

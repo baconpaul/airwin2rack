@@ -8,7 +8,12 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: Scroll the Help Area
+// @TODO: parse new airwindopedia
+// @TODO: Cleanup skin colros AND FONTS to methods
+// @TODO: Scroll the Help Area and fonts
+// @TODO: Cloud perlin
+// @TODO: Lock Icon in Panel (and move poly)
+// @TODO: Custom SVG Port with on/off
 
 #if ARCH_WIN
 // Sigh. https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472

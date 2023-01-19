@@ -1,4 +1,4 @@
-# Unbox is a distortion where only the harmonics that don't alias are allowed to distort.
+# UnBox is a distortion where only the harmonics that don't alias are allowed to distort.
 
 While I’m putting out my library of plugins according to plan, sometimes I need to take a detour into new stuff. UnBox is one example.
 

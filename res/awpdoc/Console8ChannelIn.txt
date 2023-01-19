@@ -1,0 +1,31 @@
+# Console8ChannelIn moves to a channel/submix/buss topology and adds analog simulation.
+
+Yep. Told you I had stuff in the works! ;)
+
+These are subtle things, not meant to be wildly wildly more colored and different from regular digital mix buss. It’s not like an amp sim. BUT, all the same, if you start to seriously listen to the texture and depth and how stuff communicates through Console8 relative to even Console7 much less a straight DAW mix, Console8 pretty much obliterates the rest. I made it because I needed it. I’m going to be using it, lots, and you can use it too: my plugins and digital things are free, Patreon-supported. These are tough times but that’s still working and has become all the more important to commit to.
+
+But what makes Console8 that much better?
+
+Ultrasonic filtering at 24k, distributed among more stages than ever before in a Console version, for extended highs (and it switches off at lower sample rates when it wouldn’t be helping, for lower CPU and more direct sound)
+
+Distributed highpass filtering emulating real analog gear. This is a new filter that doesn’t exist anywhere else and is only part of Console8. It’s more a texture/attitude filter than a sound-shaping filter, and is quite low but its effect is strongly felt.
+
+Distributed, gradiated treble softening across the whole mix topology. The idea is that your inputs are clean and low level, and as we go deeper into the console the levels rise as does the energy level, until the final mix buss is very powerful and pushing any electronics, transformers etc. quite hard. This gives Console8 the ability to do airy subtle sparkle and big roaring powerful energy all at the same time. It should just naturally happen through appropriate mixing. Think big, grand scale.
+
+A new mix topology with much simpler rules for how to set it up, using six dedicated plugins in six places.
+
+ChannelIn, SubIn, and BussIn go FIRST on your channels, submixes, and master buss.
+ChannelOut, SubOut, and BussOut go LAST on your channels, submixes, and master buss.
+All channels must go to a Submix with unity gain between the Out plugins and the In plugin on the submix.
+All submixes must go to the Master Buss with unity gain between the Out plugins and the In plugin on the master buss.
+The output of the BussOut goes directly to your converter, your file etc. and you’re done :)
+
+Don’t use any added processing between BussOut and the file or converter. It uses a version of ClipOnly2 plus a new wordlength reducer that doesn’t exist anywhere else and is a hybrid between my old Ten Nines process and Airwindows Dark. It only does 24 bit and if you must make 16 bit you can add a 16 bit dither (but you don’t need to make 16 bit, this is 2022, come on). This wordlength reducer is specially optimized for Console8, so if you’re using one of my existing Monitoring plugins that applies a wordlength reducer, switch it off when not in use (I’ll produce a ‘plain’ Monitoring that doesn’t interfere, though Monitoring2 is probably going to end up arriving at the same output as Console8BussOut)
+
+I realize this is a lot to take in but in practice it should all just work and fall into place very naturally. The Out plugins all have faders, which are good to assign to midi controllers so you can adjust them with physical controls and not the mouse. I have mine working with a TX-6 :) They’re designed so that 0.5 is unity: less than that fades down to zero, and more than that gives you about 12dB of boost in each stage. That’s also true for the master buss, except it also drives into the ClipOnly2 so it gets a punchier ‘slam’ than the channels and submixes get if you push those.
+
+It’s not really intended for ‘everything is louder than everything else’ overloudenated nonsense but will probably do that better than anything else you can have, especially if you’re trying to get a grand scale on things and not just ear-maiming grit :)
+
+Again, ‘In’ goes first. ‘Out’ goes last. All Channels go to a Sub, all Subs go to the Buss, and you’re done. Easy to explain :)
+
+

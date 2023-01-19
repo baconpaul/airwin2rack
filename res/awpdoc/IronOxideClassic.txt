@@ -1,0 +1,13 @@
+# IronOxideClassic is the purer, simpler, early form of Iron Oxide before all the features.
+
+As promised, here is the 2017-ized version of the pure, sweet, original Iron Oxide. No more grit or tape flutter or noise!
+
+It’s funny how this works. If you’re a commercial developer, and you release a plugin that’s real popular, one thing that happens is people begin asking for more. More features, more variations, this and that and the other. The flutter in Iron Oxide 5 came about that way: it migrated over from ToTape (which is also coming to free VST).
+
+Every new thing added is something lost. But since I’m no longer doing strictly commercial development (it’s steadily all becoming free, backed by my Patreon which allows all this to happen) I can do things like confuse the ‘market’ and release both the feature-full Iron Oxide 5, and the stripped-down Iron Oxide Classic. This one is just like the original: input trim, ips control, and output trim. Better yet, it has the pure unsullied tone of the very first Iron Oxide, only brought up to date so it noise shapes to the 32 bit buss etc.
+
+Even if you liked the grunge factor of the very adjustable Iron Oxide 5 (more controls may be added but bear in mind I have a commitment to release plugins like BussColors, not just keep revising Iron Oxide!) you might want to check this out. And if later versions of Iron Oxide wandered away from what works for you, for instance if you’re making electronic music and needed much cleaner handling of synthetic tones… this is your lucky day!
+
+Hope you like Iron Oxide Classic. It is, truly, one of the Airwindows classics, now for free VST and brought up to date. :)
+
+

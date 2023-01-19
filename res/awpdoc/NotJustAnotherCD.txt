@@ -1,4 +1,4 @@
-# NotJustAnotherDither is a next-gen wordlength reducer at 24 bit, with DeRez.
+# NotJustAnotherCD is a next-gen wordlength reducer at 16 bit, with DeRez.
 
 The votes are in, and the Internet has spoken. We’ve got a name for the new noise shaping variant on Naturalize, after a January of wild suggestions. Seems most people simply wanted to emphasize that this was not your ordinary dither, not your daddy’s TPDF.
 
