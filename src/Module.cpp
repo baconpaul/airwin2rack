@@ -8,11 +8,9 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: parse new airwindopedia
-// @TODO: Cleanup skin colros AND FONTS to methods
+// @TODO: Cleanup skin colors and fonts into methods
 // @TODO: Scroll the Help Area and fonts
 // @TODO: Cloud perlin
-// @TODO: Lock Icon in Panel (and move poly)
 // @TODO: Custom SVG Port with on/off
 
 #if ARCH_WIN
@@ -169,7 +167,7 @@ struct AW2RModule : virtual rack::Module
     };
 
     int nParams{0};
-    std::atomic<bool> polyphonic{false}, lockedType{false};
+    std::atomic<bool> polyphonic{false}, lockedType{false}, randomizeFX{false};
     AW2RModule()
     {
         assert(!AirwinRegistry::registry.empty());
@@ -204,7 +202,7 @@ struct AW2RModule : virtual rack::Module
     }
 
     void onRandomize(const RandomizeEvent &e) override {
-        if (!lockedType)
+        if (randomizeFX && !lockedType)
         {
             auto ri = rand() % (int)(AirwinRegistry::registry.size());
             resetAirwindowTo(ri, true);
@@ -266,6 +264,7 @@ struct AW2RModule : virtual rack::Module
         json_object_set(res, "airwindowSelectedFX", json_string(selectedFX.c_str()));
         json_object_set(res, "polyphonic", json_boolean(polyphonic));
         json_object_set(res, "lockedType", json_boolean(lockedType));
+        json_object_set(res, "randomizeFX", json_boolean(randomizeFX));
         json_object_set(res, "blockSize", json_integer(blockSize));
         return res;
     }
@@ -289,6 +288,12 @@ struct AW2RModule : virtual rack::Module
         {
             auto bl = json_boolean_value(awlt);
             lockedType = bl;
+        }
+        auto awrf = json_object_get(rootJ, "randomizeFX");
+        if (awrf)
+        {
+            auto bl = json_boolean_value(awrf);
+            randomizeFX = bl;
         }
         auto awbs = json_object_get(rootJ, "blockSize");
         if (awbs)
@@ -1054,8 +1059,16 @@ struct AWSelector : rack::Widget
         }
 
         m->addChild(new rack::MenuSeparator);
+        m->addChild(rack::createMenuItem("Pick An Effect At Random", "",
+                                         [this]() {
+                                            auto r = rack::random::u32() % AirwinRegistry::registry.size();
+                                            pushFXChange(module, r);
+                                         }));
+        m->addChild(new rack::MenuSeparator);
         m->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(module->lockedType),
                                             [this]() { module->lockedType = !module->lockedType;}));
+        m->addChild(rack::createMenuItem("Randomize Changes FX Type", CHECKMARK(module->randomizeFX),
+                                         [this]() { module->randomizeFX = !module->randomizeFX;}));
     }
     void createCategoryMenu(rack::Menu *m, const std::string &cat)
     {
@@ -1295,6 +1308,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
             menu->addChild(new rack::MenuSeparator);
             menu->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(awm->lockedType),
                                                 [awm]() { awm->lockedType = !awm->lockedType;}));
+            menu->addChild(rack::createMenuItem("Randomize Changes FX Type", CHECKMARK(awm->randomizeFX),
+                                             [awm]() { awm->randomizeFX = !awm->randomizeFX;}));
 
 #define SHOW_STATS 0
 #if SHOW_STATS
