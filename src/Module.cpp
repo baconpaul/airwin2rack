@@ -8,7 +8,6 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: Mono 1 vs Poly performance and voltage sum
 // @TODO: Scroll the Help Area
 
 #if ARCH_WIN
@@ -199,6 +198,12 @@ struct AW2RModule : virtual rack::Module
         resetAirwinByName("Galactic", true);
     }
 
+    void onRandomize(const RandomizeEvent &e) override {
+        auto ri = rand() % (int)(AirwinRegistry::registry.size());
+        resetAirwindowTo(ri, true);
+        Module::onRandomize(e);
+    }
+
     void resetAirwindowTo(int registryIdx, bool resetValues = true)
     {
         selectedFX = AirwinRegistry::registry[registryIdx].name;
@@ -310,6 +315,8 @@ struct AW2RModule : virtual rack::Module
         else
         {
             monoIO.reset();
+            outputs[OUTPUT_L].setChannels(1);
+            outputs[OUTPUT_R].setChannels(1);
         }
     }
 
@@ -412,6 +419,15 @@ struct AW2RModule : virtual rack::Module
 
         auto rc = inputs[INPUT_R].isConnected() ? INPUT_R : INPUT_L;
 
+        float sv[maxParams];
+        bool isMod[maxParams];
+        for (int i=0;i < nParams; ++i)
+        {
+            sv[i] = paramQuantities[PARAM_0 + i]->getSmoothValue();
+            isMod[i] = inputs[CV_0 + i].isConnected();
+        }
+
+
         for (int c = 0; c<chanCt; ++c)
         {
             polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2;
@@ -421,8 +437,8 @@ struct AW2RModule : virtual rack::Module
             {
                 for (int i = 0; i < nParams; ++i)
                 {
-                    auto pv = paramQuantities[PARAM_0 + i]->getSmoothValue();
-                    if (inputs[CV_0 + i].isConnected())
+                    auto pv = sv[i];
+                    if (isMod[i])
                     {
                         auto v = inputs[CV_0 + i].getVoltage(inputs[CV_0 + i].getChannels() == 1 ? 0 : c) * 0.2 *
                                  params[ATTENUVERTER_0 + i].getValue();
