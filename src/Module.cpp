@@ -199,8 +199,11 @@ struct AW2RModule : virtual rack::Module
     }
 
     void onRandomize(const RandomizeEvent &e) override {
-        auto ri = rand() % (int)(AirwinRegistry::registry.size());
-        resetAirwindowTo(ri, true);
+        if (!lockedType)
+        {
+            auto ri = rand() % (int)(AirwinRegistry::registry.size());
+            resetAirwindowTo(ri, true);
+        }
         Module::onRandomize(e);
     }
 
