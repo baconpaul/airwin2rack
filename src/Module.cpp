@@ -12,74 +12,8 @@
 // @TODO: Scroll the Help Area and fonts
 // @TODO: Cloud perlin
 // @TODO: Custom SVG Port with on/off
-
-#if ARCH_WIN
-// Sigh. https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472
-size_t getline(char **lineptr, size_t *n, FILE *stream)
-{
-    char *bufptr = NULL;
-    char *p = bufptr;
-    size_t size;
-    int c;
-
-    if (lineptr == NULL)
-    {
-        return -1;
-    }
-    if (stream == NULL)
-    {
-        return -1;
-    }
-    if (n == NULL)
-    {
-        return -1;
-    }
-    bufptr = *lineptr;
-    size = *n;
-
-    c = fgetc(stream);
-    if (c == EOF)
-    {
-        return -1;
-    }
-    if (bufptr == NULL)
-    {
-        bufptr = (char *)malloc(128);
-        if (bufptr == NULL)
-        {
-            return -1;
-        }
-        size = 128;
-    }
-    p = bufptr;
-    while (c != EOF)
-    {
-        if ((p - bufptr) > (size - 1))
-        {
-            size = size + 128;
-            bufptr = (char *)realloc(bufptr, size);
-            if (bufptr == NULL)
-            {
-                return -1;
-            }
-            p = bufptr + (size - 128);
-        }
-        *p++ = c;
-        if (c == '\n')
-        {
-            break;
-        }
-        c = fgetc(stream);
-    }
-
-    *p++ = '\0';
-    *lineptr = bufptr;
-    *n = size;
-
-    return p - bufptr - 1;
-}
-#endif
-
+// @TODO: Windows Crash when block size decrease
+// @TODO: Windows Crash on Help
 
 #define MAX_POLY 16
 
@@ -180,7 +114,7 @@ struct AW2RModule : virtual rack::Module
         configBypass(INPUT_L, OUTPUT_L);
         configBypass(INPUT_R, OUTPUT_R);
 
-        configParam(MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS,0,1,0,"Unused");
+        configParam(MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS, 0, 1, 0, "Unused");
 
         for (int i = 0; i < maxParams; ++i)
         {
@@ -197,11 +131,10 @@ struct AW2RModule : virtual rack::Module
         resetAirwinByName("Galactic", true);
     }
 
-    void onReset(const ResetEvent &e) override {
-        resetAirwinByName("Galactic", true);
-    }
+    void onReset(const ResetEvent &e) override { resetAirwinByName("Galactic", true); }
 
-    void onRandomize(const RandomizeEvent &e) override {
+    void onRandomize(const RandomizeEvent &e) override
+    {
         if (randomizeFX && !lockedType)
         {
             auto ri = rand() % (int)(AirwinRegistry::registry.size());
@@ -252,7 +185,7 @@ struct AW2RModule : virtual rack::Module
         }
 
         monoIO.reset();
-        for (int c=0; c<MAX_POLY; ++c)
+        for (int c = 0; c < MAX_POLY; ++c)
             polyIO[c].reset();
 
         resetCount++;
@@ -304,10 +237,7 @@ struct AW2RModule : virtual rack::Module
     }
 
     bool nextPoly{polyphonic};
-    void stagePolyReset(bool b)
-    {
-        nextPoly = b;
-    }
+    void stagePolyReset(bool b) { nextPoly = b; }
 
     void resetPolyphony(bool isPoly)
     {
@@ -320,7 +250,7 @@ struct AW2RModule : virtual rack::Module
         resetAirwinByName(selectedFX, false);
         if (polyphonic)
         {
-            for (int i=0; i<MAX_POLY; ++i)
+            for (int i = 0; i < MAX_POLY; ++i)
             {
                 polyIO[i].reset();
             }
@@ -351,7 +281,8 @@ struct AW2RModule : virtual rack::Module
     struct IOHolder
     {
         IOHolder() { reset(); }
-        void reset() {
+        void reset()
+        {
             memset(indat, 0, 2 * maxBlockSize * sizeof(float));
             memset(outdat, 0, 2 * maxBlockSize * sizeof(float));
             in[0] = &(indat[0]);
@@ -380,11 +311,12 @@ struct AW2RModule : virtual rack::Module
         {
             blockSize = forceBlockSize;
             monoIO.reset();
-            for (int i=0; i<MAX_POLY; ++i)
+            for (int i = 0; i < MAX_POLY; ++i)
                 polyIO[i].reset();
             forceBlockSize = -1;
-        }
 
+            resetAirwinByName(selectedFX, false);
+        }
 
         if (polyphonic)
         {
@@ -434,14 +366,13 @@ struct AW2RModule : virtual rack::Module
 
         float sv[maxParams];
         bool isMod[maxParams];
-        for (int i=0;i < nParams; ++i)
+        for (int i = 0; i < nParams; ++i)
         {
             sv[i] = paramQuantities[PARAM_0 + i]->getSmoothValue();
             isMod[i] = inputs[CV_0 + i].isConnected();
         }
 
-
-        for (int c = 0; c<chanCt; ++c)
+        for (int c = 0; c < chanCt; ++c)
         {
             polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2;
             polyIO[c].in[1][polyIO[c].inPos] = inputs[rc].getVoltage(c) * 0.2;
@@ -453,8 +384,9 @@ struct AW2RModule : virtual rack::Module
                     auto pv = sv[i];
                     if (isMod[i])
                     {
-                        auto v = inputs[CV_0 + i].getVoltage(inputs[CV_0 + i].getChannels() == 1 ? 0 : c) * 0.2 *
-                                 params[ATTENUVERTER_0 + i].getValue();
+                        auto v = inputs[CV_0 + i].getVoltage(
+                                     inputs[CV_0 + i].getChannels() == 1 ? 0 : c) *
+                                 0.2 * params[ATTENUVERTER_0 + i].getValue();
                         pv = std::clamp(pv + v, 0., 1.);
                     }
                     poly_airwin[c]->setParameter(i, pv);
@@ -503,15 +435,18 @@ struct AWSkin
         }
     }
 
-    std::string fontPath;
+    std::string fontPath, fontPathMedium;
     bool initialized{false};
     AWSkin() {}
 
-    void intialize() {
-        if (initialized) return;
+    void intialize()
+    {
+        if (initialized)
+            return;
         initialized = true;
 
         fontPath = rack::asset::plugin(pluginInstance, "res/PlusJakartaSans-SemiBold.ttf");
+        fontPathMedium = rack::asset::plugin(pluginInstance, "res/PlusJakartaSans-Medium.ttf");
         std::string defaultsFile = rack::asset::user("Airwin2Rack/default-skin.json");
         json_error_t error;
         json_t *fd{nullptr};
@@ -547,11 +482,13 @@ void pushFXChange(AW2RModule *module, int newIndex)
     h->moduleId = module->id;
     h->oldModuleJ = module->toJson();
 
-
     module->forceSelect = newIndex;
     // Wait for process to flush
     int ct{0}, ctMax{100000};
-    while (module->forceSelect == -1 && ct < ctMax) { ct++; }
+    while (module->forceSelect == -1 && ct < ctMax)
+    {
+        ct++;
+    }
     if (ct == ctMax)
     {
     }
@@ -565,14 +502,14 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
     bool stripMenuTypein{false};
     PixelKnob()
     {
-        box.size = rack::Vec(px+3, px+3);
+        box.size = rack::Vec(px + 3, px + 3);
         float angleSpreadDegrees = 40.0;
 
         minAngle = -M_PI * (180 - angleSpreadDegrees) / 180;
         maxAngle = M_PI * (180 - angleSpreadDegrees) / 180;
 
-        bdw = new BufferedDrawFunctionWidget(rack::Vec(0,0), box.size,
-                                             [this](auto vg) { drawKnob(vg);});
+        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+                                             [this](auto vg) { drawKnob(vg); });
         addChild(bdw);
     }
 
@@ -667,7 +604,8 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
         rack::Widget::step();
     }
 
-    void appendContextMenu(rack::Menu *menu) override {
+    void appendContextMenu(rack::Menu *menu) override
+    {
         if (stripMenuTypein && menu->children.size() >= 2)
         {
             auto tgt = std::next(menu->children.begin());
@@ -682,7 +620,7 @@ struct AWLabel : rack::Widget
     float px{11};
     std::string label{"label"};
     BufferedDrawFunctionWidget *bdw{nullptr};
-    AWLabel() {  }
+    AWLabel() {}
     void setup()
     {
         bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
@@ -761,7 +699,7 @@ struct AWJog : rack::Widget
             nvgMoveTo(vg, xp, cy);
             nvgLineTo(vg, xp + sx, cy - sx * 0.5);
             nvgLineTo(vg, xp + sx, cy + sx * 0.5);
-            nvgLineTo(vg, xp , cy);
+            nvgLineTo(vg, xp, cy);
         }
         else
         {
@@ -789,9 +727,11 @@ struct AWJog : rack::Widget
         }
     }
 
-    void onButton(const ButtonEvent &e) override {
+    void onButton(const ButtonEvent &e) override
+    {
         Widget::onButton(e);
-        if (module && !module->lockedType && e.action == GLFW_PRESS && e.button == GLFW_MOUSE_BUTTON_LEFT)
+        if (module && !module->lockedType && e.action == GLFW_PRESS &&
+            e.button == GLFW_MOUSE_BUTTON_LEFT)
         {
             // FIXME : move to a static helper somewhere
             auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
@@ -864,8 +804,8 @@ struct AWJog : rack::Widget
 
 struct AWHelp : rack::Widget
 {
-    std::function<bool()> isOpen{[](){return false;}};
-    std::function<void()> toggleHelp{[](){}};
+    std::function<bool()> isOpen{[]() { return false; }};
+    std::function<void()> toggleHelp{[]() {}};
 
     BufferedDrawFunctionWidget *bdw{nullptr};
     void setup()
@@ -890,16 +830,16 @@ struct AWHelp : rack::Widget
         else
         {
             nvgBeginPath(vg);
-            nvgFillColor(vg, nvgRGB(220,220,220));
+            nvgFillColor(vg, nvgRGB(220, 220, 220));
             nvgFontFaceId(vg, fid);
             nvgFontSize(vg, 12);
             nvgTextAlign(vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
             nvgText(vg, box.size.x * 0.5, box.size.y * 0.5, "?", nullptr);
         }
-
     }
 
-    void onButton(const ButtonEvent &e) override {
+    void onButton(const ButtonEvent &e) override
+    {
         if (e.action == GLFW_PRESS && e.button == GLFW_MOUSE_BUTTON_LEFT)
         {
             toggleHelp();
@@ -938,7 +878,7 @@ struct AWSelector : rack::Widget
         leftJ = new AWJog;
         leftJ->module = module;
         leftJ->dir = -1;
-        leftJ->box.pos = {1,0};
+        leftJ->box.pos = {1, 0};
         leftJ->box.size = box.size;
         leftJ->box.size.x = asz;
         leftJ->box.pos.y += downShift;
@@ -949,7 +889,7 @@ struct AWSelector : rack::Widget
         rightJ = new AWJog;
         rightJ->module = module;
         rightJ->dir = 1;
-        rightJ->box.pos = {0,0};
+        rightJ->box.pos = {0, 0};
         rightJ->box.size = box.size;
         rightJ->box.size.x = asz;
         rightJ->box.pos.x = box.size.x - asz - 2;
@@ -1006,7 +946,7 @@ struct AWSelector : rack::Widget
         if (lastPoly)
         {
             nvgBeginPath(vg);
-            nvgFillColor(vg, nvgRGB(140,140,140));
+            nvgFillColor(vg, nvgRGB(140, 140, 140));
             nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
             nvgFontFaceId(vg, fid);
             nvgFontSize(vg, 8.5);
@@ -1059,16 +999,16 @@ struct AWSelector : rack::Widget
         }
 
         m->addChild(new rack::MenuSeparator);
-        m->addChild(rack::createMenuItem("Pick An Effect At Random", "",
-                                         [this]() {
-                                            auto r = rack::random::u32() % AirwinRegistry::registry.size();
-                                            pushFXChange(module, r);
-                                         }));
+        m->addChild(rack::createMenuItem("Pick An Effect At Random", "", [this]() {
+            auto r = rack::random::u32() % AirwinRegistry::registry.size();
+            pushFXChange(module, r);
+        }));
         m->addChild(new rack::MenuSeparator);
         m->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(module->lockedType),
-                                            [this]() { module->lockedType = !module->lockedType;}));
-        m->addChild(rack::createMenuItem("Randomize Changes FX Type", CHECKMARK(module->randomizeFX),
-                                         [this]() { module->randomizeFX = !module->randomizeFX;}));
+                                         [this]() { module->lockedType = !module->lockedType; }));
+        m->addChild(rack::createMenuItem("Randomize Changes FX Type",
+                                         CHECKMARK(module->randomizeFX),
+                                         [this]() { module->randomizeFX = !module->randomizeFX; }));
     }
     void createCategoryMenu(rack::Menu *m, const std::string &cat)
     {
@@ -1086,13 +1026,14 @@ struct AWSelector : rack::Widget
         {
             auto checked = name == module->selectedFX;
             auto mi = rack::createMenuItem(name, CHECKMARK(checked),
-                                             [this, i = idx]() { pushFXChange(module, i); });
+                                           [this, i = idx]() { pushFXChange(module, i); });
             mi->disabled = module->lockedType;
             m->addChild(mi);
         }
     }
 
-    void onHover(const HoverEvent &e) override {
+    void onHover(const HoverEvent &e) override
+    {
         rack::Widget::onHover(e);
         if (!e.isConsumed())
             e.consume(this);
@@ -1119,7 +1060,6 @@ struct AWSelector : rack::Widget
         toolTip->text = splitTo(module->selectedWhat, 32);
         APP->scene->addChild(toolTip);
     }
-
 
     std::string splitTo(const std::string &s, int n)
     {
@@ -1197,7 +1137,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         addChild(tlab);
 
         auto hs = new AWHelp;
-        hs->box.size = rack::Vec(12,12);
+        hs->box.size = rack::Vec(12, 12);
         hs->box.pos.x = tlab->box.pos.x + tlab->box.size.x - 14;
         hs->box.pos.y = tlab->box.pos.y + 1;
         hs->isOpen = [this]() { return helpShowing; };
@@ -1222,7 +1162,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
             auto bp = box.size.x - 60;
             auto k = rack::createParamCentered<PixelKnob<20>>(rack::Vec(bp, pPos + dPP * 0.5),
-                                                                   module, M::PARAM_0 + i);
+                                                              module, M::PARAM_0 + i);
             k->stripMenuTypein = true;
             parKnobs[i] = k;
             addParam(parKnobs[i]);
@@ -1252,7 +1192,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
                                                                M::OUTPUT_R));
     }
 
-    ~AW2RModuleWidget() {
+    ~AW2RModuleWidget()
+    {
         if (helpWidget)
         {
             APP->scene->removeChild(helpWidget);
@@ -1278,7 +1219,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             if (bs == AW2RModule::maxBlockSize)
                 s += " (Less CPU)";
             menu->addChild(rack::createMenuItem(s, CHECKMARK(awm->blockSize == bs),
-                                                [awm, bs](){awm->forceBlockSize = bs;}));
+                                                [awm, bs]() { awm->forceBlockSize = bs; }));
             bs = bs << 1;
         }
     }
@@ -1302,19 +1243,19 @@ struct AW2RModuleWidget : rack::ModuleWidget
                                                 [awm]() { awm->stagePolyReset(true); }));
 
             auto s = "Block Size (" + std::to_string(awm->blockSize) + ")";
-            menu->addChild(rack::createSubmenuItem(s, "",
-                                                   [this](auto m) { blockSizeMenu(m);}));
+            menu->addChild(rack::createSubmenuItem(s, "", [this](auto m) { blockSizeMenu(m); }));
 
             menu->addChild(new rack::MenuSeparator);
             menu->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(awm->lockedType),
-                                                [awm]() { awm->lockedType = !awm->lockedType;}));
-            menu->addChild(rack::createMenuItem("Randomize Changes FX Type", CHECKMARK(awm->randomizeFX),
-                                             [awm]() { awm->randomizeFX = !awm->randomizeFX;}));
+                                                [awm]() { awm->lockedType = !awm->lockedType; }));
+            menu->addChild(rack::createMenuItem("Randomize Changes FX Type",
+                                                CHECKMARK(awm->randomizeFX),
+                                                [awm]() { awm->randomizeFX = !awm->randomizeFX; }));
 
 #define SHOW_STATS 0
 #if SHOW_STATS
             menu->addChild(rack::createMenuItem("Library Stats to Stdout", "",
-                                                []() { AirwinRegistry::dumpStatsToStdout();}));
+                                                []() { AirwinRegistry::dumpStatsToStdout(); }));
 
 #endif
         }
@@ -1325,77 +1266,105 @@ struct AW2RModuleWidget : rack::ModuleWidget
         double ctime;
         HelpWidget()
         {
-            box.size = rack::Vec(400,200);
+            box.size = rack::Vec(400, 200);
             ctime = rack::system::getTime();
         }
 
         float pct = 0;
-        void draw(const DrawArgs &args) override {
+        void draw(const DrawArgs &args) override
+        {
             auto vg = args.vg;
             int margin{3};
             nvgBeginPath(vg);
             nvgRect(vg, 0, 0, box.size.x, box.size.y);
-            nvgFillColor(vg, nvgRGB(180,180,180));
+            nvgFillColor(vg, nvgRGB(180, 180, 180));
             nvgFill(vg);
 
             nvgBeginPath(vg);
             nvgRect(vg, margin, margin, box.size.x - 2 * margin, box.size.y - 2 * margin);
-            nvgFillColor(vg, nvgRGB(20,20,20));
+            nvgFillColor(vg, nvgRGB(20, 20, 20));
             nvgFill(vg);
 
             int yp = 3;
             auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+            auto fidm = APP->window->loadFont(skinManager.fontPathMedium)->handle;
 
             nvgBeginPath(vg);
-            nvgFillColor(vg, nvgRGB(225,225,230));
+            nvgFillColor(vg, nvgRGB(225, 225, 230));
             nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
+
+            float bnd[6];
+            nvgSave(vg);
+            nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
+            nvgFontSize(vg, 14);
+            nvgFontFaceId(vg, fid);
+            nvgScissor(vg, margin + 2, margin + 2,
+                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                       box.size.y / APP->scene->rackScroll->getZoom() - 2 * (margin + 2));
+            nvgTextBox(vg, margin + 2, margin + 2,
+                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                       helpTitle.c_str(), nullptr);
+            nvgTextBoxBounds(vg, margin + 2, margin + 2,
+                             box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                             helpTitle.c_str(), nullptr, bnd);
+            nvgRestore(vg);
 
             nvgSave(vg);
             nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
             nvgFontSize(vg, 10);
-            nvgFontFaceId(vg, fid);
-            nvgScissor(vg, margin + 2, margin + 2, box.size.x/APP->scene->rackScroll->getZoom() - 2 * (margin + 2), box.size.y / APP->scene->rackScroll->getZoom() - 2 * (margin + 2));
-            nvgTextBox(vg, margin + 2, margin + 2, box.size.x/APP->scene->rackScroll->getZoom() - 2 * (margin + 2), helpText.c_str(), nullptr);
+            nvgFontFaceId(vg, fidm);
+            nvgScissor(vg, margin + 2, margin + 2,
+                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                       box.size.y / APP->scene->rackScroll->getZoom() - 2 * (margin + 2));
+            nvgTextBox(vg, margin + 2, bnd[3] / APP->scene->rackScroll->getZoom() + margin + 2,
+                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                       helpText.c_str(), nullptr);
             nvgRestore(vg);
         }
 
-        std::string helpText;
+        std::string helpTitle, helpText;
         void setFX(const std::string &s)
         {
-            helpText= "";
+            helpText = "";
             auto fxp = rack::asset::plugin(pluginInstance, "res/awpdoc/" + s + ".txt");
-            auto fp = fopen(fxp.c_str(), "r");
-            if (fp)
+            try
             {
+                auto rf = rack::system::readFile(fxp);
                 std::ostringstream oss;
-                while (!feof(fp))
+                for (const auto &d : rf)
                 {
-                    char *ln{nullptr};
-                    size_t sz{0};
-                    auto res = getline(&ln, &sz, fp);
-
-                    if (res > 0)
-                    {
-                        auto curr = ln;
-                        while (*curr != '\0')
-                        {
-                            if (*curr == '\r' || *curr == '\n')
-                                *curr = '\0';
-                            else
-                                curr ++;
-                        }
-                        if (ln[0] == '#')
-                            oss << ln + 2 << "\n";
-                        else
-                            oss << ln << "\n";
-                    }
-                    if (ln)
-                        free(ln);
+                    if (d != '\r')
+                        oss << (char)d;
                 }
-                helpText = oss.str();
-                fclose(fp);
+
+                std::stringstream ss(oss.str());
+                std::string token;
+                std::vector<std::string> tokens;
+                while (std::getline(ss, token, '\n'))
+                {
+                    tokens.push_back(token);
+                }
+
+                if (tokens.empty())
+                {
+                }
+                else if (tokens.size() < 2)
+                {
+                    helpTitle = tokens[0];
+                }
+                else
+                {
+                    helpTitle = tokens[0];
+                    int start = tokens[1].empty() ? 1 : 2;
+                    helpText = "";
+                    for (int i = start; i < (int)tokens.size(); ++i)
+                        helpText += tokens[i] + "\n";
+                }
+
+                if (helpTitle[0] == '#')
+                    helpTitle = helpTitle.substr(2);
             }
-            else
+            catch (const rack::Exception &e)
             {
                 helpText = "No Help Available for " + s;
             }
@@ -1403,11 +1372,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             resetBounds();
         }
 
-
-        void resetBounds()
-        {
-
-        }
+        void resetBounds() {}
 
         float lastZoom{1.f};
         void step() override
@@ -1419,7 +1384,6 @@ struct AW2RModuleWidget : rack::ModuleWidget
             lastZoom = APP->scene->rackScroll->getZoom();
         }
     };
-
 
     HelpWidget *helpWidget{nullptr};
     bool helpShowing{false};
@@ -1490,7 +1454,6 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgFill(vg);
         nvgStroke(vg);
 
-
         auto dc = box.size.x * 0.11;
 
         nvgBeginPath(vg);
@@ -1520,7 +1483,6 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "OUT", nullptr);
         nvgText(vg, box.size.x * 0.75 - dc, box.size.y - cutPoint + 38, "L", nullptr);
         nvgText(vg, box.size.x * 0.75 + dc, box.size.y - cutPoint + 38, "R", nullptr);
-
 
         // Brand
         nvgBeginPath(vg);
@@ -1611,7 +1573,6 @@ struct AW2RModuleWidget : rack::ModuleWidget
         {
             helpWidget->setFX(awm->selectedFX);
         }
-
     }
 };
 
