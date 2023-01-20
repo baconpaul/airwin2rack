@@ -12,8 +12,6 @@
 // @TODO: Scroll the Help Area and fonts
 // @TODO: Cloud perlin
 // @TODO: Custom SVG Port with on/off
-// @TODO: Windows Crash when block size decrease
-// @TODO: Windows Crash on Help
 
 #define MAX_POLY 16
 
@@ -289,6 +287,8 @@ struct AW2RModule : virtual rack::Module
             in[1] = &(indat[maxBlockSize]);
             out[0] = &(outdat[0]);
             out[1] = &(outdat[maxBlockSize]);
+            inPos = 0;
+            outPos = 0;
         }
 
         float *in[2], *out[2];
@@ -333,7 +333,7 @@ struct AW2RModule : virtual rack::Module
         monoIO.in[0][monoIO.inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
         monoIO.in[1][monoIO.inPos] = inputs[rc].getVoltageSum() * 0.2;
         monoIO.inPos++;
-        if (monoIO.inPos == blockSize)
+        if (monoIO.inPos >= blockSize)
         {
             for (int i = 0; i < nParams; ++i)
             {
@@ -377,7 +377,7 @@ struct AW2RModule : virtual rack::Module
             polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2;
             polyIO[c].in[1][polyIO[c].inPos] = inputs[rc].getVoltage(c) * 0.2;
             polyIO[c].inPos++;
-            if (polyIO[c].inPos == blockSize)
+            if (polyIO[c].inPos >= blockSize)
             {
                 for (int i = 0; i < nParams; ++i)
                 {
