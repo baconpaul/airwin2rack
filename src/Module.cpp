@@ -945,6 +945,24 @@ struct AWSelector : rack::Widget
         addChild(rightJ);
     }
 
+
+    struct SearchField : rack::ui::TextField
+    {
+        rack::WeakPtr<rack::ui::Menu> menu{nullptr};
+        rack::WeakPtr<AWSelector> selector{nullptr};
+        std::string lastText{};
+        void step() override {
+            if (text != lastText)
+            {
+                if (selector)
+                    selector->resetMenuForSearch(text, menu);
+            }
+            lastText = text;
+            // Keep selected
+            APP->event->setSelectedWidget(this);
+            TextField::step();
+        }
+    };
     void drawSelector(NVGcontext *vg)
     {
         // auto fid = APP->window->loadFont(fontPath)->handle;
@@ -1038,6 +1056,80 @@ struct AWSelector : rack::Widget
         auto m = rack::createMenu();
         m->addChild(rack::createMenuLabel("Airwindows Selector"));
         m->addChild(new rack::MenuSeparator);
+
+        m->addChild(rack::createMenuLabel("Search"));
+        auto sf = new SearchField;
+        sf->box.size.x = 100;
+        sf->menu = m;
+        sf->selector = this;
+        m->addChild(sf);
+
+        m->addChild(new rack::MenuSeparator);
+        buildCategoryMenuOnto(m);
+    }
+
+    void resetMenuForSearch(const std::string &msg, rack::Menu *m)
+    {
+        if (!m)
+            return;
+        // First entries are label separator label search separator
+        auto pos = m->children.begin();
+        for (int i=0; i<5 && pos != m->children.end(); ++i)
+            pos = std::next(pos);
+
+        std::vector<rack::Widget *> toDelete;
+        while (pos != m->children.end())
+        {
+            toDelete.push_back(*pos);
+            pos = std::next(pos);
+        }
+        for (const auto &p : toDelete)
+        {
+            m->removeChild(p);
+            delete p;
+        }
+        if (msg.empty())
+        {
+            buildCategoryMenuOnto(m);
+        }
+        else
+        {
+            auto st = rack::string::lowercase(msg);
+            std::map<std::string, int> result;
+            for (auto i=0U; i<AirwinRegistry::registry.size(); ++i)
+            {
+                const auto &r = AirwinRegistry::registry[i];
+                auto tg = rack::string::lowercase(r.name);
+                if (tg.find(st) != std::string::npos)
+                    result[r.name] = i;
+            }
+
+            int maxEntries = 50;
+
+            if (result.empty())
+            {
+                m->addChild(rack::createMenuLabel("No Match: '" + msg + "'"));
+            }
+            else
+            {
+                int ct = 0;
+                for (const auto &[name, index] : result)
+                {
+                    if (ct++ > maxEntries)
+                        break;
+                    m->addChild(rack::createMenuItem(name, "",
+                                                     [this, i = index](){ pushFXChange(module, i);}));
+                }
+                if (ct > maxEntries)
+                {
+                    m->addChild(rack::createMenuLabel("More matches..."));
+                }
+            }
+        }
+    }
+
+    void buildCategoryMenuOnto(rack::Menu *m)
+    {
         for (const auto &cat : AirwinRegistry::categories)
         {
             m->addChild(rack::createSubmenuItem(
