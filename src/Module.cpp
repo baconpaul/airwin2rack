@@ -1115,9 +1115,10 @@ struct AWSelector : rack::Widget
                 int ct = 0;
                 for (const auto &[name, index] : result)
                 {
+                    const auto &r = AirwinRegistry::registry[index];
                     if (ct++ > maxEntries)
                         break;
-                    m->addChild(rack::createMenuItem(name, "",
+                    m->addChild(rack::createMenuItem(name, r.category,
                                                      [this, i = index](){ pushFXChange(module, i);}));
                 }
                 if (ct > maxEntries)
