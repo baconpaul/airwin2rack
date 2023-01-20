@@ -1050,9 +1050,9 @@ struct AWSelector : rack::Widget
             pushFXChange(module, r);
         }));
         m->addChild(new rack::MenuSeparator);
-        m->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(module->lockedType),
+        m->addChild(rack::createMenuItem("Lock Effect Choice", CHECKMARK(module->lockedType),
                                          [this]() { module->lockedType = !module->lockedType; }));
-        m->addChild(rack::createMenuItem("Randomize Changes FX Type",
+        m->addChild(rack::createMenuItem("Randomize Changes FX Choice",
                                          CHECKMARK(module->randomizeFX),
                                          [this]() { module->randomizeFX = !module->randomizeFX; }));
     }
@@ -1292,9 +1292,9 @@ struct AW2RModuleWidget : rack::ModuleWidget
             menu->addChild(rack::createSubmenuItem(s, "", [this](auto m) { blockSizeMenu(m); }));
 
             menu->addChild(new rack::MenuSeparator);
-            menu->addChild(rack::createMenuItem("Lock Effect Type", CHECKMARK(awm->lockedType),
+            menu->addChild(rack::createMenuItem("Lock Effect Choice", CHECKMARK(awm->lockedType),
                                                 [awm]() { awm->lockedType = !awm->lockedType; }));
-            menu->addChild(rack::createMenuItem("Randomize Changes FX Type",
+            menu->addChild(rack::createMenuItem("Randomize Changes FX Choice",
                                                 CHECKMARK(awm->randomizeFX),
                                                 [awm]() { awm->randomizeFX = !awm->randomizeFX; }));
 
