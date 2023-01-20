@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" viewBox="0 0 30.236219 30.236219" height="8mm" width="8mm" data-name="Layer 2" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs859">
+    <linearGradient gradientUnits="userSpaceOnUse" gradientTransform="rotate(90,-611.00348,-374.83989)" y2="-997.18188" x2="-224.82619" y1="-997.18188" x1="-213.48677" id="linear-gradient">
+      <stop id="stop833" stop-color="#fff" offset="0"/>
+      <stop id="stop835" stop-opacity="0" stop-color="#fff" offset="1"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" gradientTransform="rotate(90,-611.00348,-374.83989)" y2="-997.18188" x2="-213.48677" y1="-997.18188" x1="-236.16393" id="linear-gradient-2">
+      <stop id="stop838" stop-color="#686868" offset="0"/>
+      <stop id="stop840" stop-color="#545454" offset="1"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" gradientTransform="rotate(90,-611.00348,-374.83989)" y2="-997.18188" x2="-213.93266" y1="-997.18188" x1="-235.71803" id="linear-gradient-3">
+      <stop id="stop843" stop-color="#787878" offset="0"/>
+      <stop id="stop845" stop-color="#666666" offset="1"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" gradientTransform="rotate(90,1803.3005,1368.0003)" y2="3159.9622" x2="455.55838" y1="3159.9622" x1="437.71921" id="linear-gradient-4">
+      <stop id="stop848" stop-color="#6b6b6b" offset="0.0056"/>
+      <stop id="stop850" stop-color="#a2a2a2" offset="1"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" gradientTransform="rotate(90,1803.3005,1368.0003)" y2="3159.9622" x2="454.00858" y1="3159.9622" x1="439.26901" id="linear-gradient-5">
+      <stop id="stop853" stop-color="#6b6b6b" offset="0"/>
+      <stop id="stop855" stop-color="#383838" offset="1"/>
+    </linearGradient>
+    <linearGradient gradientTransform="rotate(-90,1803.3005,1368.0003)" y2="-423.96167" x2="3165.5637" y1="-423.96167" x1="3154.3608" id="linear-gradient-6" xlink:href="#linear-gradient-5"/>
+    <linearGradient y2="3159.9622" x2="454.00858" y1="3159.9622" x1="439.26901" gradientTransform="rotate(90,1803.3005,1368.0003)" gradientUnits="userSpaceOnUse" id="linearGradient884" xlink:href="#linear-gradient-5"/>
+  </defs>
+  <g transform="scale(1.3333341)" id="JACKS">
+    <g id="g876">
+      <path style="opacity:0.18;fill:url(#linear-gradient)" d="m 22.67715,11.33774 c 0,6.26414 -5.07703,11.33941 -11.33774,11.3394 C 5.07785,22.67714 0,17.60188 0,11.33773" id="path5961-3"/>
+      <path style="fill:url(#linear-gradient-2)" d="M 0,11.33773 C 0,5.0761 5.07786,0 11.33941,0 c 6.26072,0 11.33774,5.0761 11.33774,11.33774 0,6.26414 -5.07703,11.33941 -11.33774,11.3394 C 5.07785,22.67714 0,17.60188 0,11.33773" data-name="path5961-3" id="path5961-3-2"/>
+      <path style="fill:url(#linear-gradient-3)" d="m 0.44589,11.33777 c 0,-6.0154 4.87817,-10.89188 10.89349,-10.89188 6.01451,0 10.89188,4.87649 10.89188,10.89189 0,6.0178 -4.87737,10.89348 -10.89188,10.89348 -6.01531,0 -10.89348,-4.87568 -10.89348,-10.89349" data-name="path5961-3" id="path5961-3-3"/>
+      <circle id="circle864" style="fill:url(#linear-gradient-4)" r="8.9194298" cy="11.33857" cx="11.33857"/>
+      <circle id="circle866" r="8.4541702" cy="11.33857" cx="11.33857"/>
+      <circle id="circle868" style="fill:url(#linearGradient884)" r="7.3696499" cy="11.33857" cx="11.33857"/>
+      <circle id="circle870" style="fill:#525252" r="6.9409199" cy="11.33857" cx="11.33857"/>
+      <circle id="circle872" style="fill:url(#linear-gradient-6)" r="5.6013799" cy="11.33857" cx="11.33857"/>
+      <circle id="circle874" r="5.0725002" cy="11.33857" cx="11.33857"/>
+    </g>
+  </g>
+</svg>

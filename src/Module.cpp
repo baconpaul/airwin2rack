@@ -11,7 +11,6 @@
 // @TODO: Cleanup skin colors and fonts into methods
 // @TODO: Scroll the Help Area and fonts
 // @TODO: Cloud perlin
-// @TODO: Custom SVG Port with on/off
 
 #define MAX_POLY 16
 
@@ -474,6 +473,53 @@ struct AWSkin
 };
 
 AWSkin skinManager;
+
+
+struct AWPort : public rack::app::SvgPort
+{
+    AWPort() { setPortActive(true); }
+
+    bool active{true};
+    void setPortActive(bool b)
+    {
+        active=b;
+        if (skinManager.skin == AWSkin::DARK)
+        {
+            if (b)
+            {
+                setSvg(rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_on.svg")));
+            }
+            else
+            {
+                setSvg(rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_off.svg")));
+            }
+        }
+        else
+        {
+            if (b)
+            {
+                setSvg(rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_on_light.svg")));
+            }
+            else
+            {
+                setSvg(rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_off_light.svg")));
+            }
+        }
+    }
+
+    AWSkin::Skin lastSkin{AWSkin::DARK};
+    void step() override
+    {
+        bool dirty{false};
+        if (lastSkin != skinManager.skin)
+            setPortActive(active);
+        lastSkin = skinManager.skin;
+
+        rack::Widget::step();
+    }
+
+};
+
 
 void pushFXChange(AW2RModule *module, int newIndex)
 {
@@ -1106,7 +1152,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
     std::array<AWLabel *, M::maxParams> parLabels;
     std::array<rack::ParamWidget *, M::maxParams> parKnobs, attenKnobs;
-    std::array<rack::PortWidget *, M::maxParams> cvPorts;
+    std::array<AWPort *, M::maxParams> cvPorts;
 
     std::shared_ptr<rack::Svg> clipperSvg;
     BufferedDrawFunctionWidget *bg{nullptr};
@@ -1171,7 +1217,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
                 rack::Vec(bp + 20, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
             addParam(attenKnobs[i]);
 
-            cvPorts[i] = rack::createInputCentered<rack::PJ301MPort>(
+            cvPorts[i] = rack::createInputCentered<AWPort>(
                 rack::Vec(bp + 42, pPos + dPP * 0.5), module, M::CV_0 + i);
             addInput(cvPorts[i]);
 
@@ -1183,12 +1229,12 @@ struct AW2RModuleWidget : rack::ModuleWidget
         auto dc = box.size.x * 0.11;
         auto c2 = box.size.x * 0.75;
         addInput(
-            rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c1 - dc, q), module, M::INPUT_L));
+            rack::createInputCentered<AWPort>(rack::Vec(c1 - dc, q), module, M::INPUT_L));
         addInput(
-            rack::createInputCentered<rack::PJ301MPort>(rack::Vec(c1 + dc, q), module, M::INPUT_R));
-        addOutput(rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2 - dc, q), module,
+            rack::createInputCentered<AWPort>(rack::Vec(c1 + dc, q), module, M::INPUT_R));
+        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 - dc, q), module,
                                                                M::OUTPUT_L));
-        addOutput(rack::createOutputCentered<rack::PJ301MPort>(rack::Vec(c2 + dc, q), module,
+        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 + dc, q), module,
                                                                M::OUTPUT_R));
     }
 
@@ -1560,6 +1606,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             parKnobs[i]->setVisible(true);
             attenKnobs[i]->setVisible(true);
             cvPorts[i]->setVisible(true);
+            cvPorts[i]->setPortActive(true);
         }
         for (int i = np; i < M::maxParams; ++i)
         {
@@ -1567,6 +1614,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             parKnobs[i]->setVisible(false);
             attenKnobs[i]->setVisible(false);
             cvPorts[i]->setVisible(true);
+            cvPorts[i]->setPortActive(false);
         }
 
         if (helpWidget)
