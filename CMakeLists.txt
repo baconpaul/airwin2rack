@@ -12,12 +12,18 @@ include(RackSDK.cmake)
 message(STATUS "AirwinRackAdapter for Rack Build Process" )
 message(STATUS "Installing into '${CMAKE_INSTALL_PREFIX}'")
 
-file(GLOB SOURCES src/*.cpp src/autogen_airwin/*.cpp)
+include(src/autogen_airwin/CMakeLists.txt)
 add_compile_options(-fvisibility=hidden -fvisibility-inlines-hidden)
 
 target_include_directories(${RACK_PLUGIN_LIB} PRIVATE src src/autogen_airwin/)
 target_sources(${RACK_PLUGIN_LIB} PRIVATE
-        ${SOURCES})
+        src/Airwin2Rack.cpp
+        src/AirwinRegistry.cpp
+        src/Module.cpp
+        src/airwin2rackbase.cpp
+
+        ${AIRWIN_SOURCES}
+        )
 
 target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-suggest-override -Wno-multichar -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
 

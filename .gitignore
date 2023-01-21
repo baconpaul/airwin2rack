@@ -13,3 +13,4 @@ src/.#*
 .idea
 dep/
 cmake-build*
+ignore/

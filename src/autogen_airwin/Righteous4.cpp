@@ -222,4 +222,18 @@ bool Righteous4::getProductString(char* text) {
 bool Righteous4::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Righteous4::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 28.0) / (24.0); } return b; break; }
+
+    }
+    return false;
+}
+bool Righteous4::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+
+    }
+    return false;
+}
 } // end namespace

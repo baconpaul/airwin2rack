@@ -32,9 +32,9 @@
       <circle id="circle864" style="fill:url(#linear-gradient-4)" r="8.9194298" cy="11.33857" cx="11.33857"/>
       <circle id="circle866" r="8.4541702" cy="11.33857" cx="11.33857" style="fill: rgb(165, 165, 165);"/>
       <circle id="circle868" style="fill:url(#linearGradient884)" r="7.3696499" cy="11.33857" cx="11.33857"/>
-      <circle id="circle870" style="fill:#525252" r="6.9409199" cy="11.33857" cx="11.33857"/>
+      <circle id="circle870" style="fill:#626262" r="6.9409199" cy="11.33857" cx="11.33857"/>
       <circle id="circle872" style="fill:url(#linear-gradient-6)" r="5.6013799" cy="11.33857" cx="11.33857"/>
-      <circle id="circle874" r="5.0725002" cy="11.33857" cx="11.33857" style="fill: rgb(165, 165, 165);"/>
+      <circle id="circle874" r="5.0725002" cy="11.33857" cx="11.33857" style="fill: rgb(50,50,55);"/>
     </g>
   </g>
 </svg>

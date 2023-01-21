@@ -144,4 +144,18 @@ bool BiquadOneHalf::getProductString(char* text) {
 bool BiquadOneHalf::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool BiquadOneHalf::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamD: { auto b = string2float(text, value); if (b) { value = (value + 1.0) / (2.0); } return b; break; }
+
+    }
+    return false;
+}
+bool BiquadOneHalf::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamD: return true;
+
+    }
+    return false;
+}
 } // end namespace

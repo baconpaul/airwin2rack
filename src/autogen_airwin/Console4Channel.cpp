@@ -187,4 +187,16 @@ bool Console4Channel::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen);
     return true;
 }
+bool Console4Channel::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+
+    }
+    return false;
+}
+bool Console4Channel::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+
+    }
+    return false;
+}
 } // end namespace

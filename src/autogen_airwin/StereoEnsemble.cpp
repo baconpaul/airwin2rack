@@ -179,4 +179,20 @@ bool StereoEnsemble::getProductString(char* text) {
 bool StereoEnsemble::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool StereoEnsemble::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool StereoEnsemble::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

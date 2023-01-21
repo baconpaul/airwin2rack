@@ -155,4 +155,18 @@ bool NotJustAnotherDither::getProductString(char* text) {
 bool NotJustAnotherDither::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool NotJustAnotherDither::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool NotJustAnotherDither::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

@@ -137,4 +137,20 @@ bool Baxandall2::getProductString(char* text) {
 bool Baxandall2::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Baxandall2::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 24.0) / (48.0); } return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = (value + 24.0) / (48.0); } return b; break; }
+
+    }
+    return false;
+}
+bool Baxandall2::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

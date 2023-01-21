@@ -153,4 +153,26 @@ bool HardVacuum::getProductString(char* text) {
 bool HardVacuum::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool HardVacuum::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = value / (2.0); } return b; break; }
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+    case kParamC: { auto b = string2float(text, value); return b; break; }
+    case kParamD: { auto b = string2float(text, value); return b; break; }
+    case kParamE: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool HardVacuum::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+        case kParamB: return true;
+        case kParamC: return true;
+        case kParamD: return true;
+        case kParamE: return true;
+
+    }
+    return false;
+}
 } // end namespace

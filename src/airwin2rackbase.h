@@ -1,6 +1,10 @@
-//
-// Created by Paul Walker on 11/16/22.
-//
+/*
+* Airwin2Rack - an adaptation of the airwindows effect suite for VCVRack
+*
+* This source released under the MIT License, found in ~/LICENSE.md.
+*
+* Copyright 2023 by the authors as described in the github transaction log
+*/
 
 #ifndef AIRWIN2_RACK_AIRWIN2RACKBASE_H
 #define AIRWIN2_RACK_AIRWIN2RACKBASE_H
@@ -40,6 +44,9 @@ struct Airwin2RackBase {
     virtual void getParameterName(VstInt32 index, char *text) = 0;  // label for the parameter (eg dB)
     virtual void getParameterDisplay(VstInt32 index, char *text) = 0; // text description of the current value
 
+    virtual bool parameterTextToValue(VstInt32 index, const char *text, float &value) { return false; }
+    virtual bool canConvertParameterTextToValue(VstInt32 index) { return false; }
+
 };
 
 typedef Airwin2RackBase AudioEffectX;
@@ -51,6 +58,8 @@ inline void vst_strncpy(char *dst, const char *src, int n) {
 inline void float2string(float f, char *txt, int n) {
     snprintf(txt, n, "%8.4f", f);
 }
+bool string2float(const char *txt, float &f);
+
 inline void int2string( int i, char *t, size_t num ) {
     snprintf( t, num, "%d", i );
 }
@@ -60,5 +69,7 @@ inline void dB2string( float value, char *t, size_t num ) {
     else
         float2string ((float)(20.0 * log10 (value)), t, num);
 }
+bool string2dBNorm(const char *txt, float &f);
+
 
 #endif //AIRWIN2_RACK_HACK_AIRWIN2RACKBASE_H

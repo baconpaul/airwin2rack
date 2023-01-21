@@ -6,6 +6,14 @@ with the [Surge Synth Team](https://surge-synthesizer.github.io).
 
 Have fun!
 
+## Notes on building
+
+We are using @qno's excellent cmake SDK. This means the makefile works
+like any other rack project. 
+
+But if you pull and want to clean build, make sure to run both the `clean` and `cleandep`
+targets to rebuild fully.
+
 ## Updating the airwindows sub-library
 
 To update the airwindows library
@@ -13,13 +21,11 @@ To update the airwindows library
 1. Pull to the latest airwindows plugins
 
 ```bash
-cd libs/airwindows
-git pull origin master
-cd ../..
+./scripts/updateToLatest.sh
 ```
-2. run `scripts/configure.pl`. This will read the latest airwindowpedia and what.txt from the git repo
 3. Do a test build
 ```bash
+RACK_DIR=(path-to-sdk) make -j cleandep
 RACK_DIR=(path-to-sdk) make -j clean
 RACK_DIR=(path-to-sdk) make -j install
 ```

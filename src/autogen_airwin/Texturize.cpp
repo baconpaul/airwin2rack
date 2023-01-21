@@ -151,4 +151,22 @@ bool Texturize::getProductString(char* text) {
 bool Texturize::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Texturize::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+    case kParamC: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool Texturize::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+        case kParamB: return true;
+        case kParamC: return true;
+
+    }
+    return false;
+}
 } // end namespace

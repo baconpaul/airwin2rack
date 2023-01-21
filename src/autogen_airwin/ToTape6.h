@@ -53,6 +53,9 @@ public:
     virtual void getParameterLabel(VstInt32 index, char *text);  // label for the parameter (eg dB)
     virtual void getParameterName(VstInt32 index, char *text);    // name of the parameter
     virtual void getParameterDisplay(VstInt32 index, char *text); // text description of the current value    
+    // Added by the perl as inverses
+    virtual bool parameterTextToValue(VstInt32 index, const char *text, float &value);
+    virtual bool canConvertParameterTextToValue(VstInt32 index);
     virtual VstInt32 canDo(char *text);
 private:
     char _programName[kVstMaxProgNameLen + 1];

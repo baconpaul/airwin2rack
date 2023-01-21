@@ -1,6 +1,10 @@
-//
-// Created by Paul Walker on 1/16/23.
-//
+/*
+* Airwin2Rack - an adaptation of the airwindows effect suite for VCVRack
+*
+* This source released under the MIT License, found in ~/LICENSE.md.
+*
+* Copyright 2023 by the authors as described in the github transaction log
+*/
 
 #ifndef AIRWIN2RACK_AIRWINREGISTRY_H
 #define AIRWIN2RACK_AIRWINREGISTRY_H
