@@ -169,4 +169,24 @@ bool ElectroHat::getProductString(char* text) {
 bool ElectroHat::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool ElectroHat::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+    case kParamC: { auto b = string2float(text, value); return b; break; }
+    case kParamD: { auto b = string2float(text, value); return b; break; }
+    case kParamE: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool ElectroHat::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamB: return true;
+        case kParamC: return true;
+        case kParamD: return true;
+        case kParamE: return true;
+
+    }
+    return false;
+}
 } // end namespace

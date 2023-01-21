@@ -116,4 +116,16 @@ bool BitShiftGain::getProductString(char* text) {
 bool BitShiftGain::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool BitShiftGain::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+
+    }
+    return false;
+}
+bool BitShiftGain::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+
+    }
+    return false;
+}
 } // end namespace

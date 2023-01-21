@@ -96,4 +96,16 @@ bool Recurve::getProductString(char* text) {
 bool Recurve::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Recurve::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+
+    }
+    return false;
+}
+bool Recurve::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+
+    }
+    return false;
+}
 } // end namespace

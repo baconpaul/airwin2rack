@@ -95,4 +95,16 @@ bool Ultrasonic::getProductString(char* text) {
 bool Ultrasonic::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Ultrasonic::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+
+    }
+    return false;
+}
+bool Ultrasonic::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+
+    }
+    return false;
+}
 } // end namespace

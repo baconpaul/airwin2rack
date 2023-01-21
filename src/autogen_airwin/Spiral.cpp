@@ -110,4 +110,16 @@ bool Spiral::getProductString(char* text) {
 bool Spiral::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Spiral::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+
+    }
+    return false;
+}
+bool Spiral::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+
+    }
+    return false;
+}
 } // end namespace

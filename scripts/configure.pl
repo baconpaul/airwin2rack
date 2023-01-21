@@ -74,7 +74,7 @@ foreach my $fx (@plugins) {
 
     print "UNCLASSIFIED : $fx\n" if ($cat =~  m/Unclassified/);
 
-    #system("perl scripts/import.pl $fx");
+    system("perl scripts/import.pl $fx");
 
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
     print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", \"${what}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }});";
@@ -83,6 +83,16 @@ foreach my $fx (@plugins) {
 
 print OFH "int unusedComplete = AirwinRegistry::completeRegistry();\n";
 close OFH;
+
+open(OFC, "> src/autogen_airwin/CMakeLists.txt") || die "Cant make cmake";
+print OFC "set(AIRWIN_SOURCES \n";
+foreach my $fx (@plugins) {
+    print OFC "   src/autogen_airwin/${fx}.cpp\n";
+    print OFC "   src/autogen_airwin/${fx}Proc.cpp\n"
+}
+print OFC "\n)\n";
+close OFC;
+
 
 open(IN, "< libs/airwindows/Airwindopedia.txt");
 my %helpText;

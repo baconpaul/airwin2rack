@@ -164,4 +164,18 @@ bool AtmosphereBuss::getProductString(char* text) {
 bool AtmosphereBuss::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool AtmosphereBuss::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool AtmosphereBuss::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+
+    }
+    return false;
+}
 } // end namespace

@@ -126,4 +126,18 @@ bool DitherFloat::getProductString(char* text) {
 bool DitherFloat::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool DitherFloat::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool DitherFloat::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

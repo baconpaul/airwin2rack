@@ -1,3 +1,11 @@
+/*
+ * Airwin2Rack - an adaptation of the airwindows effect suite for VCVRack
+ *
+ * This source released under the MIT License, found in ~/LICENSE.md.
+ *
+ * Copyright 2023 by the authors as described in the github transaction log
+ */
+
 #include "Airwin2Rack.hpp"
 #include "airwin2rackbase.h"
 #include <iostream>
@@ -8,9 +16,11 @@
 
 #include "AirwinRegistry.h"
 
-// @TODO: Cleanup skin colors and fonts into methods
-// @TODO: Scroll the Help Area and fonts
-// @TODO: Cloud perlin
+// @TODO: Scroll the Help Area
+// @TODO: Cloud perlin ala Steve
+// @TODO: "Chris" ordering as well as alpha ordering
+// @TODO: Better graphics for switchable ports
+
 
 #define MAX_POLY 16
 
@@ -66,6 +76,29 @@ struct AW2RModule : virtual rack::Module
                 }
             }
             return ParamQuantity::getDisplayValueString();
+        }
+
+        void setDisplayValueString(std::string s) override
+        {
+            float pv = getValue();
+            auto awm = dynamic_cast<AW2RModule *>(module);
+            if (awm && awm->airwin_display)
+            {
+                int idx = paramId - PARAM_0;
+                if (idx < awm->nParams)
+                {
+                    float rv = pv;
+                    auto res = awm->airwin_display->parameterTextToValue(idx, s.c_str(), rv);
+                    if (res && rv >= 0.f && rv <= 1.f)
+                    {
+                        setValue(rv);
+                    }
+                    else
+                    {
+                        setValue(pv);
+                    }
+                }
+            }
         }
     };
 
@@ -470,10 +503,70 @@ struct AWSkin
             changeTo((Skin)skinId, false);
         }
     }
+
+    template<typename T>
+    T dl(const T &dark, const T &light)
+    {
+        if (skin == DARK)
+            return dark;
+        else
+            return light;
+    }
+
+#define COL(n, d, l)                                                                               \
+    NVGcolor n() { return dl(d, l); }
+
+    COL(knobCenter, nvgRGB(110, 110, 120), nvgRGB(185, 185, 220));
+    COL(knobEdge, nvgRGB(110, 110, 130), nvgRGB(190, 190, 225));
+    COL(knobStroke, nvgRGB(20, 20, 20), nvgRGB(50, 50, 60));
+    COL(knobValueFill, nvgRGB(240, 240, 240), nvgRGB(20, 20, 20));
+    COL(knobValueStroke, nvgRGB(20, 20, 20), nvgRGB(20, 20, 20));
+
+    COL(labeLText, nvgRGB(220, 220, 220), nvgRGB(20, 20, 20));
+    COL(labelRule, nvgRGB(110, 110, 120), nvgRGB(150, 150, 160));
+
+    COL(deactivatedJogStroke, nvgRGB(60, 60, 60), nvgRGB(60, 60, 60));
+    COL(deactivatedJogFill, nvgRGB(40, 40, 40), nvgRGB(40, 40, 40));
+    COL(jogFill, nvgRGB(190, 190, 190), nvgRGB(190, 190, 190));
+    COL(jogFillHover, nvgRGB(240, 240, 100), nvgRGB(240, 240, 100));
+    COL(jogStroke, nvgRGB(220, 220, 220), nvgRGB(220, 220, 220));
+
+    COL(helpOpen, nvgRGB(220, 220, 220), nvgRGB(220, 220, 220));
+    COL(helpClose, nvgRGB(120, 120, 120), nvgRGB(120, 120, 120));
+
+    COL(selectorFill, nvgRGB(20, 20, 30), nvgRGB(20, 20, 30));
+    COL(selectorOutline, nvgRGB(0, 0, 0), nvgRGB(0, 0, 0));
+    COL(selectorOutlineHighlight, nvgRGB(140, 140, 160), nvgRGB(140, 140, 160));
+    COL(selectorEffect, nvgRGB(240, 240, 240), nvgRGB(240, 240, 240));
+    COL(selectorCategory, nvgRGB(210, 210, 210), nvgRGB(210, 210, 210));
+    COL(selectorPoly, nvgRGB(140, 140, 140), nvgRGB(140, 140, 140));
+
+    COL(helpBorder, nvgRGB(180,180,180), nvgRGB(180,180,180));
+    COL(helpBG, nvgRGB(20,20,20), nvgRGB(20,20,20));
+    COL(helpText, nvgRGB(220,220,225), nvgRGB(220,220,225));
+
+    COL(panelGradientStart, nvgRGB(50,50,60), nvgRGB(225,225,230));
+    COL(panelGradientEnd, nvgRGB(70,70,75), nvgRGB(235,235,245));
+
+    COL(panelBottomRegion, nvgRGB(160,160,170), nvgRGB(160,160,170));
+    COL(panelBottomStroke, nvgRGB(0,0,0), nvgRGB(0,0,0));
+
+    COL(panelInputFill, nvgRGB(190,190,200), nvgRGB(190,190,200));
+    COL(panelInputBorder, nvgRGB(140,140,150), nvgRGB(140,140,150));
+    COL(panelInputText, nvgRGB(40,40,50), nvgRGB(40,40,50));
+
+    COL(panelOutputFill,nvgRGB(60,60,70), nvgRGB(60,60,70));
+    COL(panelOutputBorder, nvgRGB(40,40,50), nvgRGB(40,40,50));
+    COL(panelOutputText, nvgRGB(190,190,200), nvgRGB(190,190,200));
+
+    COL(panelBrandText, nvgRGB(0,0,0), nvgRGB(0,0,0));
+
+    float svgAlpha() { return dl(0.73, 0.23);}
+
+    COL(moduleOutline, nvgRGB(100,100,100), nvgRGB(100,100,100));
 };
 
-AWSkin skinManager;
-
+AWSkin awSkin;
 
 struct AWPort : public rack::app::SvgPort
 {
@@ -482,8 +575,8 @@ struct AWPort : public rack::app::SvgPort
     bool active{true};
     void setPortActive(bool b)
     {
-        active=b;
-        if (skinManager.skin == AWSkin::DARK)
+        active = b;
+        if (awSkin.skin == AWSkin::DARK)
         {
             if (b)
             {
@@ -498,11 +591,13 @@ struct AWPort : public rack::app::SvgPort
         {
             if (b)
             {
-                setSvg(rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_on_light.svg")));
+                setSvg(
+                    rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_on_light.svg")));
             }
             else
             {
-                setSvg(rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_off_light.svg")));
+                setSvg(
+                    rack::Svg::load(rack::asset::plugin(pluginInstance, "res/port_off_light.svg")));
             }
         }
     }
@@ -511,15 +606,13 @@ struct AWPort : public rack::app::SvgPort
     void step() override
     {
         bool dirty{false};
-        if (lastSkin != skinManager.skin)
+        if (lastSkin != awSkin.skin)
             setPortActive(active);
-        lastSkin = skinManager.skin;
+        lastSkin = awSkin.skin;
 
         rack::Widget::step();
     }
-
 };
-
 
 void pushFXChange(AW2RModule *module, int newIndex)
 {
@@ -564,20 +657,10 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
         float radius = px * 0.48;
         nvgBeginPath(vg);
         nvgEllipse(vg, box.size.x * 0.5, box.size.y * 0.5, radius, radius);
-        if (skinManager.skin == AWSkin::DARK)
-        {
-            nvgFillPaint(vg, nvgRadialGradient(vg, box.size.x * 0.5, box.size.y * 0.5,
-                                               box.size.x * 0.1, box.size.x * 0.4,
-                                               nvgRGB(110, 110, 120), nvgRGB(110, 110, 130)));
-            nvgStrokeColor(vg, nvgRGB(20, 20, 20));
-        }
-        else
-        {
-            nvgFillPaint(vg, nvgRadialGradient(vg, box.size.x * 0.5, box.size.y * 0.5,
-                                               box.size.x * 0.1, box.size.x * 0.4,
-                                               nvgRGB(185, 186, 220), nvgRGB(190, 190, 220)));
-            nvgStrokeColor(vg, nvgRGB(50, 50, 60));
-        }
+        nvgFillPaint(vg,
+                     nvgRadialGradient(vg, box.size.x * 0.5, box.size.y * 0.5, box.size.x * 0.1,
+                                       box.size.x * 0.4, awSkin.knobCenter(), awSkin.knobEdge()));
+        nvgStrokeColor(vg, awSkin.knobStroke());
         nvgStrokeWidth(vg, 0.5);
         nvgFill(vg);
         nvgStroke(vg);
@@ -593,9 +676,7 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
         if (bipolar)
             startAngle = 0;
 
-        auto valueFill = nvgRGB(240, 240, 240);
-        if (skinManager.skin == AWSkin::LIGHT)
-            valueFill = nvgRGB(20, 20, 20);
+        auto valueFill = awSkin.knobValueFill();
 
         nvgBeginPath(vg);
         nvgArc(vg, box.size.x * 0.5, box.size.y * 0.5, radius, startAngle - M_PI_2, angle - M_PI_2,
@@ -621,7 +702,7 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
         nvgBeginPath(vg);
         nvgEllipse(vg, ox, oy, 1.5, 1.5);
         nvgFillColor(vg, valueFill);
-        nvgStrokeColor(vg, nvgRGB(20, 20, 20));
+        nvgStrokeColor(vg, awSkin.knobValueStroke());
         nvgStrokeWidth(vg, 0.5);
         nvgStroke(vg);
         nvgFill(vg);
@@ -632,9 +713,9 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
     void step() override
     {
         bool dirty{false};
-        if (lastSkin != skinManager.skin)
+        if (lastSkin != awSkin.skin)
             dirty = true;
-        lastSkin = skinManager.skin;
+        lastSkin = awSkin.skin;
 
         auto pq = getParamQuantity();
         if (pq)
@@ -675,12 +756,10 @@ struct AWLabel : rack::Widget
     }
     void drawLabel(NVGcontext *vg)
     {
-        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+        auto fid = APP->window->loadFont(awSkin.fontPath)->handle;
         nvgBeginPath(vg);
-        if (skinManager.skin == AWSkin::DARK)
-            nvgFillColor(vg, nvgRGB(220, 220, 220));
-        else
-            nvgFillColor(vg, nvgRGB(20, 20, 20));
+
+        nvgFillColor(vg, awSkin.labeLText());
 
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_LEFT);
         nvgFontFaceId(vg, fid);
@@ -692,11 +771,7 @@ struct AWLabel : rack::Widget
         nvgBeginPath(vg);
         nvgMoveTo(vg, bnd[2] + 4, box.size.y * 0.5);
         nvgLineTo(vg, box.size.x - 4, box.size.y * 0.5);
-        if (skinManager.skin == AWSkin::DARK)
-            nvgStrokeColor(vg, nvgRGB(110, 110, 120));
-        else
-            nvgStrokeColor(vg, nvgRGB(150, 150, 160));
-
+        nvgStrokeColor(vg, awSkin.labelRule());
         nvgStrokeWidth(vg, 0.5);
         nvgStroke(vg);
     }
@@ -707,12 +782,12 @@ struct AWLabel : rack::Widget
     {
         if (bdw)
         {
-            if (lastLabel != label || lastSkin != skinManager.skin)
+            if (lastLabel != label || lastSkin != awSkin.skin)
             {
                 bdw->dirty = true;
             }
             lastLabel = label;
-            lastSkin = skinManager.skin;
+            lastSkin = awSkin.skin;
         }
         rack::Widget::step();
     }
@@ -756,18 +831,18 @@ struct AWJog : rack::Widget
         }
         if (transparent)
         {
-            nvgStrokeColor(vg, nvgRGB(60, 60, 60));
-            nvgFillColor(vg, nvgRGB(40, 40, 40));
+            nvgStrokeColor(vg, awSkin.deactivatedJogStroke());
+            nvgFillColor(vg, awSkin.deactivatedJogFill());
             nvgFill(vg);
             nvgStroke(vg);
         }
         else
         {
             if (hovered)
-                nvgFillColor(vg, nvgRGB(240, 240, 100));
+                nvgFillColor(vg, awSkin.jogFillHover());
             else
-                nvgFillColor(vg, nvgRGB(190, 190, 190));
-            nvgStrokeColor(vg, nvgRGB(220, 220, 220));
+                nvgFillColor(vg, awSkin.jogFill());
+            nvgStrokeColor(vg, awSkin.jogStroke());
             nvgFill(vg);
             nvgStroke(vg);
         }
@@ -862,12 +937,12 @@ struct AWHelp : rack::Widget
     }
     void drawHelp(NVGcontext *vg)
     {
-        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+        auto fid = APP->window->loadFont(awSkin.fontPath)->handle;
 
         if (isOpen())
         {
             nvgBeginPath(vg);
-            nvgFillColor(vg, nvgRGB(120, 120, 120));
+            nvgFillColor(vg, awSkin.helpClose());
             nvgFontFaceId(vg, fid);
             nvgFontSize(vg, 12);
             nvgTextAlign(vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
@@ -876,7 +951,7 @@ struct AWHelp : rack::Widget
         else
         {
             nvgBeginPath(vg);
-            nvgFillColor(vg, nvgRGB(220, 220, 220));
+            nvgFillColor(vg, awSkin.helpOpen());
             nvgFontFaceId(vg, fid);
             nvgFontSize(vg, 12);
             nvgTextAlign(vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
@@ -945,13 +1020,13 @@ struct AWSelector : rack::Widget
         addChild(rightJ);
     }
 
-
     struct SearchField : rack::ui::TextField
     {
         rack::WeakPtr<rack::ui::Menu> menu{nullptr};
         rack::WeakPtr<AWSelector> selector{nullptr};
         std::string lastText{};
-        void step() override {
+        void step() override
+        {
             if (text != lastText)
             {
                 if (selector)
@@ -967,14 +1042,19 @@ struct AWSelector : rack::Widget
     {
         // auto fid = APP->window->loadFont(fontPath)->handle;
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(20, 20, 20));
-        nvgStrokeColor(vg, nvgRGB(140, 140, 160));
-        nvgRoundedRect(vg, 0, 0, box.size.x, box.size.y, 3);
+        nvgFillColor(vg, awSkin.selectorOutlineHighlight());
+        nvgRoundedRect(vg, 0, 0, box.size.x, box.size.y, 2);
         nvgFill(vg);
-        nvgStrokeWidth(vg, 1);
+
+        nvgBeginPath(vg);
+        nvgFillColor(vg, awSkin.selectorFill());
+        nvgStrokeColor(vg, awSkin.selectorOutline());
+        nvgRoundedRect(vg, 0, 0, box.size.x, box.size.y - 1, 2);
+        nvgFill(vg);
+        nvgStrokeWidth(vg, 0.5);
         nvgStroke(vg);
 
-        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+        auto fid = APP->window->loadFont(awSkin.fontPath)->handle;
 
         // Find font size to make sure we fit in the box
         auto fontSize = 14.5;
@@ -994,14 +1074,14 @@ struct AWSelector : rack::Widget
         }
 
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(240, 240, 240));
+        nvgFillColor(vg, awSkin.selectorEffect());
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, fontSize);
         nvgText(vg, box.size.x * 0.5, box.size.y * 0.65, lastName.c_str(), nullptr);
 
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(220, 220, 220));
+        nvgFillColor(vg, awSkin.selectorCategory());
         nvgTextAlign(vg, NVG_ALIGN_MIDDLE | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 8.5);
@@ -1010,7 +1090,7 @@ struct AWSelector : rack::Widget
         if (lastPoly)
         {
             nvgBeginPath(vg);
-            nvgFillColor(vg, nvgRGB(140, 140, 140));
+            nvgFillColor(vg, awSkin.selectorPoly());
             nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
             nvgFontFaceId(vg, fid);
             nvgFontSize(vg, 8.5);
@@ -1026,14 +1106,14 @@ struct AWSelector : rack::Widget
         if (module && bdw)
         {
             if (lastName != module->selectedFX || lastCat != module->selectedCat ||
-                lastSkin != skinManager.skin || lastPoly != module->polyphonic)
+                lastSkin != awSkin.skin || lastPoly != module->polyphonic)
             {
                 bdw->dirty = true;
             }
             lastPoly = module->polyphonic;
             lastName = module->selectedFX;
             lastCat = module->selectedCat;
-            lastSkin = skinManager.skin;
+            lastSkin = awSkin.skin;
         }
         rack::Widget::step();
     }
@@ -1074,7 +1154,7 @@ struct AWSelector : rack::Widget
             return;
         // First entries are label separator label search separator
         auto pos = m->children.begin();
-        for (int i=0; i<5 && pos != m->children.end(); ++i)
+        for (int i = 0; i < 5 && pos != m->children.end(); ++i)
             pos = std::next(pos);
 
         std::vector<rack::Widget *> toDelete;
@@ -1096,7 +1176,7 @@ struct AWSelector : rack::Widget
         {
             auto st = rack::string::lowercase(msg);
             std::map<std::string, int> result;
-            for (auto i=0U; i<AirwinRegistry::registry.size(); ++i)
+            for (auto i = 0U; i < AirwinRegistry::registry.size(); ++i)
             {
                 const auto &r = AirwinRegistry::registry[i];
                 auto tg = rack::string::lowercase(r.name);
@@ -1118,8 +1198,8 @@ struct AWSelector : rack::Widget
                     const auto &r = AirwinRegistry::registry[index];
                     if (ct++ > maxEntries)
                         break;
-                    m->addChild(rack::createMenuItem(name, r.category,
-                                                     [this, i = index](){ pushFXChange(module, i);}));
+                    m->addChild(rack::createMenuItem(
+                        name, r.category, [this, i = index]() { pushFXChange(module, i); }));
                 }
                 if (ct > maxEntries)
                 {
@@ -1244,7 +1324,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
     typedef AW2RModule M;
 
     std::array<AWLabel *, M::maxParams> parLabels;
-    std::array<rack::ParamWidget *, M::maxParams> parKnobs, attenKnobs;
+    std::array<PixelKnob<20> *, M::maxParams> parKnobs;
+    std::array<rack::ParamWidget *, M::maxParams> attenKnobs;
     std::array<AWPort *, M::maxParams> cvPorts;
 
     std::shared_ptr<rack::Svg> clipperSvg;
@@ -1252,7 +1333,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
     AW2RModuleWidget(M *m)
     {
-        skinManager.intialize();
+        awSkin.intialize();
         setModule(m);
         box.size = rack::Vec(SCREW_WIDTH * 10, RACK_HEIGHT);
 
@@ -1310,8 +1391,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
                 rack::Vec(bp + 20, pPos + dPP * 0.5), module, M::ATTENUVERTER_0 + i);
             addParam(attenKnobs[i]);
 
-            cvPorts[i] = rack::createInputCentered<AWPort>(
-                rack::Vec(bp + 42, pPos + dPP * 0.5), module, M::CV_0 + i);
+            cvPorts[i] = rack::createInputCentered<AWPort>(rack::Vec(bp + 42, pPos + dPP * 0.5),
+                                                           module, M::CV_0 + i);
             addInput(cvPorts[i]);
 
             pPos += dPP;
@@ -1321,14 +1402,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
         auto c1 = box.size.x * 0.25;
         auto dc = box.size.x * 0.11;
         auto c2 = box.size.x * 0.75;
-        addInput(
-            rack::createInputCentered<AWPort>(rack::Vec(c1 - dc, q), module, M::INPUT_L));
-        addInput(
-            rack::createInputCentered<AWPort>(rack::Vec(c1 + dc, q), module, M::INPUT_R));
-        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 - dc, q), module,
-                                                               M::OUTPUT_L));
-        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 + dc, q), module,
-                                                               M::OUTPUT_R));
+        addInput(rack::createInputCentered<AWPort>(rack::Vec(c1 - dc, q), module, M::INPUT_L));
+        addInput(rack::createInputCentered<AWPort>(rack::Vec(c1 + dc, q), module, M::INPUT_R));
+        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 - dc, q), module, M::OUTPUT_L));
+        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 + dc, q), module, M::OUTPUT_R));
     }
 
     ~AW2RModuleWidget()
@@ -1365,12 +1442,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
     void appendContextMenu(rack::Menu *menu) override
     {
         menu->addChild(new rack::MenuSeparator);
-        menu->addChild(rack::createMenuItem("Light Skin",
-                                            CHECKMARK(skinManager.skin == AWSkin::LIGHT),
-                                            []() { skinManager.changeTo(AWSkin::LIGHT, true); }));
-        menu->addChild(rack::createMenuItem("Dark Skin",
-                                            CHECKMARK(skinManager.skin == AWSkin::DARK),
-                                            []() { skinManager.changeTo(AWSkin::DARK, true); }));
+        menu->addChild(rack::createMenuItem("Light Skin", CHECKMARK(awSkin.skin == AWSkin::LIGHT),
+                                            []() { awSkin.changeTo(AWSkin::LIGHT, true); }));
+        menu->addChild(rack::createMenuItem("Dark Skin", CHECKMARK(awSkin.skin == AWSkin::DARK),
+                                            []() { awSkin.changeTo(AWSkin::DARK, true); }));
 
         auto awm = dynamic_cast<AW2RModule *>(module);
         if (awm)
@@ -1416,20 +1491,20 @@ struct AW2RModuleWidget : rack::ModuleWidget
             int margin{3};
             nvgBeginPath(vg);
             nvgRect(vg, 0, 0, box.size.x, box.size.y);
-            nvgFillColor(vg, nvgRGB(180, 180, 180));
+            nvgFillColor(vg, awSkin.helpBorder());
             nvgFill(vg);
 
             nvgBeginPath(vg);
             nvgRect(vg, margin, margin, box.size.x - 2 * margin, box.size.y - 2 * margin);
-            nvgFillColor(vg, nvgRGB(20, 20, 20));
+            nvgFillColor(vg, awSkin.helpBG());
             nvgFill(vg);
 
             int yp = 3;
-            auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
-            auto fidm = APP->window->loadFont(skinManager.fontPathMedium)->handle;
+            auto fid = APP->window->loadFont(awSkin.fontPath)->handle;
+            auto fidm = APP->window->loadFont(awSkin.fontPathMedium)->handle;
 
             nvgBeginPath(vg);
-            nvgFillColor(vg, nvgRGB(225, 225, 230));
+            nvgFillColor(vg, awSkin.helpText());
             nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
 
             float bnd[6];
@@ -1560,34 +1635,27 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
         // Main Gradient Background
         nvgBeginPath(vg);
-        if (skinManager.skin == AWSkin::DARK)
-        {
-            nvgFillPaint(vg, nvgLinearGradient(vg, 0, 50, 0, box.size.y - cutPoint,
-                                               nvgRGB(50, 50, 60), nvgRGB(70, 70, 75)));
-        }
-        else
-        {
-            nvgFillPaint(vg, nvgLinearGradient(vg, 0, 50, 0, box.size.y - cutPoint,
-                                               nvgRGB(225, 225, 230), nvgRGB(235, 235, 245)));
-        }
+        nvgFillPaint(vg, nvgLinearGradient(vg, 0, 50, 0, box.size.y - cutPoint,
+                                           awSkin.panelGradientStart(), awSkin.panelGradientEnd()));
+
         nvgRect(vg, 0, 0, box.size.x, box.size.y - cutPoint);
         nvgFill(vg);
         nvgStroke(vg);
 
         // Draw the bottom region
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(160, 160, 170));
-        nvgStrokeColor(vg, nvgRGB(0, 0, 0));
+        nvgFillColor(vg, awSkin.panelBottomRegion());
+        nvgStrokeColor(vg, awSkin.panelBottomStroke());
         nvgStrokeWidth(vg, 0.5);
         nvgRect(vg, 0, box.size.y - cutPoint, box.size.x, cutPoint);
         nvgFill(vg);
         nvgStroke(vg);
 
         // Input region
-        auto fid = APP->window->loadFont(skinManager.fontPath)->handle;
+        auto fid = APP->window->loadFont(awSkin.fontPath)->handle;
         nvgBeginPath(vg);
-        nvgStrokeColor(vg, nvgRGB(140, 140, 150));
-        nvgFillColor(vg, nvgRGB(190, 190, 200));
+        nvgStrokeColor(vg, awSkin.panelInputBorder());
+        nvgFillColor(vg, awSkin.panelInputFill());
         nvgStrokeWidth(vg, 1);
         nvgRoundedRect(vg, 4, box.size.y - cutPoint + 3, box.size.x * 0.5 - 8, 37, 2);
         nvgFill(vg);
@@ -1596,7 +1664,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         auto dc = box.size.x * 0.11;
 
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(40, 40, 50));
+        nvgFillColor(vg, awSkin.panelInputText());
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 10);
@@ -1606,8 +1674,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
         // Output region
         nvgBeginPath(vg);
-        nvgStrokeColor(vg, nvgRGB(40, 40, 50));
-        nvgFillColor(vg, nvgRGB(60, 60, 70));
+        nvgStrokeColor(vg, awSkin.panelOutputBorder());
+        nvgFillColor(vg, awSkin.panelOutputFill());
         nvgStrokeWidth(vg, 1);
         nvgRoundedRect(vg, box.size.x * 0.5 + 4, box.size.y - cutPoint + 3, box.size.x * 0.5 - 8,
                        37, 2);
@@ -1615,7 +1683,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgStroke(vg);
 
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(190, 190, 200));
+        nvgFillColor(vg, awSkin.panelOutputText());
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 10);
@@ -1625,7 +1693,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
         // Brand
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGB(0, 0, 0));
+        nvgFillColor(vg, awSkin.panelBrandText());
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 14);
@@ -1637,17 +1705,14 @@ struct AW2RModuleWidget : rack::ModuleWidget
             float t[6];
             nvgTranslate(vg, 0, 269);
             nvgScale(vg, 0.14, 0.14);
-            if (skinManager.skin == AWSkin::DARK)
-                nvgAlpha(vg, 0.73);
-            else
-                nvgAlpha(vg, 0.23);
+            nvgAlpha(vg,awSkin.svgAlpha());
             clipperSvg->draw(vg);
             nvgRestore(vg);
         }
 
         // Outline the module
         nvgBeginPath(vg);
-        nvgStrokeColor(vg, nvgRGB(100, 100, 100));
+        nvgStrokeColor(vg, awSkin.moduleOutline());
         nvgStrokeWidth(vg, 1);
         nvgRect(vg, 0, 0, box.size.x, box.size.y);
         nvgStroke(vg);
@@ -1672,9 +1737,9 @@ struct AW2RModuleWidget : rack::ModuleWidget
             helpWidget->box.pos = getAbsoluteOffset(rack::Vec(box.size.x, 0));
             helpWidget->box.size.y = RACK_HEIGHT * APP->scene->rackScroll->getZoom();
         }
-        if (lastSkin != skinManager.skin)
+        if (lastSkin != awSkin.skin)
         {
-            lastSkin = skinManager.skin;
+            lastSkin = awSkin.skin;
             if (bg)
                 bg->dirty = true;
         }
@@ -1697,6 +1762,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             awm->airwin_display->getParameterName(i, txt);
             parLabels[i]->label = txt;
             parKnobs[i]->setVisible(true);
+            parKnobs[i]->stripMenuTypein = !awm->airwin_display->canConvertParameterTextToValue(i);
             attenKnobs[i]->setVisible(true);
             cvPorts[i]->setVisible(true);
             cvPorts[i]->setPortActive(true);

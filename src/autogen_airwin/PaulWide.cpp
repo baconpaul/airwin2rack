@@ -134,4 +134,18 @@ bool PaulWide::getProductString(char* text) {
 bool PaulWide::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool PaulWide::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool PaulWide::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

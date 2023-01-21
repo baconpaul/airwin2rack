@@ -117,4 +117,18 @@ bool LRFlipTimer::getProductString(char* text) {
 bool LRFlipTimer::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool LRFlipTimer::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value - 1.0) / (9.0); } return b; break; }
+
+    }
+    return false;
+}
+bool LRFlipTimer::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+
+    }
+    return false;
+}
 } // end namespace

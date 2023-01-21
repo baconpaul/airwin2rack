@@ -101,4 +101,16 @@ bool PurestConsole2Channel::getProductString(char* text) {
 bool PurestConsole2Channel::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool PurestConsole2Channel::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+
+    }
+    return false;
+}
+bool PurestConsole2Channel::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+
+    }
+    return false;
+}
 } // end namespace

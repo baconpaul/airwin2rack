@@ -132,4 +132,18 @@ bool PaulDither::getProductString(char* text) {
 bool PaulDither::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool PaulDither::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool PaulDither::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

@@ -116,4 +116,18 @@ bool DCVoltage::getProductString(char* text) {
 bool DCVoltage::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool DCVoltage::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 1.0) / (2.0); } return b; break; }
+
+    }
+    return false;
+}
+bool DCVoltage::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+
+    }
+    return false;
+}
 } // end namespace

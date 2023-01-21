@@ -142,4 +142,20 @@ bool IronOxideClassic::getProductString(char* text) {
 bool IronOxideClassic::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool IronOxideClassic::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 18.0) / (36.0); } return b; break; }
+    case kParamC: { auto b = string2float(text, value); if (b) { value = (value + 18.0) / (36.0); } return b; break; }
+
+    }
+    return false;
+}
+bool IronOxideClassic::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+        case kParamC: return true;
+
+    }
+    return false;
+}
 } // end namespace

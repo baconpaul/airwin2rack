@@ -130,4 +130,20 @@ bool Hull::getProductString(char* text) {
 bool Hull::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Hull::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = (value + 1.0) / (2.0); } return b; break; }
+
+    }
+    return false;
+}
+bool Hull::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

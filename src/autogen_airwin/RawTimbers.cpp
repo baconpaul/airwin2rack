@@ -134,4 +134,18 @@ bool RawTimbers::getProductString(char* text) {
 bool RawTimbers::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool RawTimbers::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamB: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool RawTimbers::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamB: return true;
+
+    }
+    return false;
+}
 } // end namespace

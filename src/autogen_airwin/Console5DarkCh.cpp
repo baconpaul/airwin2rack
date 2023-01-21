@@ -127,4 +127,18 @@ bool Console5DarkCh::getProductString(char* text) {
 bool Console5DarkCh::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Console5DarkCh::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool Console5DarkCh::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+
+    }
+    return false;
+}
 } // end namespace

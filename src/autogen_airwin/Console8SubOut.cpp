@@ -120,4 +120,18 @@ bool Console8SubOut::getProductString(char* text) {
 bool Console8SubOut::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
+bool Console8SubOut::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+    switch(index) {
+    case kParamA: { auto b = string2float(text, value); return b; break; }
+
+    }
+    return false;
+}
+bool Console8SubOut::canConvertParameterTextToValue(VstInt32 index) {
+    switch(index) {
+        case kParamA: return true;
+
+    }
+    return false;
+}
 } // end namespace
