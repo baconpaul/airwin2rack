@@ -71,7 +71,7 @@ struct AW2RModule : virtual rack::Module
                     awm->airwin_display->setParameter(idx, getValue());
                     awm->airwin_display->getParameterDisplay(idx, txt);
                     awm->airwin_display->getParameterLabel(idx, lab);
-                    auto ls = std::string(lab);
+                    auto ls = rack::string::trim(std::string(lab));
                     return std::string(txt) + (ls.empty() ? "" : " " + ls);
                 }
             }
@@ -89,9 +89,9 @@ struct AW2RModule : virtual rack::Module
                 {
                     float rv = pv;
                     auto res = awm->airwin_display->parameterTextToValue(idx, s.c_str(), rv);
-                    if (res && rv >= 0.f && rv <= 1.f)
+                    if (res)
                     {
-                        setValue(rv);
+                        setValue(std::clamp(rv, 0.f, 1.f));
                     }
                     else
                     {
