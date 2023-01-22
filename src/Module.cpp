@@ -16,6 +16,8 @@
 
 #include "AirwinRegistry.h"
 
+#include "sst/rackhelpers.h"
+
 // @TODO: Scroll the Help Area
 // @TODO: Cloud perlin ala Steve
 // @TODO: "Chris" ordering as well as alpha ordering
@@ -234,36 +236,13 @@ struct AW2RModule : virtual rack::Module
 
     void dataFromJson(json_t *rootJ) override
     {
-        auto awfx = json_object_get(rootJ, "airwindowSelectedFX");
-        if (awfx)
-        {
-            std::string sfx = json_string_value(awfx);
-            resetAirwinByName(sfx, false);
-        }
-        auto awpl = json_object_get(rootJ, "polyphonic");
-        if (awpl)
-        {
-            auto bl = json_boolean_value(awpl);
-            resetPolyphony(bl);
-        }
-        auto awlt = json_object_get(rootJ, "lockedType");
-        if (awlt)
-        {
-            auto bl = json_boolean_value(awlt);
-            lockedType = bl;
-        }
-        auto awrf = json_object_get(rootJ, "randomizeFX");
-        if (awrf)
-        {
-            auto bl = json_boolean_value(awrf);
-            randomizeFX = bl;
-        }
-        auto awbs = json_object_get(rootJ, "blockSize");
-        if (awbs)
-        {
-            auto bl = json_integer_value(awbs);
-            forceBlockSize = bl;
-        }
+        namespace jh = sst::rackhelpers::json;
+
+        resetAirwinByName(jh::jsonSafeGet<std::string>(rootJ, "airwindowSelectedFX").value_or("Galactic"), false);
+        lockedType = jh::jsonSafeGet<bool>(rootJ, "lockedType").value_or(false);
+        polyphonic = jh::jsonSafeGet<bool>(rootJ, "polyphonic").value_or(false);
+        randomizeFX = jh::jsonSafeGet<bool>(rootJ, "randomizeFX").value_or(false);
+        blockSize = jh::jsonSafeGet<int>(rootJ, "blockSize").value_or(4);
     }
 
     bool nextPoly{polyphonic};

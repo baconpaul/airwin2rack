@@ -1,3 +1,6 @@
 [submodule "libs/autoexport_airwin/airwindows"]
 	path = libs/airwindows
 	url = https://github.com/airwindows/airwindows
+[submodule "libs/sst-rackhelpers"]
+	path = libs/sst-rackhelpers
+	url = https://github.com/surge-synthesizer/sst-rackhelpers
