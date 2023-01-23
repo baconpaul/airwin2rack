@@ -215,7 +215,7 @@ struct AW2RModule : virtual rack::Module
 
         resetAirwinByName(jh::jsonSafeGet<std::string>(rootJ, "airwindowSelectedFX").value_or("Galactic"), false);
         lockedType = jh::jsonSafeGet<bool>(rootJ, "lockedType").value_or(false);
-        polyphonic = jh::jsonSafeGet<bool>(rootJ, "polyphonic").value_or(false);
+        nextPoly = jh::jsonSafeGet<bool>(rootJ, "polyphonic").value_or(false);
         randomizeFX = jh::jsonSafeGet<bool>(rootJ, "randomizeFX").value_or(false);
         blockSize = jh::jsonSafeGet<int>(rootJ, "blockSize").value_or(4);
     }
