@@ -13,8 +13,8 @@ but that documentation is also included in the plugin as a help tab in the modul
 
 ## Using the Module
 
-![The Airwindows Module in the Dark Skin](awgalactic.png)
-![The Airwindows Module in the Light Skin](awlight.png)
+<img src="awgalactic.png" width=250 alt="The Airwindows Module in Dark Mode">
+<img src="awlight.png" width=250 alt="The Airwindows Module in Light Mode">
 
 The module has three core sections. The FX selector display at the top,
 the FX parameter and modulation inputs in the center, and the stereo in
@@ -39,12 +39,12 @@ the effects in category and alphabetical order.
 Second, you can click on the name of the effect or the category to open
 a parameter selector menu. This menu allows you to select effects by category:
 
-![A Display of the FX Selector Menu](awmenu.png)
+<img src="awmenu.png" width=250 alt="The FX Selector Menu">
 
 The menu also has a search-by-name feature which allows you to type in a partial
 name of an effect and search across the suite.
 
-![A Display of the FX Search](awsearch.png)
+<img src="awsearch.png" width=250 alt="The FX Search Feature">
 
 ## Getting Help
 
@@ -54,14 +54,14 @@ and we programatically import those posts from the Airwindowpedia and make them
 available as a slide-out help overlay. Just press the "?" on the top of a panel
 to overlay the help text, and press it again to close it.
 
-![A Display of the Airwindows Help](awhelp.png)
+<img src="awhelp.png" width=400 alt="The Help Panel">
 
 ## Deeper Topics
 
 There are several other features of the module which may help you use it
 in your patches, all of which are on the main menu
 
-![A Display of the Airwindows Main Menu](awmainmenu.png)
+<img src="awmainmenu.png" width=250 alt="The Airwindows Main Menu">
 
 ### Polyphony
 
