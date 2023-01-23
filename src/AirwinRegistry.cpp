@@ -10,7 +10,7 @@
 
 std::vector<AirwinRegistry::awReg> AirwinRegistry::registry;
 std::set<std::string> AirwinRegistry::categories;
-std::vector<int> AirwinRegistry::fxOrdering;
+std::vector<int> AirwinRegistry::fxAlphaOrdering;
 std::map<std::string, std::set<std::string>> AirwinRegistry::fxByCategory;
 std::unordered_map<std::string, int> AirwinRegistry::nameToIndex;
 
@@ -47,7 +47,7 @@ void AirwinRegistry::dumpStatsToStdout()
 #define LABEL_BY_PLUG 1
 #if LABEL_BY_PLUG
 
-    for (const auto &ord : fxOrdering)
+    for (const auto &ord : fxAlphaOrdering)
     {
         const auto &r = registry[ord];
         auto fx = r.generator();

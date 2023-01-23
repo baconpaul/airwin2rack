@@ -24,6 +24,7 @@ struct AirwinRegistry
     {
         std::string name;
         std::string category;
+        int catChrisOrdering;
         std::string whatText;
         int nParams{0};
         std::function<std::unique_ptr<Airwin2RackBase>()> generator{[]() { return nullptr; }};
@@ -32,7 +33,7 @@ struct AirwinRegistry
     static std::vector<awReg> registry;
     static std::set<std::string> categories;
     static std::map<std::string, std::set<std::string>> fxByCategory;
-    static std::vector<int> fxOrdering;
+    static std::vector<int> fxAlphaOrdering;
     static std::unordered_map<std::string, int> nameToIndex;
 
     static int registerAirwindow(const awReg &r)
@@ -76,7 +77,7 @@ struct AirwinRegistry
             for (const auto &fx : fxs)
             {
                 registry[nameToIndex[fx]].ordering = idx;
-                fxOrdering.push_back(nameToIndex[fx]);
+                fxAlphaOrdering.push_back(nameToIndex[fx]);
                 idx++;
             }
         }
@@ -89,10 +90,10 @@ struct AirwinRegistry
         auto pos = registry[t].ordering;
         pos += dir;
         if (pos < 0)
-            pos = fxOrdering.size() - 1;
-        if (pos >= (int)fxOrdering.size())
+            pos = fxAlphaOrdering.size() - 1;
+        if (pos >= (int)fxAlphaOrdering.size())
             pos = 0;
-        return fxOrdering[pos];
+        return fxAlphaOrdering[pos];
     }
     static int neighborIndexFor(const std::string &s, int dir)
     {
