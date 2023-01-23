@@ -1154,7 +1154,7 @@ struct AWSelector : rack::Widget
                     result[r.name] = i;
             }
 
-            int maxEntries = 50;
+            int maxEntries = 25;
 
             if (result.empty())
             {
@@ -1173,7 +1173,7 @@ struct AWSelector : rack::Widget
                 }
                 if (ct > maxEntries)
                 {
-                    m->addChild(rack::createMenuLabel("More matches..."));
+                    m->addChild(rack::createMenuLabel(std::to_string(result.size()-maxEntries) + " more matches..."));
                 }
             }
         }
