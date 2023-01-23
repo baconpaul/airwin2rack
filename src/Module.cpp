@@ -1447,9 +1447,9 @@ struct AW2RModuleWidget : rack::ModuleWidget
     void appendContextMenu(rack::Menu *menu) override
     {
         menu->addChild(new rack::MenuSeparator);
-        menu->addChild(rack::createMenuItem("Light Skin", CHECKMARK(awSkin.skin == AWSkin::LIGHT),
+        menu->addChild(rack::createMenuItem("Light Mode", CHECKMARK(awSkin.skin == AWSkin::LIGHT),
                                             []() { awSkin.changeTo(AWSkin::LIGHT, true); }));
-        menu->addChild(rack::createMenuItem("Dark Skin", CHECKMARK(awSkin.skin == AWSkin::DARK),
+        menu->addChild(rack::createMenuItem("Dark Mode", CHECKMARK(awSkin.skin == AWSkin::DARK),
                                             []() { awSkin.changeTo(AWSkin::DARK, true); }));
 
         auto awm = dynamic_cast<AW2RModule *>(module);

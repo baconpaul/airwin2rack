@@ -7,8 +7,8 @@
 	"authorEmail": "",
 	"authorUrl": "https://www.airwindows.com/",
 	"pluginUrl": "",
-	"manualUrl": "https://www.airwindows.com/wp-content/uploads/Airwindopedia.txt",
-	"sourceUrl": "",
+	"manualUrl": "https://github.com/baconpaul/airwin2rack/blob/main/doc/manual.md",
+	"sourceUrl": "https://github.com/baconpaul/airwin2rack",
 	"donateUrl": "",
 	"modules": [
 			 {"slug": "Airwin2Rack",
