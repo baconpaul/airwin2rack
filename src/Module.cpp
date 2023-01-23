@@ -16,39 +16,14 @@
 
 #include "AirwinRegistry.h"
 
-#include "sst/rackhelpers.h"
+#include "sst/rackhelpers/json.h"
+#include "sst/rackhelpers/ui.h"
 
-// @TODO: Scroll the Help Area
 // @TODO: Cloud perlin ala Steve
 // @TODO: "Chris" ordering as well as alpha ordering
-// @TODO: Better graphics for switchable ports
 
 
 #define MAX_POLY 16
-
-struct BufferedDrawFunctionWidget : virtual rack::FramebufferWidget
-{
-    typedef std::function<void(NVGcontext *)> drawfn_t;
-    drawfn_t drawf;
-
-    struct InternalBDW : rack::TransparentWidget
-    {
-        drawfn_t drawf;
-        InternalBDW(rack::Rect box_, drawfn_t draw_) : drawf(draw_) { box = box_; }
-
-        void draw(const DrawArgs &args) override { drawf(args.vg); }
-    };
-
-    InternalBDW *kid = nullptr;
-    BufferedDrawFunctionWidget(rack::Vec pos, rack::Vec sz, drawfn_t draw_) : drawf(draw_)
-    {
-        box.pos = pos;
-        box.size = sz;
-        auto kidBox = rack::Rect(rack::Vec(0, 0), box.size);
-        kid = new InternalBDW(kidBox, drawf);
-        addChild(kid);
-    }
-};
 
 struct AW2RModule : virtual rack::Module
 {
@@ -616,7 +591,7 @@ void pushFXChange(AW2RModule *module, int newIndex)
 
 template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
 {
-    BufferedDrawFunctionWidget *bdw{nullptr};
+    sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
     bool stripMenuTypein{false};
     PixelKnob()
     {
@@ -626,7 +601,7 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
         minAngle = -M_PI * (180 - angleSpreadDegrees) / 180;
         maxAngle = M_PI * (180 - angleSpreadDegrees) / 180;
 
-        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                              [this](auto vg) { drawKnob(vg); });
         addChild(bdw);
     }
@@ -725,11 +700,11 @@ struct AWLabel : rack::Widget
 {
     float px{11};
     std::string label{"label"};
-    BufferedDrawFunctionWidget *bdw{nullptr};
+    sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
     AWLabel() {}
     void setup()
     {
-        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                              [this](auto vg) { drawLabel(vg); });
         addChild(bdw);
     }
@@ -777,10 +752,10 @@ struct AWJog : rack::Widget
     AW2RModule *module;
     int dir{1};
     bool hovered{false};
-    BufferedDrawFunctionWidget *bdw{nullptr};
+    sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
     void setup()
     {
-        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                              [this](auto vg) { drawArrow(vg); });
         addChild(bdw);
     }
@@ -907,10 +882,10 @@ struct AWHelp : rack::Widget
     std::function<bool()> isOpen{[]() { return false; }};
     std::function<void()> toggleHelp{[]() {}};
 
-    BufferedDrawFunctionWidget *bdw{nullptr};
+    sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
     void setup()
     {
-        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                              [this](auto vg) { drawHelp(vg); });
         addChild(bdw);
     }
@@ -964,12 +939,12 @@ struct AWSelector : rack::Widget
 {
     AW2RModule *module;
 
-    BufferedDrawFunctionWidget *bdw{nullptr};
+    sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
     AWJog *leftJ{nullptr}, *rightJ{nullptr};
     static constexpr int jogButttonSize{12};
     void setup()
     {
-        bdw = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                              [this](auto vg) { drawSelector(vg); });
         addChild(bdw);
 
@@ -1308,7 +1283,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
     std::array<AWPort *, M::maxParams> cvPorts;
 
     std::shared_ptr<rack::Svg> clipperSvg;
-    BufferedDrawFunctionWidget *bg{nullptr};
+    sst::rackhelpers::ui::BufferedDrawFunctionWidget *bg{nullptr};
 
     AW2RModuleWidget(M *m)
     {
@@ -1318,7 +1293,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
         clipperSvg = rack::Svg::load(rack::asset::plugin(pluginInstance, "res/clipper.svg"));
 
-        bg = new BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
+        bg = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
                                             [this](auto vg) { drawBG(vg); });
         bg->box.pos = rack::Vec(0.0);
         bg->box.size = box.size;
@@ -1457,17 +1432,75 @@ struct AW2RModuleWidget : rack::ModuleWidget
     struct HelpWidget : rack::Widget
     {
         double ctime;
-        HelpWidget()
+        static constexpr int margin{3};
+        rack::ui::ScrollWidget *sw{nullptr};
+        HelpWidget() {}
+
+        struct Render : rack::Widget
         {
-            box.size = rack::Vec(400, 200);
+            HelpWidget *hw{nullptr};
+            void draw(const DrawArgs &args)
+            {
+                assert(hw);
+                auto vg = args.vg;
+
+                int yp = 3;
+                auto fid = APP->window->loadFont(awSkin.fontPath)->handle;
+                auto fidm = APP->window->loadFont(awSkin.fontPathMedium)->handle;
+
+                nvgBeginPath(vg);
+                nvgFillColor(vg, awSkin.helpText());
+                nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
+
+                float bnd[6];
+                nvgSave(vg);
+                nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
+                nvgFontSize(vg, 14);
+                nvgFontFaceId(vg, fid);
+                nvgTextBox(vg, margin + 2, margin + 2,
+                           box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                           hw->helpTitle.c_str(), nullptr);
+                nvgTextBoxBounds(vg, margin + 2, margin + 2,
+                                 box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                                 hw->helpTitle.c_str(), nullptr, bnd);
+                nvgRestore(vg);
+
+                nvgSave(vg);
+                nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
+                nvgFontSize(vg, 10);
+                nvgFontFaceId(vg, fidm);
+                nvgTextBox(vg, margin + 2, bnd[3] / APP->scene->rackScroll->getZoom() + margin + 2,
+                           box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                           hw->helpText.c_str(), nullptr);
+                nvgTextBoxBounds(vg, margin + 2, bnd[3] / APP->scene->rackScroll->getZoom() + margin + 2,
+                           box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                           hw->helpText.c_str(), nullptr, bnd);
+                nvgRestore(vg);
+
+                box.size.y = bnd[3];
+            }
+        } *render{nullptr};
+
+        void setup() {
             ctime = rack::system::getTime();
+            sw = new rack::ui::ScrollWidget;
+            sw->box.pos = rack::Vec(margin, margin);
+            sw->box.size = box.size;
+            sw->box.size.x -= 2 * margin;
+            sw->box.size.y -= 2 * margin;
+            addChild(sw);
+
+            render = new Render();
+            render->hw = this;
+            render->box.pos = rack::Vec(0,0);
+            render->box.size = sw->box.size;
+            sw->container->addChild(render);
         }
 
         float pct = 0;
         void draw(const DrawArgs &args) override
         {
             auto vg = args.vg;
-            int margin{3};
             nvgBeginPath(vg);
             nvgRect(vg, 0, 0, box.size.x, box.size.y);
             nvgFillColor(vg, awSkin.helpBorder());
@@ -1478,41 +1511,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             nvgFillColor(vg, awSkin.helpBG());
             nvgFill(vg);
 
-            int yp = 3;
-            auto fid = APP->window->loadFont(awSkin.fontPath)->handle;
-            auto fidm = APP->window->loadFont(awSkin.fontPathMedium)->handle;
-
-            nvgBeginPath(vg);
-            nvgFillColor(vg, awSkin.helpText());
-            nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
-
-            float bnd[6];
-            nvgSave(vg);
-            nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
-            nvgFontSize(vg, 14);
-            nvgFontFaceId(vg, fid);
-            nvgScissor(vg, margin + 2, margin + 2,
-                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
-                       box.size.y / APP->scene->rackScroll->getZoom() - 2 * (margin + 2));
-            nvgTextBox(vg, margin + 2, margin + 2,
-                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
-                       helpTitle.c_str(), nullptr);
-            nvgTextBoxBounds(vg, margin + 2, margin + 2,
-                             box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
-                             helpTitle.c_str(), nullptr, bnd);
-            nvgRestore(vg);
-
-            nvgSave(vg);
-            nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
-            nvgFontSize(vg, 10);
-            nvgFontFaceId(vg, fidm);
-            nvgScissor(vg, margin + 2, margin + 2,
-                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
-                       box.size.y / APP->scene->rackScroll->getZoom() - 2 * (margin + 2));
-            nvgTextBox(vg, margin + 2, bnd[3] / APP->scene->rackScroll->getZoom() + margin + 2,
-                       box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
-                       helpText.c_str(), nullptr);
-            nvgRestore(vg);
+            rack::Widget::draw(args);
         }
 
         std::string helpTitle, helpText;
@@ -1575,6 +1574,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
                 resetBounds();
             }
             lastZoom = APP->scene->rackScroll->getZoom();
+
+            rack::Widget::step();
         }
     };
 
@@ -1600,7 +1601,9 @@ struct AW2RModuleWidget : rack::ModuleWidget
             {
                 helpWidget = new HelpWidget;
                 helpWidget->box.pos = getAbsoluteOffset(rack::Vec(box.size.x, 0));
+                helpWidget->box.size.x = 300 * APP->scene->rackScroll->getZoom();
                 helpWidget->box.size.y = RACK_HEIGHT * APP->scene->rackScroll->getZoom();
+                helpWidget->setup();
                 helpWidget->setFX(awm->selectedFX);
                 helpShowing = true;
                 APP->scene->addChild(helpWidget);
