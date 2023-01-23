@@ -115,9 +115,9 @@ struct AW2RModule : virtual rack::Module
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
         configInput(INPUT_L, "Left / Mono Input");
-        configInput(INPUT_L, "Right Input");
+        configInput(INPUT_R, "Right Input");
         configOutput(OUTPUT_L, "Left Output");
-        configOutput(OUTPUT_L, "Right Output");
+        configOutput(OUTPUT_R, "Right Output");
         configBypass(INPUT_L, OUTPUT_L);
         configBypass(INPUT_R, OUTPUT_R);
 
@@ -397,27 +397,65 @@ struct AWSkin
         DARK
     } skin{DARK};
 
+    enum MenuOrdering
+    {
+        ALPHA,
+        CHRIS
+    } menuOrdering{ALPHA};
+
     void changeTo(Skin s, bool write)
     {
         skin = s;
 
         if (write)
         {
-            std::string defaultsDir = rack::asset::user("Airwin2Rack/");
-            if (!rack::system::isDirectory(defaultsDir))
-                rack::system::createDirectory(defaultsDir);
-            std::string defaultsFile = rack::asset::user("Airwin2Rack/default-skin.json");
+            writeConfig();
+        }
+    }
 
-            json_t *rootJ = json_object();
-            json_object_set_new(rootJ, "defaultSkin", json_integer(skin));
+    void changeOrderingTo(MenuOrdering o)
+    {
+        menuOrdering = o;
+        writeConfig();
+    }
 
-            FILE *f = std::fopen(defaultsFile.c_str(), "w");
-            if (f)
-            {
-                json_dumpf(rootJ, f, JSON_INDENT(2));
-                std::fclose(f);
-            }
-            json_decref(rootJ);
+    void writeConfig()
+    {
+        std::string defaultsFile = rack::asset::user("Airwin2Rack.json");
+
+        json_t *rootJ = json_object();
+        json_object_set_new(rootJ, "defaultSkin", json_integer(skin));
+        json_object_set_new(rootJ, "defaultMenuOrdering", json_integer(menuOrdering));
+
+        FILE *f = std::fopen(defaultsFile.c_str(), "w");
+        if (f)
+        {
+            json_dumpf(rootJ, f, JSON_INDENT(2));
+            std::fclose(f);
+        }
+        json_decref(rootJ);
+    }
+
+    void readConfig()
+    {
+        std::string defaultsFile = rack::asset::user("Airwin2Rack.json");
+        json_error_t error;
+        json_t *rootJ{nullptr};
+        auto *fptr = std::fopen(defaultsFile.c_str(), "r");
+        if (fptr)
+        {
+            rootJ = json_loadf(fptr, 0, &error);
+            DEFER({ std::fclose(fptr); });
+        }
+        if (!rootJ)
+        {
+            changeTo(DARK, false);
+            menuOrdering = ALPHA;
+        }
+        else
+        {
+            changeTo((Skin)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultSkin").value_or(DARK), false);
+            menuOrdering = (MenuOrdering)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultMenuOrdering").value_or(ALPHA);
         }
     }
 
@@ -433,29 +471,7 @@ struct AWSkin
 
         fontPath = rack::asset::plugin(pluginInstance, "res/PlusJakartaSans-SemiBold.ttf");
         fontPathMedium = rack::asset::plugin(pluginInstance, "res/PlusJakartaSans-Medium.ttf");
-        std::string defaultsFile = rack::asset::user("Airwin2Rack/default-skin.json");
-        json_error_t error;
-        json_t *fd{nullptr};
-        auto *fptr = std::fopen(defaultsFile.c_str(), "r");
-        if (fptr)
-        {
-            fd = json_loadf(fptr, 0, &error);
-            DEFER({ std::fclose(fptr); });
-        }
-        if (!fd)
-        {
-            changeTo(DARK, false);
-        }
-        else
-        {
-            json_t *defj = json_object_get(fd, "defaultSkin");
-            int skinId{DARK};
-            if (defj)
-                skinId = json_integer_value(defj);
-            if (skinId != DARK && skinId != LIGHT)
-                skinId = DARK;
-            changeTo((Skin)skinId, false);
-        }
+        readConfig();
     }
 
     template<typename T>
@@ -1182,26 +1198,61 @@ struct AWSelector : rack::Widget
         m->addChild(rack::createMenuItem("Randomize Changes FX Choice",
                                          CHECKMARK(module->randomizeFX),
                                          [this]() { module->randomizeFX = !module->randomizeFX; }));
+        m->addChild(new rack::MenuSeparator);
+        m->addChild(rack::createMenuItem("Categories in Alphabetical Order", CHECKMARK(awSkin.menuOrdering == AWSkin::ALPHA),
+                                            []() { awSkin.changeOrderingTo(AWSkin::ALPHA); }));
+        m->addChild(rack::createMenuItem("Categories in 'Chris' (quality) Order", CHECKMARK(awSkin.menuOrdering == AWSkin::CHRIS),
+                                            []() { awSkin.changeOrderingTo(AWSkin::CHRIS); }));
+
     }
     void createCategoryMenu(rack::Menu *m, const std::string &cat)
     {
-        std::map<std::string, int> contents;
-        int idx = 0;
-        for (const auto &item : AirwinRegistry::registry)
+        if (awSkin.menuOrdering == AWSkin::CHRIS)
         {
-            if (item.category == cat)
+            int idx = 0;
+            std::vector<std::pair<int, int>> catIndexAndChris;
+            for (const auto &item : AirwinRegistry::registry)
             {
-                contents[item.name] = idx;
+                if (item.category == cat)
+                {
+                    catIndexAndChris.emplace_back(idx, item.catChrisOrdering);
+                }
+                idx++;
             }
-            idx++;
+            std::sort(catIndexAndChris.begin(), catIndexAndChris.end(),
+                      [](const auto &a, const auto &b) { return a.second < b.second; });
+
+            for (const auto &[ridx, ord] : catIndexAndChris)
+            {
+                const auto &r = AirwinRegistry::registry[ridx];
+                const auto &name = r.name;
+                auto checked = name == module->selectedFX;
+                auto mi = rack::createMenuItem(name, CHECKMARK(checked),
+                                                   [this, i = ridx]() { pushFXChange(module, i); });
+                mi->disabled = module->lockedType;
+                m->addChild(mi);
+            }
         }
-        for (const auto &[name, idx] : contents)
+        else
         {
-            auto checked = name == module->selectedFX;
-            auto mi = rack::createMenuItem(name, CHECKMARK(checked),
-                                           [this, i = idx]() { pushFXChange(module, i); });
-            mi->disabled = module->lockedType;
-            m->addChild(mi);
+            std::map<std::string, int> contents;
+            int idx = 0;
+            for (const auto &item : AirwinRegistry::registry)
+            {
+                if (item.category == cat)
+                {
+                    contents[item.name] = idx;
+                }
+                idx++;
+            }
+            for (const auto &[name, idx] : contents)
+            {
+                auto checked = name == module->selectedFX;
+                auto mi = rack::createMenuItem(name, CHECKMARK(checked),
+                                               [this, i = idx]() { pushFXChange(module, i); });
+                mi->disabled = module->lockedType;
+                m->addChild(mi);
+            }
         }
     }
 
@@ -1427,6 +1478,13 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
 #endif
         }
+
+        menu->addChild(new rack::MenuSeparator);
+        menu->addChild(rack::createMenuItem("Categories in Alphabetical Order", CHECKMARK(awSkin.menuOrdering == AWSkin::ALPHA),
+                                            []() { awSkin.changeOrderingTo(AWSkin::ALPHA); }));
+        menu->addChild(rack::createMenuItem("Categories in 'Chris' (quality) Order", CHECKMARK(awSkin.menuOrdering == AWSkin::CHRIS),
+                                            []() { awSkin.changeOrderingTo(AWSkin::CHRIS); }));
+
     }
 
     struct HelpWidget : rack::Widget

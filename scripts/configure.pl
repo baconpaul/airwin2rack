@@ -19,6 +19,8 @@ for my $p (@pluginPotentials) {
 # Step 2: Read the categories from airwindopedia
 open(AW, "< libs/airwindows/Airwindopedia.txt") || die "Cant open $!";
 my %cats;
+my %catOrder;
+my $currFXCount = 0;
 my $goingcat = $1;
 my $going = 0;
 while (<AW>) {
@@ -34,6 +36,8 @@ while (<AW>) {
             foreach my $p (@plist) {
                 $p =~ s/\s*//g;
                 $cats{$p} = $goingcat;
+                $catOrder{$p} = $currFXCount;
+                $currFXCount ++;
             }
         }
         elsif (m/,/)
@@ -43,6 +47,8 @@ while (<AW>) {
             foreach my $p (@plist) {
                 $p =~ s/\s*//g;
                 $cats{$p} = $goingcat;
+                $catOrder{$p} = $currFXCount;
+                $currFXCount ++;
             }
         }
     }
@@ -65,7 +71,9 @@ open(OFH, "> src/ModuleAdd.h");
 foreach my $fx (@plugins) {
     my $cat = "Unclassified";
     my $what = "";
+    my $catO = -1;
     $cat = $cats{$fx} if (exists $cats{$fx});
+    $catO = $catOrder{$fx} if (exists $catOrder{$fx});
     $what = $whats{$fx} if (exists $whats{$fx});
 
     if (!-d "libs/airwindows/plugins/MacVST/$fx") {
@@ -74,10 +82,10 @@ foreach my $fx (@plugins) {
 
     print "UNCLASSIFIED : $fx\n" if ($cat =~  m/Unclassified/);
 
-    system("perl scripts/import.pl $fx");
+    # system("perl scripts/import.pl $fx");
 
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
-    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", \"${what}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }});";
+    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, \"${what}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }});";
     print OFH "\n";
 }
 
