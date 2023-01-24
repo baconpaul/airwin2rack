@@ -103,7 +103,7 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
 
     # Chris is insanely regular with his transformations here
     # Easy case - just a float2string
-    if ($formatter =~ m/float2string\s*\(\s*${param}\s*,[^;]+;\s*$/)
+    if ($formatter =~ m/float2string\s*\(\s*(${param}|output)\s*,[^;]+;\s*$/)
     {
         $ok = 1;
         $pttv .= "    case kParam${param}: { auto b = string2float(text, value); return b; break; }\n"
@@ -139,11 +139,31 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
         $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = (value / ${scale}) + ${offset}; } return b; break; }\n";
         $ok = 1;
     }
+    elsif ($formatter =~ m/float2string\s*\(([^,]+),[^;]+;\s*$/)
+    {
+        my $arg = $1;
+        print " CUSTOM ARG :" . $f . "::" . $param . " >> " . $arg . "\n";
+
+        if ($arg =~ m/^\s*\(([${param}\*]+)([0-9.]+)\)\+([0-9.]+)/)
+        {
+            print "     - GOT $1 $2 $3\n";
+        }
+        else
+        {
+            print "      - UNKNOWN\n"
+        }
+        $ok = 0;
+    }
     # db2string
     elsif ($formatter =~ m/dB2string\s*\(\s*${param}\s*,[^;]+;\s*$/)
     {
         $ok = 1;
         $pttv .= "    case kParam${param}: { auto b = string2dBNorm(text, value); return b; break; }\n"
+    }
+    elsif ($formatter =~ m/switch/)
+    {
+        # We know we can't do these
+        $ok = 0;
     }
     elsif ($formatter =~ m/switch/)
     {
