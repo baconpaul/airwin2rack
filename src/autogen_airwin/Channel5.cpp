@@ -162,12 +162,14 @@ bool Channel5::getVendorString(char* text) {
 }
 bool Channel5::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamC: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
 }
 bool Channel5::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamC: return true;
 
     }
     return false;

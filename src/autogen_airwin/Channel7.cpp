@@ -163,12 +163,14 @@ bool Channel7::getVendorString(char* text) {
 }
 bool Channel7::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamC: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
 }
 bool Channel7::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamC: return true;
 
     }
     return false;

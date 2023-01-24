@@ -162,12 +162,14 @@ bool Channel8::getVendorString(char* text) {
 }
 bool Channel8::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamC: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
 }
 bool Channel8::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamC: return true;
 
     }
     return false;
