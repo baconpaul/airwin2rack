@@ -201,11 +201,11 @@ struct AW2RModule : virtual rack::Module
     json_t *dataToJson() override
     {
         auto res = json_object();
-        json_object_set(res, "airwindowSelectedFX", json_string(selectedFX.c_str()));
-        json_object_set(res, "polyphonic", json_boolean(polyphonic));
-        json_object_set(res, "lockedType", json_boolean(lockedType));
-        json_object_set(res, "randomizeFX", json_boolean(randomizeFX));
-        json_object_set(res, "blockSize", json_integer(blockSize));
+        json_object_set_new(res, "airwindowSelectedFX", json_string(selectedFX.c_str()));
+        json_object_set_new(res, "polyphonic", json_boolean(polyphonic));
+        json_object_set_new(res, "lockedType", json_boolean(lockedType));
+        json_object_set_new(res, "randomizeFX", json_boolean(randomizeFX));
+        json_object_set_new(res, "blockSize", json_integer(blockSize));
         return res;
     }
 
@@ -1527,10 +1527,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
                 nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
                 nvgFontSize(vg, 10);
                 nvgFontFaceId(vg, fidm);
-                nvgTextBox(vg, margin + 2, bnd[3] / APP->scene->rackScroll->getZoom() + margin + 2,
+                nvgTextBox(vg, margin + 2, bnd[3] + margin + 2,
                            box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
                            hw->helpText.c_str(), nullptr);
-                nvgTextBoxBounds(vg, margin + 2, bnd[3] / APP->scene->rackScroll->getZoom() + margin + 2,
+                nvgTextBoxBounds(vg, margin + 2, bnd[3] + margin + 2,
                            box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
                            hw->helpText.c_str(), nullptr, bnd);
                 nvgRestore(vg);
@@ -1622,7 +1622,14 @@ struct AW2RModuleWidget : rack::ModuleWidget
             resetBounds();
         }
 
-        void resetBounds() {}
+        void resetBounds() {
+            sw->box.pos = rack::Vec(margin, margin);
+            sw->box.size = box.size;
+            sw->box.size.x -= 2 * margin;
+            sw->box.size.y -= 2 * margin;
+
+            render->box.size = sw->box.size;
+        }
 
         float lastZoom{1.f};
         void step() override
@@ -1776,6 +1783,12 @@ struct AW2RModuleWidget : rack::ModuleWidget
         {
             helpWidget->box.pos = getAbsoluteOffset(rack::Vec(box.size.x, 0));
             helpWidget->box.size.y = RACK_HEIGHT * APP->scene->rackScroll->getZoom();
+            helpWidget->box.size.x = 300 * APP->scene->rackScroll->getZoom();
+        }
+
+        if (helpWidget && APP->scene->browser && APP->scene->browser->isVisible())
+        {
+            toggleHelp();
         }
         if (lastSkin != awSkin.skin)
         {
