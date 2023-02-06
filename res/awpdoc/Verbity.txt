@@ -1,4 +1,4 @@
-# Verbity is my new best reverb, which uses feedforward reverb topology.
+# Verbity is a dual-mono reverb, which uses feedforward reverb topology.
 
 Late nights of reverb hacking (ok, Monday mornings?) give rise to a new best reverb. At least, best for me. Perhaps it’ll count as ‘best’ in general, we shall see, that is rather a matter of taste but it’s my new favorite and is inspiring me a lot.
 

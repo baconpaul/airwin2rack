@@ -62,7 +62,7 @@ private:
 	double iirAL;
 	double iirBL;
 	
-	double aZL[5191];
+	//double aZL[5191];
 	
 	double aAL[5005]; //AFKPU
 	double aFL[4953];
@@ -111,7 +111,7 @@ private:
 	double iirAR;
 	double iirBR;
 	
-	double aZR[5191];
+	//double aZR[5191];
 	
 	double aAR[5005]; //AFKPU
 	double aFR[4953];
