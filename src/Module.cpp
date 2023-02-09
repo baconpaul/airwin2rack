@@ -108,7 +108,16 @@ struct AW2RModule : virtual rack::Module
     };
 
     int nParams{0};
-    std::atomic<bool> polyphonic{false}, lockedType{false}, randomizeFX{false};
+
+    enum PolyphonyMode
+    {
+        MONOPHONIC,
+        POLYPHONIC, // the i/o is are LLL... RRR...
+        POLYPHONIC_MIXMASTER, // the i/o is LRLRLR ...  LRLRLR
+    };
+
+    std::atomic<PolyphonyMode> polyphonyMode{MONOPHONIC};
+    std::atomic<bool> lockedType{false}, randomizeFX{false};
     AW2RModule()
     {
         assert(!AirwinRegistry::registry.empty());
@@ -158,7 +167,7 @@ struct AW2RModule : virtual rack::Module
 
         airwin_display = AirwinRegistry::registry[registryIdx].generator();
 
-        if (polyphonic)
+        if (polyphonyMode != MONOPHONIC)
         {
             airwin.reset(nullptr);
             for (int i = 0; i < MAX_POLY; ++i)
@@ -202,7 +211,9 @@ struct AW2RModule : virtual rack::Module
     {
         auto res = json_object();
         json_object_set_new(res, "airwindowSelectedFX", json_string(selectedFX.c_str()));
-        json_object_set_new(res, "polyphonic", json_boolean(polyphonic));
+
+        // Stream next poly here in case you change it without an audio thread
+        json_object_set_new(res, "polyphonyMode", json_integer(nextPoly));
         json_object_set_new(res, "lockedType", json_boolean(lockedType));
         json_object_set_new(res, "randomizeFX", json_boolean(randomizeFX));
         json_object_set_new(res, "blockSize", json_integer(blockSize));
@@ -215,24 +226,32 @@ struct AW2RModule : virtual rack::Module
 
         resetAirwinByName(jh::jsonSafeGet<std::string>(rootJ, "airwindowSelectedFX").value_or("Galactic"), false);
         lockedType = jh::jsonSafeGet<bool>(rootJ, "lockedType").value_or(false);
-        resetPolyphony(jh::jsonSafeGet<bool>(rootJ, "polyphonic").value_or(false));
+
+        bool oldPoly = jh::jsonSafeGet<bool>(rootJ, "polyphonic").value_or(false);
+        int newPoly = jh::jsonSafeGet<int>(rootJ, "polyphonyMode").value_or(-1);
+
+        if (newPoly == -1)
+            resetPolyphony(oldPoly ? POLYPHONIC : MONOPHONIC);
+        else
+            resetPolyphony((PolyphonyMode)newPoly);
+
         randomizeFX = jh::jsonSafeGet<bool>(rootJ, "randomizeFX").value_or(false);
         forceBlockSize = jh::jsonSafeGet<int>(rootJ, "blockSize").value_or(4);
     }
 
-    bool nextPoly{polyphonic};
-    void stagePolyReset(bool b) { nextPoly = b; }
+    PolyphonyMode nextPoly{polyphonyMode};
+    void stagePolyReset(PolyphonyMode b) { nextPoly = b; }
 
-    void resetPolyphony(bool isPoly)
+    void resetPolyphony(PolyphonyMode pMode)
     {
-        if (isPoly == polyphonic)
+        if (pMode == polyphonyMode)
             return;
 
-        polyphonic = isPoly;
-        nextPoly = isPoly;
+        polyphonyMode = pMode;
+        nextPoly = pMode;
 
         resetAirwinByName(selectedFX, false);
-        if (polyphonic)
+        if (polyphonyMode != MONOPHONIC)
         {
             for (int i = 0; i < MAX_POLY; ++i)
             {
@@ -284,7 +303,7 @@ struct AW2RModule : virtual rack::Module
 
     void process(const ProcessArgs &args) override
     {
-        if (nextPoly != polyphonic)
+        if (nextPoly != polyphonyMode)
         {
             resetPolyphony(nextPoly);
         }
@@ -304,13 +323,17 @@ struct AW2RModule : virtual rack::Module
             resetAirwinByName(selectedFX, false);
         }
 
-        if (polyphonic)
+        switch(polyphonyMode)
         {
-            processPoly(args);
-        }
-        else
-        {
+        case MONOPHONIC:
             processMono(args);
+            break;
+        case POLYPHONIC:
+            processPoly(args, false);
+            break;
+        case POLYPHONIC_MIXMASTER:
+            processPoly(args, true);
+            break;
         }
     }
     void processMono(const ProcessArgs &args)
@@ -342,7 +365,7 @@ struct AW2RModule : virtual rack::Module
         monoIO.outPos++;
     }
 
-    void processPoly(const ProcessArgs &args)
+    void processPoly(const ProcessArgs &args, bool useMixMasterTopology)
     {
         int chanCt = std::max({1, inputs[INPUT_R].getChannels(), inputs[INPUT_L].getChannels()});
         outputs[OUTPUT_L].setChannels(chanCt);
@@ -360,8 +383,24 @@ struct AW2RModule : virtual rack::Module
 
         for (int c = 0; c < chanCt; ++c)
         {
-            polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2;
-            polyIO[c].in[1][polyIO[c].inPos] = inputs[rc].getVoltage(c) * 0.2;
+            if (useMixMasterTopology)
+            {
+                if (c < 8)
+                {
+                    polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c * 2) * 0.2;
+                    polyIO[c].in[1][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c * 2 + 1) * 0.2;
+                }
+                else
+                {
+                    polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_R].getVoltage((c-8) * 2) * 0.2;
+                    polyIO[c].in[1][polyIO[c].inPos] = inputs[INPUT_R].getVoltage((c-8) * 2 + 1) * 0.2;
+                }
+            }
+            else
+            {
+                polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2;
+                polyIO[c].in[1][polyIO[c].inPos] = inputs[rc].getVoltage(c) * 0.2;
+            }
             polyIO[c].inPos++;
             if (polyIO[c].inPos >= blockSize)
             {
@@ -382,8 +421,24 @@ struct AW2RModule : virtual rack::Module
                 polyIO[c].inPos = 0;
             }
 
-            outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c);
-            outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5, c);
+            if (useMixMasterTopology)
+            {
+                if (c < 8)
+                {
+                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c * 2);
+                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c * 2 + 1);
+                }
+                else
+                {
+                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, (c-8) * 2);
+                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, (c-8) * 2 + 1);
+                }
+            }
+            else
+            {
+                outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c);
+                outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5, c);
+            }
             polyIO[c].outPos++;
         }
     }
@@ -1057,7 +1112,7 @@ struct AWSelector : rack::Widget
         nvgFontSize(vg, 8.5);
         nvgText(vg, box.size.x * 0.5, box.size.y * 0.22, lastCat.c_str(), nullptr);
 
-        if (lastPoly)
+        if (lastPoly == AW2RModule::POLYPHONIC)
         {
             nvgBeginPath(vg);
             nvgFillColor(vg, awSkin.selectorPoly());
@@ -1066,21 +1121,30 @@ struct AWSelector : rack::Widget
             nvgFontSize(vg, 8.5);
             nvgText(vg, 3, 1, "poly", nullptr);
         }
+        if (lastPoly == AW2RModule::POLYPHONIC_MIXMASTER)
+        {
+            nvgBeginPath(vg);
+            nvgFillColor(vg, awSkin.selectorPoly());
+            nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
+            nvgFontFaceId(vg, fid);
+            nvgFontSize(vg, 8.5);
+            nvgText(vg, 3, 1, "polymix", nullptr);
+        }
     }
 
     AWSkin::Skin lastSkin{AWSkin::DARK};
     std::string lastName{"Airwindows"}, lastCat{"Multi-Effect"};
-    bool lastPoly{false};
+    AW2RModule::PolyphonyMode lastPoly{AW2RModule::MONOPHONIC};
     void step() override
     {
         if (module && bdw)
         {
             if (lastName != module->selectedFX || lastCat != module->selectedCat ||
-                lastSkin != awSkin.skin || lastPoly != module->polyphonic)
+                lastSkin != awSkin.skin || lastPoly != module->polyphonyMode)
             {
                 bdw->dirty = true;
             }
-            lastPoly = module->polyphonic;
+            lastPoly = module->polyphonyMode;
             lastName = module->selectedFX;
             lastCat = module->selectedCat;
             lastSkin = awSkin.skin;
@@ -1456,10 +1520,21 @@ struct AW2RModuleWidget : rack::ModuleWidget
         if (awm)
         {
             menu->addChild(new rack::MenuSeparator);
-            menu->addChild(rack::createMenuItem("Monophonic", CHECKMARK(!awm->polyphonic),
-                                                [awm]() { awm->stagePolyReset(false); }));
-            menu->addChild(rack::createMenuItem("Polyphonic", CHECKMARK(awm->polyphonic),
-                                                [awm]() { awm->stagePolyReset(true); }));
+            menu->addChild(rack::createMenuItem("Monophonic", CHECKMARK(awm->polyphonyMode == AW2RModule::MONOPHONIC),
+                                                [awm, this]() {
+                                                    awm->stagePolyReset(AW2RModule::MONOPHONIC);
+                                                    bg->dirty = true;
+                                                }));
+            menu->addChild(rack::createMenuItem("Polyphonic", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC),
+                                                [awm, this]() {
+                                                    awm->stagePolyReset(AW2RModule::POLYPHONIC);
+                                                    bg->dirty = true;
+                                                }));
+            menu->addChild(rack::createMenuItem("Polyphonic (MixMaster Insert)", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC_MIXMASTER),
+                                                [awm, this]() {
+                                                    awm->stagePolyReset(AW2RModule::POLYPHONIC_MIXMASTER);
+                                                    bg->dirty = true;
+                                                }));
 
             auto s = "Block Size (" + std::to_string(awm->blockSize) + ")";
             menu->addChild(rack::createSubmenuItem(s, "", [this](auto m) { blockSizeMenu(m); }));
@@ -1716,9 +1791,21 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgFontFaceId(vg, fid);
         nvgFontSize(vg, 10);
         nvgText(vg, box.size.x * 0.25, box.size.y - cutPoint + 38, "IN", nullptr);
-        nvgText(vg, box.size.x * 0.25 - dc, box.size.y - cutPoint + 38, "L", nullptr);
-        nvgText(vg, box.size.x * 0.25 + dc, box.size.y - cutPoint + 38, "R", nullptr);
 
+        auto awm = dynamic_cast<AW2RModule *>(module);
+        // use nextPoly here since audio thread may have not swept it yet
+        if (!awm || (awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER))
+        {
+            nvgFontSize(vg, 10);
+            nvgText(vg, box.size.x * 0.25 - dc, box.size.y - cutPoint + 38, "L", nullptr);
+            nvgText(vg, box.size.x * 0.25 + dc, box.size.y - cutPoint + 38, "R", nullptr);
+        }
+        else
+        {
+            nvgFontSize(vg, 10);
+            nvgText(vg, box.size.x * 0.25 - dc, box.size.y - cutPoint + 38, "1-8", nullptr);
+            nvgText(vg, box.size.x * 0.25 + dc, box.size.y - cutPoint + 38, "9-16", nullptr);
+        }
         // Output region
         nvgBeginPath(vg);
         nvgStrokeColor(vg, awSkin.panelOutputBorder());
@@ -1733,11 +1820,22 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgFillColor(vg, awSkin.panelOutputText());
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
-        nvgFontSize(vg, 10);
-        nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "OUT", nullptr);
-        nvgText(vg, box.size.x * 0.75 - dc, box.size.y - cutPoint + 38, "L", nullptr);
-        nvgText(vg, box.size.x * 0.75 + dc, box.size.y - cutPoint + 38, "R", nullptr);
-
+        if (!awm || (awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER))
+        {
+            nvgFontSize(vg, 10);
+            nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "OUT", nullptr);
+            nvgFontSize(vg, 10);
+            nvgText(vg, box.size.x * 0.75 - dc, box.size.y - cutPoint + 38, "L", nullptr);
+            nvgText(vg, box.size.x * 0.75 + dc, box.size.y - cutPoint + 38, "R", nullptr);
+        }
+        else
+        {
+            nvgFontSize(vg, 10);
+            nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "O", nullptr);
+            nvgFontSize(vg, 10);
+            nvgText(vg, box.size.x * 0.75 - dc, box.size.y - cutPoint + 38, "1-8", nullptr);
+            nvgText(vg, box.size.x * 0.75 + dc, box.size.y - cutPoint + 38, "9-16", nullptr);
+        }
         // Brand
         nvgBeginPath(vg);
         nvgFillColor(vg, awSkin.panelBrandText());
