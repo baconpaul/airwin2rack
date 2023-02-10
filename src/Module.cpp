@@ -114,6 +114,9 @@ struct AW2RModule : virtual rack::Module
         MONOPHONIC,
         POLYPHONIC, // the i/o is are LLL... RRR...
         POLYPHONIC_MIXMASTER, // the i/o is LRLRLR ...  LRLRLR
+        MIXMASTER_TO_MONOPHONIC, // in is LRLR...LRLRL summed to mono
+        MIXMASTER_TO_STEREO_POLY, // in is LRLRLR LRLRLRL out is LLLL RRRR
+        STEREO_POLY_TO_MIXMASTER // in is LLL RRR out is LRLR LRLR
     };
 
     std::atomic<PolyphonyMode> polyphonyMode{MONOPHONIC};
@@ -167,7 +170,7 @@ struct AW2RModule : virtual rack::Module
 
         airwin_display = AirwinRegistry::registry[registryIdx].generator();
 
-        if (polyphonyMode != MONOPHONIC)
+        if (polyphonyMode != MONOPHONIC && polyphonyMode != MIXMASTER_TO_MONOPHONIC)
         {
             airwin.reset(nullptr);
             for (int i = 0; i < MAX_POLY; ++i)
@@ -251,7 +254,7 @@ struct AW2RModule : virtual rack::Module
         nextPoly = pMode;
 
         resetAirwinByName(selectedFX, false);
-        if (polyphonyMode != MONOPHONIC)
+        if (polyphonyMode != MONOPHONIC && polyphonyMode != MIXMASTER_TO_MONOPHONIC)
         {
             for (int i = 0; i < MAX_POLY; ++i)
             {
@@ -326,21 +329,48 @@ struct AW2RModule : virtual rack::Module
         switch(polyphonyMode)
         {
         case MONOPHONIC:
-            processMono(args);
+            processMono(args, false);
+            break;
+        case MIXMASTER_TO_MONOPHONIC:
+            processMono(args, true);
             break;
         case POLYPHONIC:
-            processPoly(args, false);
+            processPoly(args, false, false);
             break;
         case POLYPHONIC_MIXMASTER:
-            processPoly(args, true);
+            processPoly(args, true, true);
+            break;
+        case MIXMASTER_TO_STEREO_POLY:
+            processPoly(args, true, false);
+            break;
+        case STEREO_POLY_TO_MIXMASTER:
+            processPoly(args, false, true);
             break;
         }
     }
-    void processMono(const ProcessArgs &args)
+    void processMono(const ProcessArgs &args, bool inputIsMixmaster)
     {
         auto rc = inputs[INPUT_R].isConnected() ? INPUT_R : INPUT_L;
-        monoIO.in[0][monoIO.inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
-        monoIO.in[1][monoIO.inPos] = inputs[rc].getVoltageSum() * 0.2;
+        if (inputIsMixmaster)
+        {
+            monoIO.in[0][monoIO.inPos] = 0;
+            monoIO.in[1][monoIO.inPos] = 0;
+            for (int c=0; c<inputs[INPUT_L].getChannels(); c += 2)
+            {
+                monoIO.in[0][monoIO.inPos] += inputs[INPUT_L].getVoltage(c) * 0.2;
+                monoIO.in[1][monoIO.inPos] += inputs[INPUT_L].getVoltage(c + 1) * 0.2;
+            }
+            for (int c=0; c<inputs[INPUT_R].getChannels(); c += 2)
+            {
+                monoIO.in[0][monoIO.inPos] += inputs[INPUT_R].getVoltage(c) * 0.2;
+                monoIO.in[1][monoIO.inPos] += inputs[INPUT_R].getVoltage(c + 1) * 0.2;
+            }
+        }
+        else
+        {
+            monoIO.in[0][monoIO.inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
+            monoIO.in[1][monoIO.inPos] = inputs[rc].getVoltageSum() * 0.2;
+        }
         monoIO.inPos++;
         if (monoIO.inPos >= blockSize)
         {
@@ -365,7 +395,7 @@ struct AW2RModule : virtual rack::Module
         monoIO.outPos++;
     }
 
-    void processPoly(const ProcessArgs &args, bool useMixMasterTopology)
+    void processPoly(const ProcessArgs &args, bool inputIsMixmaster, bool outputIsMixmaster)
     {
         int chanCt = std::max({1, inputs[INPUT_R].getChannels(), inputs[INPUT_L].getChannels()});
         outputs[OUTPUT_L].setChannels(chanCt);
@@ -383,7 +413,7 @@ struct AW2RModule : virtual rack::Module
 
         for (int c = 0; c < chanCt; ++c)
         {
-            if (useMixMasterTopology)
+            if (inputIsMixmaster)
             {
                 if (c < 8)
                 {
@@ -421,7 +451,7 @@ struct AW2RModule : virtual rack::Module
                 polyIO[c].inPos = 0;
             }
 
-            if (useMixMasterTopology)
+            if (outputIsMixmaster)
             {
                 if (c < 8)
                 {
@@ -1112,7 +1142,8 @@ struct AWSelector : rack::Widget
         nvgFontSize(vg, 8.5);
         nvgText(vg, box.size.x * 0.5, box.size.y * 0.22, lastCat.c_str(), nullptr);
 
-        if (lastPoly == AW2RModule::POLYPHONIC)
+        if (lastPoly == AW2RModule::POLYPHONIC || lastPoly == AW2RModule::POLYPHONIC_MIXMASTER
+            || lastPoly == AW2RModule::MIXMASTER_TO_STEREO_POLY || lastPoly == AW2RModule::STEREO_POLY_TO_MIXMASTER)
         {
             nvgBeginPath(vg);
             nvgFillColor(vg, awSkin.selectorPoly());
@@ -1120,15 +1151,6 @@ struct AWSelector : rack::Widget
             nvgFontFaceId(vg, fid);
             nvgFontSize(vg, 8.5);
             nvgText(vg, 3, 1, "poly", nullptr);
-        }
-        if (lastPoly == AW2RModule::POLYPHONIC_MIXMASTER)
-        {
-            nvgBeginPath(vg);
-            nvgFillColor(vg, awSkin.selectorPoly());
-            nvgTextAlign(vg, NVG_ALIGN_TOP | NVG_ALIGN_LEFT);
-            nvgFontFaceId(vg, fid);
-            nvgFontSize(vg, 8.5);
-            nvgText(vg, 3, 1, "polymix", nullptr);
         }
     }
 
@@ -1520,22 +1542,38 @@ struct AW2RModuleWidget : rack::ModuleWidget
         if (awm)
         {
             menu->addChild(new rack::MenuSeparator);
-            menu->addChild(rack::createMenuItem("Monophonic", CHECKMARK(awm->polyphonyMode == AW2RModule::MONOPHONIC),
+            menu->addChild(rack::createMenuItem("Monophonic (Sum Inputs)", CHECKMARK(awm->polyphonyMode == AW2RModule::MONOPHONIC),
                                                 [awm, this]() {
                                                     awm->stagePolyReset(AW2RModule::MONOPHONIC);
                                                     bg->dirty = true;
                                                 }));
-            menu->addChild(rack::createMenuItem("Polyphonic", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC),
+            menu->addChild(rack::createMenuItem("Monophonic (MixMaster Sum Input)", CHECKMARK(awm->polyphonyMode == AW2RModule::MIXMASTER_TO_MONOPHONIC),
+                                                [awm, this]() {
+                                                    awm->stagePolyReset(AW2RModule::MIXMASTER_TO_MONOPHONIC);
+                                                    bg->dirty = true;
+                                                }));
+            menu->addChild(rack::createMenuItem("Polyphonic (Stereo to Stereo)", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC),
                                                 [awm, this]() {
                                                     awm->stagePolyReset(AW2RModule::POLYPHONIC);
                                                     bg->dirty = true;
                                                 }));
-            menu->addChild(rack::createMenuItem("Polyphonic (MixMaster Insert)", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC_MIXMASTER),
+            menu->addChild(rack::createMenuItem("Polyphonic (MixMaster to MixMaster)", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC_MIXMASTER),
                                                 [awm, this]() {
                                                     awm->stagePolyReset(AW2RModule::POLYPHONIC_MIXMASTER);
                                                     bg->dirty = true;
                                                 }));
+            menu->addChild(rack::createMenuItem("Polyphonic (MixMaster to Stereo)", CHECKMARK(awm->polyphonyMode == AW2RModule::MIXMASTER_TO_STEREO_POLY),
+                                                [awm, this]() {
+                                                    awm->stagePolyReset(AW2RModule::MIXMASTER_TO_STEREO_POLY);
+                                                    bg->dirty = true;
+                                                }));
+            menu->addChild(rack::createMenuItem("Polyphonic (Stereo to MixMaster)", CHECKMARK(awm->polyphonyMode == AW2RModule::STEREO_POLY_TO_MIXMASTER),
+                                                [awm, this]() {
+                                                    awm->stagePolyReset(AW2RModule::STEREO_POLY_TO_MIXMASTER);
+                                                    bg->dirty = true;
+                                                }));
 
+            menu->addChild(new rack::MenuSeparator);
             auto s = "Block Size (" + std::to_string(awm->blockSize) + ")";
             menu->addChild(rack::createSubmenuItem(s, "", [this](auto m) { blockSizeMenu(m); }));
 
@@ -1794,7 +1832,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
         auto awm = dynamic_cast<AW2RModule *>(module);
         // use nextPoly here since audio thread may have not swept it yet
-        if (!awm || (awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER))
+        if (!awm || ((awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER) &&
+                     (awm->nextPoly != AW2RModule::MIXMASTER_TO_MONOPHONIC) &&
+                     (awm->nextPoly != AW2RModule::MIXMASTER_TO_STEREO_POLY))
+                     )
         {
             nvgFontSize(vg, 10);
             nvgText(vg, box.size.x * 0.25 - dc, box.size.y - cutPoint + 38, "L", nullptr);
@@ -1820,7 +1861,9 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgFillColor(vg, awSkin.panelOutputText());
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
-        if (!awm || (awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER))
+        if (!awm || ((awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER) &&
+                     (awm->nextPoly != AW2RModule::STEREO_POLY_TO_MIXMASTER))
+                     )
         {
             nvgFontSize(vg, 10);
             nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "OUT", nullptr);
