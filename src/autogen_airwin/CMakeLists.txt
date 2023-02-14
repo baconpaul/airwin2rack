@@ -163,6 +163,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Console8ChannelInProc.cpp
    src/autogen_airwin/Console8ChannelOut.cpp
    src/autogen_airwin/Console8ChannelOutProc.cpp
+   src/autogen_airwin/Console8LiteBuss.cpp
+   src/autogen_airwin/Console8LiteBussProc.cpp
+   src/autogen_airwin/Console8LiteChannel.cpp
+   src/autogen_airwin/Console8LiteChannelProc.cpp
    src/autogen_airwin/Console8SubHype.cpp
    src/autogen_airwin/Console8SubHypeProc.cpp
    src/autogen_airwin/Console8SubIn.cpp
@@ -507,6 +511,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Slew3Proc.cpp
    src/autogen_airwin/SlewOnly.cpp
    src/autogen_airwin/SlewOnlyProc.cpp
+   src/autogen_airwin/SlewSonic.cpp
+   src/autogen_airwin/SlewSonicProc.cpp
    src/autogen_airwin/Smooth.cpp
    src/autogen_airwin/SmoothProc.cpp
    src/autogen_airwin/SoftGate.cpp
@@ -609,6 +615,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/VoiceOfTheStarshipProc.cpp
    src/autogen_airwin/VoiceTrick.cpp
    src/autogen_airwin/VoiceTrickProc.cpp
+   src/autogen_airwin/Weight.cpp
+   src/autogen_airwin/WeightProc.cpp
    src/autogen_airwin/Wider.cpp
    src/autogen_airwin/WiderProc.cpp
    src/autogen_airwin/XBandpass.cpp
