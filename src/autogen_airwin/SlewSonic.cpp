@@ -97,7 +97,7 @@ float SlewSonic::getParameter(VstInt32 index) {
 
 void SlewSonic::getParameterName(VstInt32 index, char *text) {
     switch (index) {
-        case kParamA: vst_strncpy (text, "Freq", kVstMaxParamStrLen); break;
+        case kParamA: vst_strncpy (text, "Mute", kVstMaxParamStrLen); break;
 		case kParamB: vst_strncpy (text, "Bright", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
@@ -105,7 +105,7 @@ void SlewSonic::getParameterName(VstInt32 index, char *text) {
 
 void SlewSonic::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
-        case kParamA: float2string ((A*20.0)+10.0, text, kVstMaxParamStrLen); break;
+        case kParamA: float2string ((A*20.0)+5.0, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
@@ -137,7 +137,7 @@ bool SlewSonic::getVendorString(char* text) {
 }
 bool SlewSonic::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
-    case kParamA: { auto b = string2float(text, value); if (b) { value = (value - 10.0) / (20.0); } return b; break; }
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value - 5.0) / (20.0); } return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
 
     }
