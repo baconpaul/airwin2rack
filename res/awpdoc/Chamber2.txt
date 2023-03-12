@@ -18,6 +18,6 @@ Suddenly you have a full-on glitch buffer effect, from audio you had in the samp
 
 Obviously this is extremely nasty. But it's also a shocking, bold effect with a tinge of the accidental. And when the effect turns up in the VCV Rack dailies, or is used in Bespoke or wherever… it's an open invitation to throw crazy LFOs and sample-and-hold on the 'thick' control, and just use Chamber2 as a glitchy noise generator. It'll grab buffer snippets from its delay mode, it'll blur them into reverb, it'll throw other echo bits on top of that: a proper mad scientist laboratory for sonic mayhem, from your friendly neighborhood Chris.
 
-You can dial in nice verb/echo hybrid sounds and use those too, I won't stop you. I'm just making sure everyone understands the possibilities of this one. Chamber2 glitches in very special ways. Hope youu like it :)
+You can dial in nice verb/echo hybrid sounds and use those too, I won't stop you. I'm just making sure everyone understands the possibilities of this one. Chamber2 glitches in very special ways. Hope you like it :)
 
 

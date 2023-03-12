@@ -85,6 +85,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/C5RawChannelProc.cpp
    src/autogen_airwin/CStrip.cpp
    src/autogen_airwin/CStripProc.cpp
+   src/autogen_airwin/CStrip2.cpp
+   src/autogen_airwin/CStrip2Proc.cpp
    src/autogen_airwin/Cabs.cpp
    src/autogen_airwin/CabsProc.cpp
    src/autogen_airwin/Calibre.cpp
@@ -129,6 +131,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/CojonesProc.cpp
    src/autogen_airwin/Compresaturator.cpp
    src/autogen_airwin/CompresaturatorProc.cpp
+   src/autogen_airwin/Console0Buss.cpp
+   src/autogen_airwin/Console0BussProc.cpp
+   src/autogen_airwin/Console0Channel.cpp
+   src/autogen_airwin/Console0ChannelProc.cpp
    src/autogen_airwin/Console4Buss.cpp
    src/autogen_airwin/Console4BussProc.cpp
    src/autogen_airwin/Console4Channel.cpp
@@ -405,12 +411,16 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/NotJustAnotherDitherProc.cpp
    src/autogen_airwin/OneCornerClip.cpp
    src/autogen_airwin/OneCornerClipProc.cpp
+   src/autogen_airwin/OrbitKick.cpp
+   src/autogen_airwin/OrbitKickProc.cpp
    src/autogen_airwin/PDBuss.cpp
    src/autogen_airwin/PDBussProc.cpp
    src/autogen_airwin/PDChannel.cpp
    src/autogen_airwin/PDChannelProc.cpp
    src/autogen_airwin/Pafnuty.cpp
    src/autogen_airwin/PafnutyProc.cpp
+   src/autogen_airwin/Pafnuty2.cpp
+   src/autogen_airwin/Pafnuty2Proc.cpp
    src/autogen_airwin/PaulDither.cpp
    src/autogen_airwin/PaulDitherProc.cpp
    src/autogen_airwin/PaulWide.cpp
@@ -493,6 +503,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Righteous4Proc.cpp
    src/autogen_airwin/RightoMono.cpp
    src/autogen_airwin/RightoMonoProc.cpp
+   src/autogen_airwin/SampleDelay.cpp
+   src/autogen_airwin/SampleDelayProc.cpp
    src/autogen_airwin/Shape.cpp
    src/autogen_airwin/ShapeProc.cpp
    src/autogen_airwin/SideDull.cpp
