@@ -1727,8 +1727,13 @@ struct AW2RModuleWidget : rack::ModuleWidget
                 if (helpTitle[0] == '#')
                     helpTitle = helpTitle.substr(2);
             }
-            catch (const rack::Exception &e)
+            catch (rack::Exception e)
             {
+                helpText = "No Help Available for " + s;
+            }
+            catch (...)
+            {
+                // For some reason the read throws something which isn't a rack::exception so...
                 helpText = "No Help Available for " + s;
             }
 
