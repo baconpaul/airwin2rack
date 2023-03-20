@@ -37,7 +37,7 @@ void SampleDelay::processReplacing(float **inputs, float **outputs, VstInt32 sam
 		double drySampleL = inputSampleL;
 		double drySampleR = inputSampleR;
 		
-		if (gcount < 1 || gcount > maxtime) {gcount = maxtime;}
+		if (gcount < 0 || gcount > maxtime) {gcount = maxtime;}
 		int count = gcount;
 		pL[count] = inputSampleL;
 		pR[count] = inputSampleR;
@@ -106,7 +106,7 @@ void SampleDelay::processDoubleReplacing(double **inputs, double **outputs, VstI
 		double drySampleL = inputSampleL;
 		double drySampleR = inputSampleR;
 		
-		if (gcount < 1 || gcount > maxtime) {gcount = maxtime;}
+		if (gcount < 0 || gcount > maxtime) {gcount = maxtime;}
 		int count = gcount;
 		pL[count] = inputSampleL;
 		pR[count] = inputSampleR;
