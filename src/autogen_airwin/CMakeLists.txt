@@ -321,6 +321,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Holt2Proc.cpp
    src/autogen_airwin/Hombre.cpp
    src/autogen_airwin/HombreProc.cpp
+   src/autogen_airwin/Huge.cpp
+   src/autogen_airwin/HugeProc.cpp
    src/autogen_airwin/Hull.cpp
    src/autogen_airwin/HullProc.cpp
    src/autogen_airwin/Hype.cpp
@@ -671,6 +673,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ZRegion2Proc.cpp
    src/autogen_airwin/curve.cpp
    src/autogen_airwin/curveProc.cpp
+   src/autogen_airwin/kPlateA.cpp
+   src/autogen_airwin/kPlateAProc.cpp
    src/autogen_airwin/uLawDecode.cpp
    src/autogen_airwin/uLawDecodeProc.cpp
    src/autogen_airwin/uLawEncode.cpp
