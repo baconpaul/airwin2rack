@@ -1,4 +1,4 @@
-# kPlateA is a plate reverb, not unlike its namesake atop Abbey Road :)
+# kPlateA is a plate reverb, not unlike its namesake atop Abbey Road.
 
 So I just happened to turn my efforts to plate reverbs last week, since the internet exploded over some plugin drama and some of the plugins in question just happened to be models of some specific plate reverbs in a famous place: atop Abbey Road Studios. There were four of them, and I'm sure I can't make a plugin to model those exact ones, as the rights to the name are probably all tied up. And I wouldn't suggest that I tried to make reverb plugins MORE realistic than those made by this company with rights to the name. That would be rude! :D
 

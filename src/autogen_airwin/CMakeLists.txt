@@ -675,6 +675,12 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/curveProc.cpp
    src/autogen_airwin/kPlateA.cpp
    src/autogen_airwin/kPlateAProc.cpp
+   src/autogen_airwin/kPlateB.cpp
+   src/autogen_airwin/kPlateBProc.cpp
+   src/autogen_airwin/kPlateC.cpp
+   src/autogen_airwin/kPlateCProc.cpp
+   src/autogen_airwin/kPlateD.cpp
+   src/autogen_airwin/kPlateDProc.cpp
    src/autogen_airwin/uLawDecode.cpp
    src/autogen_airwin/uLawDecodeProc.cpp
    src/autogen_airwin/uLawEncode.cpp
