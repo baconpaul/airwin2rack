@@ -446,7 +446,7 @@ void Ditherbox::processReplacing(float **inputs, float **outputs, VstInt32 sampl
 				
 				totalA = bynL[1] + bynL[2] + bynL[3] + bynL[4] + bynL[5] + bynL[6] + bynL[7] + bynL[8] + bynL[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynL[1] /= totalA;
 				bynL[2] /= totalA;
 				bynL[3] /= totalA;
@@ -521,7 +521,7 @@ void Ditherbox::processReplacing(float **inputs, float **outputs, VstInt32 sampl
 				
 				totalA = bynR[1] + bynR[2] + bynR[3] + bynR[4] + bynR[5] + bynR[6] + bynR[7] + bynR[8] + bynR[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynR[1] /= totalA;
 				bynR[2] /= totalA;
 				bynR[3] /= totalA;
@@ -605,7 +605,7 @@ void Ditherbox::processReplacing(float **inputs, float **outputs, VstInt32 sampl
 				
 				totalA = bynL[1] + bynL[2] + bynL[3] + bynL[4] + bynL[5] + bynL[6] + bynL[7] + bynL[8] + bynL[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynL[1] /= totalA;
 				bynL[2] /= totalA;
 				bynL[3] /= totalA;
@@ -686,7 +686,7 @@ void Ditherbox::processReplacing(float **inputs, float **outputs, VstInt32 sampl
 				
 				totalA = bynR[1] + bynR[2] + bynR[3] + bynR[4] + bynR[5] + bynR[6] + bynR[7] + bynR[8] + bynR[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynR[1] /= totalA;
 				bynR[2] /= totalA;
 				bynR[3] /= totalA;
@@ -1458,7 +1458,7 @@ void Ditherbox::processDoubleReplacing(double **inputs, double **outputs, VstInt
 				
 				totalA = bynL[1] + bynL[2] + bynL[3] + bynL[4] + bynL[5] + bynL[6] + bynL[7] + bynL[8] + bynL[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynL[1] /= totalA;
 				bynL[2] /= totalA;
 				bynL[3] /= totalA;
@@ -1533,7 +1533,7 @@ void Ditherbox::processDoubleReplacing(double **inputs, double **outputs, VstInt
 				
 				totalA = bynR[1] + bynR[2] + bynR[3] + bynR[4] + bynR[5] + bynR[6] + bynR[7] + bynR[8] + bynR[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynR[1] /= totalA;
 				bynR[2] /= totalA;
 				bynR[3] /= totalA;
@@ -1617,7 +1617,7 @@ void Ditherbox::processDoubleReplacing(double **inputs, double **outputs, VstInt
 				
 				totalA = bynL[1] + bynL[2] + bynL[3] + bynL[4] + bynL[5] + bynL[6] + bynL[7] + bynL[8] + bynL[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynL[1] /= totalA;
 				bynL[2] /= totalA;
 				bynL[3] /= totalA;
@@ -1698,7 +1698,7 @@ void Ditherbox::processDoubleReplacing(double **inputs, double **outputs, VstInt
 				
 				totalA = bynR[1] + bynR[2] + bynR[3] + bynR[4] + bynR[5] + bynR[6] + bynR[7] + bynR[8] + bynR[9];
 				totalA /= 1000;
-				if (totalA = 0) totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
+				totalA = 1; // spotted by Laserbat: this 'scaling back' code doesn't. It always divides by the fallback of 1. Old NJAD doesn't scale back the things we're comparing against. Kept to retain known behavior, use the one in StudioTan and Monitoring for a tuned-as-intended NJAD.
 				bynR[1] /= totalA;
 				bynR[2] /= totalA;
 				bynR[3] /= totalA;
