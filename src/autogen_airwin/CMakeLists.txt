@@ -287,6 +287,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/FromTapeProc.cpp
    src/autogen_airwin/Galactic.cpp
    src/autogen_airwin/GalacticProc.cpp
+   src/autogen_airwin/Galactic2.cpp
+   src/autogen_airwin/Galactic2Proc.cpp
+   src/autogen_airwin/GalacticVibe.cpp
+   src/autogen_airwin/GalacticVibeProc.cpp
    src/autogen_airwin/Gatelope.cpp
    src/autogen_airwin/GatelopeProc.cpp
    src/autogen_airwin/GlitchShifter.cpp
@@ -369,6 +373,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/LuxorProc.cpp
    src/autogen_airwin/MV.cpp
    src/autogen_airwin/MVProc.cpp
+   src/autogen_airwin/MV2.cpp
+   src/autogen_airwin/MV2Proc.cpp
    src/autogen_airwin/MackEQ.cpp
    src/autogen_airwin/MackEQProc.cpp
    src/autogen_airwin/Mackity.cpp
@@ -543,6 +549,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Srsly2Proc.cpp
    src/autogen_airwin/StarChild.cpp
    src/autogen_airwin/StarChildProc.cpp
+   src/autogen_airwin/StarChild2.cpp
+   src/autogen_airwin/StarChild2Proc.cpp
    src/autogen_airwin/StereoChorus.cpp
    src/autogen_airwin/StereoChorusProc.cpp
    src/autogen_airwin/StereoDoubler.cpp
