@@ -1,11 +1,11 @@
 /* ========================================
- *  Console0Channel - Console0Channel.h
+ *  BitShiftPan - BitShiftPan.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Console0Channel_Console0Channel_H
-#define __Console0Channel_Console0Channel_H
+#ifndef __BitShiftPan_BitShiftPan_H
+#define __BitShiftPan_BitShiftPan_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"
@@ -15,7 +15,7 @@
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console0Channel {
+namespace airwin2rack::BitShiftPan {
 enum {
 	kParamA = 0,
 	kParamB = 1,
@@ -25,14 +25,14 @@ enum {
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'cn0c';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'bitp';    //Change this to what the AU identity is!
 
-class Console0Channel : 
+class BitShiftPan : 
     public AudioEffectX 
 {
 public:
-    Console0Channel(audioMasterCallback audioMaster);
-    ~Console0Channel();
+    BitShiftPan(audioMasterCallback audioMaster);
+    ~BitShiftPan();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -57,13 +57,6 @@ private:
     char _programName[kVstMaxProgNameLen + 1];
     std::set< std::string > _canDo;
     
-	uint32_t fpdL;
-	uint32_t fpdR;
-	//default stuff
-	double avgAL;
-	double avgAR;
-	double avgBL;
-	double avgBR;	
     float A;
     float B;
 };

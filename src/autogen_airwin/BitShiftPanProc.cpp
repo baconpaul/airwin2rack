@@ -1,14 +1,14 @@
 /* ========================================
- *  Console0Channel - Console0Channel.h
+ *  BitShiftPan - BitShiftPan.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Console0Channel_H
-#include "Console0Channel.h"
+#ifndef __BitShiftPan_H
+#include "BitShiftPan.h"
 #endif
-namespace airwin2rack::Console0Channel {
+namespace airwin2rack::BitShiftPan {
 
-void Console0Channel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
+void BitShiftPan::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {
     float* in1  =  inputs[0];
     float* in2  =  inputs[1];
@@ -76,50 +76,11 @@ void Console0Channel::processReplacing(float **inputs, float **outputs, VstInt32
 		case -1: gainR = 2.0; break;
 		case -2: gainR = 4.0; break;
 	}
-	double temp;
 
     while (--sampleFrames >= 0)
-    {
-		double inputSampleL = *in1;
-		double inputSampleR = *in2;
-		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
-		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
-		
-		temp = inputSampleL;
-		inputSampleL = (inputSampleL + avgAL) * 0.5; avgAL = temp;
-		temp = inputSampleR;
-		inputSampleR = (inputSampleR + avgAR) * 0.5; avgAR = temp;
-		
-		inputSampleL *= gainL;
-		inputSampleR *= gainR;
-		
-		if (inputSampleL > 1.4137166941154) inputSampleL = 1.4137166941154;
-		if (inputSampleL < -1.4137166941154) inputSampleL = -1.4137166941154;
-		if (inputSampleL > 0.0) inputSampleL = (inputSampleL/2.0)*(2.8274333882308-inputSampleL);
-		else inputSampleL = -(inputSampleL/-2.0)*(2.8274333882308+inputSampleL);
-		if (inputSampleR > 1.4137166941154) inputSampleR = 1.4137166941154;
-		if (inputSampleR < -1.4137166941154) inputSampleR = -1.4137166941154;
-		if (inputSampleR > 0.0) inputSampleR = (inputSampleR/2.0)*(2.8274333882308-inputSampleR);
-		else inputSampleR = -(inputSampleR/-2.0)*(2.8274333882308+inputSampleR);
-		//BigFastSin channel stage
-		
-		temp = inputSampleL;
-		inputSampleL = (inputSampleL + avgBL) * 0.5; avgBL = temp;
-		temp = inputSampleR;
-		inputSampleR = (inputSampleR + avgBR) * 0.5; avgBR = temp;		
-		
-		//begin 32 bit stereo floating point dither
-		int expon; frexpf((float)inputSampleL, &expon);
-		fpdL ^= fpdL << 13; fpdL ^= fpdL >> 17; fpdL ^= fpdL << 5;
-		inputSampleL += ((double(fpdL)-uint32_t(0x7fffffff)) * 5.5e-36l * pow(2,expon+62));
-		frexpf((float)inputSampleR, &expon);
-		fpdR ^= fpdR << 13; fpdR ^= fpdR >> 17; fpdR ^= fpdR << 5;
-		inputSampleR += ((double(fpdR)-uint32_t(0x7fffffff)) * 5.5e-36l * pow(2,expon+62));
-		//end 32 bit stereo floating point dither
-		
-		*out1 = inputSampleL;
-		*out2 = inputSampleR;
-
+    {		
+		*out1 = *in1 * gainL; //in this plugin, all the work is done 
+		*out2 = *in2 * gainR; //before the buffer is processed
 		in1++;
 		in2++;
 		out1++;
@@ -127,13 +88,13 @@ void Console0Channel::processReplacing(float **inputs, float **outputs, VstInt32
     }
 }
 
-void Console0Channel::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
+void BitShiftPan::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
 {
     double* in1  =  inputs[0];
     double* in2  =  inputs[1];
     double* out1 = outputs[0];
     double* out2 = outputs[1];
-
+	
 	double gainControl = (A*0.5)+0.05; //0.0 to 1.0
 	int gainBits = 20; //start beyond maximum attenuation
 	if (gainControl > 0.0) gainBits = floor(1.0 / gainControl);
@@ -195,50 +156,11 @@ void Console0Channel::processDoubleReplacing(double **inputs, double **outputs, 
 		case -1: gainR = 2.0; break;
 		case -2: gainR = 4.0; break;
 	}
-	double temp;
-	
+
     while (--sampleFrames >= 0)
     {
-		double inputSampleL = *in1;
-		double inputSampleR = *in2;
-		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
-		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
-		
-		temp = inputSampleL;
-		inputSampleL = (inputSampleL + avgAL) * 0.5; avgAL = temp;
-		temp = inputSampleR;
-		inputSampleR = (inputSampleR + avgAR) * 0.5; avgAR = temp;
-		
-		inputSampleL *= gainL;
-		inputSampleR *= gainR;
-		
-		if (inputSampleL > 1.4137166941154) inputSampleL = 1.4137166941154;
-		if (inputSampleL < -1.4137166941154) inputSampleL = -1.4137166941154;
-		if (inputSampleL > 0.0) inputSampleL = (inputSampleL/2.0)*(2.8274333882308-inputSampleL);
-		else inputSampleL = -(inputSampleL/-2.0)*(2.8274333882308+inputSampleL);
-		if (inputSampleR > 1.4137166941154) inputSampleR = 1.4137166941154;
-		if (inputSampleR < -1.4137166941154) inputSampleR = -1.4137166941154;
-		if (inputSampleR > 0.0) inputSampleR = (inputSampleR/2.0)*(2.8274333882308-inputSampleR);
-		else inputSampleR = -(inputSampleR/-2.0)*(2.8274333882308+inputSampleR);
-		//BigFastSin channel stage
-		
-		temp = inputSampleL;
-		inputSampleL = (inputSampleL + avgBL) * 0.5; avgBL = temp;
-		temp = inputSampleR;
-		inputSampleR = (inputSampleR + avgBR) * 0.5; avgBR = temp;		
-		
-		//begin 64 bit stereo floating point dither
-		//int expon; frexp((double)inputSampleL, &expon);
-		fpdL ^= fpdL << 13; fpdL ^= fpdL >> 17; fpdL ^= fpdL << 5;
-		//inputSampleL += ((double(fpdL)-uint32_t(0x7fffffff)) * 1.1e-44l * pow(2,expon+62));
-		//frexp((double)inputSampleR, &expon);
-		fpdR ^= fpdR << 13; fpdR ^= fpdR >> 17; fpdR ^= fpdR << 5;
-		//inputSampleR += ((double(fpdR)-uint32_t(0x7fffffff)) * 1.1e-44l * pow(2,expon+62));
-		//end 64 bit stereo floating point dither
-		
-		*out1 = inputSampleL;
-		*out2 = inputSampleR;
-
+		*out1 = *in1 * gainL; //in this plugin, all the work is done 
+		*out2 = *in2 * gainR; //before the buffer is processed
 		in1++;
 		in2++;
 		out1++;

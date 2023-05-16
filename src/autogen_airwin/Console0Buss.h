@@ -17,7 +17,9 @@
 
 namespace airwin2rack::Console0Buss {
 enum {
-  kNumParameters = 0
+	kParamA = 0,
+	kParamB = 1,
+  kNumParameters = 2
 }; //
 
 const int kNumPrograms = 0;
@@ -58,7 +60,12 @@ private:
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff
-
+	double avgAL;
+	double avgAR;
+	double avgBL;
+	double avgBR;
+    float A;
+    float B;
 };
 
 #endif

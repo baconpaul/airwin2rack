@@ -1,23 +1,20 @@
 /* ========================================
- *  Console0Channel - Console0Channel.h
+ *  BitShiftPan - BitShiftPan.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Console0Channel_H
-#include "Console0Channel.h"
+#ifndef __BitShiftPan_H
+#include "BitShiftPan.h"
 #endif
-namespace airwin2rack::Console0Channel {
+namespace airwin2rack::BitShiftPan {
 
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console0Channel(audioMaster);}
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BitShiftPan(audioMaster);}
 
-Console0Channel::Console0Channel(audioMasterCallback audioMaster) :
+BitShiftPan::BitShiftPan(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
 	A = 0.5;
 	B = 0.5;
-	avgAL = avgAR = avgBL = avgBR = 0.0;
-	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
-	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
 	//this is reset: values being initialized only once. Startup values, whatever they are.
 	
     _canDo.insert("plugAsChannelInsert"); // plug-in can be used as a channel insert effect.
@@ -32,10 +29,10 @@ Console0Channel::Console0Channel(audioMasterCallback audioMaster) :
     vst_strncpy (_programName, "Default", kVstMaxProgNameLen); // default program name
 }
 
-Console0Channel::~Console0Channel() {}
-VstInt32 Console0Channel::getVendorVersion () {return 1000;}
-void Console0Channel::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
-void Console0Channel::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
+BitShiftPan::~BitShiftPan() {}
+VstInt32 BitShiftPan::getVendorVersion () {return 1000;}
+void BitShiftPan::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
+void BitShiftPan::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
@@ -46,7 +43,7 @@ static float pinParameter(float data)
 	return data;
 }
 
-VstInt32 Console0Channel::getChunk (void** data, bool isPreset)
+VstInt32 BitShiftPan::getChunk (void** data, bool isPreset)
 {
 	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));
 	chunkData[0] = A;
@@ -59,7 +56,7 @@ VstInt32 Console0Channel::getChunk (void** data, bool isPreset)
 	return kNumParameters * sizeof(float);
 }
 
-VstInt32 Console0Channel::setChunk (void* data, VstInt32 byteSize, bool isPreset)
+VstInt32 BitShiftPan::setChunk (void* data, VstInt32 byteSize, bool isPreset)
 {	
 	float *chunkData = (float *)data;
 	A = pinParameter(chunkData[0]);
@@ -71,7 +68,7 @@ VstInt32 Console0Channel::setChunk (void* data, VstInt32 byteSize, bool isPreset
 	return 0;
 }
 
-void Console0Channel::setParameter(VstInt32 index, float value) {
+void BitShiftPan::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
@@ -79,7 +76,7 @@ void Console0Channel::setParameter(VstInt32 index, float value) {
     }
 }
 
-float Console0Channel::getParameter(VstInt32 index) {
+float BitShiftPan::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
         case kParamB: return B; break;
@@ -87,7 +84,7 @@ float Console0Channel::getParameter(VstInt32 index) {
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
-void Console0Channel::getParameterName(VstInt32 index, char *text) {
+void BitShiftPan::getParameterName(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "Vol", kVstMaxParamStrLen); break;
 		case kParamB: vst_strncpy (text, "Pan", kVstMaxParamStrLen); break;
@@ -95,7 +92,7 @@ void Console0Channel::getParameterName(VstInt32 index, char *text) {
     } //this is our labels for displaying in the VST host
 }
 
-void Console0Channel::getParameterDisplay(VstInt32 index, char *text) {
+void BitShiftPan::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
@@ -103,7 +100,7 @@ void Console0Channel::getParameterDisplay(VstInt32 index, char *text) {
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
 
-void Console0Channel::getParameterLabel(VstInt32 index, char *text) {
+void BitShiftPan::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
@@ -111,23 +108,23 @@ void Console0Channel::getParameterLabel(VstInt32 index, char *text) {
     }
 }
 
-VstInt32 Console0Channel::canDo(char *text) 
+VstInt32 BitShiftPan::canDo(char *text) 
 { return (_canDo.find(text) == _canDo.end()) ? -1: 1; } // 1 = yes, -1 = no, 0 = don't know
 
-bool Console0Channel::getEffectName(char* name) {
-    vst_strncpy(name, "Console0Channel", kVstMaxProductStrLen); return true;
+bool BitShiftPan::getEffectName(char* name) {
+    vst_strncpy(name, "BitShiftPan", kVstMaxProductStrLen); return true;
 }
 
-VstPlugCategory Console0Channel::getPlugCategory() {return kPlugCategEffect;}
+VstPlugCategory BitShiftPan::getPlugCategory() {return kPlugCategEffect;}
 
-bool Console0Channel::getProductString(char* text) {
-  	vst_strncpy (text, "airwindows Console0Channel", kVstMaxProductStrLen); return true;
+bool BitShiftPan::getProductString(char* text) {
+  	vst_strncpy (text, "airwindows BitShiftPan", kVstMaxProductStrLen); return true;
 }
 
-bool Console0Channel::getVendorString(char* text) {
+bool BitShiftPan::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
-bool Console0Channel::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+bool BitShiftPan::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
@@ -135,7 +132,7 @@ bool Console0Channel::parameterTextToValue(VstInt32 index, const char *text, flo
     }
     return false;
 }
-bool Console0Channel::canConvertParameterTextToValue(VstInt32 index) {
+bool BitShiftPan::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
         case kParamB: return true;

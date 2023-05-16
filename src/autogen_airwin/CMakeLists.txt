@@ -59,6 +59,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/BitGlitterProc.cpp
    src/autogen_airwin/BitShiftGain.cpp
    src/autogen_airwin/BitShiftGainProc.cpp
+   src/autogen_airwin/BitShiftPan.cpp
+   src/autogen_airwin/BitShiftPanProc.cpp
    src/autogen_airwin/Bite.cpp
    src/autogen_airwin/BiteProc.cpp
    src/autogen_airwin/BlockParty.cpp
@@ -681,6 +683,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ZRegion2Proc.cpp
    src/autogen_airwin/curve.cpp
    src/autogen_airwin/curveProc.cpp
+   src/autogen_airwin/kChamberAR.cpp
+   src/autogen_airwin/kChamberARProc.cpp
    src/autogen_airwin/kPlateA.cpp
    src/autogen_airwin/kPlateAProc.cpp
    src/autogen_airwin/kPlateB.cpp
