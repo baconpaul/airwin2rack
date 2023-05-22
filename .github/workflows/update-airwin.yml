@@ -21,5 +21,6 @@ jobs:
         run: |
           git config --global user.name 'GithubActions BaconPaul Bot'
           git config --global user.email 'baconpaul@users.noreply.github.com'
-          git commit -am "Update to Latest Airwin"
+          git add .
+          git commit -m "Update to Latest Airwin"
           git push
