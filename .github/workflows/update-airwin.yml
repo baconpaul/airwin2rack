@@ -1,0 +1,25 @@
+name: Upgrade Airwindows to latest
+on: workflow_dispatch
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-content:
+    name: create-content
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Do Update
+        run: . ./scripts/updateTolatest.sh
+      - name: Commit code 
+        run: |
+          git config --global user.name 'GithubActions BaconPaul Bot'
+          git config --global user.email 'baconpaul@users.noreply.github.com'
+          git commit -am "Update to Latest Airwin"
+          git push
