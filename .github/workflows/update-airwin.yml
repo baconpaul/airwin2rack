@@ -1,4 +1,4 @@
-name: Upgrade Airwindows to latest
+name: Update
 on: workflow_dispatch
 
 defaults:
