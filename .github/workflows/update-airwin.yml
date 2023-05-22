@@ -16,7 +16,7 @@ jobs:
         with:
           submodules: recursive
       - name: Do Update
-        run: . ./scripts/updateTolatest.sh
+        run: . ./scripts/updateToLatest.sh
       - name: Commit code 
         run: |
           git config --global user.name 'GithubActions BaconPaul Bot'
