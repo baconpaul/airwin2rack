@@ -1,6 +1,6 @@
 # BitShiftPan gives you a gain and a pan control that are ONLY done using bit shifts.
 
-This is a request from YouTube comments, but I had no idea how well it'd work out! BitShiftGain is a long-standing secret weapon of mine. On almost every video, I'm losslessly dropping 6dB using BitShiftGain. But what would to get if you applied this to pan?
+This is a request from YouTube comments, but I had no idea how well it'd work out! BitShiftGain is a long-standing secret weapon of mine. On almost every video, I'm losslessly dropping 6dB using BitShiftGain. But what would you get if you applied this to pan?
 
 You'd get a pan where center was quite a bit louder than sides (there's no 3 dB pan law from bit shifts), but the first steps to left and right are QUITE a lot to the side. It's not at all LCR panning, but if something's center you know it, and if something's to the side it's WAY to the side. Then, you have a succession of further-to-the-side positions that are progressively quieter, all the way to hard L and R. If that was all it was, this would seem really pointless and arbitrary.
 
