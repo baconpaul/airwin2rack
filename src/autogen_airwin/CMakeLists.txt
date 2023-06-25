@@ -285,6 +285,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/FocusProc.cpp
    src/autogen_airwin/Fracture.cpp
    src/autogen_airwin/FractureProc.cpp
+   src/autogen_airwin/Fracture2.cpp
+   src/autogen_airwin/Fracture2Proc.cpp
    src/autogen_airwin/FromTape.cpp
    src/autogen_airwin/FromTapeProc.cpp
    src/autogen_airwin/Galactic.cpp
@@ -437,6 +439,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PaulWideProc.cpp
    src/autogen_airwin/PeaksOnly.cpp
    src/autogen_airwin/PeaksOnlyProc.cpp
+   src/autogen_airwin/Pear.cpp
+   src/autogen_airwin/PearProc.cpp
    src/autogen_airwin/PhaseNudge.cpp
    src/autogen_airwin/PhaseNudgeProc.cpp
    src/autogen_airwin/PitchDelay.cpp
@@ -477,6 +481,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PurestConsole2BussProc.cpp
    src/autogen_airwin/PurestConsole2Channel.cpp
    src/autogen_airwin/PurestConsole2ChannelProc.cpp
+   src/autogen_airwin/PurestConsole3Buss.cpp
+   src/autogen_airwin/PurestConsole3BussProc.cpp
+   src/autogen_airwin/PurestConsole3Channel.cpp
+   src/autogen_airwin/PurestConsole3ChannelProc.cpp
    src/autogen_airwin/PurestConsoleBuss.cpp
    src/autogen_airwin/PurestConsoleBussProc.cpp
    src/autogen_airwin/PurestConsoleChannel.cpp
