@@ -299,6 +299,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/GatelopeProc.cpp
    src/autogen_airwin/GlitchShifter.cpp
    src/autogen_airwin/GlitchShifterProc.cpp
+   src/autogen_airwin/GoldenSlew.cpp
+   src/autogen_airwin/GoldenSlewProc.cpp
    src/autogen_airwin/Golem.cpp
    src/autogen_airwin/GolemProc.cpp
    src/autogen_airwin/GrindAmp.cpp
