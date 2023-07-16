@@ -449,6 +449,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PitchDelayProc.cpp
    src/autogen_airwin/PitchNasty.cpp
    src/autogen_airwin/PitchNastyProc.cpp
+   src/autogen_airwin/PlatinumSlew.cpp
+   src/autogen_airwin/PlatinumSlewProc.cpp
    src/autogen_airwin/PocketVerbs.cpp
    src/autogen_airwin/PocketVerbsProc.cpp
    src/autogen_airwin/Pockey.cpp
