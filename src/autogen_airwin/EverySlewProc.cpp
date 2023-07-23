@@ -1,14 +1,14 @@
 /* ========================================
- *  PlatinumSlew - PlatinumSlew.h
+ *  EverySlew - EverySlew.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __PlatinumSlew_H
-#include "PlatinumSlew.h"
+#ifndef __EverySlew_H
+#include "EverySlew.h"
 #endif
-namespace airwin2rack::PlatinumSlew {
+namespace airwin2rack::EverySlew {
 
-void PlatinumSlew::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
+void EverySlew::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {
     float* in1  =  inputs[0];
     float* in2  =  inputs[1];
@@ -20,6 +20,12 @@ void PlatinumSlew::processReplacing(float **inputs, float **outputs, VstInt32 sa
 	overallscale *= getSampleRate();
 	
 	double source = pow(1-A,4)/overallscale;
+	int stages = (1.0-B)*9.99;
+	stages *= 5;
+	double halo = C;
+	double wet = (D*2.0)-1.0; //inv-dry-wet for highpass
+	double dry = 2.0-(D*2.0);
+	if (dry > 1.0) dry = 1.0; //full dry for use with inv, to 0.0 at full wet
 	
 	gslew[threshold10] = source;
 	source *= 1.618033988749894848204586;
@@ -48,22 +54,31 @@ void PlatinumSlew::processReplacing(float **inputs, float **outputs, VstInt32 sa
 		double inputSampleR = *in2;
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
+		double drySampleL = inputSampleL;
+		double drySampleR = inputSampleR;
 		
-		for (int x = 0; x < gslew_total; x += 5) {
+		for (int x = stages; x < gslew_total; x += 5) {
 			if (((inputSampleL-gslew[x])-((gslew[x]-gslew[x+2])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*0.156)) + (gslew[x+4]*0.844);
+				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*halo)) + (gslew[x+4]*(1.0-halo));
 			if (-((inputSampleL-gslew[x])-((gslew[x]-gslew[x+2])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*0.2)) - (gslew[x+4]*0.8);
-			gslew[x+2] = gslew[x]*0.844;
+				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*halo*0.78)) - (gslew[x+4]*(1.0-(halo*0.78)));
+			gslew[x+2] = gslew[x]*(1.0-halo);
 			gslew[x] = inputSampleL;
 			
 			if (((inputSampleR-gslew[x+1])-((gslew[x+1]-gslew[x+3])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*0.156)) + (gslew[x+4]*0.844);
+				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*halo)) + (gslew[x+4]*(1.0-halo));
 			if (-((inputSampleR-gslew[x+1])-((gslew[x+1]-gslew[x+3])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*0.2)) - (gslew[x+4]*0.8);
-			gslew[x+3] = gslew[x+1]*0.844;
-			gslew[x+1] = inputSampleR;
+				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*halo*0.78)) - (gslew[x+4]*(1.0-(halo*0.78)));
+			gslew[x+3] = gslew[x+1]*(1.0-halo);
+			gslew[x+1] = inputSampleR;			
 		}
+		
+		inputSampleL *= wet;
+		inputSampleR *= wet;
+		drySampleL *= dry;
+		drySampleR *= dry;
+		inputSampleL += drySampleL;
+		inputSampleR += drySampleR;
 		
 		//begin 32 bit stereo floating point dither
 		int expon; frexpf((float)inputSampleL, &expon);
@@ -84,7 +99,7 @@ void PlatinumSlew::processReplacing(float **inputs, float **outputs, VstInt32 sa
     }
 }
 
-void PlatinumSlew::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
+void EverySlew::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
 {
     double* in1  =  inputs[0];
     double* in2  =  inputs[1];
@@ -96,6 +111,12 @@ void PlatinumSlew::processDoubleReplacing(double **inputs, double **outputs, Vst
 	overallscale *= getSampleRate();
 	
 	double source = pow(1-A,4)/overallscale;
+	int stages = (1.0-B)*9.99;
+	stages *= 5;
+	double halo = C;
+	double wet = (D*2.0)-1.0; //inv-dry-wet for highpass
+	double dry = 2.0-(D*2.0);
+	if (dry > 1.0) dry = 1.0; //full dry for use with inv, to 0.0 at full wet
 	
 	gslew[threshold10] = source;
 	source *= 1.618033988749894848204586;
@@ -124,22 +145,31 @@ void PlatinumSlew::processDoubleReplacing(double **inputs, double **outputs, Vst
 		double inputSampleR = *in2;
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
+		double drySampleL = inputSampleL;
+		double drySampleR = inputSampleR;
 		
-		for (int x = 0; x < gslew_total; x += 5) {
+		for (int x = stages; x < gslew_total; x += 5) {
 			if (((inputSampleL-gslew[x])-((gslew[x]-gslew[x+2])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*0.156)) + (gslew[x+4]*0.844);
+				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*halo)) + (gslew[x+4]*(1.0-halo));
 			if (-((inputSampleL-gslew[x])-((gslew[x]-gslew[x+2])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*0.2)) - (gslew[x+4]*0.8);
-			gslew[x+2] = gslew[x]*0.844;
+				inputSampleL = (gslew[x]-((gslew[x]-gslew[x+2])*halo*0.78)) - (gslew[x+4]*(1.0-(halo*0.78)));
+			gslew[x+2] = gslew[x]*(1.0-halo);
 			gslew[x] = inputSampleL;
 			
 			if (((inputSampleR-gslew[x+1])-((gslew[x+1]-gslew[x+3])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*0.156)) + (gslew[x+4]*0.844);
+				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*halo)) + (gslew[x+4]*(1.0-halo));
 			if (-((inputSampleR-gslew[x+1])-((gslew[x+1]-gslew[x+3])*0.618033988749894848204586)) > gslew[x+4])
-				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*0.2)) - (gslew[x+4]*0.8);
-			gslew[x+3] = gslew[x+1]*0.844;
-			gslew[x+1] = inputSampleR;
+				inputSampleR = (gslew[x+1]-((gslew[x+1]-gslew[x+3])*halo*0.78)) - (gslew[x+4]*(1.0-(halo*0.78)));
+			gslew[x+3] = gslew[x+1]*(1.0-halo);
+			gslew[x+1] = inputSampleR;			
 		}
+		
+		inputSampleL *= wet;
+		inputSampleR *= wet;
+		drySampleL *= dry;
+		drySampleR *= dry;
+		inputSampleL += drySampleL;
+		inputSampleR += drySampleR;
 		
 		//begin 64 bit stereo floating point dither
 		//int expon; frexp((double)inputSampleL, &expon);

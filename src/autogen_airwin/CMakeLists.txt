@@ -265,6 +265,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Energy2Proc.cpp
    src/autogen_airwin/Ensemble.cpp
    src/autogen_airwin/EnsembleProc.cpp
+   src/autogen_airwin/EverySlew.cpp
+   src/autogen_airwin/EverySlewProc.cpp
    src/autogen_airwin/EveryTrim.cpp
    src/autogen_airwin/EveryTrimProc.cpp
    src/autogen_airwin/Exciter.cpp
