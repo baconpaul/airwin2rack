@@ -1,4 +1,4 @@
-# PurestConsole2Channel is the anti-aliasing version of PurestConsole.
+# PurestConsole2Channel is the distributed filter version of PurestConsole.
 
 Meet PurestConsole2.
 

@@ -1,4 +1,4 @@
-# PurestConsole2Buss is the anti-aliasing version of PurestConsole.
+# PurestConsole2Buss is the distributed filter version of PurestConsole.
 
 Meet PurestConsole2.
 
