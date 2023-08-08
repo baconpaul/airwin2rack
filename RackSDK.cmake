@@ -1,6 +1,6 @@
 # Mapping of plugin build definitions from the Rack-SDK arch.mk, compile.mk, dep.mk and plugin.mk to CMake.
 
-set(RACK_SDK_VERSION 2.2.2)
+set(RACK_SDK_VERSION 2.4.0)
 message(STATUS "Load RackSDK.cmake (mapping based on Rack-SDK-${RACK_SDK_VERSION})")
 
 if ("${RACK_SDK_DIR}" STREQUAL "")
@@ -29,7 +29,8 @@ endif ()
 
 # Do not change the RACK_PLUGIN_LIB!
 if (${CMAKE_OSX_ARCHITECTURES} MATCHES "arm64")
-  set(RACK_PLUGIN_ARCH -arm64)
+  # Some older versions of VCV Rack Beta ARM added -arm64 to the plugin name
+  # set(RACK_PLUGIN_ARCH -arm64)
 endif ()
 set(RACK_PLUGIN_LIB plugin${RACK_PLUGIN_ARCH})
 
