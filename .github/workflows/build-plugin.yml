@@ -14,7 +14,7 @@ on:
       - completed
 
 env:
-  rack-sdk-version: 2.2.2
+  rack-sdk-version: 2.4.0
   rack-plugin-toolchain-dir: /home/build/rack-plugin-toolchain
 
 defaults:
