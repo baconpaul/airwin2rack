@@ -456,12 +456,12 @@ struct AW2RModule : virtual rack::Module
                 if (c < 8)
                 {
                     outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c * 2);
-                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c * 2 + 1);
+                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5, c * 2 + 1);
                 }
                 else
                 {
                     outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, (c-8) * 2);
-                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, (c-8) * 2 + 1);
+                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5, (c-8) * 2 + 1);
                 }
             }
             else
