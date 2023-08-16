@@ -60,16 +60,6 @@ void NotJustAnotherCD::getProgramName(char *name) {vst_strncpy (name, _programNa
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
 
-VstInt32 NotJustAnotherCD::getChunk (void** data, bool isPreset)
-{
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 NotJustAnotherCD::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	return 0;
-}
-
 void NotJustAnotherCD::setParameter(VstInt32 index, float value) {
 }
 

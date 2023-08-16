@@ -44,21 +44,6 @@ static float pinParameter(float data)
 	return data;
 }
 
-VstInt32 UltrasonicLite::getChunk (void** data, bool isPreset)
-{
-	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));	
-	*data = chunkData;
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 UltrasonicLite::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	float *chunkData = (float *)data;
-	/* calculate any other fields you need here - you could copy in 
-	 code from setParameter() here. */
-	return 0;
-}
-
 void UltrasonicLite::setParameter(VstInt32 index, float value) {
     switch (index) {
         default: break; // unknown parameter, shouldn't happen!

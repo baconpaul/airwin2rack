@@ -47,26 +47,6 @@ static float pinParameter(float data)
 	return data;
 }
 
-VstInt32 Console7Buss::getChunk (void** data, bool isPreset)
-{
-	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));
-	chunkData[0] = A;
-	
-	*data = chunkData;
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 Console7Buss::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	float *chunkData = (float *)data;
-	A = pinParameter(chunkData[0]);
-	/* We're ignoring byteSize as we found it to be a filthy liar */
-	
-	/* calculate any other fields you need here - you could copy in 
-	 code from setParameter() here. */
-	return 0;
-}
-
 void Console7Buss::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;

@@ -39,17 +39,6 @@ void Console8BussHype::getProgramName(char *name) {vst_strncpy (name, _programNa
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
-VstInt32 Console8BussHype::getChunk (void** data, bool isPreset)
-{
-	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 Console8BussHype::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	return 0;
-}
-
 void Console8BussHype::setParameter(VstInt32 index, float value) {
     switch (index) {
         default: break; // unknown parameter, shouldn't happen!

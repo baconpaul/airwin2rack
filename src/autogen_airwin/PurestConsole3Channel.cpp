@@ -37,16 +37,6 @@ void PurestConsole3Channel::getProgramName(char *name) {vst_strncpy (name, _prog
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
 
-VstInt32 PurestConsole3Channel::getChunk (void** data, bool isPreset)
-{
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 PurestConsole3Channel::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	return 0;
-}
-
 void PurestConsole3Channel::setParameter(VstInt32 index, float value) {
 }
 

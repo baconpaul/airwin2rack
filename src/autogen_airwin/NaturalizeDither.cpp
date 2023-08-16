@@ -57,16 +57,6 @@ void NaturalizeDither::getProgramName(char *name) {vst_strncpy (name, _programNa
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
-VstInt32 NaturalizeDither::getChunk (void** data, bool isPreset)
-{
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 NaturalizeDither::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	return 0;
-}
-
 void NaturalizeDither::setParameter(VstInt32 index, float value) {
 }
 

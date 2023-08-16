@@ -37,16 +37,6 @@ void PurestConsole3Buss::getProgramName(char *name) {vst_strncpy (name, _program
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
 
-VstInt32 PurestConsole3Buss::getChunk (void** data, bool isPreset)
-{
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 PurestConsole3Buss::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	return 0;
-}
-
 void PurestConsole3Buss::setParameter(VstInt32 index, float value) {
 }
 

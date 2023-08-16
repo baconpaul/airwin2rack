@@ -49,16 +49,6 @@ void TransDesk::getProgramName(char *name) {vst_strncpy (name, _programName, kVs
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
-VstInt32 TransDesk::getChunk (void** data, bool isPreset)
-{
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 TransDesk::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	return 0;
-}
-
 void TransDesk::setParameter(VstInt32 index, float value) {
 }
 

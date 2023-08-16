@@ -44,19 +44,6 @@ static float pinParameter(float data)
 	return data;
 }
 
-VstInt32 UltrasonicMed::getChunk (void** data, bool isPreset)
-{
-	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));
-	*data = chunkData;
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 UltrasonicMed::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	float *chunkData = (float *)data;
-	return 0;
-}
-
 void UltrasonicMed::setParameter(VstInt32 index, float value) {
     switch (index) {
         default: break; // unknown parameter, shouldn't happen!

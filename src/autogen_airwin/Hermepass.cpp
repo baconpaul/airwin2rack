@@ -64,31 +64,6 @@ static float pinParameter(float data)
 	return data;
 }
 
-VstInt32 Hermepass::getChunk (void** data, bool isPreset)
-{
-	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));
-	chunkData[0] = A;
-	chunkData[1] = B;
-	/* Note: The way this is set up, it will break if you manage to save settings on an Intel
-	 machine and load them on a PPC Mac. However, it's fine if you stick to the machine you 
-	 started with. */
-	
-	*data = chunkData;
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 Hermepass::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	float *chunkData = (float *)data;
-	A = pinParameter(chunkData[0]);
-	B = pinParameter(chunkData[1]);
-	/* We're ignoring byteSize as we found it to be a filthy liar */
-	
-	/* calculate any other fields you need here - you could copy in 
-	 code from setParameter() here. */
-	return 0;
-}
-
 void Hermepass::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;

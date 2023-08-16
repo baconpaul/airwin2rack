@@ -41,18 +41,6 @@ void DitherMeDiskers::getProgramName(char *name) {vst_strncpy (name, _programNam
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
 
-VstInt32 DitherMeDiskers::getChunk (void** data, bool isPreset)
-{
-	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));
-	*data = chunkData;
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 DitherMeDiskers::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	return 0;
-}
-
 void DitherMeDiskers::setParameter(VstInt32 index, float value) {
 }
 

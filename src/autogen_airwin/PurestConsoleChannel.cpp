@@ -36,27 +36,6 @@ void PurestConsoleChannel::getProgramName(char *name) {vst_strncpy (name, _progr
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
-VstInt32 PurestConsoleChannel::getChunk (void** data, bool isPreset)
-{
-	float *chunkData = (float *)calloc(kNumParameters, sizeof(float));
-	/* Note: The way this is set up, it will break if you manage to save settings on an Intel
-	 machine and load them on a PPC Mac. However, it's fine if you stick to the machine you 
-	 started with. */
-	
-	*data = chunkData;
-	return kNumParameters * sizeof(float);
-}
-
-VstInt32 PurestConsoleChannel::setChunk (void* data, VstInt32 byteSize, bool isPreset)
-{	
-	float *chunkData = (float *)data;
-	/* We're ignoring byteSize as we found it to be a filthy liar */
-	
-	/* calculate any other fields you need here - you could copy in 
-	 code from setParameter() here. */
-	return 0;
-}
-
 void PurestConsoleChannel::setParameter(VstInt32 index, float value) {
     switch (index) {
        default: break; // unknown parameter, shouldn't happen!

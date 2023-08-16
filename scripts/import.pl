@@ -34,6 +34,9 @@ while (<IFH>)
     s/^\#define\s+__(.*)_H/#define __$1_${f}_H/;
     s/audioeffectx.h/..\/airwin2rackbase.h/;
 
+    next if m/getChunk/;
+    next if m/setChunk/;
+
     print OFH;
 
     if (m/getParameterDisplay/)
@@ -65,16 +68,31 @@ open(IFH, "< $inh") || die "Can't open $inh for reading";
 
 $namespaced = 0;
 my $inpn = 0;
+my $inChunks = 0;
+
 my $paramDisplay = "";
 while (<IFH>)
 {
     # CHris has a habit of `default: throw` where he means `default: break`
     s/throw/break/g;
-    print OFH;
+    if (m/getChunk/ || m/setChunk/)
+    {
+        $inChunks = 1;
+    }
+    elsif (m/::/)
+    {
+        $inChunks = 0;
+    }
+
+    if (!$inChunks){
+        print OFH;
+    }
+
     if (m/#endif/ && !$namespaced)
     {
         print OFH "namespace airwin2rack::$f {\n";
     }
+
 
     if (m/^void/)
     {
