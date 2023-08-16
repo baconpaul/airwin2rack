@@ -80,7 +80,7 @@ VstInt32 VoiceTrick::setChunk (void* data, VstInt32 byteSize, bool isPreset)
 void VoiceTrick::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

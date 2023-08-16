@@ -77,7 +77,7 @@ void Average::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break; //percent. Using this value, it'll be 0-100 everywhere
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

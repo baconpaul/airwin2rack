@@ -75,7 +75,7 @@ VstInt32 Console8LiteChannel::setChunk (void* data, VstInt32 byteSize, bool isPr
 void Console8LiteChannel::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

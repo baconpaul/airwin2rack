@@ -68,7 +68,7 @@ VstInt32 BitShiftGain::setChunk (void* data, VstInt32 byteSize, bool isPreset)
 void BitShiftGain::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

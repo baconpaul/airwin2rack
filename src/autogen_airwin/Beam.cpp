@@ -82,7 +82,7 @@ void Beam::setParameter(VstInt32 index, float value) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
         case kParamC: C = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

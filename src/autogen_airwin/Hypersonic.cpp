@@ -75,7 +75,7 @@ VstInt32 Hypersonic::setChunk (void* data, VstInt32 byteSize, bool isPreset)
 
 void Hypersonic::setParameter(VstInt32 index, float value) {
     switch (index) {
-		default: throw; // unknown parameter, shouldn't happen!
+		default: break; // unknown parameter, shouldn't happen!
     }
 }
 

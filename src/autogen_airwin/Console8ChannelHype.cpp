@@ -51,7 +51,7 @@ VstInt32 Console8ChannelHype::setChunk (void* data, VstInt32 byteSize, bool isPr
 
 void Console8ChannelHype::setParameter(VstInt32 index, float value) {
     switch (index) {
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

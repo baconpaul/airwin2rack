@@ -54,7 +54,7 @@ VstInt32 PurestConsoleBuss::setChunk (void* data, VstInt32 byteSize, bool isPres
 
 void PurestConsoleBuss::setParameter(VstInt32 index, float value) {
     switch (index) {
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

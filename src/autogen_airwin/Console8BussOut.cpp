@@ -76,7 +76,7 @@ VstInt32 Console8BussOut::setChunk (void* data, VstInt32 byteSize, bool isPreset
 void Console8BussOut::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

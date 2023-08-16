@@ -51,7 +51,7 @@ VstInt32 Ultrasonic::setChunk (void* data, VstInt32 byteSize, bool isPreset)
 
 void Ultrasonic::setParameter(VstInt32 index, float value) {
     switch (index) {
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

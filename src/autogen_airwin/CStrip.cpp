@@ -243,7 +243,7 @@ void CStrip::setParameter(VstInt32 index, float value) {
         case kParamJ: J = value; break;
         case kParamK: K = value; break;
         case kParamL: L = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

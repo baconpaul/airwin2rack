@@ -119,7 +119,7 @@ void MultiBandDistortion::setParameter(VstInt32 index, float value) {
         case kParamG: G = value; break;
         case kParamH: H = value; break;
         case kParamI: I = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

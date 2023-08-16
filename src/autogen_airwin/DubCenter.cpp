@@ -164,7 +164,7 @@ void DubCenter::setParameter(VstInt32 index, float value) {
         case kParamH: H = value; break;
         case kParamI: I = value; break;
         case kParamJ: J = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

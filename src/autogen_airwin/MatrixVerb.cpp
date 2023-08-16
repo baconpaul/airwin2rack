@@ -167,7 +167,7 @@ void MatrixVerb::setParameter(VstInt32 index, float value) {
         case kParamE: E = value; break;
         case kParamF: F = value; break;
         case kParamG: G = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

@@ -59,7 +59,7 @@ VstInt32 PurestConsoleChannel::setChunk (void* data, VstInt32 byteSize, bool isP
 
 void PurestConsoleChannel::setParameter(VstInt32 index, float value) {
     switch (index) {
-       default: throw; // unknown parameter, shouldn't happen!
+       default: break; // unknown parameter, shouldn't happen!
     }
 }
 

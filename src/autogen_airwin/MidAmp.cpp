@@ -138,7 +138,7 @@ void MidAmp::setParameter(VstInt32 index, float value) {
         case kParamB: B = value; break;
         case kParamC: C = value; break;
         case kParamD: D = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

@@ -8,7 +8,7 @@ This is what ConsoleZero did, but more simply. This extends that to improve the 
 
 The thing is, there are other gains. These new algorithms do so much with bit shifts that they're blazingly fast. Both this and ConsoleZero run fifteen tracks of mix on my M1 Macbook Pro at about 5% CPU, with a couple bonus plugins in there.
 
-And that means if you're running something like current Reaper, as I am… with chain and individual FX oversampling… you can do that. And so I've made a video where I'm demonstrating a 96k project mixed in PurestConsole3, with ALL the Console plugins oversampled to 768k. (unless, because it's starting at 96k, the 16x oversampling is actually giving me 1.536 megaherz oversampling?)
+And that means if you're running something like current Reaper, as I am… with chain and individual FX oversampling… you can do that. And so I've made a video where I'm demonstrating a 96k project mixed in PurestConsole3, with ALL the Console plugins oversampled to 768k. (unless, because it's starting at 96k, the 16x oversampling is actually giving me 1.536 megahertz oversampling?)
 
 And it went from 5% CPU, with presumably 16x oversampling on all Console tracks and the buss, at base 96k sampling rate, to 30% CPU. I could've doubled the project and it would still have run. (probably the original PurestConsole would not be able to do this)
 

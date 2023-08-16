@@ -68,6 +68,8 @@ my $inpn = 0;
 my $paramDisplay = "";
 while (<IFH>)
 {
+    # CHris has a habit of `default: throw` where he means `default: break`
+    s/throw/break/g;
     print OFH;
     if (m/#endif/ && !$namespaced)
     {

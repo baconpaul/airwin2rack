@@ -51,7 +51,7 @@ void GuitarConditioner::getProgramName(char *name) {vst_strncpy (name, _programN
 
 void GuitarConditioner::setParameter(VstInt32 index, float value) {
     switch (index) {
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 	//we can also set other defaults here, and do calculations that only have to happen
 	//once when parameters actually change. Here is the 'popup' setting its (global) values.

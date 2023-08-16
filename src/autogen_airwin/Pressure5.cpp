@@ -107,7 +107,7 @@ void Pressure5::setParameter(VstInt32 index, float value) {
         case kParamD: D = value; break;
         case kParamE: E = value; break;
         case kParamF: F = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

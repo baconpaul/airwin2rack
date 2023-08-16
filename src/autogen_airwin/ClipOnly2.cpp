@@ -61,7 +61,7 @@ VstInt32 ClipOnly2::setChunk (void* data, VstInt32 byteSize, bool isPreset)
 
 void ClipOnly2::setParameter(VstInt32 index, float value) {
     switch (index) {
-		default: throw; // unknown parameter, shouldn't happen!
+		default: break; // unknown parameter, shouldn't happen!
     }
 }
 

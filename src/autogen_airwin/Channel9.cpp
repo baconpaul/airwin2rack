@@ -89,7 +89,7 @@ void Channel9::setParameter(VstInt32 index, float value) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
         case kParamC: C = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 	switch((VstInt32)( A * 4.999 ))
 	{  

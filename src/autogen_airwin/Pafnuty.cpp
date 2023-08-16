@@ -118,7 +118,7 @@ void Pafnuty::setParameter(VstInt32 index, float value) {
         case kParamK: K = value; break;
         case kParamL: L = value; break;
         case kParamM: M = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

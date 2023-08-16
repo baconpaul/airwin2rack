@@ -120,7 +120,7 @@ void Console4Buss::setParameter(VstInt32 index, float value) {
             gain = value;
             break;
         default: // unknown parameter, shouldn't happen!
-            throw;
+            break;
     }
 }
 

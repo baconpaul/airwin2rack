@@ -87,7 +87,7 @@ void Density::setParameter(VstInt32 index, float value) {
         case kParamB: B = value; break; //percent. Using this value, it'll be 0-100 everywhere
         case kParamC: C = value; break;
         case kParamD: D = value; break; //this is the popup, stored as a float
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

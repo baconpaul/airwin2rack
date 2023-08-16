@@ -87,7 +87,7 @@ void Channel8::setParameter(VstInt32 index, float value) {
         case kParamA: consoletype = value; break;
         case kParamB: drive = value; break;
         case kParamC: output = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 	//we can also set other defaults here, and do calculations that only have to happen
 	//once when parameters actually change. Here is the 'popup' setting its (global) values.

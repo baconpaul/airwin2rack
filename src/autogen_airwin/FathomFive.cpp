@@ -94,7 +94,7 @@ void FathomFive::setParameter(VstInt32 index, float value) {
         case kParamB: B = value; break;
         case kParamC: C = value; break;
         case kParamD: D = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 	//we can also set other defaults here, and do calculations that only have to happen
 	//once when parameters actually change. Here is the 'popup' setting its (global) values.

@@ -82,7 +82,7 @@ void TapeDither::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
-		default: throw; // unknown parameter, shouldn't happen!
+		default: break; // unknown parameter, shouldn't happen!
     }
 }
 

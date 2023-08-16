@@ -51,7 +51,7 @@ VstInt32 Console8ChannelIn::setChunk (void* data, VstInt32 byteSize, bool isPres
 
 void Console8ChannelIn::setParameter(VstInt32 index, float value) {
     switch (index) {
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

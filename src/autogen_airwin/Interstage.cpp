@@ -63,7 +63,7 @@ VstInt32 Interstage::setChunk (void* data, VstInt32 byteSize, bool isPreset)
 
 void Interstage::setParameter(VstInt32 index, float value) {
     switch (index) {
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

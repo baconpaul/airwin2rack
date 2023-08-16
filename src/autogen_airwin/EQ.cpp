@@ -189,7 +189,7 @@ void EQ::setParameter(VstInt32 index, float value) {
         case kParamF: F = value; break;
         case kParamG: G = value; break;
         case kParamH: H = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

@@ -151,7 +151,7 @@ void FromTape::setParameter(VstInt32 index, float value) {
         case kParamC: C = value; break;
         case kParamD: D = value; break;
         case kParamE: E = value; break;
-        default: throw; // unknown parameter, shouldn't happen!
+        default: break; // unknown parameter, shouldn't happen!
     }
 }
 

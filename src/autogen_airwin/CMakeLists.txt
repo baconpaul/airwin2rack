@@ -349,6 +349,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/InfinityProc.cpp
    src/autogen_airwin/Infinity2.cpp
    src/autogen_airwin/Infinity2Proc.cpp
+   src/autogen_airwin/Inflamer.cpp
+   src/autogen_airwin/InflamerProc.cpp
    src/autogen_airwin/Infrasonic.cpp
    src/autogen_airwin/InfrasonicProc.cpp
    src/autogen_airwin/Interstage.cpp
