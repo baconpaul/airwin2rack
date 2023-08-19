@@ -181,6 +181,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Console8SubInProc.cpp
    src/autogen_airwin/Console8SubOut.cpp
    src/autogen_airwin/Console8SubOutProc.cpp
+   src/autogen_airwin/Creature.cpp
+   src/autogen_airwin/CreatureProc.cpp
    src/autogen_airwin/CrunchyGrooveWear.cpp
    src/autogen_airwin/CrunchyGrooveWearProc.cpp
    src/autogen_airwin/Crystal.cpp
@@ -581,12 +583,16 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/StereoFXProc.cpp
    src/autogen_airwin/StudioTan.cpp
    src/autogen_airwin/StudioTanProc.cpp
+   src/autogen_airwin/SubTight.cpp
+   src/autogen_airwin/SubTightProc.cpp
    src/autogen_airwin/SubsOnly.cpp
    src/autogen_airwin/SubsOnlyProc.cpp
    src/autogen_airwin/Surge.cpp
    src/autogen_airwin/SurgeProc.cpp
    src/autogen_airwin/SurgeTide.cpp
    src/autogen_airwin/SurgeTideProc.cpp
+   src/autogen_airwin/Sweeten.cpp
+   src/autogen_airwin/SweetenProc.cpp
    src/autogen_airwin/Swell.cpp
    src/autogen_airwin/SwellProc.cpp
    src/autogen_airwin/TPDFDither.cpp
