@@ -1,0 +1,15 @@
+# SubTight uses a variation on the Creature algorithm to tighten sub-lows.
+
+So here's another interesting little tool that's not been seen before.
+
+Creature has a special mode where you can set the dry/wet to 'inverse', cancelling out what the algorithm produces. It's a soft slew clipper, not a normal algorithm or a simple filter, so what it cancels isn't easily controllable. However, for the most part it darkens and distorts the sound, and then when you stack up multiple poles of it, it becomes uncontrollable, particularly as frequency drops.
+
+So, in theory, you could use it as an increasingly steep lowpass… and subtract it from dry, to make something that acts like a highpass.
+
+What happens when you use a distorted lowpass to take out bass?  It's not able to soak up all the lows, as if it was a simple filter. What happens when multiple stages of it cause the deepest bass to go unstable and wild? That part cancels first, or ends up overcanceling and making a sort of 'node' in the midbass that's totally cancelled, while distorted sub-bass gets through inverted.
+
+All right. That said, what if you just keep the number of stages in check, and only bring in enough of it to cancel out the super lows, or simply cut them back a little? That would be a sub-bass conditioner with the following qualities: it'll give you an increasingly steep cutoff, it'll emphasize dynamics and impact, and it will resist totally removing bass content in favor of reshaping it, tightening it, highlighting impact and punch.
+
+That's why this plugin is called SubTight. It's not exactly a filter, much less a sharp and accurate filter. It's optimized so that you can hear where bass really starts to cancel out, and the idea is you can go up to that point, and then pull back. To do a clean steep low cut, use something else. This is a subs conditioner, that'll give a different foundation on things.
+
+
