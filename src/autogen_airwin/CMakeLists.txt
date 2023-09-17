@@ -183,6 +183,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Console8SubOutProc.cpp
    src/autogen_airwin/Creature.cpp
    src/autogen_airwin/CreatureProc.cpp
+   src/autogen_airwin/CrickBass.cpp
+   src/autogen_airwin/CrickBassProc.cpp
    src/autogen_airwin/CrunchyGrooveWear.cpp
    src/autogen_airwin/CrunchyGrooveWearProc.cpp
    src/autogen_airwin/Crystal.cpp
@@ -527,6 +529,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/RemapProc.cpp
    src/autogen_airwin/ResEQ.cpp
    src/autogen_airwin/ResEQProc.cpp
+   src/autogen_airwin/ResEQ2.cpp
+   src/autogen_airwin/ResEQ2Proc.cpp
    src/autogen_airwin/Reverb.cpp
    src/autogen_airwin/ReverbProc.cpp
    src/autogen_airwin/Righteous4.cpp
