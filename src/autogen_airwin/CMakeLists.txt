@@ -547,6 +547,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SidepassProc.cpp
    src/autogen_airwin/Silhouette.cpp
    src/autogen_airwin/SilhouetteProc.cpp
+   src/autogen_airwin/Sinew.cpp
+   src/autogen_airwin/SinewProc.cpp
    src/autogen_airwin/SingleEndedTriode.cpp
    src/autogen_airwin/SingleEndedTriodeProc.cpp
    src/autogen_airwin/Slew.cpp
@@ -687,6 +689,14 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/YHighpassProc.cpp
    src/autogen_airwin/YLowpass.cpp
    src/autogen_airwin/YLowpassProc.cpp
+   src/autogen_airwin/YNotBandpass.cpp
+   src/autogen_airwin/YNotBandpassProc.cpp
+   src/autogen_airwin/YNotHighpass.cpp
+   src/autogen_airwin/YNotHighpassProc.cpp
+   src/autogen_airwin/YNotLowpass.cpp
+   src/autogen_airwin/YNotLowpassProc.cpp
+   src/autogen_airwin/YNotNotch.cpp
+   src/autogen_airwin/YNotNotchProc.cpp
    src/autogen_airwin/YNotch.cpp
    src/autogen_airwin/YNotchProc.cpp
    src/autogen_airwin/ZBandpass.cpp
