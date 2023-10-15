@@ -181,6 +181,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Console8SubInProc.cpp
    src/autogen_airwin/Console8SubOut.cpp
    src/autogen_airwin/Console8SubOutProc.cpp
+   src/autogen_airwin/ConsoleMCBuss.cpp
+   src/autogen_airwin/ConsoleMCBussProc.cpp
+   src/autogen_airwin/ConsoleMCChannel.cpp
+   src/autogen_airwin/ConsoleMCChannelProc.cpp
    src/autogen_airwin/Creature.cpp
    src/autogen_airwin/CreatureProc.cpp
    src/autogen_airwin/CrickBass.cpp
