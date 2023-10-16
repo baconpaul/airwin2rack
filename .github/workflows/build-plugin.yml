@@ -172,7 +172,7 @@ jobs:
           tag: Nightly
           file_glob: true
       - name: Tag Repo
-        uses: richardsimko/update-tag@v1
+        uses: richardsimko/update-tag@v1.0.7
         with:
           tag_name: Nightly
         env:
