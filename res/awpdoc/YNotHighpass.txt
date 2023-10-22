@@ -1,4 +1,4 @@
-# YNotHighpass is soft and smooth to nasty, edgy texture-varying filtering.
+# YNotHighpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.
 
 See YNotLowpass, except it’s a highpass :) interestingly, the original YHighpass saw some significant improvements in CPU usage. Turns out that going to YNot mode, with no control smoothing, boosts performance even more.
 
