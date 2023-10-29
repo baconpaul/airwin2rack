@@ -121,6 +121,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ChromeOxideProc.cpp
    src/autogen_airwin/Cider.cpp
    src/autogen_airwin/CiderProc.cpp
+   src/autogen_airwin/ClearCoat.cpp
+   src/autogen_airwin/ClearCoatProc.cpp
    src/autogen_airwin/ClipOnly2.cpp
    src/autogen_airwin/ClipOnly2Proc.cpp
    src/autogen_airwin/ClipSoftly.cpp
@@ -725,6 +727,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ZRegion2Proc.cpp
    src/autogen_airwin/curve.cpp
    src/autogen_airwin/curveProc.cpp
+   src/autogen_airwin/kCathedral.cpp
+   src/autogen_airwin/kCathedralProc.cpp
    src/autogen_airwin/kChamberAR.cpp
    src/autogen_airwin/kChamberARProc.cpp
    src/autogen_airwin/kPlateA.cpp
