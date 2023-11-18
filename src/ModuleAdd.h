@@ -705,7 +705,7 @@ int YNotHighpass_unused = AirwinRegistry::registerAirwindow({"YNotHighpass", "XY
 #include "autogen_airwin/YNotLowpass.h"
 int YNotLowpass_unused = AirwinRegistry::registerAirwindow({"YNotLowpass", "XYZ Filters", 364, "YNotLowpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::YNotLowpass::YNotLowpass>(0); }});
 #include "autogen_airwin/YNotNotch.h"
-int YNotNotch_unused = AirwinRegistry::registerAirwindow({"YNotNotch", "Unclassified", -1, "", airwin2rack::YNotNotch::kNumParameters, []() { return std::make_unique<airwin2rack::YNotNotch::YNotNotch>(0); }});
+int YNotNotch_unused = AirwinRegistry::registerAirwindow({"YNotNotch", "Unclassified", -1, "YNotNotch is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotNotch::kNumParameters, []() { return std::make_unique<airwin2rack::YNotNotch::YNotNotch>(0); }});
 #include "autogen_airwin/YNotch.h"
 int YNotch_unused = AirwinRegistry::registerAirwindow({"YNotch", "XYZ Filters", 365, "YNotch is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YNotch::kNumParameters, []() { return std::make_unique<airwin2rack::YNotch::YNotch>(0); }});
 #include "autogen_airwin/ZBandpass.h"
