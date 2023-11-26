@@ -29,6 +29,7 @@ void ConsoleMCBuss::processReplacing(float **inputs, float **outputs, VstInt32 s
 	//you even get to slew clipping :) and if the fader is not active, it bypasses completely.
 	
 	double threshSinew = 0.5171104/overallscale;
+	double subTrim = 0.001 / overallscale;
 	
     while (--sampleFrames >= 0)
     {
@@ -42,8 +43,8 @@ void ConsoleMCBuss::processReplacing(float **inputs, float **outputs, VstInt32 s
 		//setting up smoothed master fader
 		
 		//begin SubTight section
-		double subSampleL = inputSampleL * 0.001;
-		double subSampleR = inputSampleR * 0.001;
+		double subSampleL = inputSampleL * subTrim;
+		double subSampleR = inputSampleR * subTrim;
 		
 		double scale = 0.5+fabs(subSampleL*0.5);
 		subSampleL = (subAL+(sin(subAL-subSampleL)*scale));
@@ -164,6 +165,7 @@ void ConsoleMCBuss::processDoubleReplacing(double **inputs, double **outputs, Vs
 	//you even get to slew clipping :) and if the fader is not active, it bypasses completely.
 	
 	double threshSinew = 0.5171104/overallscale;
+	double subTrim = 0.001 / overallscale;
 	
     while (--sampleFrames >= 0)
     {
@@ -177,8 +179,8 @@ void ConsoleMCBuss::processDoubleReplacing(double **inputs, double **outputs, Vs
 		//setting up smoothed master fader
 		
 		//begin SubTight section
-		double subSampleL = inputSampleL * 0.001;
-		double subSampleR = inputSampleR * 0.001;
+		double subSampleL = inputSampleL * subTrim;
+		double subSampleR = inputSampleR * subTrim;
 		
 		double scale = 0.5+fabs(subSampleL*0.5);
 		subSampleL = (subAL+(sin(subAL-subSampleL)*scale));

@@ -724,6 +724,8 @@ int ZLowpass2_unused = AirwinRegistry::registerAirwindow({"ZLowpass2", "XYZ Filt
 int ZNotch_unused = AirwinRegistry::registerAirwindow({"ZNotch", "XYZ Filters", 357, "ZNotch is a notch filter made to sound and act like the Emu e6400 Phaser.", airwin2rack::ZNotch::kNumParameters, []() { return std::make_unique<airwin2rack::ZNotch::ZNotch>(0); }});
 #include "autogen_airwin/ZNotch2.h"
 int ZNotch2_unused = AirwinRegistry::registerAirwindow({"ZNotch2", "XYZ Filters", 352, "ZNotch2 acts more like the Emu e6400 Ultra phaser in motion, with control smoothing.", airwin2rack::ZNotch2::kNumParameters, []() { return std::make_unique<airwin2rack::ZNotch2::ZNotch2>(0); }});
+#include "autogen_airwin/ZOutputStage.h"
+int ZOutputStage_unused = AirwinRegistry::registerAirwindow({"ZOutputStage", "Unclassified", -1, "", airwin2rack::ZOutputStage::kNumParameters, []() { return std::make_unique<airwin2rack::ZOutputStage::ZOutputStage>(0); }});
 #include "autogen_airwin/ZRegion.h"
 int ZRegion_unused = AirwinRegistry::registerAirwindow({"ZRegion", "XYZ Filters", 358, "ZRegion is an Emu e6400 style Airwindows Region filter.", airwin2rack::ZRegion::kNumParameters, []() { return std::make_unique<airwin2rack::ZRegion::ZRegion>(0); }});
 #include "autogen_airwin/ZRegion2.h"

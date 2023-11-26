@@ -725,6 +725,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ZNotchProc.cpp
    src/autogen_airwin/ZNotch2.cpp
    src/autogen_airwin/ZNotch2Proc.cpp
+   src/autogen_airwin/ZOutputStage.cpp
+   src/autogen_airwin/ZOutputStageProc.cpp
    src/autogen_airwin/ZRegion.cpp
    src/autogen_airwin/ZRegionProc.cpp
    src/autogen_airwin/ZRegion2.cpp
