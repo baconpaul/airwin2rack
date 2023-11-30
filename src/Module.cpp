@@ -18,14 +18,15 @@
 
 #include "sst/rackhelpers/json.h"
 #include "sst/rackhelpers/ui.h"
+#include "sst/rackhelpers/neighbor_connectable.h"
+#include "sst/rackhelpers/module_connector.h"
 
 // @TODO: Cloud perlin ala Steve
-// @TODO: "Chris" ordering as well as alpha ordering
 
 
 #define MAX_POLY 16
 
-struct AW2RModule : virtual rack::Module
+struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::NeighborConnectable_V1
 {
     static constexpr int maxParams{10};
 
@@ -148,6 +149,16 @@ struct AW2RModule : virtual rack::Module
         }
 
         resetAirwinByName("Galactic", true);
+    }
+
+    std::optional<std::vector<labeledStereoPort_t>> getPrimaryInputs() override
+    {
+        return {{std::make_pair("Input", std::make_pair(INPUT_L, INPUT_R))}};
+    }
+
+    std::optional<std::vector<labeledStereoPort_t>> getPrimaryOutputs() override
+    {
+        return {{std::make_pair("Output", std::make_pair(OUTPUT_L, OUTPUT_R))}};
     }
 
     void onReset(const ResetEvent &e) override { resetAirwinByName("Galactic", true); }
@@ -623,7 +634,7 @@ struct AWSkin
 
 AWSkin awSkin;
 
-struct AWPort : public rack::app::SvgPort
+struct AWPort : public sst::rackhelpers::module_connector::PortConnectionMixin<rack::app::SvgPort>
 {
     AWPort() { setPortActive(true); }
 
@@ -1493,10 +1504,27 @@ struct AW2RModuleWidget : rack::ModuleWidget
         auto c1 = box.size.x * 0.25;
         auto dc = box.size.x * 0.11;
         auto c2 = box.size.x * 0.75;
-        addInput(rack::createInputCentered<AWPort>(rack::Vec(c1 - dc, q), module, M::INPUT_L));
-        addInput(rack::createInputCentered<AWPort>(rack::Vec(c1 + dc, q), module, M::INPUT_R));
-        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 - dc, q), module, M::OUTPUT_L));
-        addOutput(rack::createOutputCentered<AWPort>(rack::Vec(c2 + dc, q), module, M::OUTPUT_R));
+        auto inl = rack::createInputCentered<AWPort>(rack::Vec(c1 - dc, q), module, M::INPUT_L);
+        inl->connectAsInputFromMixmaster = true;
+        inl->mixMasterStereoCompanion = M::INPUT_R;
+        auto inr = rack::createInputCentered<AWPort>(rack::Vec(c1 + dc, q), module, M::INPUT_R);
+        inr->connectAsInputFromMixmaster = true;
+        inr->mixMasterStereoCompanion = M::INPUT_L;
+
+        auto outl = rack::createOutputCentered<AWPort>(rack::Vec(c2 - dc, q), module, M::OUTPUT_L);
+        outl->connectAsOutputToMixmaster = true;
+        outl->mixMasterStereoCompanion = M::OUTPUT_R;
+        outl->connectOutputToNeighbor = true;
+
+        auto outr = rack::createOutputCentered<AWPort>(rack::Vec(c2 + dc, q), module, M::OUTPUT_R);
+        outr->connectAsOutputToMixmaster = true;
+        outr->mixMasterStereoCompanion = M::OUTPUT_L;
+        outr->connectOutputToNeighbor = true;
+
+        addInput(inl);
+        addInput(inr);
+        addOutput(outl);
+        addOutput(outr);
     }
 
     ~AW2RModuleWidget()
