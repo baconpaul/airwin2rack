@@ -353,6 +353,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/HugeProc.cpp
    src/autogen_airwin/Hull.cpp
    src/autogen_airwin/HullProc.cpp
+   src/autogen_airwin/Hull2.cpp
+   src/autogen_airwin/Hull2Proc.cpp
    src/autogen_airwin/Hype.cpp
    src/autogen_airwin/HypeProc.cpp
    src/autogen_airwin/HypersonX.cpp
@@ -397,6 +399,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Lowpass2Proc.cpp
    src/autogen_airwin/Luxor.cpp
    src/autogen_airwin/LuxorProc.cpp
+   src/autogen_airwin/MSFlipTimer.cpp
+   src/autogen_airwin/MSFlipTimerProc.cpp
    src/autogen_airwin/MV.cpp
    src/autogen_airwin/MVProc.cpp
    src/autogen_airwin/MV2.cpp
