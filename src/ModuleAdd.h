@@ -182,6 +182,10 @@ int Console8SubHype_unused = AirwinRegistry::registerAirwindow({"Console8SubHype
 int Console8SubIn_unused = AirwinRegistry::registerAirwindow({"Console8SubIn", "Consoles", 89, "Console8SubIn moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8SubIn::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubIn::Console8SubIn>(0); }});
 #include "autogen_airwin/Console8SubOut.h"
 int Console8SubOut_unused = AirwinRegistry::registerAirwindow({"Console8SubOut", "Consoles", 90, "Console8SubOut moves to a channel/submix/buss topology and adds analog simulation.", airwin2rack::Console8SubOut::kNumParameters, []() { return std::make_unique<airwin2rack::Console8SubOut::Console8SubOut>(0); }});
+#include "autogen_airwin/ConsoleLABuss.h"
+int ConsoleLABuss_unused = AirwinRegistry::registerAirwindow({"ConsoleLABuss", "Unclassified", -1, "", airwin2rack::ConsoleLABuss::kNumParameters, []() { return std::make_unique<airwin2rack::ConsoleLABuss::ConsoleLABuss>(0); }});
+#include "autogen_airwin/ConsoleLAChannel.h"
+int ConsoleLAChannel_unused = AirwinRegistry::registerAirwindow({"ConsoleLAChannel", "Unclassified", -1, "", airwin2rack::ConsoleLAChannel::kNumParameters, []() { return std::make_unique<airwin2rack::ConsoleLAChannel::ConsoleLAChannel>(0); }});
 #include "autogen_airwin/ConsoleMCBuss.h"
 int ConsoleMCBuss_unused = AirwinRegistry::registerAirwindow({"ConsoleMCBuss", "Consoles", 114, "ConsoleMCBuss is the initial, bright take on the MCI console.", airwin2rack::ConsoleMCBuss::kNumParameters, []() { return std::make_unique<airwin2rack::ConsoleMCBuss::ConsoleMCBuss>(0); }});
 #include "autogen_airwin/ConsoleMCChannel.h"
@@ -450,6 +454,8 @@ int NotJustAnotherDither_unused = AirwinRegistry::registerAirwindow({"NotJustAno
 int OneCornerClip_unused = AirwinRegistry::registerAirwindow({"OneCornerClip", "Clipping", 74, "OneCornerClip is an ultimate full-bandwidth clipper.", airwin2rack::OneCornerClip::kNumParameters, []() { return std::make_unique<airwin2rack::OneCornerClip::OneCornerClip>(0); }});
 #include "autogen_airwin/OrbitKick.h"
 int OrbitKick_unused = AirwinRegistry::registerAirwindow({"OrbitKick", "Bass", 35, "OrbitKick is a bass generator and kick drum reinforcer.", airwin2rack::OrbitKick::kNumParameters, []() { return std::make_unique<airwin2rack::OrbitKick::OrbitKick>(0); }});
+#include "autogen_airwin/Overheads.h"
+int Overheads_unused = AirwinRegistry::registerAirwindow({"Overheads", "Unclassified", -1, "", airwin2rack::Overheads::kNumParameters, []() { return std::make_unique<airwin2rack::Overheads::Overheads>(0); }});
 #include "autogen_airwin/PDBuss.h"
 int PDBuss_unused = AirwinRegistry::registerAirwindow({"PDBuss", "Consoles", 105, "PDBuss is Console5 and PurestDrive, sittin’ in a tree… (i.e. both at once, on channels and buss)", airwin2rack::PDBuss::kNumParameters, []() { return std::make_unique<airwin2rack::PDBuss::PDBuss>(0); }});
 #include "autogen_airwin/PDChannel.h"
@@ -729,7 +735,7 @@ int ZNotch_unused = AirwinRegistry::registerAirwindow({"ZNotch", "XYZ Filters", 
 #include "autogen_airwin/ZNotch2.h"
 int ZNotch2_unused = AirwinRegistry::registerAirwindow({"ZNotch2", "XYZ Filters", 353, "ZNotch2 acts more like the Emu e6400 Ultra phaser in motion, with control smoothing.", airwin2rack::ZNotch2::kNumParameters, []() { return std::make_unique<airwin2rack::ZNotch2::ZNotch2>(0); }});
 #include "autogen_airwin/ZOutputStage.h"
-int ZOutputStage_unused = AirwinRegistry::registerAirwindow({"ZOutputStage", "Unclassified", -1, "", airwin2rack::ZOutputStage::kNumParameters, []() { return std::make_unique<airwin2rack::ZOutputStage::ZOutputStage>(0); }});
+int ZOutputStage_unused = AirwinRegistry::registerAirwindow({"ZOutputStage", "Unclassified", -1, "ZOutputStage is the output clipping from the Emu e6400 style Z filters.", airwin2rack::ZOutputStage::kNumParameters, []() { return std::make_unique<airwin2rack::ZOutputStage::ZOutputStage>(0); }});
 #include "autogen_airwin/ZRegion.h"
 int ZRegion_unused = AirwinRegistry::registerAirwindow({"ZRegion", "XYZ Filters", 359, "ZRegion is an Emu e6400 style Airwindows Region filter.", airwin2rack::ZRegion::kNumParameters, []() { return std::make_unique<airwin2rack::ZRegion::ZRegion>(0); }});
 #include "autogen_airwin/ZRegion2.h"

@@ -183,6 +183,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Console8SubInProc.cpp
    src/autogen_airwin/Console8SubOut.cpp
    src/autogen_airwin/Console8SubOutProc.cpp
+   src/autogen_airwin/ConsoleLABuss.cpp
+   src/autogen_airwin/ConsoleLABussProc.cpp
+   src/autogen_airwin/ConsoleLAChannel.cpp
+   src/autogen_airwin/ConsoleLAChannelProc.cpp
    src/autogen_airwin/ConsoleMCBuss.cpp
    src/autogen_airwin/ConsoleMCBussProc.cpp
    src/autogen_airwin/ConsoleMCChannel.cpp
@@ -451,6 +455,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/OneCornerClipProc.cpp
    src/autogen_airwin/OrbitKick.cpp
    src/autogen_airwin/OrbitKickProc.cpp
+   src/autogen_airwin/Overheads.cpp
+   src/autogen_airwin/OverheadsProc.cpp
    src/autogen_airwin/PDBuss.cpp
    src/autogen_airwin/PDBussProc.cpp
    src/autogen_airwin/PDChannel.cpp
