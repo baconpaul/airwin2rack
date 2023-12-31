@@ -13,3 +13,4 @@ Taking it way down to the bass and demolishing your CPU in the process, a couple
 This was a good day at work! I feel like modified versions of this principle will lead to some very cool-sounding EQs, even to stuff on the ’emulation’ side of things: this is because I like the sonority and intensity of these filters. They CAN also be CPU-efficient, though this implementation is not (except at high frequencies, where it is fine).
 
 
+

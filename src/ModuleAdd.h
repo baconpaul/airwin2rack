@@ -357,7 +357,7 @@ int Huge_unused = AirwinRegistry::registerAirwindow({"Huge", "Saturation", 270, 
 #include "autogen_airwin/Hull.h"
 int Hull_unused = AirwinRegistry::registerAirwindow({"Hull", "Filter", 218, "Hull is an alternate form of highpass/lowpass filter.", airwin2rack::Hull::kNumParameters, []() { return std::make_unique<airwin2rack::Hull::Hull>(0); }});
 #include "autogen_airwin/Hull2.h"
-int Hull2_unused = AirwinRegistry::registerAirwindow({"Hull2", "Unclassified", -1, "", airwin2rack::Hull2::kNumParameters, []() { return std::make_unique<airwin2rack::Hull2::Hull2>(0); }});
+int Hull2_unused = AirwinRegistry::registerAirwindow({"Hull2", "Unclassified", -1, "Hull2 is a very clear three-band EQ.", airwin2rack::Hull2::kNumParameters, []() { return std::make_unique<airwin2rack::Hull2::Hull2>(0); }});
 #include "autogen_airwin/Hype.h"
 int Hype_unused = AirwinRegistry::registerAirwindow({"Hype", "Subtlety", 292, "Hype is a treble softening experiment gone strangely awry :)", airwin2rack::Hype::kNumParameters, []() { return std::make_unique<airwin2rack::Hype::Hype>(0); }});
 #include "autogen_airwin/HypersonX.h"
