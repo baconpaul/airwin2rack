@@ -561,6 +561,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SampleDelayProc.cpp
    src/autogen_airwin/Shape.cpp
    src/autogen_airwin/ShapeProc.cpp
+   src/autogen_airwin/ShortBuss.cpp
+   src/autogen_airwin/ShortBussProc.cpp
    src/autogen_airwin/SideDull.cpp
    src/autogen_airwin/SideDullProc.cpp
    src/autogen_airwin/Sidepass.cpp

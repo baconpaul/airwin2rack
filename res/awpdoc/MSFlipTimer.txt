@@ -1,0 +1,7 @@
+# MSFlipTimer is a utility that swaps stereo with mono every few (1-10) minutes.
+
+Here's a request I got, a variation on one that's in the utility category. While I ramp up to more interesting stuff I can do some of the background work while putting out the thing that someone asked me to make :)
+
+Every few minutes (as in, one minute to ten minutes) MSFlipTimer switches from stereo to mono. It does this in about a tenth of a second, to prevent any sort of pop or anything. When it’s in stereo it is 100% direct pass-through of the audio data word, so this is as clean as stuff like LeftToMono: it’s one of those ones that just copies the data over, not even touching it. That said, this doesn’t belong in your mix: the idea is that if you’re mixing and you tend to screw up the mono mix by doing too much crazy stuff with stereo, this'll repeatedly force you to grapple with it in its mono form.
+
+
