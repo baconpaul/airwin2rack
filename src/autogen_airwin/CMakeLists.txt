@@ -127,6 +127,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ClipOnly2Proc.cpp
    src/autogen_airwin/ClipSoftly.cpp
    src/autogen_airwin/ClipSoftlyProc.cpp
+   src/autogen_airwin/CloudCoat.cpp
+   src/autogen_airwin/CloudCoatProc.cpp
    src/autogen_airwin/Coils.cpp
    src/autogen_airwin/CoilsProc.cpp
    src/autogen_airwin/Coils2.cpp
@@ -747,6 +749,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/curveProc.cpp
    src/autogen_airwin/kCathedral.cpp
    src/autogen_airwin/kCathedralProc.cpp
+   src/autogen_airwin/kCathedral2.cpp
+   src/autogen_airwin/kCathedral2Proc.cpp
    src/autogen_airwin/kChamberAR.cpp
    src/autogen_airwin/kChamberARProc.cpp
    src/autogen_airwin/kPlateA.cpp
