@@ -1,6 +1,8 @@
 set(AIRWIN_SOURCES 
    src/autogen_airwin/ADClip7.cpp
    src/autogen_airwin/ADClip7Proc.cpp
+   src/autogen_airwin/ADClip8.cpp
+   src/autogen_airwin/ADClip8Proc.cpp
    src/autogen_airwin/ADT.cpp
    src/autogen_airwin/ADTProc.cpp
    src/autogen_airwin/AQuickVoiceClip.cpp
@@ -297,6 +299,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/FacetProc.cpp
    src/autogen_airwin/FathomFive.cpp
    src/autogen_airwin/FathomFiveProc.cpp
+   src/autogen_airwin/FinalClip.cpp
+   src/autogen_airwin/FinalClipProc.cpp
    src/autogen_airwin/FireAmp.cpp
    src/autogen_airwin/FireAmpProc.cpp
    src/autogen_airwin/Flipity.cpp
