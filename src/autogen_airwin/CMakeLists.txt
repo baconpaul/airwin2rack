@@ -15,6 +15,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/AirProc.cpp
    src/autogen_airwin/Air2.cpp
    src/autogen_airwin/Air2Proc.cpp
+   src/autogen_airwin/Air3.cpp
+   src/autogen_airwin/Air3Proc.cpp
    src/autogen_airwin/Apicolypse.cpp
    src/autogen_airwin/ApicolypseProc.cpp
    src/autogen_airwin/AtmosphereBuss.cpp
@@ -237,6 +239,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DigitalBlackProc.cpp
    src/autogen_airwin/Dirt.cpp
    src/autogen_airwin/DirtProc.cpp
+   src/autogen_airwin/Discontinuity.cpp
+   src/autogen_airwin/DiscontinuityProc.cpp
    src/autogen_airwin/Distance.cpp
    src/autogen_airwin/DistanceProc.cpp
    src/autogen_airwin/Distance2.cpp
@@ -391,6 +395,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/IsolatorProc.cpp
    src/autogen_airwin/Isolator2.cpp
    src/autogen_airwin/Isolator2Proc.cpp
+   src/autogen_airwin/Kalman.cpp
+   src/autogen_airwin/KalmanProc.cpp
    src/autogen_airwin/LRFlipTimer.cpp
    src/autogen_airwin/LRFlipTimerProc.cpp
    src/autogen_airwin/LeadAmp.cpp
