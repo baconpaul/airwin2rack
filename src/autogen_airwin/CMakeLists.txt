@@ -53,6 +53,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Biquad2Proc.cpp
    src/autogen_airwin/BiquadDouble.cpp
    src/autogen_airwin/BiquadDoubleProc.cpp
+   src/autogen_airwin/BiquadNonLin.cpp
+   src/autogen_airwin/BiquadNonLinProc.cpp
    src/autogen_airwin/BiquadOneHalf.cpp
    src/autogen_airwin/BiquadOneHalfProc.cpp
    src/autogen_airwin/BiquadPlus.cpp
@@ -485,6 +487,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PeaksOnlyProc.cpp
    src/autogen_airwin/Pear.cpp
    src/autogen_airwin/PearProc.cpp
+   src/autogen_airwin/Pear2.cpp
+   src/autogen_airwin/Pear2Proc.cpp
    src/autogen_airwin/PhaseNudge.cpp
    src/autogen_airwin/PhaseNudgeProc.cpp
    src/autogen_airwin/PitchDelay.cpp
@@ -671,6 +675,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/TremoSquareProc.cpp
    src/autogen_airwin/Tremolo.cpp
    src/autogen_airwin/TremoloProc.cpp
+   src/autogen_airwin/Trianglizer.cpp
+   src/autogen_airwin/TrianglizerProc.cpp
    src/autogen_airwin/TripleSpread.cpp
    src/autogen_airwin/TripleSpreadProc.cpp
    src/autogen_airwin/Tube.cpp

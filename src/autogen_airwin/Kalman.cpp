@@ -14,11 +14,10 @@ Kalman::Kalman(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
 	A = 0.5;
-	B = 0.5;
-	C = 0.0;
-	
+	B = 1.0;
+
 	for (int x = 0; x < kal_total; x++) kal[x] = 0.0;
-	
+
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
 	//this is reset: values being initialized only once. Startup values, whatever they are.
@@ -53,7 +52,6 @@ void Kalman::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
-        case kParamC: C = value; break;
         default: break; // unknown parameter, shouldn't happen!
     }
 }
@@ -62,7 +60,6 @@ float Kalman::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
         case kParamB: return B; break;
-        case kParamC: return C; break;
         default: break; // unknown parameter, shouldn't happen!
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
@@ -70,8 +67,7 @@ float Kalman::getParameter(VstInt32 index) {
 void Kalman::getParameterName(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "Kalman", kVstMaxParamStrLen); break;
-		case kParamB: vst_strncpy (text, "Drive", kVstMaxParamStrLen); break;
-		case kParamC: vst_strncpy (text, "Dry/Wet", kVstMaxParamStrLen); break;
+		case kParamB: vst_strncpy (text, "Inv/Wet", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
@@ -80,7 +76,6 @@ void Kalman::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
-        case kParamC: float2string (C, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
@@ -89,7 +84,6 @@ void Kalman::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
-        case kParamC: vst_strncpy (text, "", kVstMaxParamStrLen); break;
 		default: break; // unknown parameter, shouldn't happen!
     }
 }
@@ -114,7 +108,6 @@ bool Kalman::parameterTextToValue(VstInt32 index, const char *text, float &value
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
-    case kParamC: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
@@ -123,7 +116,6 @@ bool Kalman::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
         case kParamB: return true;
-        case kParamC: return true;
 
     }
     return false;

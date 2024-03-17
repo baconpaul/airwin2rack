@@ -1,11 +1,11 @@
 /* ========================================
- *  Discontinuity - Discontinuity.h
+ *  Trianglizer - Trianglizer.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Discontinuity_Discontinuity_H
-#define __Discontinuity_Discontinuity_H
+#ifndef __Trianglizer_Trianglizer_H
+#define __Trianglizer_Trianglizer_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"
@@ -15,24 +15,24 @@
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Discontinuity {
+namespace airwin2rack::Trianglizer {
 enum {
 	kParamA = 0,
-  kNumParameters = 1
+	kParamB = 1,
+  kNumParameters = 2
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'disc';    //Change this to what the AU identity is!
-const int dscBuf = 90;
+const unsigned long kUniqueId = 'tria';    //Change this to what the AU identity is!
 
-class Discontinuity : 
+class Trianglizer : 
     public AudioEffectX 
 {
 public:
-    Discontinuity(audioMasterCallback audioMaster);
-    ~Discontinuity();
+    Trianglizer(audioMasterCallback audioMaster);
+    ~Trianglizer();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -58,32 +58,9 @@ private:
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff
-	
-	double dBaL[dscBuf+5];
-	double dBaPosL;
-	int dBaXL;
-	
-	double dBbL[dscBuf+5];
-	double dBbPosL;
-	int dBbXL;
-	
-	double dBcL[dscBuf+5];
-	double dBcPosL;
-	int dBcXL;
-
-	double dBaR[dscBuf+5];
-	double dBaPosR;
-	int dBaXR;
-	
-	double dBbR[dscBuf+5];
-	double dBbPosR;
-	int dBbXR;
-	
-	double dBcR[dscBuf+5];
-	double dBcPosR;
-	int dBcXR;
 
     float A;
+    float B;
 };
 
 #endif

@@ -1,11 +1,11 @@
 /* ========================================
- *  Discontinuity - Discontinuity.h
+ *  BiquadNonLin - BiquadNonLin.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Discontinuity_Discontinuity_H
-#define __Discontinuity_Discontinuity_H
+#ifndef __BiquadNonLin_BiquadNonLin_H
+#define __BiquadNonLin_BiquadNonLin_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"
@@ -15,24 +15,27 @@
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Discontinuity {
+namespace airwin2rack::BiquadNonLin {
 enum {
 	kParamA = 0,
-  kNumParameters = 1
+	kParamB = 1,
+	kParamC = 2,
+	kParamD = 3,
+	kParamE = 4,
+  kNumParameters = 5
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'disc';    //Change this to what the AU identity is!
-const int dscBuf = 90;
+const unsigned long kUniqueId = 'binl';    //Change this to what the AU identity is!
 
-class Discontinuity : 
+class BiquadNonLin : 
     public AudioEffectX 
 {
 public:
-    Discontinuity(audioMasterCallback audioMaster);
-    ~Discontinuity();
+    BiquadNonLin(audioMasterCallback audioMaster);
+    ~BiquadNonLin();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -59,31 +62,38 @@ private:
 	uint32_t fpdR;
 	//default stuff
 	
-	double dBaL[dscBuf+5];
-	double dBaPosL;
-	int dBaXL;
-	
-	double dBbL[dscBuf+5];
-	double dBbPosL;
-	int dBbXL;
-	
-	double dBcL[dscBuf+5];
-	double dBcPosL;
-	int dBcXL;
-
-	double dBaR[dscBuf+5];
-	double dBaPosR;
-	int dBaXR;
-	
-	double dBbR[dscBuf+5];
-	double dBbPosR;
-	int dBbXR;
-	
-	double dBcR[dscBuf+5];
-	double dBcPosR;
-	int dBcXR;
+	enum {
+		biq_freq,
+		biq_reso,
+		biq_a0,
+		biq_a1,
+		biq_a2,
+		biq_b1,
+		biq_b2,
+		biq_aA0,
+		biq_aA1,
+		biq_aA2,
+		biq_bA1,
+		biq_bA2,
+		biq_aB0,
+		biq_aB1,
+		biq_aB2,
+		biq_bB1,
+		biq_bB2,
+		biq_sL1,
+		biq_sL2,
+		biq_sR1,
+		biq_sR2,
+		biq_total
+	};
+	double biquad[biq_total];	
 
     float A;
+    float B;
+    float C;
+    float D;
+    float E; //parameters. Always 0-1, and we scale/alter them elsewhere.
+
 };
 
 #endif
