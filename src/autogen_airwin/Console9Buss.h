@@ -1,11 +1,11 @@
 /* ========================================
- *  Console6Buss - Console6Buss.h
+ *  Console9Buss - Console9Buss.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Console6Buss_Console6Buss_H
-#define __Console6Buss_Console6Buss_H
+#ifndef __Console9Buss_Console9Buss_H
+#define __Console9Buss_Console9Buss_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"
@@ -15,23 +15,24 @@
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console6Buss {
+namespace airwin2rack::Console9Buss {
 enum {
 	kParamA = 0,
-  kNumParameters = 1
+	kParamB = 1,
+  kNumParameters = 2
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'conp';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'cn9b';    //Change this to what the AU identity is!
 
-class Console6Buss : 
+class Console9Buss : 
     public AudioEffectX 
 {
 public:
-    Console6Buss(audioMasterCallback audioMaster);
-    ~Console6Buss();
+    Console9Buss(audioMasterCallback audioMaster);
+    ~Console9Buss();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -54,11 +55,18 @@ private:
     char _programName[kVstMaxProgNameLen + 1];
     std::set< std::string > _canDo;
     
+
+	double panA;
+	double panB;
+	double inTrimA;
+	double inTrimB;
+
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff
 
     float A;
+    float B;
 };
 
 #endif

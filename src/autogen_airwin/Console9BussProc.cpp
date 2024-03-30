@@ -1,24 +1,23 @@
 /* ========================================
- *  Console6Channel - Console6Channel.h
+ *  Console9Buss - Console9Buss.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Console6Channel_H
-#include "Console6Channel.h"
+#ifndef __Console9Buss_H
+#include "Console9Buss.h"
 #endif
-namespace airwin2rack::Console6Channel {
+namespace airwin2rack::Console9Buss {
 
-void Console6Channel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
+void Console9Buss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {
     float* in1  =  inputs[0];
     float* in2  =  inputs[1];
     float* out1 = outputs[0];
     float* out2 = outputs[1];
-	
-	VstInt32 inFramesToProcess = sampleFrames; //vst doesn't give us this as a separate variable so we'll make it
 
-	inTrimA = inTrimB;
-	inTrimB = A;
+	VstInt32 inFramesToProcess = sampleFrames; //vst doesn't give us this as a separate variable so we'll make it
+	panA = panB; panB = A*1.57079633;
+	inTrimA = inTrimB; inTrimB = B*2.0;	
     
     while (--sampleFrames >= 0)
     {
@@ -27,29 +26,28 @@ void Console6Channel::processReplacing(float **inputs, float **outputs, VstInt32
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
 		
-		double temp = (double)sampleFrames/inFramesToProcess;
-		double inTrim = (inTrimA*temp)+(inTrimB*(1.0-temp));
-		
-		if (inTrim != 1.0) {
-			inputSampleL *= inTrim;
-			inputSampleR *= inTrim;
-		}
-		
-		//encode/decode courtesy of torridgristle under the MIT license
-		//Inverse Square 1-(1-x)^2 and 1-(1-x)^0.5
-		//Reformulated using 'Herbie' for better accuracy near zero
-		
 		if (inputSampleL > 1.0) inputSampleL = 1.0;
-		else if (inputSampleL > 0.0) inputSampleL = inputSampleL * (2.0 - inputSampleL);
-		
+		else if (inputSampleL > 0.0) inputSampleL = -expm1((log1p(-inputSampleL) * 0.6180339887498949));
 		if (inputSampleL < -1.0) inputSampleL = -1.0;
-		else if (inputSampleL < 0.0) inputSampleL = inputSampleL * (inputSampleL + 2.0);
+		else if (inputSampleL < 0.0) inputSampleL = expm1((log1p(inputSampleL) * 0.6180339887498949));
 		
 		if (inputSampleR > 1.0) inputSampleR = 1.0;
-		else if (inputSampleR > 0.0) inputSampleR = inputSampleR * (2.0 - inputSampleR);
-		
+		else if (inputSampleR > 0.0) inputSampleR = -expm1((log1p(-inputSampleR) * 0.6180339887498949));
 		if (inputSampleR < -1.0) inputSampleR = -1.0;
-		else if (inputSampleR < 0.0) inputSampleR = inputSampleR * (inputSampleR + 2.0);
+		else if (inputSampleR < 0.0) inputSampleR = expm1((log1p(inputSampleR) * 0.6180339887498949));
+		
+		double temp = (double)sampleFrames/inFramesToProcess;
+		double gainR = (panA*temp)+(panB*(1.0-temp));
+		double gainL = 1.57079633-gainR;
+		gainR = sin(gainR); gainL = sin(gainL);
+		double gain = (inTrimA*temp)+(inTrimB*(1.0-temp));
+		if (gain > 1.0) gain *= gain;
+		if (gain < 1.0) gain = 1.0-pow(1.0-gain,2);
+		gain *= 2.0;
+		
+		inputSampleL = inputSampleL * gainL * gain;
+		inputSampleR = inputSampleR * gainR * gain;
+		//applies pan section, and smoothed fader gain
 		
 		//begin 32 bit stereo floating point dither
 		int expon; frexpf((float)inputSampleL, &expon);
@@ -70,18 +68,17 @@ void Console6Channel::processReplacing(float **inputs, float **outputs, VstInt32
     }
 }
 
-void Console6Channel::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
+void Console9Buss::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
 {
     double* in1  =  inputs[0];
     double* in2  =  inputs[1];
     double* out1 = outputs[0];
     double* out2 = outputs[1];
-
+	
 	VstInt32 inFramesToProcess = sampleFrames; //vst doesn't give us this as a separate variable so we'll make it
-
-	inTrimA = inTrimB;
-	inTrimB = A;
-
+	panA = panB; panB = A*1.57079633;
+	inTrimA = inTrimB; inTrimB = B*2.0;	
+    
     while (--sampleFrames >= 0)
     {
 		double inputSampleL = *in1;
@@ -89,29 +86,28 @@ void Console6Channel::processDoubleReplacing(double **inputs, double **outputs, 
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
 		
-		double temp = (double)sampleFrames/inFramesToProcess;
-		double inTrim = (inTrimA*temp)+(inTrimB*(1.0-temp));
-		
-		if (inTrim != 1.0) {
-			inputSampleL *= inTrim;
-			inputSampleR *= inTrim;
-		}
-		
-		//encode/decode courtesy of torridgristle under the MIT license
-		//Inverse Square 1-(1-x)^2 and 1-(1-x)^0.5
-		//Reformulated using 'Herbie' for better accuracy near zero
-		
 		if (inputSampleL > 1.0) inputSampleL = 1.0;
-		else if (inputSampleL > 0.0) inputSampleL = inputSampleL * (2.0 - inputSampleL);
-		
+		else if (inputSampleL > 0.0) inputSampleL = -expm1((log1p(-inputSampleL) * 0.6180339887498949));
 		if (inputSampleL < -1.0) inputSampleL = -1.0;
-		else if (inputSampleL < 0.0) inputSampleL = inputSampleL * (inputSampleL + 2.0);
+		else if (inputSampleL < 0.0) inputSampleL = expm1((log1p(inputSampleL) * 0.6180339887498949));
 		
 		if (inputSampleR > 1.0) inputSampleR = 1.0;
-		else if (inputSampleR > 0.0) inputSampleR = inputSampleR * (2.0 - inputSampleR);
-		
+		else if (inputSampleR > 0.0) inputSampleR = -expm1((log1p(-inputSampleR) * 0.6180339887498949));
 		if (inputSampleR < -1.0) inputSampleR = -1.0;
-		else if (inputSampleR < 0.0) inputSampleR = inputSampleR * (inputSampleR + 2.0);
+		else if (inputSampleR < 0.0) inputSampleR = expm1((log1p(inputSampleR) * 0.6180339887498949));
+		
+		double temp = (double)sampleFrames/inFramesToProcess;
+		double gainR = (panA*temp)+(panB*(1.0-temp));
+		double gainL = 1.57079633-gainR;
+		gainR = sin(gainR); gainL = sin(gainL);
+		double gain = (inTrimA*temp)+(inTrimB*(1.0-temp));
+		if (gain > 1.0) gain *= gain;
+		if (gain < 1.0) gain = 1.0-pow(1.0-gain,2);
+		gain *= 2.0;
+		
+		inputSampleL = inputSampleL * gainL * gain;
+		inputSampleR = inputSampleR * gainR * gain;
+		//applies pan section, and smoothed fader gain
 		
 		//begin 64 bit stereo floating point dither
 		//int expon; frexp((double)inputSampleL, &expon);

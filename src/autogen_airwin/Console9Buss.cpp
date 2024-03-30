@@ -1,22 +1,22 @@
 /* ========================================
- *  Console6Channel - Console6Channel.h
+ *  Console9Buss - Console9Buss.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Console6Channel_H
-#include "Console6Channel.h"
+#ifndef __Console9Buss_H
+#include "Console9Buss.h"
 #endif
-namespace airwin2rack::Console6Channel {
+namespace airwin2rack::Console9Buss {
 
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console6Channel(audioMaster);}
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console9Buss(audioMaster);}
 
-Console6Channel::Console6Channel(audioMasterCallback audioMaster) :
+Console9Buss::Console9Buss(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
-	A = 1.0;
-
-	inTrimA = 1.0; inTrimB = 1.0;
-	
+	A = 0.5;
+	B = 0.5;
+	panA = 0.5; panB = 0.5;
+	inTrimA = 0.5; inTrimB = 0.5;
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
 	//this is reset: values being initialized only once. Startup values, whatever they are.
@@ -33,10 +33,10 @@ Console6Channel::Console6Channel(audioMasterCallback audioMaster) :
     vst_strncpy (_programName, "Default", kVstMaxProgNameLen); // default program name
 }
 
-Console6Channel::~Console6Channel() {}
-VstInt32 Console6Channel::getVendorVersion () {return 1000;}
-void Console6Channel::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
-void Console6Channel::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
+Console9Buss::~Console9Buss() {}
+VstInt32 Console9Buss::getVendorVersion () {return 1000;}
+void Console9Buss::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
+void Console9Buss::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
@@ -47,67 +47,74 @@ static float pinParameter(float data)
 	return data;
 }
 
-void Console6Channel::setParameter(VstInt32 index, float value) {
+void Console9Buss::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
+        case kParamB: B = value; break;
         default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-float Console6Channel::getParameter(VstInt32 index) {
+float Console9Buss::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
+        case kParamB: return B; break;
         default: break; // unknown parameter, shouldn't happen!
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
-void Console6Channel::getParameterName(VstInt32 index, char *text) {
+void Console9Buss::getParameterName(VstInt32 index, char *text) {
     switch (index) {
-        case kParamA: vst_strncpy (text, "Input", kVstMaxParamStrLen); break;
+        case kParamA: vst_strncpy (text, "Pan", kVstMaxParamStrLen); break;
+		case kParamB: vst_strncpy (text, "Fader", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
 
-void Console6Channel::getParameterDisplay(VstInt32 index, char *text) {
+void Console9Buss::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
+        case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
 
-void Console6Channel::getParameterLabel(VstInt32 index, char *text) {
+void Console9Buss::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
+        case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
 		default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-VstInt32 Console6Channel::canDo(char *text) 
+VstInt32 Console9Buss::canDo(char *text) 
 { return (_canDo.find(text) == _canDo.end()) ? -1: 1; } // 1 = yes, -1 = no, 0 = don't know
 
-bool Console6Channel::getEffectName(char* name) {
-    vst_strncpy(name, "Console6Channel", kVstMaxProductStrLen); return true;
+bool Console9Buss::getEffectName(char* name) {
+    vst_strncpy(name, "Console9Buss", kVstMaxProductStrLen); return true;
 }
 
-VstPlugCategory Console6Channel::getPlugCategory() {return kPlugCategEffect;}
+VstPlugCategory Console9Buss::getPlugCategory() {return kPlugCategEffect;}
 
-bool Console6Channel::getProductString(char* text) {
-  	vst_strncpy (text, "airwindows Console6Channel", kVstMaxProductStrLen); return true;
+bool Console9Buss::getProductString(char* text) {
+  	vst_strncpy (text, "airwindows Console9Buss", kVstMaxProductStrLen); return true;
 }
 
-bool Console6Channel::getVendorString(char* text) {
+bool Console9Buss::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
-bool Console6Channel::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+bool Console9Buss::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
 }
-bool Console6Channel::canConvertParameterTextToValue(VstInt32 index) {
+bool Console9Buss::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
+        case kParamB: return true;
 
     }
     return false;

@@ -1,11 +1,11 @@
 /* ========================================
- *  Console6Buss - Console6Buss.h
+ *  ConsoleXSubIn - ConsoleXSubIn.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Console6Buss_Console6Buss_H
-#define __Console6Buss_Console6Buss_H
+#ifndef __ConsoleXSubIn_ConsoleXSubIn_H
+#define __ConsoleXSubIn_ConsoleXSubIn_H
 
 #ifndef __audioeffect__
 #include "../airwin2rackbase.h"
@@ -15,23 +15,22 @@
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console6Buss {
+namespace airwin2rack::ConsoleXSubIn {
 enum {
-	kParamA = 0,
-  kNumParameters = 1
+  kNumParameters = 0
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'conp';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'cnxi';    //Change this to what the AU identity is!
 
-class Console6Buss : 
+class ConsoleXSubIn : 
     public AudioEffectX 
 {
 public:
-    Console6Buss(audioMasterCallback audioMaster);
-    ~Console6Buss();
+    ConsoleXSubIn(audioMasterCallback audioMaster);
+    ~ConsoleXSubIn();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -54,11 +53,25 @@ private:
     char _programName[kVstMaxProgNameLen + 1];
     std::set< std::string > _canDo;
     
+	enum {
+		biq_freq,
+		biq_reso,
+		biq_a0,
+		biq_a1,
+		biq_a2,
+		biq_b1,
+		biq_b2,
+		biq_sL1,
+		biq_sL2,
+		biq_sR1,
+		biq_sR2,
+		biq_total
+	};
+	double biquad[biq_total];
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff
 
-    float A;
 };
 
 #endif

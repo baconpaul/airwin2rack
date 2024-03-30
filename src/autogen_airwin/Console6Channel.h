@@ -1,7 +1,7 @@
 /* ========================================
  *  Console6Channel - Console6Channel.h
  *  Created 8/12/11 by SPIAdmin 
- *  Copyright (c) 2011 __MyCompanyName__, Airwindows uses the MIT license
+ *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
 #ifndef __Console6Channel_Console6Channel_H
@@ -54,12 +54,14 @@ private:
     char _programName[kVstMaxProgNameLen + 1];
     std::set< std::string > _canDo;
     
+	double inTrimA;
+	double inTrimB;
+
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff
 
     float A;
-
 };
 
 #endif

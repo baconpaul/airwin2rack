@@ -191,6 +191,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Console8SubInProc.cpp
    src/autogen_airwin/Console8SubOut.cpp
    src/autogen_airwin/Console8SubOutProc.cpp
+   src/autogen_airwin/Console9Buss.cpp
+   src/autogen_airwin/Console9BussProc.cpp
+   src/autogen_airwin/Console9Channel.cpp
+   src/autogen_airwin/Console9ChannelProc.cpp
    src/autogen_airwin/ConsoleLABuss.cpp
    src/autogen_airwin/ConsoleLABussProc.cpp
    src/autogen_airwin/ConsoleLAChannel.cpp
@@ -203,6 +207,16 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ConsoleMDBussProc.cpp
    src/autogen_airwin/ConsoleMDChannel.cpp
    src/autogen_airwin/ConsoleMDChannelProc.cpp
+   src/autogen_airwin/ConsoleXBuss.cpp
+   src/autogen_airwin/ConsoleXBussProc.cpp
+   src/autogen_airwin/ConsoleXChannel.cpp
+   src/autogen_airwin/ConsoleXChannelProc.cpp
+   src/autogen_airwin/ConsoleXSubIn.cpp
+   src/autogen_airwin/ConsoleXSubInProc.cpp
+   src/autogen_airwin/ConsoleXSubOut.cpp
+   src/autogen_airwin/ConsoleXSubOutProc.cpp
+   src/autogen_airwin/ContentHideD.cpp
+   src/autogen_airwin/ContentHideDProc.cpp
    src/autogen_airwin/Creature.cpp
    src/autogen_airwin/CreatureProc.cpp
    src/autogen_airwin/CrickBass.cpp
