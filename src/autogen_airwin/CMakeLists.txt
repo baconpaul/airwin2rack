@@ -639,6 +639,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/StereoEnsembleProc.cpp
    src/autogen_airwin/StereoFX.cpp
    src/autogen_airwin/StereoFXProc.cpp
+   src/autogen_airwin/Stonefire.cpp
+   src/autogen_airwin/StonefireProc.cpp
    src/autogen_airwin/StudioTan.cpp
    src/autogen_airwin/StudioTanProc.cpp
    src/autogen_airwin/SubTight.cpp
