@@ -215,7 +215,7 @@ int ConsoleXSubIn_unused = AirwinRegistry::registerAirwindow({"ConsoleXSubIn", "
 #include "autogen_airwin/ConsoleXSubOut.h"
 int ConsoleXSubOut_unused = AirwinRegistry::registerAirwindow({"ConsoleXSubOut", "Unclassified", -1, "", airwin2rack::ConsoleXSubOut::kNumParameters, []() { return std::make_unique<airwin2rack::ConsoleXSubOut::ConsoleXSubOut>(0); }});
 #include "autogen_airwin/ContentHideD.h"
-int ContentHideD_unused = AirwinRegistry::registerAirwindow({"ContentHideD", "Unclassified", -1, "", airwin2rack::ContentHideD::kNumParameters, []() { return std::make_unique<airwin2rack::ContentHideD::ContentHideD>(0); }});
+int ContentHideD_unused = AirwinRegistry::registerAirwindow({"ContentHideD", "Utility", 366, "ContentHideD mutes audio except for brief glimpses.", airwin2rack::ContentHideD::kNumParameters, []() { return std::make_unique<airwin2rack::ContentHideD::ContentHideD>(0); }});
 #include "autogen_airwin/Creature.h"
 int Creature_unused = AirwinRegistry::registerAirwindow({"Creature", "Saturation", 281, "Creature is a soft slew saturator, a new class of noisechanger.", airwin2rack::Creature::kNumParameters, []() { return std::make_unique<airwin2rack::Creature::Creature>(0); }});
 #include "autogen_airwin/CrickBass.h"
@@ -729,53 +729,53 @@ int Weight_unused = AirwinRegistry::registerAirwindow({"Weight", "Filter", 218, 
 #include "autogen_airwin/Wider.h"
 int Wider_unused = AirwinRegistry::registerAirwindow({"Wider", "Stereo", 297, "Wider is Airwindows stereo space shaping.", airwin2rack::Wider::kNumParameters, []() { return std::make_unique<airwin2rack::Wider::Wider>(0); }});
 #include "autogen_airwin/XBandpass.h"
-int XBandpass_unused = AirwinRegistry::registerAirwindow({"XBandpass", "XYZ Filters", 383, "XBandpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::XBandpass::XBandpass>(0); }});
+int XBandpass_unused = AirwinRegistry::registerAirwindow({"XBandpass", "XYZ Filters", 384, "XBandpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::XBandpass::XBandpass>(0); }});
 #include "autogen_airwin/XHighpass.h"
-int XHighpass_unused = AirwinRegistry::registerAirwindow({"XHighpass", "XYZ Filters", 384, "XHighpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::XHighpass::XHighpass>(0); }});
+int XHighpass_unused = AirwinRegistry::registerAirwindow({"XHighpass", "XYZ Filters", 385, "XHighpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::XHighpass::XHighpass>(0); }});
 #include "autogen_airwin/XLowpass.h"
-int XLowpass_unused = AirwinRegistry::registerAirwindow({"XLowpass", "XYZ Filters", 385, "XLowpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::XLowpass::XLowpass>(0); }});
+int XLowpass_unused = AirwinRegistry::registerAirwindow({"XLowpass", "XYZ Filters", 386, "XLowpass is a distorted digital EQ, inspired by retro sampler DSP.", airwin2rack::XLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::XLowpass::XLowpass>(0); }});
 #include "autogen_airwin/XNotch.h"
-int XNotch_unused = AirwinRegistry::registerAirwindow({"XNotch", "XYZ Filters", 386, "XNotch is a distorted digital EQ, not as glitchy as the others.", airwin2rack::XNotch::kNumParameters, []() { return std::make_unique<airwin2rack::XNotch::XNotch>(0); }});
+int XNotch_unused = AirwinRegistry::registerAirwindow({"XNotch", "XYZ Filters", 387, "XNotch is a distorted digital EQ, not as glitchy as the others.", airwin2rack::XNotch::kNumParameters, []() { return std::make_unique<airwin2rack::XNotch::XNotch>(0); }});
 #include "autogen_airwin/XRegion.h"
-int XRegion_unused = AirwinRegistry::registerAirwindow({"XRegion", "XYZ Filters", 387, "XRegion is distorted staggered bandpasses, for extreme soundmangling.", airwin2rack::XRegion::kNumParameters, []() { return std::make_unique<airwin2rack::XRegion::XRegion>(0); }});
+int XRegion_unused = AirwinRegistry::registerAirwindow({"XRegion", "XYZ Filters", 388, "XRegion is distorted staggered bandpasses, for extreme soundmangling.", airwin2rack::XRegion::kNumParameters, []() { return std::make_unique<airwin2rack::XRegion::XRegion>(0); }});
 #include "autogen_airwin/YBandpass.h"
-int YBandpass_unused = AirwinRegistry::registerAirwindow({"YBandpass", "XYZ Filters", 376, "YBandpass is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::YBandpass::YBandpass>(0); }});
+int YBandpass_unused = AirwinRegistry::registerAirwindow({"YBandpass", "XYZ Filters", 377, "YBandpass is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::YBandpass::YBandpass>(0); }});
 #include "autogen_airwin/YHighpass.h"
-int YHighpass_unused = AirwinRegistry::registerAirwindow({"YHighpass", "XYZ Filters", 378, "YHighpass is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::YHighpass::YHighpass>(0); }});
+int YHighpass_unused = AirwinRegistry::registerAirwindow({"YHighpass", "XYZ Filters", 379, "YHighpass is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::YHighpass::YHighpass>(0); }});
 #include "autogen_airwin/YLowpass.h"
-int YLowpass_unused = AirwinRegistry::registerAirwindow({"YLowpass", "XYZ Filters", 380, "YLowpass is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::YLowpass::YLowpass>(0); }});
+int YLowpass_unused = AirwinRegistry::registerAirwindow({"YLowpass", "XYZ Filters", 381, "YLowpass is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::YLowpass::YLowpass>(0); }});
 #include "autogen_airwin/YNotBandpass.h"
-int YNotBandpass_unused = AirwinRegistry::registerAirwindow({"YNotBandpass", "XYZ Filters", 377, "YNotBandpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::YNotBandpass::YNotBandpass>(0); }});
+int YNotBandpass_unused = AirwinRegistry::registerAirwindow({"YNotBandpass", "XYZ Filters", 378, "YNotBandpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::YNotBandpass::YNotBandpass>(0); }});
 #include "autogen_airwin/YNotHighpass.h"
-int YNotHighpass_unused = AirwinRegistry::registerAirwindow({"YNotHighpass", "XYZ Filters", 379, "YNotHighpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::YNotHighpass::YNotHighpass>(0); }});
+int YNotHighpass_unused = AirwinRegistry::registerAirwindow({"YNotHighpass", "XYZ Filters", 380, "YNotHighpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::YNotHighpass::YNotHighpass>(0); }});
 #include "autogen_airwin/YNotLowpass.h"
-int YNotLowpass_unused = AirwinRegistry::registerAirwindow({"YNotLowpass", "XYZ Filters", 381, "YNotLowpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::YNotLowpass::YNotLowpass>(0); }});
+int YNotLowpass_unused = AirwinRegistry::registerAirwindow({"YNotLowpass", "XYZ Filters", 382, "YNotLowpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::YNotLowpass::YNotLowpass>(0); }});
 #include "autogen_airwin/YNotNotch.h"
 int YNotNotch_unused = AirwinRegistry::registerAirwindow({"YNotNotch", "Unclassified", -1, "YNotNotch is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwin2rack::YNotNotch::kNumParameters, []() { return std::make_unique<airwin2rack::YNotNotch::YNotNotch>(0); }});
 #include "autogen_airwin/YNotch.h"
-int YNotch_unused = AirwinRegistry::registerAirwindow({"YNotch", "XYZ Filters", 382, "YNotch is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YNotch::kNumParameters, []() { return std::make_unique<airwin2rack::YNotch::YNotch>(0); }});
+int YNotch_unused = AirwinRegistry::registerAirwindow({"YNotch", "XYZ Filters", 383, "YNotch is soft and smooth to nasty, edgy texture-varying filtering.", airwin2rack::YNotch::kNumParameters, []() { return std::make_unique<airwin2rack::YNotch::YNotch>(0); }});
 #include "autogen_airwin/ZBandpass.h"
-int ZBandpass_unused = AirwinRegistry::registerAirwindow({"ZBandpass", "XYZ Filters", 371, "ZBandpass is a bandpass made to sound and act like the Emu e6400 Ultra bandpass.", airwin2rack::ZBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::ZBandpass::ZBandpass>(0); }});
+int ZBandpass_unused = AirwinRegistry::registerAirwindow({"ZBandpass", "XYZ Filters", 372, "ZBandpass is a bandpass made to sound and act like the Emu e6400 Ultra bandpass.", airwin2rack::ZBandpass::kNumParameters, []() { return std::make_unique<airwin2rack::ZBandpass::ZBandpass>(0); }});
 #include "autogen_airwin/ZBandpass2.h"
-int ZBandpass2_unused = AirwinRegistry::registerAirwindow({"ZBandpass2", "XYZ Filters", 366, "ZBandpass2 acts more like the Emu e6400 Ultra bandpass in motion, with control smoothing.", airwin2rack::ZBandpass2::kNumParameters, []() { return std::make_unique<airwin2rack::ZBandpass2::ZBandpass2>(0); }});
+int ZBandpass2_unused = AirwinRegistry::registerAirwindow({"ZBandpass2", "XYZ Filters", 367, "ZBandpass2 acts more like the Emu e6400 Ultra bandpass in motion, with control smoothing.", airwin2rack::ZBandpass2::kNumParameters, []() { return std::make_unique<airwin2rack::ZBandpass2::ZBandpass2>(0); }});
 #include "autogen_airwin/ZHighpass.h"
-int ZHighpass_unused = AirwinRegistry::registerAirwindow({"ZHighpass", "XYZ Filters", 372, "ZHighpass is a highpass made to sound and act like the Emu e6400 Ultra highpass.", airwin2rack::ZHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::ZHighpass::ZHighpass>(0); }});
+int ZHighpass_unused = AirwinRegistry::registerAirwindow({"ZHighpass", "XYZ Filters", 373, "ZHighpass is a highpass made to sound and act like the Emu e6400 Ultra highpass.", airwin2rack::ZHighpass::kNumParameters, []() { return std::make_unique<airwin2rack::ZHighpass::ZHighpass>(0); }});
 #include "autogen_airwin/ZHighpass2.h"
-int ZHighpass2_unused = AirwinRegistry::registerAirwindow({"ZHighpass2", "XYZ Filters", 367, "ZHighpass2 acts more like the Emu e6400 Ultra highpass in motion, with control smoothing.", airwin2rack::ZHighpass2::kNumParameters, []() { return std::make_unique<airwin2rack::ZHighpass2::ZHighpass2>(0); }});
+int ZHighpass2_unused = AirwinRegistry::registerAirwindow({"ZHighpass2", "XYZ Filters", 368, "ZHighpass2 acts more like the Emu e6400 Ultra highpass in motion, with control smoothing.", airwin2rack::ZHighpass2::kNumParameters, []() { return std::make_unique<airwin2rack::ZHighpass2::ZHighpass2>(0); }});
 #include "autogen_airwin/ZLowpass.h"
-int ZLowpass_unused = AirwinRegistry::registerAirwindow({"ZLowpass", "XYZ Filters", 373, "ZLowpass is a lowpass made to sound and act like the Emu e6400 Ultra lowpass.", airwin2rack::ZLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::ZLowpass::ZLowpass>(0); }});
+int ZLowpass_unused = AirwinRegistry::registerAirwindow({"ZLowpass", "XYZ Filters", 374, "ZLowpass is a lowpass made to sound and act like the Emu e6400 Ultra lowpass.", airwin2rack::ZLowpass::kNumParameters, []() { return std::make_unique<airwin2rack::ZLowpass::ZLowpass>(0); }});
 #include "autogen_airwin/ZLowpass2.h"
-int ZLowpass2_unused = AirwinRegistry::registerAirwindow({"ZLowpass2", "XYZ Filters", 368, "ZLowpass2 acts more like the Emu e6400 Ultra lowpass in motion, with control smoothing.", airwin2rack::ZLowpass2::kNumParameters, []() { return std::make_unique<airwin2rack::ZLowpass2::ZLowpass2>(0); }});
+int ZLowpass2_unused = AirwinRegistry::registerAirwindow({"ZLowpass2", "XYZ Filters", 369, "ZLowpass2 acts more like the Emu e6400 Ultra lowpass in motion, with control smoothing.", airwin2rack::ZLowpass2::kNumParameters, []() { return std::make_unique<airwin2rack::ZLowpass2::ZLowpass2>(0); }});
 #include "autogen_airwin/ZNotch.h"
-int ZNotch_unused = AirwinRegistry::registerAirwindow({"ZNotch", "XYZ Filters", 374, "ZNotch is a notch filter made to sound and act like the Emu e6400 Phaser.", airwin2rack::ZNotch::kNumParameters, []() { return std::make_unique<airwin2rack::ZNotch::ZNotch>(0); }});
+int ZNotch_unused = AirwinRegistry::registerAirwindow({"ZNotch", "XYZ Filters", 375, "ZNotch is a notch filter made to sound and act like the Emu e6400 Phaser.", airwin2rack::ZNotch::kNumParameters, []() { return std::make_unique<airwin2rack::ZNotch::ZNotch>(0); }});
 #include "autogen_airwin/ZNotch2.h"
-int ZNotch2_unused = AirwinRegistry::registerAirwindow({"ZNotch2", "XYZ Filters", 369, "ZNotch2 acts more like the Emu e6400 Ultra phaser in motion, with control smoothing.", airwin2rack::ZNotch2::kNumParameters, []() { return std::make_unique<airwin2rack::ZNotch2::ZNotch2>(0); }});
+int ZNotch2_unused = AirwinRegistry::registerAirwindow({"ZNotch2", "XYZ Filters", 370, "ZNotch2 acts more like the Emu e6400 Ultra phaser in motion, with control smoothing.", airwin2rack::ZNotch2::kNumParameters, []() { return std::make_unique<airwin2rack::ZNotch2::ZNotch2>(0); }});
 #include "autogen_airwin/ZOutputStage.h"
 int ZOutputStage_unused = AirwinRegistry::registerAirwindow({"ZOutputStage", "Distortion", 129, "ZOutputStage is the output clipping from the Emu e6400 style Z filters.", airwin2rack::ZOutputStage::kNumParameters, []() { return std::make_unique<airwin2rack::ZOutputStage::ZOutputStage>(0); }});
 #include "autogen_airwin/ZRegion.h"
-int ZRegion_unused = AirwinRegistry::registerAirwindow({"ZRegion", "XYZ Filters", 375, "ZRegion is an Emu e6400 style Airwindows Region filter.", airwin2rack::ZRegion::kNumParameters, []() { return std::make_unique<airwin2rack::ZRegion::ZRegion>(0); }});
+int ZRegion_unused = AirwinRegistry::registerAirwindow({"ZRegion", "XYZ Filters", 376, "ZRegion is an Emu e6400 style Airwindows Region filter.", airwin2rack::ZRegion::kNumParameters, []() { return std::make_unique<airwin2rack::ZRegion::ZRegion>(0); }});
 #include "autogen_airwin/ZRegion2.h"
-int ZRegion2_unused = AirwinRegistry::registerAirwindow({"ZRegion2", "XYZ Filters", 370, "ZRegion2 is an Emu e6400 style Airwindows Region filter, with control smoothing.", airwin2rack::ZRegion2::kNumParameters, []() { return std::make_unique<airwin2rack::ZRegion2::ZRegion2>(0); }});
+int ZRegion2_unused = AirwinRegistry::registerAirwindow({"ZRegion2", "XYZ Filters", 371, "ZRegion2 is an Emu e6400 style Airwindows Region filter, with control smoothing.", airwin2rack::ZRegion2::kNumParameters, []() { return std::make_unique<airwin2rack::ZRegion2::ZRegion2>(0); }});
 #include "autogen_airwin/curve.h"
 int curve_unused = AirwinRegistry::registerAirwindow({"curve", "Dynamics", 168, "curve is the simplest, purest form of Recurve with no extra boosts.", airwin2rack::curve::kNumParameters, []() { return std::make_unique<airwin2rack::curve::curve>(0); }});
 #include "autogen_airwin/kCathedral.h"
