@@ -12,11 +12,14 @@
 #include <string>
 #include <memory>
 #include <utility>
-#include "airwin2rackbase.h"
+#include <vector>
 #include <set>
-#include <iostream>
 #include <unordered_map>
 #include <map>
+#include <iostream>
+#include <functional>
+
+#include "airwin2rackbase.h"
 
 struct AirwinRegistry
 {

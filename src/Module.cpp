@@ -23,7 +23,6 @@
 
 // @TODO: Cloud perlin ala Steve
 
-
 #define MAX_POLY 16
 
 struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::NeighborConnectable_V1
@@ -113,17 +112,19 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
     enum PolyphonyMode
     {
         MONOPHONIC,
-        POLYPHONIC, // the i/o is are LLL... RRR...
-        POLYPHONIC_MIXMASTER, // the i/o is LRLRLR ...  LRLRLR
-        MIXMASTER_TO_MONOPHONIC, // in is LRLR...LRLRL summed to mono
+        POLYPHONIC,               // the i/o is are LLL... RRR...
+        POLYPHONIC_MIXMASTER,     // the i/o is LRLRLR ...  LRLRLR
+        MIXMASTER_TO_MONOPHONIC,  // in is LRLR...LRLRL summed to mono
         MIXMASTER_TO_STEREO_POLY, // in is LRLRLR LRLRLRL out is LLLL RRRR
-        STEREO_POLY_TO_MIXMASTER // in is LLL RRR out is LRLR LRLR
+        STEREO_POLY_TO_MIXMASTER  // in is LLL RRR out is LRLR LRLR
     };
 
     std::atomic<PolyphonyMode> polyphonyMode{MONOPHONIC};
     std::atomic<bool> lockedType{false}, randomizeFX{false};
     AW2RModule()
     {
+        Airwin2RackBase::defaultSampleRate = APP->engine->getSampleRate();
+
         assert(!AirwinRegistry::registry.empty());
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
@@ -179,7 +180,10 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         selectedCat = AirwinRegistry::registry[registryIdx].category;
         selectedWhat = AirwinRegistry::registry[registryIdx].whatText;
 
+        Airwin2RackBase::defaultSampleRate = APP->engine->getSampleRate();
+
         airwin_display = AirwinRegistry::registry[registryIdx].generator();
+        airwin_display->setSampleRate(APP->engine->getSampleRate());
 
         if (polyphonyMode != MONOPHONIC && polyphonyMode != MIXMASTER_TO_MONOPHONIC)
         {
@@ -187,11 +191,14 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             for (int i = 0; i < MAX_POLY; ++i)
             {
                 poly_airwin[i] = AirwinRegistry::registry[registryIdx].generator();
+                poly_airwin[i]->setSampleRate(APP->engine->getSampleRate());
             }
         }
         else
         {
             airwin = AirwinRegistry::registry[registryIdx].generator();
+            airwin->setSampleRate(APP->engine->getSampleRate());
+
             for (auto &aw : poly_airwin)
                 aw.reset(nullptr);
         }
@@ -219,6 +226,25 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             polyIO[c].reset();
 
         resetCount++;
+
+        updateSampleRates();
+    }
+
+    void updateSampleRates()
+    {
+        auto sr = APP->engine->getSampleRate();
+        Airwin2RackBase::defaultSampleRate = sr;
+        airwin_display->setSampleRate(sr);
+        if (airwin)
+            airwin->setSampleRate(sr);
+        for (auto &p : poly_airwin)
+            if (p)
+                p->setSampleRate(sr);
+    }
+
+    void onSampleRateChange(const SampleRateChangeEvent &e) override
+    {
+        updateSampleRates();
     }
 
     json_t *dataToJson() override
@@ -238,7 +264,8 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
     {
         namespace jh = sst::rackhelpers::json;
 
-        resetAirwinByName(jh::jsonSafeGet<std::string>(rootJ, "airwindowSelectedFX").value_or("Galactic"), false);
+        resetAirwinByName(
+            jh::jsonSafeGet<std::string>(rootJ, "airwindowSelectedFX").value_or("Galactic"), false);
         lockedType = jh::jsonSafeGet<bool>(rootJ, "lockedType").value_or(false);
 
         bool oldPoly = jh::jsonSafeGet<bool>(rootJ, "polyphonic").value_or(false);
@@ -337,7 +364,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             resetAirwinByName(selectedFX, false);
         }
 
-        switch(polyphonyMode)
+        switch (polyphonyMode)
         {
         case MONOPHONIC:
             processMono(args, false);
@@ -366,12 +393,12 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         {
             monoIO.in[0][monoIO.inPos] = 0;
             monoIO.in[1][monoIO.inPos] = 0;
-            for (int c=0; c<inputs[INPUT_L].getChannels(); c += 2)
+            for (int c = 0; c < inputs[INPUT_L].getChannels(); c += 2)
             {
                 monoIO.in[0][monoIO.inPos] += inputs[INPUT_L].getVoltage(c) * 0.2;
                 monoIO.in[1][monoIO.inPos] += inputs[INPUT_L].getVoltage(c + 1) * 0.2;
             }
-            for (int c=0; c<inputs[INPUT_R].getChannels(); c += 2)
+            for (int c = 0; c < inputs[INPUT_R].getChannels(); c += 2)
             {
                 monoIO.in[0][monoIO.inPos] += inputs[INPUT_R].getVoltage(c) * 0.2;
                 monoIO.in[1][monoIO.inPos] += inputs[INPUT_R].getVoltage(c + 1) * 0.2;
@@ -433,8 +460,10 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
                 }
                 else
                 {
-                    polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_R].getVoltage((c-8) * 2) * 0.2;
-                    polyIO[c].in[1][polyIO[c].inPos] = inputs[INPUT_R].getVoltage((c-8) * 2 + 1) * 0.2;
+                    polyIO[c].in[0][polyIO[c].inPos] =
+                        inputs[INPUT_R].getVoltage((c - 8) * 2) * 0.2;
+                    polyIO[c].in[1][polyIO[c].inPos] =
+                        inputs[INPUT_R].getVoltage((c - 8) * 2 + 1) * 0.2;
                 }
             }
             else
@@ -471,8 +500,10 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
                 }
                 else
                 {
-                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, (c-8) * 2);
-                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5, (c-8) * 2 + 1);
+                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5,
+                                                 (c - 8) * 2);
+                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5,
+                                                 (c - 8) * 2 + 1);
                 }
             }
             else
@@ -550,8 +581,12 @@ struct AWSkin
         }
         else
         {
-            changeTo((Skin)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultSkin").value_or(DARK), false);
-            menuOrdering = (MenuOrdering)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultMenuOrdering").value_or(ALPHA);
+            changeTo(
+                (Skin)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultSkin").value_or(DARK),
+                false);
+            menuOrdering =
+                (MenuOrdering)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultMenuOrdering")
+                    .value_or(ALPHA);
         }
     }
 
@@ -570,8 +605,7 @@ struct AWSkin
         readConfig();
     }
 
-    template<typename T>
-    T dl(const T &dark, const T &light)
+    template <typename T> T dl(const T &dark, const T &light)
     {
         if (skin == DARK)
             return dark;
@@ -607,29 +641,29 @@ struct AWSkin
     COL(selectorCategory, nvgRGB(210, 210, 210), nvgRGB(210, 210, 210));
     COL(selectorPoly, nvgRGB(140, 140, 140), nvgRGB(140, 140, 140));
 
-    COL(helpBorder, nvgRGB(180,180,180), nvgRGB(180,180,180));
-    COL(helpBG, nvgRGB(20,20,20), nvgRGB(20,20,20));
-    COL(helpText, nvgRGB(220,220,225), nvgRGB(220,220,225));
+    COL(helpBorder, nvgRGB(180, 180, 180), nvgRGB(180, 180, 180));
+    COL(helpBG, nvgRGB(20, 20, 20), nvgRGB(20, 20, 20));
+    COL(helpText, nvgRGB(220, 220, 225), nvgRGB(220, 220, 225));
 
-    COL(panelGradientStart, nvgRGB(50,50,60), nvgRGB(225,225,230));
-    COL(panelGradientEnd, nvgRGB(70,70,75), nvgRGB(235,235,245));
+    COL(panelGradientStart, nvgRGB(50, 50, 60), nvgRGB(225, 225, 230));
+    COL(panelGradientEnd, nvgRGB(70, 70, 75), nvgRGB(235, 235, 245));
 
-    COL(panelBottomRegion, nvgRGB(160,160,170), nvgRGB(160,160,170));
-    COL(panelBottomStroke, nvgRGB(0,0,0), nvgRGB(0,0,0));
+    COL(panelBottomRegion, nvgRGB(160, 160, 170), nvgRGB(160, 160, 170));
+    COL(panelBottomStroke, nvgRGB(0, 0, 0), nvgRGB(0, 0, 0));
 
-    COL(panelInputFill, nvgRGB(190,190,200), nvgRGB(190,190,200));
-    COL(panelInputBorder, nvgRGB(140,140,150), nvgRGB(140,140,150));
-    COL(panelInputText, nvgRGB(40,40,50), nvgRGB(40,40,50));
+    COL(panelInputFill, nvgRGB(190, 190, 200), nvgRGB(190, 190, 200));
+    COL(panelInputBorder, nvgRGB(140, 140, 150), nvgRGB(140, 140, 150));
+    COL(panelInputText, nvgRGB(40, 40, 50), nvgRGB(40, 40, 50));
 
-    COL(panelOutputFill,nvgRGB(60,60,70), nvgRGB(60,60,70));
-    COL(panelOutputBorder, nvgRGB(40,40,50), nvgRGB(40,40,50));
-    COL(panelOutputText, nvgRGB(190,190,200), nvgRGB(190,190,200));
+    COL(panelOutputFill, nvgRGB(60, 60, 70), nvgRGB(60, 60, 70));
+    COL(panelOutputBorder, nvgRGB(40, 40, 50), nvgRGB(40, 40, 50));
+    COL(panelOutputText, nvgRGB(190, 190, 200), nvgRGB(190, 190, 200));
 
-    COL(panelBrandText, nvgRGB(0,0,0), nvgRGB(0,0,0));
+    COL(panelBrandText, nvgRGB(0, 0, 0), nvgRGB(0, 0, 0));
 
-    float svgAlpha() { return dl(0.73, 0.23);}
+    float svgAlpha() { return dl(0.73, 0.23); }
 
-    COL(moduleOutline, nvgRGB(100,100,100), nvgRGB(100,100,100));
+    COL(moduleOutline, nvgRGB(100, 100, 100), nvgRGB(100, 100, 100));
 };
 
 AWSkin awSkin;
@@ -713,8 +747,8 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
         minAngle = -M_PI * (180 - angleSpreadDegrees) / 180;
         maxAngle = M_PI * (180 - angleSpreadDegrees) / 180;
 
-        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
-                                             [this](auto vg) { drawKnob(vg); });
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(
+            rack::Vec(0, 0), box.size, [this](auto vg) { drawKnob(vg); });
         addChild(bdw);
     }
 
@@ -816,8 +850,8 @@ struct AWLabel : rack::Widget
     AWLabel() {}
     void setup()
     {
-        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
-                                             [this](auto vg) { drawLabel(vg); });
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(
+            rack::Vec(0, 0), box.size, [this](auto vg) { drawLabel(vg); });
         addChild(bdw);
     }
     void drawLabel(NVGcontext *vg)
@@ -867,8 +901,8 @@ struct AWJog : rack::Widget
     sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
     void setup()
     {
-        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
-                                             [this](auto vg) { drawArrow(vg); });
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(
+            rack::Vec(0, 0), box.size, [this](auto vg) { drawArrow(vg); });
         addChild(bdw);
     }
     void drawArrow(NVGcontext *vg)
@@ -997,8 +1031,8 @@ struct AWHelp : rack::Widget
     sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
     void setup()
     {
-        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
-                                             [this](auto vg) { drawHelp(vg); });
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(
+            rack::Vec(0, 0), box.size, [this](auto vg) { drawHelp(vg); });
         addChild(bdw);
     }
     void drawHelp(NVGcontext *vg)
@@ -1056,8 +1090,8 @@ struct AWSelector : rack::Widget
     static constexpr int jogButttonSize{12};
     void setup()
     {
-        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
-                                             [this](auto vg) { drawSelector(vg); });
+        bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(
+            rack::Vec(0, 0), box.size, [this](auto vg) { drawSelector(vg); });
         addChild(bdw);
 
         auto asz{jogButttonSize - 1};
@@ -1153,8 +1187,9 @@ struct AWSelector : rack::Widget
         nvgFontSize(vg, 8.5);
         nvgText(vg, box.size.x * 0.5, box.size.y * 0.22, lastCat.c_str(), nullptr);
 
-        if (lastPoly == AW2RModule::POLYPHONIC || lastPoly == AW2RModule::POLYPHONIC_MIXMASTER
-            || lastPoly == AW2RModule::MIXMASTER_TO_STEREO_POLY || lastPoly == AW2RModule::STEREO_POLY_TO_MIXMASTER)
+        if (lastPoly == AW2RModule::POLYPHONIC || lastPoly == AW2RModule::POLYPHONIC_MIXMASTER ||
+            lastPoly == AW2RModule::MIXMASTER_TO_STEREO_POLY ||
+            lastPoly == AW2RModule::STEREO_POLY_TO_MIXMASTER)
         {
             nvgBeginPath(vg);
             nvgFillColor(vg, awSkin.selectorPoly());
@@ -1270,7 +1305,8 @@ struct AWSelector : rack::Widget
                 }
                 if (ct > maxEntries)
                 {
-                    m->addChild(rack::createMenuLabel(std::to_string(result.size()-maxEntries) + " more matches..."));
+                    m->addChild(rack::createMenuLabel(std::to_string(result.size() - maxEntries) +
+                                                      " more matches..."));
                 }
             }
         }
@@ -1296,11 +1332,12 @@ struct AWSelector : rack::Widget
                                          CHECKMARK(module->randomizeFX),
                                          [this]() { module->randomizeFX = !module->randomizeFX; }));
         m->addChild(new rack::MenuSeparator);
-        m->addChild(rack::createMenuItem("Categories in Alphabetical Order", CHECKMARK(awSkin.menuOrdering == AWSkin::ALPHA),
-                                            []() { awSkin.changeOrderingTo(AWSkin::ALPHA); }));
-        m->addChild(rack::createMenuItem("Categories in 'Chris' (quality) Order", CHECKMARK(awSkin.menuOrdering == AWSkin::CHRIS),
-                                            []() { awSkin.changeOrderingTo(AWSkin::CHRIS); }));
-
+        m->addChild(rack::createMenuItem("Categories in Alphabetical Order",
+                                         CHECKMARK(awSkin.menuOrdering == AWSkin::ALPHA),
+                                         []() { awSkin.changeOrderingTo(AWSkin::ALPHA); }));
+        m->addChild(rack::createMenuItem("Categories in 'Chris' (quality) Order",
+                                         CHECKMARK(awSkin.menuOrdering == AWSkin::CHRIS),
+                                         []() { awSkin.changeOrderingTo(AWSkin::CHRIS); }));
     }
     void createCategoryMenu(rack::Menu *m, const std::string &cat)
     {
@@ -1325,7 +1362,7 @@ struct AWSelector : rack::Widget
                 const auto &name = r.name;
                 auto checked = name == module->selectedFX;
                 auto mi = rack::createMenuItem(name, CHECKMARK(checked),
-                                                   [this, i = ridx]() { pushFXChange(module, i); });
+                                               [this, i = ridx]() { pushFXChange(module, i); });
                 mi->disabled = module->lockedType;
                 m->addChild(mi);
             }
@@ -1442,7 +1479,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         clipperSvg = rack::Svg::load(rack::asset::plugin(pluginInstance, "res/clipper.svg"));
 
         bg = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(rack::Vec(0, 0), box.size,
-                                            [this](auto vg) { drawBG(vg); });
+                                                                  [this](auto vg) { drawBG(vg); });
         bg->box.pos = rack::Vec(0.0);
         bg->box.size = box.size;
         addChild(bg);
@@ -1570,36 +1607,45 @@ struct AW2RModuleWidget : rack::ModuleWidget
         if (awm)
         {
             menu->addChild(new rack::MenuSeparator);
-            menu->addChild(rack::createMenuItem("Monophonic (Sum Inputs)", CHECKMARK(awm->polyphonyMode == AW2RModule::MONOPHONIC),
-                                                [awm, this]() {
-                                                    awm->stagePolyReset(AW2RModule::MONOPHONIC);
-                                                    bg->dirty = true;
-                                                }));
-            menu->addChild(rack::createMenuItem("Monophonic (MixMaster Sum Input)", CHECKMARK(awm->polyphonyMode == AW2RModule::MIXMASTER_TO_MONOPHONIC),
-                                                [awm, this]() {
-                                                    awm->stagePolyReset(AW2RModule::MIXMASTER_TO_MONOPHONIC);
-                                                    bg->dirty = true;
-                                                }));
-            menu->addChild(rack::createMenuItem("Polyphonic (Stereo to Stereo)", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC),
-                                                [awm, this]() {
-                                                    awm->stagePolyReset(AW2RModule::POLYPHONIC);
-                                                    bg->dirty = true;
-                                                }));
-            menu->addChild(rack::createMenuItem("Polyphonic (MixMaster to MixMaster)", CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC_MIXMASTER),
-                                                [awm, this]() {
-                                                    awm->stagePolyReset(AW2RModule::POLYPHONIC_MIXMASTER);
-                                                    bg->dirty = true;
-                                                }));
-            menu->addChild(rack::createMenuItem("Polyphonic (MixMaster to Stereo)", CHECKMARK(awm->polyphonyMode == AW2RModule::MIXMASTER_TO_STEREO_POLY),
-                                                [awm, this]() {
-                                                    awm->stagePolyReset(AW2RModule::MIXMASTER_TO_STEREO_POLY);
-                                                    bg->dirty = true;
-                                                }));
-            menu->addChild(rack::createMenuItem("Polyphonic (Stereo to MixMaster)", CHECKMARK(awm->polyphonyMode == AW2RModule::STEREO_POLY_TO_MIXMASTER),
-                                                [awm, this]() {
-                                                    awm->stagePolyReset(AW2RModule::STEREO_POLY_TO_MIXMASTER);
-                                                    bg->dirty = true;
-                                                }));
+            menu->addChild(rack::createMenuItem(
+                "Monophonic (Sum Inputs)", CHECKMARK(awm->polyphonyMode == AW2RModule::MONOPHONIC),
+                [awm, this]() {
+                    awm->stagePolyReset(AW2RModule::MONOPHONIC);
+                    bg->dirty = true;
+                }));
+            menu->addChild(rack::createMenuItem(
+                "Monophonic (MixMaster Sum Input)",
+                CHECKMARK(awm->polyphonyMode == AW2RModule::MIXMASTER_TO_MONOPHONIC),
+                [awm, this]() {
+                    awm->stagePolyReset(AW2RModule::MIXMASTER_TO_MONOPHONIC);
+                    bg->dirty = true;
+                }));
+            menu->addChild(rack::createMenuItem(
+                "Polyphonic (Stereo to Stereo)",
+                CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC), [awm, this]() {
+                    awm->stagePolyReset(AW2RModule::POLYPHONIC);
+                    bg->dirty = true;
+                }));
+            menu->addChild(rack::createMenuItem(
+                "Polyphonic (MixMaster to MixMaster)",
+                CHECKMARK(awm->polyphonyMode == AW2RModule::POLYPHONIC_MIXMASTER), [awm, this]() {
+                    awm->stagePolyReset(AW2RModule::POLYPHONIC_MIXMASTER);
+                    bg->dirty = true;
+                }));
+            menu->addChild(rack::createMenuItem(
+                "Polyphonic (MixMaster to Stereo)",
+                CHECKMARK(awm->polyphonyMode == AW2RModule::MIXMASTER_TO_STEREO_POLY),
+                [awm, this]() {
+                    awm->stagePolyReset(AW2RModule::MIXMASTER_TO_STEREO_POLY);
+                    bg->dirty = true;
+                }));
+            menu->addChild(rack::createMenuItem(
+                "Polyphonic (Stereo to MixMaster)",
+                CHECKMARK(awm->polyphonyMode == AW2RModule::STEREO_POLY_TO_MIXMASTER),
+                [awm, this]() {
+                    awm->stagePolyReset(AW2RModule::STEREO_POLY_TO_MIXMASTER);
+                    bg->dirty = true;
+                }));
 
             menu->addChild(new rack::MenuSeparator);
             auto s = "Block Size (" + std::to_string(awm->blockSize) + ")";
@@ -1621,11 +1667,12 @@ struct AW2RModuleWidget : rack::ModuleWidget
         }
 
         menu->addChild(new rack::MenuSeparator);
-        menu->addChild(rack::createMenuItem("Categories in Alphabetical Order", CHECKMARK(awSkin.menuOrdering == AWSkin::ALPHA),
+        menu->addChild(rack::createMenuItem("Categories in Alphabetical Order",
+                                            CHECKMARK(awSkin.menuOrdering == AWSkin::ALPHA),
                                             []() { awSkin.changeOrderingTo(AWSkin::ALPHA); }));
-        menu->addChild(rack::createMenuItem("Categories in 'Chris' (quality) Order", CHECKMARK(awSkin.menuOrdering == AWSkin::CHRIS),
+        menu->addChild(rack::createMenuItem("Categories in 'Chris' (quality) Order",
+                                            CHECKMARK(awSkin.menuOrdering == AWSkin::CHRIS),
                                             []() { awSkin.changeOrderingTo(AWSkin::CHRIS); }));
-
     }
 
     struct HelpWidget : rack::Widget
@@ -1672,15 +1719,16 @@ struct AW2RModuleWidget : rack::ModuleWidget
                            box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
                            hw->helpText.c_str(), nullptr);
                 nvgTextBoxBounds(vg, margin + 2, bnd[3] + margin + 2,
-                           box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
-                           hw->helpText.c_str(), nullptr, bnd);
+                                 box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
+                                 hw->helpText.c_str(), nullptr, bnd);
                 nvgRestore(vg);
 
                 box.size.y = bnd[3];
             }
         } *render{nullptr};
 
-        void setup() {
+        void setup()
+        {
             ctime = rack::system::getTime();
             sw = new rack::ui::ScrollWidget;
             sw->box.pos = rack::Vec(margin, margin);
@@ -1691,7 +1739,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
             render = new Render();
             render->hw = this;
-            render->box.pos = rack::Vec(0,0);
+            render->box.pos = rack::Vec(0, 0);
             render->box.size = sw->box.size;
             sw->container->addChild(render);
         }
@@ -1768,7 +1816,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
             resetBounds();
         }
 
-        void resetBounds() {
+        void resetBounds()
+        {
             sw->box.pos = rack::Vec(margin, margin);
             sw->box.size = box.size;
             sw->box.size.x -= 2 * margin;
@@ -1867,8 +1916,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         // use nextPoly here since audio thread may have not swept it yet
         if (!awm || ((awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER) &&
                      (awm->nextPoly != AW2RModule::MIXMASTER_TO_MONOPHONIC) &&
-                     (awm->nextPoly != AW2RModule::MIXMASTER_TO_STEREO_POLY))
-                     )
+                     (awm->nextPoly != AW2RModule::MIXMASTER_TO_STEREO_POLY)))
         {
             nvgFontSize(vg, 10);
             nvgText(vg, box.size.x * 0.25 - dc, box.size.y - cutPoint + 38, "L", nullptr);
@@ -1895,8 +1943,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgTextAlign(vg, NVG_ALIGN_BOTTOM | NVG_ALIGN_CENTER);
         nvgFontFaceId(vg, fid);
         if (!awm || ((awm->nextPoly != AW2RModule::POLYPHONIC_MIXMASTER) &&
-                     (awm->nextPoly != AW2RModule::STEREO_POLY_TO_MIXMASTER))
-                     )
+                     (awm->nextPoly != AW2RModule::STEREO_POLY_TO_MIXMASTER)))
         {
             nvgFontSize(vg, 10);
             nvgText(vg, box.size.x * 0.75, box.size.y - cutPoint + 38, "OUT", nullptr);
@@ -1926,7 +1973,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             float t[6];
             nvgTranslate(vg, 0, 269);
             nvgScale(vg, 0.14, 0.14);
-            nvgAlpha(vg,awSkin.svgAlpha());
+            nvgAlpha(vg, awSkin.svgAlpha());
             clipperSvg->draw(vg);
             nvgRestore(vg);
         }

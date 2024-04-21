@@ -7,7 +7,10 @@
 */
 
 #include "airwin2rackbase.h"
+#include <string>
 #include <iostream>
+
+float Airwin2RackBase::defaultSampleRate{0.f};
 
 bool string2float(const char *txt, float &f)
 {
