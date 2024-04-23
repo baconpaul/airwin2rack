@@ -30,7 +30,7 @@ $(shell touch $(RACK_PLUGIN))
 DEPS += $(cmake_rack_plugin)
 
 $(cmake_rack_plugin): CMakeLists.txt
-	$(CMAKE) -B $(CMAKE_BUILD) -DRACK_SDK_DIR=$(RACK_DIR) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(CMAKE_BUILD)/dist $(EXTRA_CMAKE)
+	$(CMAKE) -B $(CMAKE_BUILD) -DRACK_SDK_DIR=$(RACK_DIR) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(CMAKE_BUILD)/dist -DBUILD_RACK_PLUGIN=TRUE $(EXTRA_CMAKE)
 	cmake --build $(CMAKE_BUILD) -- -j $(shell getconf _NPROCESSORS_ONLN)
 	cmake --install $(CMAKE_BUILD)
 

@@ -10,7 +10,10 @@
 #define AIRWIN2_RACK_AIRWIN2RACKBASE_H
 
 #include <cstdint>
-#include <rack.hpp>
+#include <cassert>
+#include <cstring>
+#include <stdio.h>
+#include <cmath>
 
 
 typedef int32_t audioMasterCallback;
@@ -26,7 +29,13 @@ struct Airwin2RackBase {
     Airwin2RackBase(audioMasterCallback m, int, int) {}
     virtual ~Airwin2RackBase() = default;
 
-    float getSampleRate() { return APP->engine->getSampleRate(); }
+    static float defaultSampleRate;
+    float sampleRate{defaultSampleRate};
+    void setSampleRate(float sr) { sampleRate = sr; }
+    float getSampleRate() {
+        assert(sampleRate > 2000);
+        return sampleRate;
+    }
 
     virtual bool getEffectName(char *name) { return false; }
     virtual void setNumInputs(int) {}

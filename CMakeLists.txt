@@ -1,35 +1,79 @@
 cmake_minimum_required(VERSION 3.16)
+cmake_policy(SET CMP0091 NEW)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 project(Airwin2Rack VERSION 1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
-add_subdirectory(libs/sst-rackhelpers)
 
-set(PLUGIN_NAME ${PROJECT_NAME})
-set(ADDITIONAL_PLUGIN_DISTRIBUTABLES res LICENSE.md README.md)
-include(RackSDK.cmake)
+option(BUILD_JUCE_PLUGIN "Build a JUCE plugin" OFF)
+option(BUILD_RACK_PLUGIN "Build a VCV Rack plugin" OFF)
 
 message(STATUS "AirwinRackAdapter for Rack Build Process" )
 message(STATUS "Installing into '${CMAKE_INSTALL_PREFIX}'")
 
 include(src/autogen_airwin/CMakeLists.txt)
-add_compile_options(-fvisibility=hidden -fvisibility-inlines-hidden)
 
-target_include_directories(${RACK_PLUGIN_LIB} PRIVATE src src/autogen_airwin/)
-target_sources(${RACK_PLUGIN_LIB} PRIVATE
-        src/Airwin2Rack.cpp
+if(NOT MSVC)
+    message(STATUS "Adding clang/gcc visibility options")
+    add_compile_options(-fvisibility=hidden -fvisibility-inlines-hidden)
+endif()
+
+add_library(airwin-registry STATIC
         src/AirwinRegistry.cpp
-        src/Module.cpp
         src/airwin2rackbase.cpp
 
-        ${AIRWIN_SOURCES}
-        )
+        ${AIRWIN_SOURCES})
 
-target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-suggest-override -Wno-multichar -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
-target_link_libraries(${RACK_PLUGIN_LIB} PUBLIC sst-rackhelpers)
+target_compile_definitions(airwin-registry PRIVATE _USE_MATH_DEFINES)
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-stringop-truncation)
+if (NOT MSVC)
+    # consistent even in warnings that chris is
+    target_compile_options(airwin-registry PRIVATE
+            -Wno-unused-function
+            -Wno-unused-value
+            -Wno-unused-but-set-variable
+            -Wno-multichar
+    )
+endif()
+target_include_directories(airwin-registry PUBLIC src)
+
+if (${BUILD_RACK_PLUGIN})
+    set(PLUGIN_NAME ${PROJECT_NAME})
+    set(ADDITIONAL_PLUGIN_DISTRIBUTABLES res LICENSE.md README.md)
+    include(RackSDK.cmake)
+
+    add_subdirectory(libs/sst-rackhelpers)
+
+    target_include_directories(${RACK_PLUGIN_LIB} PRIVATE src src/autogen_airwin/)
+    target_sources(${RACK_PLUGIN_LIB} PRIVATE
+            src/Airwin2Rack.cpp
+            src/Module.cpp
+            )
+
+    target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-suggest-override -Wno-multichar -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
+    target_link_libraries(${RACK_PLUGIN_LIB} PUBLIC sst-rackhelpers airwin-registry)
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-stringop-truncation)
+    endif()
+endif()
+
+if (${BUILD_JUCE_PLUGIN})
+
+    file(GLOB AWCON_RESOURCES_GLOB
+            res/*.ttf
+            res/clipper.svg
+            res/awpdoc/*.txt
+    )
+    include(cmake/CmakeRC.cmake)
+    cmrc_add_resource_library(awconsolidated_resources ${AWCON_RESOURCES_GLOB})
+
+    add_subdirectory(src-juce)
 endif()
