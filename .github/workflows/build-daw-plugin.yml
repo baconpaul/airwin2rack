@@ -71,6 +71,9 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           path: _artifacts
+      - name: Show Installer Directory
+        run: |
+          ls -r _artifacts
       - name: Delete old release assets
         uses: mknejp/delete-release-assets@v1
         with:
@@ -81,7 +84,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: _artifacts/**/**
+          file: _artifacts/**/**/**
           tag: DAWPlutin
           file_glob: true
       - name: Tag Repo
