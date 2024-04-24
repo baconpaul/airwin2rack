@@ -73,7 +73,7 @@ jobs:
           path: artifacts
       - name: Show Installer Directory
         run: |
-          ls -r artifacts
+          ls -R artifacts
       - name: Delete old release assets
         uses: mknejp/delete-release-assets@v1
         with:
@@ -85,7 +85,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: artifacts/**/**/**
-          tag: DAWPlutin
+          tag: DAWPlugin
           file_glob: true
       - name: Tag Repo
         uses: richardsimko/update-tag@v1.0.7
