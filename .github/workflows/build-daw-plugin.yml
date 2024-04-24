@@ -41,21 +41,30 @@ jobs:
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 
-      - name: Build project
+      - name: Build release version
+        if: github.event_name != 'pull_request'
         run: |
           cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DBUILD_JUCE_PLUGIN=TRUE
-          cmake --build ./build --config Release --target awcons-installer
+          cmake --build ./build --config Release --target awcons-installer --parallel 3
+
+      - name: Build pull request version
+        if: github.event_name == 'pull_request'
+        run: |
+          cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Debug -DBUILD_JUCE_PLUGIN=TRUE
+          cmake --build ./build --config Debug --target airwin-consolidated_Standalone --parallel 3
 
       - name: Show Build Directory
         run: |
           ls -l ./build
 
       - name: Show Installer Directory
+        if: github.event_name != 'pull_request'
         run: |
           ls -l ./build/installer
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
         with:
           path: build/installer
           name: dawplugin-${{ matrix.os }}
