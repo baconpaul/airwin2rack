@@ -58,11 +58,13 @@ jobs:
           ls -l ./build
 
       - name: Show Installer Directory
+        if: github.event_name != 'pull_request'
         run: |
           ls -l ./build/installer
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
         with:
           path: build/installer
           name: dawplugin-${{ matrix.os }}
