@@ -31,7 +31,8 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
 
     std::unique_ptr<Airwin2RackBase> airwin{}, airwin_display{};
     std::array<std::unique_ptr<Airwin2RackBase>, MAX_POLY> poly_airwin;
-    std::atomic<int32_t> forceSelect{-1}, resetCount{0};
+    std::atomic<int32_t> forceSelect{-1}, resetCount{0}, selectedIdx{-1};
+    std::atomic<bool> panicReset;
     std::string selectedFX{}, selectedWhat{}, selectedCat{};
 
     struct AWParamQuantity : public rack::ParamQuantity
@@ -84,7 +85,10 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         PARAM_0,
         MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS = PARAM_0 + maxParams,
         ATTENUVERTER_0,
-        NUM_PARAMS = ATTENUVERTER_0 + maxParams
+        MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_ATTENS = ATTENUVERTER_0 + maxParams,
+        IN_LEVEL,
+        OUT_LEVEL,
+        NUM_PARAMS
     };
 
     enum InputIds
@@ -136,6 +140,10 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         configBypass(INPUT_R, OUTPUT_R);
 
         configParam(MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS, 0, 1, 0, "Unused");
+        configParam(MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_ATTENS, 0, 1, 0, "Unused");
+
+        configParam(IN_LEVEL, 0, 1, 1, "Input Gain", "%", 0, 100);
+        configParam(OUT_LEVEL, 0, 1, 1, "Output Gain", "%", 0, 100);
 
         for (int i = 0; i < maxParams; ++i)
         {
@@ -176,6 +184,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
 
     void resetAirwindowTo(int registryIdx, bool resetValues = true)
     {
+        selectedIdx = registryIdx;
         selectedFX = AirwinRegistry::registry[registryIdx].name;
         selectedCat = AirwinRegistry::registry[registryIdx].category;
         selectedWhat = AirwinRegistry::registry[registryIdx].whatText;
@@ -242,10 +251,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
                 p->setSampleRate(sr);
     }
 
-    void onSampleRateChange(const SampleRateChangeEvent &e) override
-    {
-        updateSampleRates();
-    }
+    void onSampleRateChange(const SampleRateChangeEvent &e) override { updateSampleRates(); }
 
     json_t *dataToJson() override
     {
@@ -353,6 +359,11 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             resetAirwindowTo(forceSelect);
             forceSelect = -1;
         }
+        if (panicReset && selectedIdx >= 0)
+        {
+            resetAirwindowTo(selectedIdx, false);
+            panicReset = false;
+        }
         if (forceBlockSize != -1)
         {
             blockSize = forceBlockSize;
@@ -389,25 +400,29 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
     void processMono(const ProcessArgs &args, bool inputIsMixmaster)
     {
         auto rc = inputs[INPUT_R].isConnected() ? INPUT_R : INPUT_L;
+
+        auto ig = params[IN_LEVEL].getValue();
+        auto og = params[OUT_LEVEL].getValue();
+
         if (inputIsMixmaster)
         {
             monoIO.in[0][monoIO.inPos] = 0;
             monoIO.in[1][monoIO.inPos] = 0;
             for (int c = 0; c < inputs[INPUT_L].getChannels(); c += 2)
             {
-                monoIO.in[0][monoIO.inPos] += inputs[INPUT_L].getVoltage(c) * 0.2;
-                monoIO.in[1][monoIO.inPos] += inputs[INPUT_L].getVoltage(c + 1) * 0.2;
+                monoIO.in[0][monoIO.inPos] += inputs[INPUT_L].getVoltage(c) * 0.2 * ig;
+                monoIO.in[1][monoIO.inPos] += inputs[INPUT_L].getVoltage(c + 1) * 0.2 * ig;
             }
             for (int c = 0; c < inputs[INPUT_R].getChannels(); c += 2)
             {
-                monoIO.in[0][monoIO.inPos] += inputs[INPUT_R].getVoltage(c) * 0.2;
-                monoIO.in[1][monoIO.inPos] += inputs[INPUT_R].getVoltage(c + 1) * 0.2;
+                monoIO.in[0][monoIO.inPos] += inputs[INPUT_R].getVoltage(c) * 0.2 * ig;
+                monoIO.in[1][monoIO.inPos] += inputs[INPUT_R].getVoltage(c + 1) * 0.2 * ig;
             }
         }
         else
         {
-            monoIO.in[0][monoIO.inPos] = inputs[INPUT_L].getVoltageSum() * 0.2;
-            monoIO.in[1][monoIO.inPos] = inputs[rc].getVoltageSum() * 0.2;
+            monoIO.in[0][monoIO.inPos] = inputs[INPUT_L].getVoltageSum() * 0.2 * ig;
+            monoIO.in[1][monoIO.inPos] = inputs[rc].getVoltageSum() * 0.2 * ig;
         }
         monoIO.inPos++;
         if (monoIO.inPos >= blockSize)
@@ -428,8 +443,8 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             monoIO.inPos = 0;
         }
 
-        outputs[OUTPUT_L].setVoltage(monoIO.out[0][monoIO.outPos] * 5);
-        outputs[OUTPUT_R].setVoltage(monoIO.out[1][monoIO.outPos] * 5);
+        outputs[OUTPUT_L].setVoltage(monoIO.out[0][monoIO.outPos] * 5 * og);
+        outputs[OUTPUT_R].setVoltage(monoIO.out[1][monoIO.outPos] * 5 * og);
         monoIO.outPos++;
     }
 
@@ -438,6 +453,9 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         int chanCt = std::max({1, inputs[INPUT_R].getChannels(), inputs[INPUT_L].getChannels()});
         outputs[OUTPUT_L].setChannels(chanCt);
         outputs[OUTPUT_R].setChannels(chanCt);
+
+        auto ig = params[IN_LEVEL].getValue();
+        auto og = params[OUT_LEVEL].getValue();
 
         auto rc = inputs[INPUT_R].isConnected() ? INPUT_R : INPUT_L;
 
@@ -455,21 +473,22 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             {
                 if (c < 8)
                 {
-                    polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c * 2) * 0.2;
-                    polyIO[c].in[1][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c * 2 + 1) * 0.2;
+                    polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c * 2) * 0.2 * ig;
+                    polyIO[c].in[1][polyIO[c].inPos] =
+                        inputs[INPUT_L].getVoltage(c * 2 + 1) * 0.2 * ig;
                 }
                 else
                 {
                     polyIO[c].in[0][polyIO[c].inPos] =
-                        inputs[INPUT_R].getVoltage((c - 8) * 2) * 0.2;
+                        inputs[INPUT_R].getVoltage((c - 8) * 2) * 0.2 * ig;
                     polyIO[c].in[1][polyIO[c].inPos] =
-                        inputs[INPUT_R].getVoltage((c - 8) * 2 + 1) * 0.2;
+                        inputs[INPUT_R].getVoltage((c - 8) * 2 + 1) * 0.2 * ig;
                 }
             }
             else
             {
-                polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2;
-                polyIO[c].in[1][polyIO[c].inPos] = inputs[rc].getVoltage(c) * 0.2;
+                polyIO[c].in[0][polyIO[c].inPos] = inputs[INPUT_L].getVoltage(c) * 0.2 * ig;
+                polyIO[c].in[1][polyIO[c].inPos] = inputs[rc].getVoltage(c) * 0.2 * ig;
             }
             polyIO[c].inPos++;
             if (polyIO[c].inPos >= blockSize)
@@ -495,21 +514,23 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             {
                 if (c < 8)
                 {
-                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c * 2);
-                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5, c * 2 + 1);
+                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5 * og,
+                                                 c * 2);
+                    outputs[OUTPUT_L].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5 * og,
+                                                 c * 2 + 1);
                 }
                 else
                 {
-                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5,
+                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5 * og,
                                                  (c - 8) * 2);
-                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5,
+                    outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5 * og,
                                                  (c - 8) * 2 + 1);
                 }
             }
             else
             {
-                outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5, c);
-                outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5, c);
+                outputs[OUTPUT_L].setVoltage(polyIO[c].out[0][polyIO[c].outPos] * 5 * og, c);
+                outputs[OUTPUT_R].setVoltage(polyIO[c].out[1][polyIO[c].outPos] * 5 * og, c);
             }
             polyIO[c].outPos++;
         }
@@ -839,6 +860,72 @@ template <int px, bool bipolar = false> struct PixelKnob : rack::Knob
             menu->removeChild(*tgt);
             delete *tgt;
         }
+    }
+};
+
+struct AttenSlider : rack::Knob
+{
+    sst::rackhelpers::ui::BufferedDrawFunctionWidget *bdw{nullptr};
+    AttenSlider() {}
+
+    static AttenSlider *create(const rack::Vec &pos, int w, AW2RModule *module, int paramId)
+    {
+        auto res = new AttenSlider();
+        res->module = module;
+        res->paramId = paramId;
+        res->box.size = rack::Vec(w, 6);
+        res->box.pos = pos;
+        res->bdw = new sst::rackhelpers::ui::BufferedDrawFunctionWidget(
+            rack::Vec(0, 0), res->box.size, [res](auto vg) { res->drawSlider(vg); });
+        res->addChild(res->bdw);
+        return res;
+    }
+
+    void drawSlider(NVGcontext *vg)
+    {
+        nvgBeginPath(vg);
+        nvgFillColor(vg, awSkin.knobCenter());
+        nvgRoundedRect(vg, 0, 0, box.size.x, box.size.y, 2);
+        nvgFill(vg);
+
+        float val{1.f};
+        if (getParamQuantity())
+            val = std::clamp(getParamQuantity()->getValue(), 0.f, 1.f);
+        nvgSave(vg);
+        nvgScissor(vg, 0, 0, box.size.x * val, box.size.y);
+        nvgBeginPath(vg);
+        nvgFillColor(vg, awSkin.knobValueFill());
+        nvgRoundedRect(vg, 0, 0, box.size.x, box.size.y, 2);
+        nvgFill(vg);
+        nvgRestore(vg);
+
+        nvgBeginPath(vg);
+        nvgStrokeColor(vg, awSkin.knobStroke());
+        nvgRoundedRect(vg, 0, 0, box.size.x, box.size.y, 2);
+        nvgStroke(vg);
+    }
+
+    AWSkin::Skin lastSkin{AWSkin::DARK};
+    float lastVal{0.f};
+    void step() override
+    {
+        bool dirty{false};
+        if (lastSkin != awSkin.skin)
+            dirty = true;
+        lastSkin = awSkin.skin;
+
+        auto pq = getParamQuantity();
+        if (pq)
+        {
+            if (lastVal != pq->getValue())
+                dirty = true;
+            lastVal = pq->getValue();
+        }
+
+        if (bdw && dirty)
+            bdw->dirty = dirty;
+
+        rack::Knob::step();
     }
 };
 
@@ -1537,7 +1624,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             pPos += dPP;
         }
 
-        auto q = RACK_HEIGHT - 42;
+        auto q = RACK_HEIGHT - 42 - 9;
         auto c1 = box.size.x * 0.25;
         auto dc = box.size.x * 0.11;
         auto c2 = box.size.x * 0.75;
@@ -1562,6 +1649,15 @@ struct AW2RModuleWidget : rack::ModuleWidget
         addInput(inr);
         addOutput(outl);
         addOutput(outr);
+
+        auto w = box.size.x * 0.5 - 16;
+        auto inAt = AttenSlider::create(rack::Vec(8, q + 24), w, m, M::IN_LEVEL);
+        addParam(inAt);
+        auto outAt =
+            AttenSlider::create(rack::Vec(8 + box.size.x * 0.5, q + 24), w, m, M::OUT_LEVEL);
+        addParam(outAt);
+
+        // Add sliders here
     }
 
     ~AW2RModuleWidget()
@@ -1597,13 +1693,20 @@ struct AW2RModuleWidget : rack::ModuleWidget
     }
     void appendContextMenu(rack::Menu *menu) override
     {
+        auto awm = dynamic_cast<AW2RModule *>(module);
+        menu->addChild(new rack::MenuSeparator);
+        menu->addChild(rack::createMenuItem("Panic Reset", "", [awm]() {
+            if (awm)
+            {
+                awm->panicReset = true;
+            }
+        }));
         menu->addChild(new rack::MenuSeparator);
         menu->addChild(rack::createMenuItem("Light Mode", CHECKMARK(awSkin.skin == AWSkin::LIGHT),
                                             []() { awSkin.changeTo(AWSkin::LIGHT, true); }));
         menu->addChild(rack::createMenuItem("Dark Mode", CHECKMARK(awSkin.skin == AWSkin::DARK),
                                             []() { awSkin.changeTo(AWSkin::DARK, true); }));
 
-        auto awm = dynamic_cast<AW2RModule *>(module);
         if (awm)
         {
             menu->addChild(new rack::MenuSeparator);
@@ -1873,7 +1976,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
     void drawBG(NVGcontext *vg)
     {
-        auto cutPoint{58};
+        auto cutPoint{67};
 
         // Main Gradient Background
         nvgBeginPath(vg);
@@ -1899,7 +2002,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgStrokeColor(vg, awSkin.panelInputBorder());
         nvgFillColor(vg, awSkin.panelInputFill());
         nvgStrokeWidth(vg, 1);
-        nvgRoundedRect(vg, 4, box.size.y - cutPoint + 3, box.size.x * 0.5 - 8, 37, 2);
+        nvgRoundedRect(vg, 4, box.size.y - cutPoint + 3, box.size.x * 0.5 - 8, 37 + 9, 2);
         nvgFill(vg);
         nvgStroke(vg);
 
@@ -1934,7 +2037,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
         nvgFillColor(vg, awSkin.panelOutputFill());
         nvgStrokeWidth(vg, 1);
         nvgRoundedRect(vg, box.size.x * 0.5 + 4, box.size.y - cutPoint + 3, box.size.x * 0.5 - 8,
-                       37, 2);
+                       37 + 9, 2);
         nvgFill(vg);
         nvgStroke(vg);
 
