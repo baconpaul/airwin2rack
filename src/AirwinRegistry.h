@@ -18,6 +18,7 @@
 #include <map>
 #include <iostream>
 #include <functional>
+#include <algorithm>
 
 #include "airwin2rackbase.h"
 
