@@ -67,6 +67,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     ~AWConsolidatedAudioProcessor();
 
     //==============================================================================
+    std::atomic<bool> isPlaying{false};
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
@@ -118,7 +119,14 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
             awDisplayProcessor = rg.generator();
             awDisplayProcessor->setSampleRate(getSampleRate());
         }
-        resetType.push({-1, index, 0.f});
+        if (isPlaying)
+        {
+            resetType.push({-1, index, 0.f});
+        }
+        else
+        {
+            setAWProcessorTo(index, false);
+        }
     }
     std::atomic<bool> refreshUI{false};
 
