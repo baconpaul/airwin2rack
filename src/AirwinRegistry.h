@@ -103,6 +103,8 @@ struct AirwinRegistry
         return neighborIndexFor(nameToIndex[s], dir);
     }
 
+    static std::string documentationStringFor(int index);
+
     static void dumpStatsToStdout();
 };
 #endif // AIRWIN2RACK_AIRWINREGISTRY_H
