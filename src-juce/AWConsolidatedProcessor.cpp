@@ -115,19 +115,20 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
     Airwin2RackBase::defaultSampleRate = sr;
     if (awProcessor)
         awProcessor->setSampleRate(sr);
+    isPlaying = true;
 }
 
 void AWConsolidatedAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
+    isPlaying = false;
 }
 
 bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
-    bool inputValid = layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo();
+    bool inputValid = (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo() ||
+                       layouts.getMainInputChannelSet() == juce::AudioChannelSet::mono());
 
-    bool outputValid = layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono();
+    bool outputValid = layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
 
     return inputValid && outputValid;
 }
@@ -147,15 +148,45 @@ void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer
     }
 
     if (!awProcessor)
+    {
+        isPlaying = false;
         return;
+    }
+
+    auto inBus = getBus(true, 0);
+    auto outBus = getBus(false, 0);
+
+    if (inBus->getNumberOfChannels() == 0 ||
+        outBus->getNumberOfChannels() != 2 ||
+        buffer.getNumChannels() < 2)
+    {
+        isPlaying = false;
+        return;
+    }
+
+
+    const float *inputs[2];
+    float *outputs[2];
+    inputs[0] = buffer.getReadPointer(0);
+    inputs[1] = inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : buffer.getReadPointer(0);
+    outputs[0] = buffer.getWritePointer(0);
+    outputs[1] = buffer.getWritePointer(1);
+
+    if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
+    {
+        isPlaying = false;
+        return;
+    }
+
+    isPlaying = true;
 
     for (int i = 0; i < nProcessorParams; ++i)
     {
         awProcessor->setParameter(i, fxParams[i]->get());
     }
 
-    awProcessor->processReplacing((float **)buffer.getArrayOfReadPointers(),
-                                  (float **)buffer.getArrayOfWritePointers(),
+    awProcessor->processReplacing((float **)inputs,
+                                  (float **)outputs,
                                   buffer.getNumSamples());
 }
 
