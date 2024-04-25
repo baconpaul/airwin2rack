@@ -18,6 +18,7 @@
 #include <map>
 #include <iostream>
 #include <functional>
+#include <algorithm>
 
 #include "airwin2rackbase.h"
 
@@ -35,7 +36,8 @@ struct AirwinRegistry
     };
     static std::vector<awReg> registry;
     static std::set<std::string> categories;
-    static std::map<std::string, std::set<std::string>> fxByCategory;
+    static std::map<std::string, std::vector<std::string>> fxByCategory;
+    static std::map<std::string, std::vector<std::string>> fxByCategoryChrisOrder;
     static std::vector<int> fxAlphaOrdering;
     static std::unordered_map<std::string, int> nameToIndex;
 
@@ -70,8 +72,15 @@ struct AirwinRegistry
         {
             nameToIndex[r.name] = idx;
             categories.insert(r.category);
-            fxByCategory[r.category].insert(r.name);
+            fxByCategory[r.category].push_back(r.name);
+            fxByCategoryChrisOrder[r.category].push_back(r.name);
             idx++;
+        }
+
+        for (auto &[cat, dat] : fxByCategory)
+        {
+            std::sort(dat.begin(), dat.end(), [](const auto &a,
+                                                 const auto &b) { return a > b; });
         }
 
         idx = 0;
@@ -83,6 +92,18 @@ struct AirwinRegistry
                 fxAlphaOrdering.push_back(nameToIndex[fx]);
                 idx++;
             }
+        }
+
+
+        for (auto &[cat, dat] : fxByCategoryChrisOrder)
+        {
+            std::sort(dat.begin(), dat.end(), [](const auto &a,
+                                                 const auto &b) {
+                // this double lookup is a bit of a bummer
+                auto ai = AirwinRegistry::nameToIndex[a];
+                auto bi = AirwinRegistry::nameToIndex[b];
+                return AirwinRegistry::registry[ai].catChrisOrdering < AirwinRegistry::registry[bi].catChrisOrdering;
+            });
         }
 
         return 0;
