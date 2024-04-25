@@ -9,16 +9,12 @@
 #include <execinfo.h>
 #endif
 
-template <typename T, int Capacity=4096>
-class LockFreeQueue
+template <typename T, int Capacity = 4096> class LockFreeQueue
 {
   public:
-    LockFreeQueue()
-        : fifo(Capacity)
-    {
-    }
+    LockFreeQueue() : fifo(Capacity) {}
 
-    void push(const T& item)
+    void push(const T &item)
     {
         int start1, size1, start2, size2;
         fifo.prepareToWrite(1, start1, size1, start2, size2);
@@ -31,7 +27,7 @@ class LockFreeQueue
         fifo.finishedWrite(size1);
     }
 
-    bool pop(T& item)
+    bool pop(T &item)
     {
         int start1, size1, start2, size2;
         fifo.prepareToRead(1, start1, size1, start2, size2);
@@ -55,11 +51,10 @@ class LockFreeQueue
 /**
  */
 class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
-                              public juce::AudioProcessorParameter::Listener,
-                              public juce::AsyncUpdater
+                                     public juce::AudioProcessorParameter::Listener,
+                                     public juce::AsyncUpdater
 {
   public:
-
     static constexpr int nAWParams{10};
 
     //==============================================================================
@@ -138,7 +133,6 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
         {
         }
 
-
         juce::String getName(int end) const override { return mutableName.substring(0, end); }
 
         std::function<juce::String(float, int)> getTextHandler{nullptr};
@@ -163,8 +157,6 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     std::mutex displayProcessorMutex;
     int nProcessorParams{0};
     std::atomic<int> curentProcessorIndex{0};
-
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
 };

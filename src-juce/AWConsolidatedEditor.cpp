@@ -17,7 +17,7 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
         setColour(juce::PopupMenu::textColourId, juce::Colours::white);
         setColour(juce::PopupMenu::highlightedBackgroundColourId, juce::Colour(60, 60, 65));
         setColour(juce::PopupMenu::highlightedTextColourId, juce::Colours::white);
-        setColour(juce::ScrollBar::ColourIds::thumbColourId, juce::Colour(120,120,125));
+        setColour(juce::ScrollBar::ColourIds::thumbColourId, juce::Colour(120, 120, 125));
 
         auto fs = awres::get_filesystem();
         if (fs.is_file("res/PlusJakartaSans-Medium.ttf"))
@@ -206,7 +206,8 @@ struct DocPanel : juce::Component
 {
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
     DocPanel(AWConsolidatedAudioProcessorEditor *ed) : editor(ed) {}
-    void rebuild() {
+    void rebuild()
+    {
         auto r = juce::Rectangle<int>(0, 0, targetWidth, 10000);
 
         auto tFont = juce::Font(editor->jakartaSansSemi).withHeight(18);
@@ -219,13 +220,12 @@ struct DocPanel : juce::Component
 
         auto bFont = juce::Font(editor->jakartaSansSemi).withHeight(13);
         juce::GlyphArrangement gaBody;
-        gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(),
-                              q.getWidth(), q.getHeight(), juce::Justification::topLeft, 1000);
+        gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(), q.getWidth(),
+                             q.getHeight(), juce::Justification::topLeft, 1000);
         auto bodyBounds = gaBody.getBoundingBox(0, -1, true);
         r = r.withHeight(bodyBounds.getBottom());
 
         setSize(r.getWidth(), r.getHeight());
-
     }
 
     float targetWidth{10};
@@ -251,8 +251,8 @@ struct DocPanel : juce::Component
         auto q = r;
         auto bFont = juce::Font(editor->jakartaSansMedium).withHeight(13);
         juce::GlyphArrangement gaBody;
-        gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(),
-                             q.getWidth(), q.getHeight(), juce::Justification::topLeft, 1000);
+        gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(), q.getWidth(),
+                             q.getHeight(), juce::Justification::topLeft, 1000);
         gaBody.draw(g);
     }
 };
@@ -278,8 +278,8 @@ struct ParamKnob : juce::Component
         auto knobHandle = getLocalBounds().reduced(4).toFloat();
         if (!active)
         {
-            //g.setColour(juce::Colours::grey.withAlpha(0.3f));
-            //g.fillEllipse(knobHandle.toFloat());
+            // g.setColour(juce::Colours::grey.withAlpha(0.3f));
+            // g.fillEllipse(knobHandle.toFloat());
             return;
         }
 
@@ -359,12 +359,12 @@ struct ParamDisp : juce::Component
 
                 g.setColour(juce::Colours::white);
                 g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(20));
-                g.drawText("No Parameters",b, juce::Justification::centredTop);
+                g.drawText("No Parameters", b, juce::Justification::centredTop);
             }
-            //g.setColour(juce::Colours::black.withAlpha(0.1f));
-            //g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
-            //g.setColour(juce::Colours::white.withAlpha(0.2f));
-            //g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
+            // g.setColour(juce::Colours::black.withAlpha(0.1f));
+            // g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
+            // g.setColour(juce::Colours::white.withAlpha(0.2f));
+            // g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
             return;
         }
         g.setColour(juce::Colours::black);
@@ -392,7 +392,6 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     setFocusContainerType(juce::Component::FocusContainerType::keyboardFocusContainer);
 
     setSize(baseHeight, baseHeight);
-
 
     auto fs = awres::get_filesystem();
     try
@@ -455,10 +454,11 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     }
 
     auto da = std::make_unique<DocPanel>(this);
-    auto db = getLocalBounds().withTrimmedLeft(margin * 3 + sz + 180)
-              .withTrimmedRight(margin * 2)
-              .withTrimmedTop(60 + 2 * margin)
-              .withTrimmedBottom(40 + margin);
+    auto db = getLocalBounds()
+                  .withTrimmedLeft(margin * 3 + sz + 180)
+                  .withTrimmedRight(margin * 2)
+                  .withTrimmedTop(60 + 2 * margin)
+                  .withTrimmedBottom(40 + margin);
 
     da->targetWidth = db.getWidth() - 10;
     da->rebuild();
@@ -468,6 +468,13 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     docView->setBounds(db);
     docView->setViewedComponent(docArea.get(), false);
     addAndMakeVisible(*docView);
+
+    juce::PropertiesFile::Options options;
+    options.applicationName = "AirwindowsConsolidated";
+    options.folderName = "AirwindowsConsolidated";
+    options.filenameSuffix = "settings";
+    options.osxLibrarySubFolder = "Preferences";
+    properties = std::make_unique<juce::PropertiesFile>(options);
 }
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
@@ -531,14 +538,18 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
 
 void AWConsolidatedAudioProcessorEditor::showMenu()
 {
-    // auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, 1);
-    //  processor.pushResetTypeFromUI(nx);
     auto p = juce::PopupMenu();
     auto ent = AirwinRegistry::registry[processor.curentProcessorIndex];
 
-    p.addSectionHeader("Airwindows Effect");
+    p.addSectionHeader("Airwindows Consolidated");
     p.addSeparator();
-    for (const auto &[cat, set] : AirwinRegistry::fxByCategory)
+    const auto *order = &AirwinRegistry::fxByCategory;
+
+    bool isChrisOrder = properties->getValue("ordering") == "chris";
+    if (isChrisOrder)
+        order = &AirwinRegistry::fxByCategoryChrisOrder;
+
+    for (const auto &[cat, set] : *order)
     {
         juce::PopupMenu sub;
         for (const auto &nm : set)
@@ -550,6 +561,26 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
         }
         p.addSubMenu(cat, sub, true, nullptr, cat == ent.category);
     }
+
+    p.addSeparator();
+
+    auto settingsMenu = juce::PopupMenu();
+    settingsMenu.addItem("Alphabetical Order Menus", true, !isChrisOrder,
+                         [w = juce::Component::SafePointer(this)]() {
+                             if (w)
+                             {
+                                 w->properties->setValue("ordering", "alpha");
+                             }
+                         });
+    settingsMenu.addItem("Chris (Quality) Order Menus", true, isChrisOrder,
+                         [w = juce::Component::SafePointer(this)]() {
+                             if (w)
+                             {
+                                 w->properties->setValue("ordering", "chris");
+                             }
+                         });
+
+    p.addSubMenu("Settings", settingsMenu);
 
     p.showMenuAsync(juce::PopupMenu::Options().withParentComponent(this));
 }

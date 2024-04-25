@@ -14,7 +14,6 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     AWConsolidatedAudioProcessorEditor(AWConsolidatedAudioProcessor &);
     ~AWConsolidatedAudioProcessorEditor();
 
-
     //==============================================================================
     void paint(juce::Graphics &) override;
     void resized() override;
@@ -53,6 +52,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     juce::Typeface::Ptr jakartaSansMedium, jakartaSansSemi, firaMono;
 
     std::unique_ptr<juce::LookAndFeel_V4> lnf;
+    std::unique_ptr<juce::PropertiesFile> properties;
 
     // debugging
     int gv{0}, bv{0};

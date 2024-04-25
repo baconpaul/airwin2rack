@@ -41,8 +41,8 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
     // Multiple calls to addParameter here
     for (int i = 0; i < nAWParams; ++i)
     {
-        fxParams[i] = new AWParam(juce::ParameterID(std::string("ctrl_") + std::to_string(i), 1), "Name",
-                                  juce::NormalisableRange<float>(0.f, 1.f), 0.f);
+        fxParams[i] = new AWParam(juce::ParameterID(std::string("ctrl_") + std::to_string(i), 1),
+                                  "Name", juce::NormalisableRange<float>(0.f, 1.f), 0.f);
         fxParams[i]->getTextHandler = [i, this](auto f, auto iv) {
             std::lock_guard<std::mutex> g(this->displayProcessorMutex);
             if (this->awDisplayProcessor && i < this->nProcessorParams)
@@ -54,7 +54,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
                 char tl[kVstMaxParamStrLen], td[kVstMaxParamStrLen];
                 this->awDisplayProcessor->getParameterDisplay(i, td);
                 this->awDisplayProcessor->getParameterLabel(i, tl);
-                return std::string(td) + (tl[0] == 0 ? "" : " " ) + std::string(tl);
+                return std::string(td) + (tl[0] == 0 ? "" : " ") + std::string(tl);
             }
             else
             {
@@ -66,7 +66,8 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
             if (this->awDisplayProcessor && i < this->nProcessorParams)
             {
                 float rv = 0.f;
-                auto res = this->awDisplayProcessor->parameterTextToValue(i, s.toStdString().c_str(), rv);
+                auto res =
+                    this->awDisplayProcessor->parameterTextToValue(i, s.toStdString().c_str(), rv);
                 if (res)
                     return rv;
             }
@@ -118,10 +119,7 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
     isPlaying = true;
 }
 
-void AWConsolidatedAudioProcessor::releaseResources()
-{
-    isPlaying = false;
-}
+void AWConsolidatedAudioProcessor::releaseResources() { isPlaying = false; }
 
 bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
@@ -156,19 +154,18 @@ void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer
     auto inBus = getBus(true, 0);
     auto outBus = getBus(false, 0);
 
-    if (inBus->getNumberOfChannels() == 0 ||
-        outBus->getNumberOfChannels() != 2 ||
+    if (inBus->getNumberOfChannels() == 0 || outBus->getNumberOfChannels() != 2 ||
         buffer.getNumChannels() < 2)
     {
         isPlaying = false;
         return;
     }
 
-
     const float *inputs[2];
     float *outputs[2];
     inputs[0] = buffer.getReadPointer(0);
-    inputs[1] = inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : buffer.getReadPointer(0);
+    inputs[1] =
+        inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : buffer.getReadPointer(0);
     outputs[0] = buffer.getWritePointer(0);
     outputs[1] = buffer.getWritePointer(1);
 
@@ -185,9 +182,7 @@ void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer
         awProcessor->setParameter(i, fxParams[i]->get());
     }
 
-    awProcessor->processReplacing((float **)inputs,
-                                  (float **)outputs,
-                                  buffer.getNumSamples());
+    awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
 }
 
 //==============================================================================
@@ -274,13 +269,13 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
             auto streamingVersion = xmlState->getIntAttribute("streamingVersion", (int)2);
             auto effectName = xmlState->getStringAttribute("currentProcessorName");
 
-            if (AirwinRegistry::nameToIndex.find(effectName.toStdString())
-                != AirwinRegistry::nameToIndex.end())
+            if (AirwinRegistry::nameToIndex.find(effectName.toStdString()) !=
+                AirwinRegistry::nameToIndex.end())
             {
                 setAWProcessorTo(AirwinRegistry::nameToIndex.at(effectName.toStdString()), true);
             }
 
-            for (int i=0; i<nAWParams; ++i)
+            for (int i = 0; i < nAWParams; ++i)
             {
                 juce::String nm = juce::String("awp_") + std::to_string(i);
                 auto f = xmlState->getDoubleAttribute(nm);

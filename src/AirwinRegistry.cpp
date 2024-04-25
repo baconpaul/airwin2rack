@@ -15,7 +15,8 @@ CMRC_DECLARE(awdoc_resources);
 std::vector<AirwinRegistry::awReg> AirwinRegistry::registry;
 std::set<std::string> AirwinRegistry::categories;
 std::vector<int> AirwinRegistry::fxAlphaOrdering;
-std::map<std::string, std::set<std::string>> AirwinRegistry::fxByCategory;
+std::map<std::string, std::vector<std::string>> AirwinRegistry::fxByCategory;
+std::map<std::string, std::vector<std::string>> AirwinRegistry::fxByCategoryChrisOrder;
 std::unordered_map<std::string, int> AirwinRegistry::nameToIndex;
 
 std::string AirwinRegistry::documentationStringFor(int index)
