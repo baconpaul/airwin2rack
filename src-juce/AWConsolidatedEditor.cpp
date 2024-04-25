@@ -469,29 +469,11 @@ void AWConsolidatedAudioProcessorEditor::idle()
 {
     if (processor.refreshUI.exchange(false))
     {
-        auto reg = AirwinRegistry::registry[processor.curentProcessorIndex];
-        auto doc = std::string("res/awpdoc/") + reg.name + ".txt";
-
-        auto fs = awres::get_filesystem();
-        try
-        {
-            if (fs.is_file(doc))
-            {
-                auto fn = fs.open(doc);
-                docString = std::string(fn.begin(), fn.end());
-                docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
-                docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
-                if (docArea)
-                    docArea->rebuild();
-            }
-            else
-            {
-                docString = "Documentation not present";
-            }
-        }
-        catch (std::exception &e)
-        {
-        }
+        docString = AirwinRegistry::documentationStringFor(processor.curentProcessorIndex);
+        docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
+        docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
+        if (docArea)
+            docArea->rebuild();
 
         repaint();
     }

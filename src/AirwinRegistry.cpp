@@ -8,12 +8,35 @@
 
 #include "AirwinRegistry.h"
 
+#include <cmrc/cmrc.hpp>
+
+CMRC_DECLARE(awdoc_resources);
+
 std::vector<AirwinRegistry::awReg> AirwinRegistry::registry;
 std::set<std::string> AirwinRegistry::categories;
 std::vector<int> AirwinRegistry::fxAlphaOrdering;
 std::map<std::string, std::set<std::string>> AirwinRegistry::fxByCategory;
 std::unordered_map<std::string, int> AirwinRegistry::nameToIndex;
 
+std::string AirwinRegistry::documentationStringFor(int index)
+{
+    auto nm = registry[index].name;
+    auto fs = cmrc::awdoc_resources::get_filesystem();
+    auto doc =  std::string("res/awpdoc/") + nm + ".txt";
+
+    try
+    {
+        if (fs.is_file(doc))
+        {
+            auto fn = fs.open(doc);
+            return std::string(fn.begin(), fn.end());
+        }
+    }
+    catch (std::exception &e)
+    {
+    }
+    return "";
+}
 
 void AirwinRegistry::dumpStatsToStdout()
 {

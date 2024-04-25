@@ -25,6 +25,13 @@ if(NOT MSVC)
     add_compile_options(-fvisibility=hidden -fvisibility-inlines-hidden)
 endif()
 
+
+file(GLOB AWDOC_RESOURCES_GLOB
+        res/awpdoc/*.txt
+)
+include(cmake/CmakeRC.cmake)
+cmrc_add_resource_library(awdoc_resources ${AWDOC_RESOURCES_GLOB})
+
 add_library(airwin-registry STATIC
         src/AirwinRegistry.cpp
         src/airwin2rackbase.cpp
@@ -32,6 +39,7 @@ add_library(airwin-registry STATIC
         ${AIRWIN_SOURCES})
 
 target_compile_definitions(airwin-registry PRIVATE _USE_MATH_DEFINES)
+target_link_libraries(airwin-registry awdoc_resources)
 
 if (NOT MSVC)
     # consistent even in warnings that chris is
@@ -66,13 +74,10 @@ if (${BUILD_RACK_PLUGIN})
 endif()
 
 if (${BUILD_JUCE_PLUGIN})
-
     file(GLOB AWCON_RESOURCES_GLOB
             res/*.ttf
             res/clipper.svg
-            res/awpdoc/*.txt
     )
-    include(cmake/CmakeRC.cmake)
     cmrc_add_resource_library(awconsolidated_resources ${AWCON_RESOURCES_GLOB})
 
     add_subdirectory(src-juce)
