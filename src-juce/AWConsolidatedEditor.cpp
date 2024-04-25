@@ -278,8 +278,8 @@ struct ParamKnob : juce::Component
         auto knobHandle = getLocalBounds().reduced(4).toFloat();
         if (!active)
         {
-            g.setColour(juce::Colours::grey.withAlpha(0.3f));
-            g.fillEllipse(knobHandle.toFloat());
+            //g.setColour(juce::Colours::grey.withAlpha(0.3f));
+            //g.fillEllipse(knobHandle.toFloat());
             return;
         }
 
@@ -338,6 +338,7 @@ struct ParamDisp : juce::Component
 {
     juce::AudioParameterFloat *weakParam{nullptr};
     const std::atomic<bool> &active;
+    bool isP0{false};
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
 
     ParamDisp(const juce::String &cn, juce::AudioParameterFloat *param, const std::atomic<bool> &a,
@@ -352,10 +353,18 @@ struct ParamDisp : juce::Component
     {
         if (!active)
         {
-            g.setColour(juce::Colours::black.withAlpha(0.1f));
-            g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
-            g.setColour(juce::Colours::white.withAlpha(0.2f));
-            g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
+            if (isP0)
+            {
+                auto b = getLocalBounds().withTrimmedRight(43);
+
+                g.setColour(juce::Colours::white);
+                g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(20));
+                g.drawText("No Parameters",b, juce::Justification::centredTop);
+            }
+            //g.setColour(juce::Colours::black.withAlpha(0.1f));
+            //g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
+            //g.setColour(juce::Colours::white.withAlpha(0.2f));
+            //g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
             return;
         }
         g.setColour(juce::Colours::black);
@@ -437,6 +446,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
         auto lb = std::make_unique<ParamDisp>(juce::String("lb") + std::to_string(i),
                                               processor.fxParams[i], processor.active[i], this);
+        lb->isP0 = (i == 0);
         lb->setBounds(kb.withWidth(180).translated(sz + margin, 0));
         addAndMakeVisible(*lb);
         labels[i] = std::move(lb);
