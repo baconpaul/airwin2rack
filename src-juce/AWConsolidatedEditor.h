@@ -8,6 +8,8 @@
 /**
  */
 struct DocPanel;
+struct ParamKnob;
+struct Picker;
 class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, juce::AsyncUpdater
 {
   public:
@@ -38,8 +40,8 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     };
     void idle();
     std::unique_ptr<IdleTimer> idleTimer;
-    std::unique_ptr<juce::Component> menuPicker;
-    std::array<std::unique_ptr<juce::Component>, AWConsolidatedAudioProcessor::nAWParams> knobs;
+    std::unique_ptr<Picker> menuPicker;
+    std::array<std::unique_ptr<ParamKnob>, AWConsolidatedAudioProcessor::nAWParams> knobs;
     std::array<std::unique_ptr<juce::Component>, AWConsolidatedAudioProcessor::nAWParams> labels;
 
     std::unique_ptr<juce::Drawable> clipperIcon;
@@ -54,6 +56,9 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
 
     std::unique_ptr<juce::LookAndFeel_V4> lnf;
     std::unique_ptr<juce::PropertiesFile> properties;
+
+    std::vector<juce::Component *> accessibleOrderWeakRefs;
+    std::unique_ptr<juce::ComponentTraverser> createKeyboardFocusTraverser() override;
 
     // debugging
     int gv{0}, bv{0};

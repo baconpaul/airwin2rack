@@ -33,12 +33,18 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
 
 struct Picker : public juce::Component
 {
-    struct Jog : public juce::Component
+    struct Jog : public juce::Button
     {
         Picker *picker;
         int dir;
-        Jog(Picker *p, int d) : picker(p), dir(d) {}
-        void paint(juce::Graphics &g) override
+        Jog(Picker *p, int d)
+            : juce::Button(juce::String("Jog ") + (d > 0 ? "Next" : "Previous")), picker(p), dir(d)
+        {
+            setAccessible(true);
+        }
+        void paintButton (juce:: Graphics& g,
+                                 bool shouldDrawButtonAsHighlighted,
+                                 bool shouldDrawButtonAsDown) override
         {
             auto p = juce::Path();
             auto jd = getLocalBounds().reduced(3, 5);
@@ -79,12 +85,14 @@ struct Picker : public juce::Component
     };
     std::unique_ptr<Jog> up, down;
 
-    struct Hamburger : juce::Component
+    struct Hamburger : juce::Button
     {
         Picker *picker;
-        Hamburger(Picker *p) : picker(p) {}
+        Hamburger(Picker *p) : juce::Button("Menu"), picker(p) { setAccessible(true); }
 
-        void paint(juce::Graphics &g) override
+        void paintButton (juce:: Graphics& g,
+                             bool shouldDrawButtonAsHighlighted,
+                             bool shouldDrawButtonAsDown) override
         {
             auto r = getLocalBounds().withHeight(getHeight() / 5);
             for (int i = 0; i < 3; ++i)
@@ -310,7 +318,10 @@ struct AWLink : public juce::Component
 struct DocPanel : juce::Component
 {
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
-    DocPanel(AWConsolidatedAudioProcessorEditor *ed) : editor(ed) {}
+    DocPanel(AWConsolidatedAudioProcessorEditor *ed) : editor(ed) {
+        setAccessible(true);
+        setWantsKeyboardFocus(true);
+    }
     void rebuild()
     {
         auto r = juce::Rectangle<int>(0, 0, targetWidth, 10000);
@@ -331,11 +342,26 @@ struct DocPanel : juce::Component
         r = r.withHeight(bodyBounds.getBottom());
 
         setSize(r.getWidth(), r.getHeight());
+
+        setTitle(AirwinRegistry::registry[editor->processor.curentProcessorIndex].name + " Documentation. Control R to read");
+        if (getAccessibilityHandler())
+            getAccessibilityHandler()->notifyAccessibilityEvent(juce::AccessibilityEvent::titleChanged);
     }
 
     float targetWidth{10};
 
-    void paint(juce::Graphics &g)
+    bool keyPressed(const juce::KeyPress &key) override {
+        if ((key.getKeyCode() == 'r' ||
+            key.getKeyCode() == 'R') && (key.getModifiers().isCommandDown() || key.getModifiers().isCtrlDown()))
+        {
+            getAccessibilityHandler()->postAnnouncement(editor->docHeader.substring(2) + "." + editor->docString,
+                                                        juce::AccessibilityHandler::AnnouncementPriority::medium);
+            return true;
+        }
+        return false;
+    }
+
+    void paint(juce::Graphics &g) override
     {
         g.setColour(juce::Colours::white);
         auto r = getLocalBounds();
@@ -369,6 +395,15 @@ struct ParamKnob : juce::Component
     ParamKnob(const juce::String &cn, juce::AudioParameterFloat *param, const std::atomic<bool> &a)
         : juce::Component(cn), weakParam{param}, active{a}
     {
+        refreshModel();
+    }
+
+    void refreshModel()
+    {
+        setAccessible(active);
+        setWantsKeyboardFocus(active);
+        if (active && weakParam)
+            setTitle(weakParam->getName(64));
     }
 
     float getValue() const { return weakParam ? weakParam->get() : 0.f; }
@@ -453,6 +488,49 @@ struct ParamKnob : juce::Component
         isHovered = false;
         repaint();
     }
+
+    struct AHValue : public juce::AccessibilityValueInterface
+    {
+        explicit AHValue(ParamKnob *s) : slider(s) {}
+
+        ParamKnob *slider;
+
+        bool isReadOnly() const override { return false; }
+        double getCurrentValue() const override { return slider->getValue(); }
+        void setValue(double newValue) override
+        {
+            slider->setValue(newValue);
+
+            slider->repaint();
+        }
+        virtual juce::String getCurrentValueAsString() const override
+        {
+            if (slider->weakParam)
+            {
+                return slider->weakParam->getCurrentValueAsText();
+            }
+            return "";
+        }
+        void setValueAsString(const juce::String &) {}
+
+        AccessibleValueRange getRange() const override { return {{0, 1}, 0.01}; }
+
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AHValue);
+    };
+    struct AH : juce::AccessibilityHandler
+    {
+        AH(ParamKnob *c)
+            : juce::AccessibilityHandler(
+                  *c, juce::AccessibilityRole::slider, juce::AccessibilityActions(),
+                  AccessibilityHandler::Interfaces{std::make_unique<AHValue>(c)})
+        {
+        }
+    };
+
+    std::unique_ptr<juce::AccessibilityHandler> createAccessibilityHandler() override
+    {
+        return std::make_unique<AH>(this);
+    }
 };
 
 struct ParamDisp : juce::Component
@@ -482,10 +560,6 @@ struct ParamDisp : juce::Component
                 g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(20));
                 g.drawText("No Parameters", b, juce::Justification::centredTop);
             }
-            // g.setColour(juce::Colours::black.withAlpha(0.1f));
-            // g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
-            // g.setColour(juce::Colours::white.withAlpha(0.2f));
-            // g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
             return;
         }
         g.setColour(juce::Colours::black);
@@ -511,6 +585,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     juce::LookAndFeel::setDefaultLookAndFeel(lnf.get());
     setAccessible(true);
     setFocusContainerType(juce::Component::FocusContainerType::keyboardFocusContainer);
+    setWantsKeyboardFocus(true);
 
     setSize(baseHeight, baseHeight);
 
@@ -599,6 +674,14 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     awTag->setBounds(fa);
     addAndMakeVisible(*awTag);
 
+    accessibleOrderWeakRefs.push_back(menuPicker.get());
+    accessibleOrderWeakRefs.push_back(menuPicker->hamburger.get());
+    accessibleOrderWeakRefs.push_back(menuPicker->up.get());
+    accessibleOrderWeakRefs.push_back(menuPicker->down.get());
+    for (auto &k : knobs)
+        accessibleOrderWeakRefs.push_back(k.get());
+    accessibleOrderWeakRefs.push_back(docArea.get());
+
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
     options.folderName = "AirwindowsConsolidated";
@@ -621,6 +704,9 @@ void AWConsolidatedAudioProcessorEditor::idle()
         docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
         if (docArea)
             docArea->rebuild();
+
+        for (auto &k : knobs)
+            k->refreshModel();
 
         repaint();
     }
@@ -714,4 +800,67 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
     p.addSubMenu("Settings", settingsMenu);
 
     p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1));
+}
+
+struct FxFocusTrav : public juce::ComponentTraverser
+{
+    FxFocusTrav(AWConsolidatedAudioProcessorEditor *ed) : editor(ed) {}
+    juce::Component *getDefaultComponent(juce::Component *parentComponent) override
+    {
+        return editor->menuPicker.get();
+    }
+    juce::Component *searchDir(juce::Component *from, int dir)
+    {
+        const auto iter = std::find(editor->accessibleOrderWeakRefs.cbegin(),
+                                    editor->accessibleOrderWeakRefs.cend(), from);
+        if (iter == editor->accessibleOrderWeakRefs.cend())
+            return nullptr;
+
+        switch (dir)
+        {
+        case 1:
+        {
+            auto res = std::next(iter);
+
+            while (res != editor->accessibleOrderWeakRefs.cend() && !(*res)->isAccessible())
+            {
+                res = std::next(res);
+            }
+            if (res != editor->accessibleOrderWeakRefs.cend())
+                return *res;
+        }
+        break;
+        case -1:
+        {
+            auto res = iter;
+
+            while (res != editor->accessibleOrderWeakRefs.cbegin() && !(*std::prev(res))->isAccessible())
+            {
+                res = std::prev(res);
+            }
+            if (res != editor->accessibleOrderWeakRefs.cbegin())
+                return *std::prev(res);
+        }
+        break;
+        }
+        return nullptr;
+    }
+    juce::Component *getNextComponent(juce::Component *current) override
+    {
+        return searchDir(current, 1);
+    }
+    juce::Component *getPreviousComponent(juce::Component *current) override
+    {
+        return searchDir(current, -1);
+    }
+    std::vector<juce::Component *> getAllComponents(juce::Component *parentComponent) override
+    {
+        return editor->accessibleOrderWeakRefs;
+    }
+    AWConsolidatedAudioProcessorEditor *editor{nullptr};
+};
+
+std::unique_ptr<juce::ComponentTraverser> AWConsolidatedAudioProcessorEditor::createKeyboardFocusTraverser()
+{
+    return std::make_unique<FxFocusTrav>(this);
 }
