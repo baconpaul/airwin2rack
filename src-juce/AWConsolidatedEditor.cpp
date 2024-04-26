@@ -33,13 +33,113 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
 
 struct Picker : public juce::Component
 {
+    struct Jog : public juce::Component
+    {
+        Picker *picker;
+        int dir;
+        Jog(Picker *p, int d) : picker(p), dir(d) {}
+        void paint(juce::Graphics &g) override
+        {
+            auto p = juce::Path();
+            auto jd = getLocalBounds().reduced(3, 5);
+            if (dir == 1)
+            {
+                p.addTriangle(jd.getX(), jd.getY() + jd.getHeight(), jd.getX() + jd.getWidth(),
+                              jd.getY() + jd.getHeight(), jd.getX() + 0.5 * jd.getWidth(),
+                              jd.getY());
+            }
+            else
+            {
+                p.addTriangle(jd.getX(), jd.getY(), jd.getX() + jd.getWidth(), jd.getY(),
+                              jd.getX() + 0.5 * jd.getWidth(), jd.getY() + jd.getHeight());
+
+            }
+            if (isHovered)
+                g.setColour(juce::Colour(160, 160, 165));
+            else
+                g.setColour(juce::Colour(90, 90, 95));
+            g.fillPath(p);
+            g.setColour(juce::Colours::white);
+            g.strokePath(p, juce::PathStrokeType(1));
+        }
+
+
+        bool isHovered{false};
+        void mouseEnter(const juce::MouseEvent &) override {
+            isHovered = true;
+            repaint();
+        }
+        void mouseExit(const juce::MouseEvent &) override {
+            isHovered = false;
+            repaint();
+        }
+
+        void mouseDown(const juce::MouseEvent &) override
+        {
+            picker->doJog(dir);
+        }
+        void mouseUp(const juce::MouseEvent &) override
+        {
+            picker->stopJogHold();
+        }
+    };
+    std::unique_ptr<Jog> up, down;
+
+    struct Hamburger : juce::Component
+    {
+        Picker *picker;
+        Hamburger(Picker *p) : picker(p) {}
+
+        void paint(juce::Graphics &g) override {
+            auto r = getLocalBounds().withHeight(getHeight() / 5);
+            for (int i = 0; i < 3; ++i)
+            {
+                auto q = r.reduced(1).toFloat();
+                if (isHovered)
+                    g.setColour(juce::Colour(160, 160, 165));
+                else
+                    g.setColour(juce::Colour(90, 90, 95));
+                g.fillRoundedRectangle(q, 1);
+                g.setColour(juce::Colours::white);
+                g.drawRoundedRectangle(q, 1, 1);
+
+                r = r.translated(0, 2 * getHeight() / 5);
+            }
+        }
+
+        bool isHovered{false};
+        void mouseEnter(const juce::MouseEvent &) override {
+            isHovered = true;
+            repaint();
+        }
+        void mouseExit(const juce::MouseEvent &) override {
+            isHovered = false;
+            repaint();
+        }
+        void mouseDown(const juce::MouseEvent &) override {
+            picker->editor->showMenu();
+        }
+    };
+
+    std::unique_ptr<Hamburger> hamburger;
+
     Picker(AWConsolidatedAudioProcessorEditor *ed) : editor(ed)
     {
         setAccessible(true);
         setTitle("Select Airwindow");
         setDescription("Select Airwindow");
         setWantsKeyboardFocus(true);
+
+        up = std::make_unique<Jog>(this, 1);
+        down = std::make_unique<Jog>(this, -1);
+        hamburger = std::make_unique<Hamburger>(this);
+
+        addAndMakeVisible(*up);
+        addAndMakeVisible(*down);
+        addAndMakeVisible(*hamburger);
     }
+    juce::Rectangle<float> titleBox;
+
     void paint(juce::Graphics &g) override
     {
         int idx = editor->processor.curentProcessorIndex;
@@ -53,42 +153,17 @@ struct Picker : public juce::Component
         g.setColour(juce::Colours::white);
         g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(28));
         g.drawText(rg.name, bounds.reduced(8, 5), juce::Justification::centredBottom);
+        auto ga = juce::GlyphArrangement();
+        auto tbx = bounds.reduced(8, 5);
+        ga.addFittedText(juce::Font(editor->jakartaSansSemi).withHeight(28), rg.name, tbx.getX(),
+                         tbx.getY(), tbx.getWidth(), tbx.getHeight(),
+                         juce::Justification::centredBottom, 1);
+        titleBox = ga.getBoundingBox(0, -1, true);
 
         g.setFont(juce::Font(editor->jakartaSansMedium).withHeight(18));
         g.drawText(rg.category, bounds.reduced(8, 3), juce::Justification::centredTop);
 
-        auto p = juce::Path();
 
-        auto jd = jogUp.reduced(3, 5);
-        p.addTriangle(jd.getX(), jd.getY() + jd.getHeight(), jd.getX() + jd.getWidth(),
-                      jd.getY() + jd.getHeight(), jd.getX() + 0.5 * jd.getWidth(), jd.getY());
-        g.setColour(juce::Colour(90, 90, 95));
-        g.fillPath(p);
-        g.setColour(juce::Colours::white);
-        g.strokePath(p, juce::PathStrokeType(1));
-
-        p = juce::Path();
-        jd = jogDown.reduced(3, 5);
-        p.addTriangle(jd.getX(), jd.getY(), jd.getX() + jd.getWidth(), jd.getY(),
-                      jd.getX() + 0.5 * jd.getWidth(), jd.getY() + jd.getHeight());
-        g.setColour(juce::Colour(90, 90, 95));
-        g.fillPath(p);
-        g.setColour(juce::Colours::white);
-        g.strokePath(p, juce::PathStrokeType(1));
-
-        auto bx = getLocalBounds().reduced(8, 16);
-        bx = bx.withWidth(bx.getHeight());
-        auto r = bx.withHeight(bx.getHeight() / 5);
-        for (int i = 0; i < 3; ++i)
-        {
-            auto q = r.reduced(1).toFloat();
-            g.setColour(juce::Colour(90, 90, 95));
-            g.fillRoundedRectangle(q, 1);
-            g.setColour(juce::Colours::white);
-            g.drawRoundedRectangle(q, 1, 1);
-
-            r = r.translated(0, 2 * bx.getHeight() / 5);
-        }
     }
 
     juce::Rectangle<int> jogUp, jogDown;
@@ -98,6 +173,13 @@ struct Picker : public juce::Component
         auto hh = b.getHeight() / 2;
         jogUp = b.withHeight(hh).withTrimmedLeft(b.getWidth() - hh);
         jogDown = jogUp.translated(0, hh);
+
+        up->setBounds(jogUp);
+        down->setBounds(jogDown);
+
+        auto bx = getLocalBounds().reduced(8, 16);
+        bx = bx.withWidth(bx.getHeight());
+        hamburger->setBounds(bx);
     }
 
     bool keyPressed(const juce::KeyPress &p) override
@@ -110,24 +192,23 @@ struct Picker : public juce::Component
         }
         return false;
     }
+    void doJog(int dir)
+    {
+        editor->jog(dir);
+        startJogHold(dir);
+    }
+
     void mouseDown(const juce::MouseEvent &e) override
     {
-        if (jogUp.toFloat().contains(e.position))
+        if (titleBox.toFloat().contains(e.position))
         {
-            editor->jog(-1);
-            startJogHold(-1);
-        }
-        else if (jogDown.toFloat().contains(e.position))
-        {
-            editor->jog(1);
-            startJogHold(1);
+            std::cout << "Starting edit gesture" << std::endl;
         }
         else
         {
             editor->showMenu();
         }
     }
-    void mouseUp(const juce::MouseEvent &e) override { stopJogHold(); }
 
     bool isJogHeld{false};
     void startJogHold(int dir)
@@ -218,7 +299,7 @@ struct DocPanel : juce::Component
 
         auto q = r.translated(0, bounds.getHeight() + 8);
 
-        auto bFont = juce::Font(editor->jakartaSansSemi).withHeight(13);
+        auto bFont = juce::Font(editor->jakartaSansSemi).withHeight(15);
         juce::GlyphArrangement gaBody;
         gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(), q.getWidth(),
                              q.getHeight(), juce::Justification::topLeft, 1000);
@@ -249,7 +330,7 @@ struct DocPanel : juce::Component
         g.setColour(juce::Colours::white.darker(0.3f));
 
         auto q = r;
-        auto bFont = juce::Font(editor->jakartaSansMedium).withHeight(13);
+        auto bFont = juce::Font(editor->jakartaSansMedium).withHeight(15);
         juce::GlyphArrangement gaBody;
         gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(), q.getWidth(),
                              q.getHeight(), juce::Justification::topLeft, 1000);
@@ -297,7 +378,11 @@ struct ParamKnob : juce::Component
             return p;
         };
 
-        g.setColour(juce::Colour(60, 60, 65));
+        if (isHovered)
+            g.setColour(juce::Colour(75, 75, 80));
+        else
+            g.setColour(juce::Colour(60, 60, 65));
+
         g.fillEllipse(knobHandle.reduced(2));
 
         g.setColour(juce::Colour(140, 140, 150));
@@ -309,6 +394,7 @@ struct ParamKnob : juce::Component
         g.setColour(juce::Colour(220, 220, 230));
         g.strokePath(arc(0.f, getValue()), juce::PathStrokeType(4));
     }
+
 
     juce::Point<float> mousePos;
     void mouseDown(const juce::MouseEvent &event) override
@@ -331,6 +417,16 @@ struct ParamKnob : juce::Component
         auto nv = std::clamp(weakParam->get() + dy * mul, 0.f, 1.f);
 
         weakParam->setValueNotifyingHost(nv);
+    }
+
+    bool isHovered{false};
+    void mouseEnter(const juce::MouseEvent &) override {
+        isHovered = true;
+        repaint();
+    }
+    void mouseExit(const juce::MouseEvent &) override {
+        isHovered = false;
+        repaint();
     }
 };
 
