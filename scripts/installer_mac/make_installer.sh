@@ -158,7 +158,6 @@ XMLEND
 pushd ${TMPDIR}
 if [[ ! -z $MAC_INSTALLING_CERT ]]; then
   echo "Building SIGNED PKG"
-  echo productbuild --sign "$MAC_INSTALLING_CERT" --distribution "distribution.xml" --package-path "." --resources ${RESOURCESDIR} "$OUTPUT_BASE_FILENAME.pkg"
   productbuild --sign "$MAC_INSTALLING_CERT" --distribution "distribution.xml" --package-path "." --resources ${RESOURCESDIR} "$OUTPUT_BASE_FILENAME.pkg"
 else
   echo "Building UNSIGNED PKG"
@@ -167,7 +166,7 @@ fi
 
 popd
 
-Rez -append ${RESOURCESDIR}/icns.rsrc -o "${TMPDIR}/${OUTPUT_BASE_FILENAME}.pkg"
+#Rez -append ${RESOURCESDIR}/icns.rsrc -o "${TMPDIR}/${OUTPUT_BASE_FILENAME}.pkg"
 SetFile -a C "${TMPDIR}/${OUTPUT_BASE_FILENAME}.pkg"
 mkdir -p "${TMPDIR}/${PRODUCTFILE}"
 

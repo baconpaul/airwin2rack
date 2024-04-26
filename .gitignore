@@ -14,3 +14,4 @@ src/.#*
 dep/
 cmake-build*
 ignore/
+minst.sh

@@ -37,6 +37,19 @@ jobs:
         if: runner.os == 'macOS'
         run: sudo xcode-select -switch /Applications/Xcode_15.1.app
 
+      - uses: apple-actions/import-codesign-certs@v2
+        if: runner.os == 'macOS' && github.event_name != 'pull_request'
+        with:
+          p12-file-base64: ${{ secrets.APP_CERTIFICATE }}
+          p12-password: ${{ secrets.CERT_PWD }}
+
+      - uses: apple-actions/import-codesign-certs@v2
+        if: runner.os == 'macOS' && github.event_name != 'pull_request'
+        with:
+          p12-file-base64: ${{ secrets.INSTALL_CERTIFICATE }}
+          p12-password: ${{ secrets.CERT_PWD }}
+
+
       - name: Install Linux Deps; pick GCC9
         if: runner.os == 'Linux'
         run: |

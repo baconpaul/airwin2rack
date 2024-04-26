@@ -87,7 +87,7 @@ if (APPLE)
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             COMMAND ${CMAKE_COMMAND} -E make_directory installer
             COMMAND ${CMAKE_SOURCE_DIR}/scripts/installer_mac/make_installer.sh "Airwindows Consolidated" ${CMAKE_BINARY_DIR}/awcons-products ${CMAKE_SOURCE_DIR}/res/installer_mac ${CMAKE_BINARY_DIR}/installer "${AWCONS_DATE}-${VERSION_CHUNK}"
-            COMMAND zip -r installer/${AWCONS_ZIP} ${AWCONS_PRODUCT_DIR}/
+            # COMMAND zip -r installer/${AWCONS_ZIP} ${AWCONS_PRODUCT_DIR}/
     )
 elseif (WIN32)
     message(STATUS "Configuring for Windows installer")
