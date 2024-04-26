@@ -13,6 +13,9 @@ on:
     types:
       - completed
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 defaults:
   run:
     shell: bash
