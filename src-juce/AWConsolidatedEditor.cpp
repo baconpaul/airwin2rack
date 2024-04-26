@@ -52,7 +52,6 @@ struct Picker : public juce::Component
             {
                 p.addTriangle(jd.getX(), jd.getY(), jd.getX() + jd.getWidth(), jd.getY(),
                               jd.getX() + 0.5 * jd.getWidth(), jd.getY() + jd.getHeight());
-
             }
             if (isHovered)
                 g.setColour(juce::Colour(160, 160, 165));
@@ -63,25 +62,20 @@ struct Picker : public juce::Component
             g.strokePath(p, juce::PathStrokeType(1));
         }
 
-
         bool isHovered{false};
-        void mouseEnter(const juce::MouseEvent &) override {
+        void mouseEnter(const juce::MouseEvent &) override
+        {
             isHovered = true;
             repaint();
         }
-        void mouseExit(const juce::MouseEvent &) override {
+        void mouseExit(const juce::MouseEvent &) override
+        {
             isHovered = false;
             repaint();
         }
 
-        void mouseDown(const juce::MouseEvent &) override
-        {
-            picker->doJog(dir);
-        }
-        void mouseUp(const juce::MouseEvent &) override
-        {
-            picker->stopJogHold();
-        }
+        void mouseDown(const juce::MouseEvent &) override { picker->doJog(dir); }
+        void mouseUp(const juce::MouseEvent &) override { picker->stopJogHold(); }
     };
     std::unique_ptr<Jog> up, down;
 
@@ -90,7 +84,8 @@ struct Picker : public juce::Component
         Picker *picker;
         Hamburger(Picker *p) : picker(p) {}
 
-        void paint(juce::Graphics &g) override {
+        void paint(juce::Graphics &g) override
+        {
             auto r = getLocalBounds().withHeight(getHeight() / 5);
             for (int i = 0; i < 3; ++i)
             {
@@ -108,19 +103,18 @@ struct Picker : public juce::Component
         }
 
         bool isHovered{false};
-        void mouseEnter(const juce::MouseEvent &) override {
+        void mouseEnter(const juce::MouseEvent &) override
+        {
             isHovered = true;
             repaint();
         }
-        void mouseExit(const juce::MouseEvent &) override {
+        void mouseExit(const juce::MouseEvent &) override
+        {
             isHovered = false;
             repaint();
         }
-        void mouseDown(const juce::MouseEvent &) override {
-            picker->editor->showMenu();
-        }
+        void mouseDown(const juce::MouseEvent &) override { picker->editor->showMenu(); }
     };
-
     std::unique_ptr<Hamburger> hamburger;
 
     Picker(AWConsolidatedAudioProcessorEditor *ed) : editor(ed)
@@ -162,8 +156,6 @@ struct Picker : public juce::Component
 
         g.setFont(juce::Font(editor->jakartaSansMedium).withHeight(18));
         g.drawText(rg.category, bounds.reduced(8, 3), juce::Justification::centredTop);
-
-
     }
 
     juce::Rectangle<int> jogUp, jogDown;
@@ -283,6 +275,38 @@ struct Picker : public juce::Component
 #endif
 };
 
+struct AWLink : public juce::Component
+{
+    juce::Typeface::Ptr ft;
+    AWLink(juce::Typeface::Ptr f) : ft(f) {}
+    void paint(juce::Graphics &g) override
+    {
+        g.setColour(juce::Colours::black);
+        if (isHovered)
+            g.setColour(juce::Colour(30, 30, 120));
+        g.setFont(juce::Font(ft).withHeight(28));
+        g.drawText("Airwindows", getLocalBounds(), juce::Justification::centred);
+    }
+
+    void mouseDown(const juce::MouseEvent &) override
+    {
+        auto url = juce::URL("https://airwindows.com");
+        url.launchInDefaultBrowser();
+    }
+
+    bool isHovered{false};
+    void mouseEnter(const juce::MouseEvent &) override
+    {
+        isHovered = true;
+        repaint();
+    }
+    void mouseExit(const juce::MouseEvent &) override
+    {
+        isHovered = false;
+        repaint();
+    }
+};
+
 struct DocPanel : juce::Component
 {
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
@@ -395,7 +419,6 @@ struct ParamKnob : juce::Component
         g.strokePath(arc(0.f, getValue()), juce::PathStrokeType(4));
     }
 
-
     juce::Point<float> mousePos;
     void mouseDown(const juce::MouseEvent &event) override
     {
@@ -420,11 +443,13 @@ struct ParamKnob : juce::Component
     }
 
     bool isHovered{false};
-    void mouseEnter(const juce::MouseEvent &) override {
+    void mouseEnter(const juce::MouseEvent &) override
+    {
         isHovered = true;
         repaint();
     }
-    void mouseExit(const juce::MouseEvent &) override {
+    void mouseExit(const juce::MouseEvent &) override
+    {
         isHovered = false;
         repaint();
     }
@@ -565,6 +590,15 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     docView->setViewedComponent(docArea.get(), false);
     addAndMakeVisible(*docView);
 
+    awTag = std::make_unique<AWLink>(jakartaSansSemi);
+    auto fa = getLocalBounds()
+                  .withHeight(40)
+                  .withY(getHeight() - 40)
+                  .withTrimmedLeft(100)
+                  .withTrimmedRight(100);
+    awTag->setBounds(fa);
+    addAndMakeVisible(*awTag);
+
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
     options.folderName = "AirwindowsConsolidated";
@@ -610,8 +644,6 @@ void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
     g.fillRect(fa);
     g.setColour(juce::Colours::black);
     g.drawLine(fa.getX(), fa.getY(), fa.getX() + fa.getWidth(), fa.getY(), 1);
-    g.setFont(juce::Font(jakartaSansSemi).withHeight(28));
-    g.drawText("Airwindows", fa, juce::Justification::centred);
 
     g.setFont(juce::Font(jakartaSansMedium).withHeight(12));
     g.setColour(juce::Colour(110, 110, 115));
@@ -660,6 +692,9 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     p.addSeparator();
 
+    p.addItem("Visit Airwindows.com",
+              []() { juce::URL("https://www.airwindows.com").launchInDefaultBrowser(); });
+
     auto settingsMenu = juce::PopupMenu();
     settingsMenu.addItem("Alphabetical Order Menus", true, !isChrisOrder,
                          [w = juce::Component::SafePointer(this)]() {
@@ -678,5 +713,5 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     p.addSubMenu("Settings", settingsMenu);
 
-    p.showMenuAsync(juce::PopupMenu::Options().withParentComponent(this));
+    p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1));
 }
