@@ -57,6 +57,14 @@ jobs:
       - name: Build release version
         if: github.event_name != 'pull_request'
         run: |
+          
+          export MAC_SIGNING_CERT="${{ secrets.MAC_SIGNING_CERT }}"
+          export MAC_INSTALLING_CERT="${{ secrets.MAC_INSTALLING_CERT }}"
+  
+          export MAC_SIGNING_ID="${{ secrets.MAC_SIGNING_ID }}"
+          export MAC_SIGNING_1UPW="${{ secrets.MAC_SIGNING_1UPW }}"
+          export MAC_SIGNING_TEAM="${{ secrets.MAC_SIGNING_TEAM }}"
+  
           cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DBUILD_JUCE_PLUGIN=TRUE
           cmake --build ./build --config Release --target awcons-installer --parallel 3
 
