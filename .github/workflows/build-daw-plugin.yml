@@ -34,7 +34,7 @@ jobs:
           submodules: recursive
 
       - name: Select Xcode Version
-        if: runner.os == 'Darwin'
+        if: runner.os == 'macOS'
         run: sudo xcode-select -switch /Applications/Xcode_15.1.app
 
       - name: Install Linux Deps; pick GCC9
