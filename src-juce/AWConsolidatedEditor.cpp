@@ -1,3 +1,4 @@
+#include <algorithm>
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -42,9 +43,8 @@ struct Picker : public juce::Component
         {
             setAccessible(true);
         }
-        void paintButton (juce:: Graphics& g,
-                                 bool shouldDrawButtonAsHighlighted,
-                                 bool shouldDrawButtonAsDown) override
+        void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
+                         bool shouldDrawButtonAsDown) override
         {
             auto p = juce::Path();
             auto jd = getLocalBounds().reduced(3, 5);
@@ -82,17 +82,27 @@ struct Picker : public juce::Component
 
         void mouseDown(const juce::MouseEvent &) override { picker->doJog(dir); }
         void mouseUp(const juce::MouseEvent &) override { picker->stopJogHold(); }
+
+        bool keyPressed(const juce::KeyPress &p) override
+        {
+            if (p.getKeyCode() == juce::KeyPress::returnKey)
+            {
+                // dojog does long hold stuff so go direct
+                picker->editor->jog(dir);
+                return true;
+            }
+            return false;
+        }
     };
     std::unique_ptr<Jog> up, down;
 
     struct Hamburger : juce::Button
     {
         Picker *picker;
-        Hamburger(Picker *p) : juce::Button("Menu"), picker(p) { setAccessible(true); }
+        Hamburger(Picker *p) : juce::Button("Main Menu"), picker(p) { setAccessible(true); }
 
-        void paintButton (juce:: Graphics& g,
-                             bool shouldDrawButtonAsHighlighted,
-                             bool shouldDrawButtonAsDown) override
+        void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
+                         bool shouldDrawButtonAsDown) override
         {
             auto r = getLocalBounds().withHeight(getHeight() / 5);
             for (int i = 0; i < 3; ++i)
@@ -122,6 +132,18 @@ struct Picker : public juce::Component
             repaint();
         }
         void mouseDown(const juce::MouseEvent &) override { picker->editor->showMenu(); }
+
+        bool keyPressed(const juce::KeyPress &p) override
+        {
+            if (p.getKeyCode() == juce::KeyPress::returnKey ||
+                (p.getKeyCode() == juce::KeyPress::F10Key && p.getModifiers().isShiftDown()))
+            {
+                // dojog does long hold stuff so go direct
+                picker->editor->showMenu();
+                return true;
+            }
+            return false;
+        }
     };
     std::unique_ptr<Hamburger> hamburger;
 
@@ -236,51 +258,26 @@ struct Picker : public juce::Component
         });
     }
 
-    AWConsolidatedAudioProcessorEditor *editor{nullptr};
-#if 0
-    struct AH : public juce::AccessibilityHandler
+    void rebuild()
     {
-        struct AHV : public juce::AccessibilityValueInterface
-        {
-            explicit AHV(Picker *s) : comp(s) {}
+        int idx = editor->processor.curentProcessorIndex;
+        auto &rg = AirwinRegistry::registry[idx];
 
-            Picker *comp;
+        setTitle(rg.name + " (" + rg.category + ")");
+        if (getAccessibilityHandler())
+            getAccessibilityHandler()->notifyAccessibilityEvent(
+                juce::AccessibilityEvent::titleChanged);
 
-            bool isReadOnly() const override { return true; }
-            double getCurrentValue() const override { return 0.; }
-
-            void setValue(double) override {}
-            void setValueAsString(const juce::String &newValue) override {}
-            AccessibleValueRange getRange() const override { return {{0, 1}, 1}; }
-            juce::String getCurrentValueAsString() const override
-            {
-                return fx_type_names[comp->editor->processor.getEffectType()];
-            }
-
-            JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AHV);
-        };
-
-        explicit AH(Picker *s)
-            : comp(s),
-              juce::AccessibilityHandler(*s, juce::AccessibilityRole::button,
-                                         juce::AccessibilityActions()
-                                             .addAction(juce::AccessibilityActionType::press,
-                                                        [this]() { comp->editor->showMenu(); })
-                                             .addAction(juce::AccessibilityActionType::showMenu,
-                                                        [this]() { comp->editor->showMenu(); }),
-                                         AccessibilityHandler::Interfaces{std::make_unique<AHV>(s)})
-        {
-        }
-
-        Picker *comp;
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AH);
-    };
-
-    std::unique_ptr<juce::AccessibilityHandler> createAccessibilityHandler() override
-    {
-        return std::make_unique<AH>(this);
+        up->setTitle("Select Previous from " + rg.name);
+        if (up->getAccessibilityHandler())
+            up->getAccessibilityHandler()->notifyAccessibilityEvent(
+                juce::AccessibilityEvent::titleChanged);
+        down->setTitle("Select Next from " + rg.name);
+        if (down->getAccessibilityHandler())
+            down->getAccessibilityHandler()->notifyAccessibilityEvent(
+                juce::AccessibilityEvent::titleChanged);
     }
-#endif
+    AWConsolidatedAudioProcessorEditor *editor{nullptr};
 };
 
 struct AWLink : public juce::Component
@@ -318,7 +315,8 @@ struct AWLink : public juce::Component
 struct DocPanel : juce::Component
 {
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
-    DocPanel(AWConsolidatedAudioProcessorEditor *ed) : editor(ed) {
+    DocPanel(AWConsolidatedAudioProcessorEditor *ed) : editor(ed)
+    {
         setAccessible(true);
         setWantsKeyboardFocus(true);
     }
@@ -343,19 +341,23 @@ struct DocPanel : juce::Component
 
         setSize(r.getWidth(), r.getHeight());
 
-        setTitle(AirwinRegistry::registry[editor->processor.curentProcessorIndex].name + " Documentation. Control R to read");
+        setTitle(AirwinRegistry::registry[editor->processor.curentProcessorIndex].name +
+                 " Documentation. Control R to read");
         if (getAccessibilityHandler())
-            getAccessibilityHandler()->notifyAccessibilityEvent(juce::AccessibilityEvent::titleChanged);
+            getAccessibilityHandler()->notifyAccessibilityEvent(
+                juce::AccessibilityEvent::titleChanged);
     }
 
     float targetWidth{10};
 
-    bool keyPressed(const juce::KeyPress &key) override {
-        if ((key.getKeyCode() == 'r' ||
-            key.getKeyCode() == 'R') && (key.getModifiers().isCommandDown() || key.getModifiers().isCtrlDown()))
+    bool keyPressed(const juce::KeyPress &key) override
+    {
+        if ((key.getKeyCode() == 'r' || key.getKeyCode() == 'R') &&
+            (key.getModifiers().isCommandDown() || key.getModifiers().isCtrlDown()))
         {
-            getAccessibilityHandler()->postAnnouncement(editor->docHeader.substring(2) + "." + editor->docString,
-                                                        juce::AccessibilityHandler::AnnouncementPriority::medium);
+            getAccessibilityHandler()->postAnnouncement(
+                editor->docHeader.substring(2) + "." + editor->docString,
+                juce::AccessibilityHandler::AnnouncementPriority::medium);
             return true;
         }
         return false;
@@ -404,6 +406,13 @@ struct ParamKnob : juce::Component
         setWantsKeyboardFocus(active);
         if (active && weakParam)
             setTitle(weakParam->getName(64));
+        if (getAccessibilityHandler())
+        {
+            getAccessibilityHandler()->notifyAccessibilityEvent(
+                juce::AccessibilityEvent::valueChanged);
+            getAccessibilityHandler()->notifyAccessibilityEvent(
+                juce::AccessibilityEvent::textChanged);
+        }
     }
 
     float getValue() const { return weakParam ? weakParam->get() : 0.f; }
@@ -411,6 +420,9 @@ struct ParamKnob : juce::Component
     {
         if (weakParam)
             weakParam->setValueNotifyingHost(to);
+        if (getAccessibilityHandler())
+            getAccessibilityHandler()->notifyAccessibilityEvent(
+                juce::AccessibilityEvent::valueChanged);
     }
 
     void paint(juce::Graphics &g) override
@@ -507,11 +519,12 @@ struct ParamKnob : juce::Component
         {
             if (slider->weakParam)
             {
-                return slider->weakParam->getCurrentValueAsText();
+                auto res = slider->weakParam->getCurrentValueAsText();
+                return res;
             }
             return "";
         }
-        void setValueAsString(const juce::String &) {}
+        void setValueAsString(const juce::String &) override {}
 
         AccessibleValueRange getRange() const override { return {{0, 1}, 0.01}; }
 
@@ -519,13 +532,48 @@ struct ParamKnob : juce::Component
     };
     struct AH : juce::AccessibilityHandler
     {
+        ParamKnob *slider{nullptr};
         AH(ParamKnob *c)
             : juce::AccessibilityHandler(
                   *c, juce::AccessibilityRole::slider, juce::AccessibilityActions(),
-                  AccessibilityHandler::Interfaces{std::make_unique<AHValue>(c)})
+                  AccessibilityHandler::Interfaces{std::make_unique<AHValue>(c)}),
+              slider(c)
         {
         }
+
+        juce::String getTitle() const override { return slider->weakParam->getName(64); }
     };
+
+    bool keyPressed(const juce::KeyPress &key) override
+    {
+        float amt = 0.05;
+        if (key.getModifiers().isShiftDown())
+            amt = 0.01;
+        if (key.getKeyCode() == juce::KeyPress::upKey)
+        {
+            setValue(std::clamp((double)getValue() + amt, 0., 1.));
+            return true;
+        }
+
+        if (key.getKeyCode() == juce::KeyPress::downKey)
+        {
+            setValue(std::clamp((double)getValue() - amt, 0., 1.));
+            return true;
+        }
+
+        if (key.getKeyCode() == juce::KeyPress::homeKey)
+        {
+            setValue(1.);
+            return true;
+        }
+
+        if (key.getKeyCode() == juce::KeyPress::endKey)
+        {
+            setValue(0.);
+            return true;
+        }
+        return false;
+    }
 
     std::unique_ptr<juce::AccessibilityHandler> createAccessibilityHandler() override
     {
@@ -697,7 +745,7 @@ AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
 
 void AWConsolidatedAudioProcessorEditor::idle()
 {
-    if (processor.refreshUI.exchange(false))
+    if (processor.rebuildUI.exchange(false))
     {
         docString = AirwinRegistry::documentationStringFor(processor.curentProcessorIndex);
         docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
@@ -708,6 +756,12 @@ void AWConsolidatedAudioProcessorEditor::idle()
         for (auto &k : knobs)
             k->refreshModel();
 
+        menuPicker->rebuild();
+        repaint();
+    }
+
+    if (processor.refreshUI.exchange(false))
+    {
         repaint();
     }
 }
@@ -834,7 +888,8 @@ struct FxFocusTrav : public juce::ComponentTraverser
         {
             auto res = iter;
 
-            while (res != editor->accessibleOrderWeakRefs.cbegin() && !(*std::prev(res))->isAccessible())
+            while (res != editor->accessibleOrderWeakRefs.cbegin() &&
+                   !(*std::prev(res))->isAccessible())
             {
                 res = std::prev(res);
             }
@@ -860,7 +915,8 @@ struct FxFocusTrav : public juce::ComponentTraverser
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
 };
 
-std::unique_ptr<juce::ComponentTraverser> AWConsolidatedAudioProcessorEditor::createKeyboardFocusTraverser()
+std::unique_ptr<juce::ComponentTraverser>
+AWConsolidatedAudioProcessorEditor::createKeyboardFocusTraverser()
 {
     return std::make_unique<FxFocusTrav>(this);
 }

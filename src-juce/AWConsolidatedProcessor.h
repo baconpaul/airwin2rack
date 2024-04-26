@@ -123,7 +123,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
             setAWProcessorTo(index, false);
         }
     }
-    std::atomic<bool> refreshUI{false};
+    std::atomic<bool> refreshUI{false},
+        rebuildUI{false}; // repaint vs re-setup everything. Value vs type
 
     struct AWParam : public juce::AudioParameterFloat
     {

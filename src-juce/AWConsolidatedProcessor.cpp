@@ -236,7 +236,7 @@ void AWConsolidatedAudioProcessor::setAWProcessorTo(int registryIndex, bool init
     }
 
     updateHostDisplay(juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
-    refreshUI = true;
+    rebuildUI = true;
 }
 //==============================================================================
 void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destData)
