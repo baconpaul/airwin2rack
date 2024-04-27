@@ -50,6 +50,10 @@ if (NOT MSVC)
             -Wno-multichar
     )
 endif()
+
+if (MSVC)
+    target_compile_options(airwin-registry PRIVATE /bigobj)
+endif()
 target_include_directories(airwin-registry PUBLIC src)
 
 if (${BUILD_RACK_PLUGIN})
