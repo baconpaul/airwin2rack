@@ -48,7 +48,6 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     std::unique_ptr<juce::Component> awTag;
 
     std::unique_ptr<DocPanel> docArea;
-    std::unique_ptr<juce::Viewport> docView;
 
     juce::String docString, docHeader;
 
