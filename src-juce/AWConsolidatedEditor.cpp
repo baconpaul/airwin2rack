@@ -30,6 +30,16 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
 
     juce::Typeface::Ptr jakartaSansMedium;
     juce::Font getPopupMenuFont() override { return juce::Font(jakartaSansMedium).withHeight(16); }
+
+    void drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
+                                            const juce::PopupMenu::Options &o) override
+    {
+        auto background = findColour(juce::PopupMenu::backgroundColourId);
+        g.fillAll(background);
+
+        g.setColour(findColour(juce::PopupMenu::textColourId).withAlpha(0.6f));
+        g.drawRect(0, 0, width, height);
+    }
 };
 
 struct Picker : public juce::Component
@@ -48,7 +58,7 @@ struct Picker : public juce::Component
         {
             auto p = juce::Path();
             auto jd = getLocalBounds().reduced(3, 5);
-            if (dir == 1)
+            if (dir == -1)
             {
                 p.addTriangle(jd.getX(), jd.getY() + jd.getHeight(), jd.getX() + jd.getWidth(),
                               jd.getY() + jd.getHeight(), jd.getX() + 0.5 * jd.getWidth(),
@@ -154,8 +164,8 @@ struct Picker : public juce::Component
         setDescription("Select Airwindow");
         setWantsKeyboardFocus(true);
 
-        up = std::make_unique<Jog>(this, 1);
-        down = std::make_unique<Jog>(this, -1);
+        up = std::make_unique<Jog>(this, -1);
+        down = std::make_unique<Jog>(this, 1);
         hamburger = std::make_unique<Hamburger>(this);
 
         addAndMakeVisible(*up);
@@ -168,6 +178,7 @@ struct Picker : public juce::Component
     {
         int idx = editor->processor.curentProcessorIndex;
         auto &rg = AirwinRegistry::registry[idx];
+
         auto bounds = getLocalBounds().toFloat().reduced(2.f, 2.f);
 
         g.setColour(juce::Colours::black);
@@ -184,8 +195,9 @@ struct Picker : public juce::Component
                          juce::Justification::centredBottom, 1);
         titleBox = ga.getBoundingBox(0, -1, true);
 
+        auto catString = rg.category;
         g.setFont(juce::Font(editor->jakartaSansMedium).withHeight(18));
-        g.drawText(rg.category, bounds.reduced(8, 3), juce::Justification::centredTop);
+        g.drawText(catString, bounds.reduced(8, 3), juce::Justification::centredTop);
     }
 
     juce::Rectangle<int> jogUp, jogDown;
@@ -620,17 +632,16 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     }
 
     docAreaRect = getLocalBounds()
-                  .withTrimmedLeft(margin * 3 + sz + 180)
-                  .withTrimmedRight(margin * 2)
-                  .withTrimmedTop(60 + 2 * margin)
-                  .withTrimmedBottom(40 + margin);
+                      .withTrimmedLeft(margin * 3 + sz + 180)
+                      .withTrimmedRight(margin * 2)
+                      .withTrimmedTop(60 + 2 * margin)
+                      .withTrimmedBottom(40 + margin);
 
     docBodyLabel = std::make_unique<juce::Label>("Documentation Header");
     docBodyLabel->setAccessible(true);
     docBodyLabel->setWantsKeyboardFocus(true);
     docBodyLabel->setFont(juce::Font(jakartaSansMedium).withHeight(18));
-    docBodyLabel->setColour(juce::Label::textColourId,
-                            juce::Colours::white);
+    docBodyLabel->setColour(juce::Label::textColourId, juce::Colours::white);
     docBodyLabel->setTitle("Documentation Header");
     addAndMakeVisible(*docBodyLabel);
 
@@ -648,7 +659,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
                          juce::Colours::black.withAlpha(0.f));
     docBodyEd->setColour(juce::TextEditor::ColourIds::focusedOutlineColourId,
                          juce::Colours::black.withAlpha(0.f));
-    docBodyEd->setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white.darker(0.2f));
+    docBodyEd->setColour(juce::TextEditor::ColourIds::textColourId,
+                         juce::Colours::white.darker(0.2f));
     addAndMakeVisible(*docBodyEd);
     awTag = std::make_unique<AWLink>(jakartaSansSemi);
     auto fa = getLocalBounds()
@@ -714,14 +726,15 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
     auto r = docAreaRect;
     auto tFont = juce::Font(jakartaSansSemi).withHeight(18);
     juce::GlyphArrangement gaTitle;
-    gaTitle.addFittedText(tFont, docHeader.substring(2), r.getX(), r.getY(),
-                          r.getWidth(), r.getHeight(), juce::Justification::topLeft, 3);
+    gaTitle.addFittedText(tFont, docHeader.substring(2), r.getX(), r.getY(), r.getWidth(),
+                          r.getHeight(), juce::Justification::topLeft, 3);
     auto bounds = gaTitle.getBoundingBox(0, -1, true);
 
     docBodyLabel->setBounds(r.withHeight(bounds.getHeight() + 4));
     docBodyLabel->setText(docHeader.substring(2), juce::NotificationType::dontSendNotification);
     if (docBodyLabel->getAccessibilityHandler())
-        docBodyLabel->getAccessibilityHandler()->notifyAccessibilityEvent(juce::AccessibilityEvent::valueChanged);
+        docBodyLabel->getAccessibilityHandler()->notifyAccessibilityEvent(
+            juce::AccessibilityEvent::valueChanged);
 
     auto q = r.withTrimmedTop(bounds.getHeight() + 8);
 
@@ -763,8 +776,32 @@ void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
 
 void AWConsolidatedAudioProcessorEditor::jog(int dir)
 {
-    auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
-    processor.pushResetTypeFromUI(nx);
+    auto coll = properties->getValue("collection", "All");
+
+    if (coll == "All")
+    {
+        auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
+        processor.pushResetTypeFromUI(nx);
+    }
+    else
+    {
+        int sidx = processor.curentProcessorIndex;
+        auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
+        while (nx != sidx)
+        {
+            auto rg = AirwinRegistry::registry[nx];
+            for (auto c : rg.collections)
+            {
+                if (c == coll)
+                {
+                    processor.pushResetTypeFromUI(nx);
+                    return;
+                }
+            }
+
+            nx = AirwinRegistry::neighborIndexFor(nx, dir);
+        }
+    }
 }
 
 void AWConsolidatedAudioProcessorEditor::showMenu()
@@ -774,23 +811,68 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     p.addSectionHeader("Airwindows Consolidated");
     p.addSeparator();
+    auto collMenu = juce::PopupMenu();
+    std::set<std::string> colls;
+    for (auto &rg : AirwinRegistry::registry)
+    {
+        for (auto s : rg.collections)
+        {
+            colls.insert(s);
+        }
+    }
+    auto ccoll = properties->getValue("collection", "All");
+    for (auto c : colls)
+    {
+        collMenu.addItem(c, true, c == ccoll, [c, w = juce::Component::SafePointer(this)]() {
+            if (!w)
+                return;
+            w->properties->setValue("collection", juce::String(c));
+        });
+    }
+    collMenu.addSeparator();
+    collMenu.addItem("All Plugins", true, ccoll == "All", [w = juce::Component::SafePointer(this)]() {
+        if (!w)
+            return;
+        w->properties->setValue("collection", juce::String("All"));
+    });
+    p.addSubMenu("Filter by Collection", collMenu);
+    p.addSeparator();
+
     const auto *order = &AirwinRegistry::fxByCategory;
 
     bool isChrisOrder = properties->getValue("ordering") == "chris";
     if (isChrisOrder)
         order = &AirwinRegistry::fxByCategoryChrisOrder;
 
+    auto coll = properties->getValue("collection", "All");
+
     for (const auto &[cat, set] : *order)
     {
         juce::PopupMenu sub;
         for (const auto &nm : set)
         {
-            sub.addItem(nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
-                if (w)
-                    w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
-            });
+            bool include{false};
+            if (coll == "All")
+            {
+                include = true;
+            }
+            else
+            {
+                auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex.at(nm)];
+                for (auto c : rg.collections)
+                {
+                    if (c == coll)
+                        include = true;
+                }
+            }
+            if (include)
+                sub.addItem(nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
+                    if (w)
+                        w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
+                });
         }
-        p.addSubMenu(cat, sub, true, nullptr, cat == ent.category);
+        if (sub.getNumItems() > 0)
+            p.addSubMenu(cat, sub, true, nullptr, cat == ent.category);
     }
 
     p.addSeparator();
@@ -800,11 +882,12 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     auto settingsMenu = juce::PopupMenu();
     auto isRO = properties->getBoolValue("editorIsReadOnly");
-    settingsMenu.addItem(isRO ? "Make Documentation Editable for Screen Readers" : "Make Documentation Read-Only",
-                             [isRO, w = juce::Component::SafePointer(this)]() {
-                                 w->properties->setValue("editorIsReadOnly", !isRO);
-                                 w->docBodyEd->setReadOnly(!isRO);
-                             });
+    settingsMenu.addItem(isRO ? "Make Documentation Editable for Screen Readers"
+                              : "Make Documentation Read-Only",
+                         [isRO, w = juce::Component::SafePointer(this)]() {
+                             w->properties->setValue("editorIsReadOnly", !isRO);
+                             w->docBodyEd->setReadOnly(!isRO);
+                         });
 
     settingsMenu.addItem("Alphabetical Order Menus", true, !isChrisOrder,
                          [w = juce::Component::SafePointer(this)]() {
