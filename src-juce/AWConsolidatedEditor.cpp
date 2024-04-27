@@ -315,14 +315,30 @@ struct AWLink : public juce::Component
 struct DocPanel : juce::Component
 {
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
+    std::unique_ptr<juce::TextEditor> docBodyEd;
     DocPanel(AWConsolidatedAudioProcessorEditor *ed) : editor(ed)
     {
         setAccessible(true);
         setWantsKeyboardFocus(true);
+
+        docBodyEd = std::make_unique<juce::TextEditor>("Documentation");
+        docBodyEd->setMultiLine(true);
+        docBodyEd->setFont(juce::Font(editor->jakartaSansMedium).withHeight(15));
+        docBodyEd->setReadOnly(true);
+        docBodyEd->setAccessible(true);
+        docBodyEd->setTitle("Documentation");
+        docBodyEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
+                             juce::Colours::black.withAlpha(0.f));
+        docBodyEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
+                             juce::Colours::black.withAlpha(0.f));
+        docBodyEd->setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white);
+        docBodyEd->setIndents(0, 0);
+        addAndMakeVisible(*docBodyEd);
     }
+
     void rebuild()
     {
-        auto r = juce::Rectangle<int>(0, 0, targetWidth, 10000);
+        auto r = getLocalBounds();
 
         auto tFont = juce::Font(editor->jakartaSansSemi).withHeight(18);
         juce::GlyphArrangement gaTitle;
@@ -330,37 +346,15 @@ struct DocPanel : juce::Component
                               r.getWidth(), r.getHeight(), juce::Justification::topLeft, 3);
         auto bounds = gaTitle.getBoundingBox(0, -1, true);
 
-        auto q = r.translated(0, bounds.getHeight() + 8);
+        auto q = r.withTrimmedTop(bounds.getHeight() + 8);
 
-        auto bFont = juce::Font(editor->jakartaSansSemi).withHeight(15);
-        juce::GlyphArrangement gaBody;
-        gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(), q.getWidth(),
-                             q.getHeight(), juce::Justification::topLeft, 1000);
-        auto bodyBounds = gaBody.getBoundingBox(0, -1, true);
-        r = r.withHeight(bodyBounds.getBottom());
+        docBodyEd->setBounds(q);
+        docBodyEd->setText(editor->docString, false);
 
-        setSize(r.getWidth(), r.getHeight());
-
-        setTitle(AirwinRegistry::registry[editor->processor.curentProcessorIndex].name +
-                 " Documentation. Control R to read");
+        setTitle(editor->docHeader.substring(2));
         if (getAccessibilityHandler())
             getAccessibilityHandler()->notifyAccessibilityEvent(
                 juce::AccessibilityEvent::titleChanged);
-    }
-
-    float targetWidth{10};
-
-    bool keyPressed(const juce::KeyPress &key) override
-    {
-        if ((key.getKeyCode() == 'r' || key.getKeyCode() == 'R') &&
-            (key.getModifiers().isCommandDown() || key.getModifiers().isCtrlDown()))
-        {
-            getAccessibilityHandler()->postAnnouncement(
-                editor->docHeader.substring(2) + "." + editor->docString,
-                juce::AccessibilityHandler::AnnouncementPriority::medium);
-            return true;
-        }
-        return false;
     }
 
     void paint(juce::Graphics &g) override
@@ -378,16 +372,9 @@ struct DocPanel : juce::Component
         g.setColour(juce::Colour(120, 120, 125));
         g.drawLine(r.getX(), r.getY(), r.getX() + r.getWidth(), r.getY());
         r = r.translated(0, 4);
-
-        g.setColour(juce::Colours::white.darker(0.3f));
-
-        auto q = r;
-        auto bFont = juce::Font(editor->jakartaSansMedium).withHeight(15);
-        juce::GlyphArrangement gaBody;
-        gaBody.addFittedText(bFont, editor->docString.trim(), q.getX(), q.getY(), q.getWidth(),
-                             q.getHeight(), juce::Justification::topLeft, 1000);
-        gaBody.draw(g);
     }
+
+    void resized() override { rebuild(); }
 };
 
 struct ParamKnob : juce::Component
@@ -704,14 +691,11 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
                   .withTrimmedTop(60 + 2 * margin)
                   .withTrimmedBottom(40 + margin);
 
-    da->targetWidth = db.getWidth() - 10;
     da->rebuild();
     docArea = std::move(da);
 
-    docView = std::make_unique<juce::Viewport>();
-    docView->setBounds(db);
-    docView->setViewedComponent(docArea.get(), false);
-    addAndMakeVisible(*docView);
+    addAndMakeVisible(*docArea);
+    docArea->setBounds(db);
 
     awTag = std::make_unique<AWLink>(jakartaSansSemi);
     auto fa = getLocalBounds()
@@ -729,6 +713,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     for (auto &k : knobs)
         accessibleOrderWeakRefs.push_back(k.get());
     accessibleOrderWeakRefs.push_back(docArea.get());
+    accessibleOrderWeakRefs.push_back(docArea->docBodyEd.get());
 
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
