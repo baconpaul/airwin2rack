@@ -820,16 +820,17 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
             colls.insert(s);
         }
     }
+    auto ccoll = properties->getValue("collection", "All");
     for (auto c : colls)
     {
-        collMenu.addItem(c, [c, w = juce::Component::SafePointer(this)]() {
+        collMenu.addItem(c, true, c == ccoll, [c, w = juce::Component::SafePointer(this)]() {
             if (!w)
                 return;
             w->properties->setValue("collection", juce::String(c));
         });
     }
     collMenu.addSeparator();
-    collMenu.addItem("All Plugins", [w = juce::Component::SafePointer(this)]() {
+    collMenu.addItem("All Plugins", true, ccoll == "All", [w = juce::Component::SafePointer(this)]() {
         if (!w)
             return;
         w->properties->setValue("collection", juce::String("All"));
