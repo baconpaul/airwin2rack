@@ -26,6 +26,15 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     void showMenu();
     void jog(int dir);
 
+    std::string getCurrentCollection() {
+        return properties->getValue("collection", "Recommended").toStdString();
+    }
+    void setCurrentCollection(const std::string &s)
+    {
+        properties->setValue("collection", juce::String(s));
+    }
+    std::string allCollection{"All"};
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     AWConsolidatedAudioProcessor &processor;

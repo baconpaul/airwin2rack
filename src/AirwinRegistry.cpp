@@ -18,6 +18,7 @@ std::vector<int> AirwinRegistry::fxAlphaOrdering;
 std::map<std::string, std::vector<std::string>> AirwinRegistry::fxByCategory;
 std::map<std::string, std::vector<std::string>> AirwinRegistry::fxByCategoryChrisOrder;
 std::unordered_map<std::string, int> AirwinRegistry::nameToIndex;
+std::map<std::string, std::unordered_set<std::string>> AirwinRegistry::namesByCollection;
 
 std::string AirwinRegistry::documentationStringFor(int index)
 {
