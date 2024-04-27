@@ -95,17 +95,31 @@ double AWConsolidatedAudioProcessor::getTailLengthSeconds() const { return 2.0; 
 
 int AWConsolidatedAudioProcessor::getNumPrograms()
 {
-    return 2; // NB: some hosts don't cope very well if you tell them there are 0 programs,
-              // so this should be at least 1, even if you're not really implementing programs.
+    return AirwinRegistry::registry.size();
 }
 
-int AWConsolidatedAudioProcessor::getCurrentProgram() { return 0; }
+int AWConsolidatedAudioProcessor::getCurrentProgram() {
+    // not super efficient obvs
+    int idx{0};
+    for (auto &i : AirwinRegistry::fxAlphaOrdering)
+    {
+        if (i == curentProcessorIndex)
+            return idx;
+        idx++;
+    }
+    return 0;
+}
 
-void AWConsolidatedAudioProcessor::setCurrentProgram(int index) {}
+void AWConsolidatedAudioProcessor::setCurrentProgram(int index) {
+    auto rs = AirwinRegistry::fxAlphaOrdering[index];
+    pushResetTypeFromUI(rs);
+}
 
 const juce::String AWConsolidatedAudioProcessor::getProgramName(int index)
 {
-    return "Default " + std::to_string(index);
+    auto rs = AirwinRegistry::fxAlphaOrdering[index];
+    auto &rg = AirwinRegistry::registry[rs];
+    return rg.category + "/" + rg.name;
 }
 
 void AWConsolidatedAudioProcessor::changeProgramName(int index, const juce::String &newName) {}
