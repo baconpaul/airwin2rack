@@ -33,6 +33,7 @@ struct AirwinRegistry
         int nParams{0};
         std::function<std::unique_ptr<Airwin2RackBase>()> generator{[]() { return nullptr; }};
         int ordering{-1};
+        std::vector<std::string> collections{};
     };
     static std::vector<awReg> registry;
     static std::set<std::string> categories;
@@ -80,7 +81,7 @@ struct AirwinRegistry
         for (auto &[cat, dat] : fxByCategory)
         {
             std::sort(dat.begin(), dat.end(), [](const auto &a,
-                                                 const auto &b) { return a > b; });
+                                                 const auto &b) { return a < b; });
         }
 
         idx = 0;

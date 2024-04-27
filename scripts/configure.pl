@@ -76,6 +76,33 @@ foreach my $fx (@plugins) {
     $catO = $catOrder{$fx} if (exists $catOrder{$fx});
     $what = $whats{$fx} if (exists $whats{$fx});
 
+    my $coll = "{ }";
+    if ($what =~ s/\[(.*)\]\s*$//)
+    {
+        my @kvlist = split(/;/, $1);
+        for my $kv (@kvlist)
+        {
+            if ($kv =~ m/([^=]+)=(.*)$/)
+            {
+                my $key = $1;
+                my $val = $2;
+                if ($key =~ m/coll/ && $val =~ m/\S/)
+                {
+                    $coll = "{ ";
+                    my $pre = "";
+                    for my $cl (split(/,/, $val))
+                    {
+                        $coll .= $pre;
+                        $coll .= "\"$cl\"";
+                        $pre = ", ";
+                    }
+                    $coll .= " }";
+                }
+            }
+        }
+
+    }
+
     if (!-d "libs/airwindows/plugins/MacVST/$fx") {
         die "Can't find fx directory '$fx'";
     }
@@ -85,7 +112,7 @@ foreach my $fx (@plugins) {
     system("perl scripts/import.pl $fx");
 
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
-    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, \"${what}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }});";
+    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, \"${what}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }, -1, $coll});";
     print OFH "\n";
 }
 
