@@ -646,6 +646,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
                          juce::Colours::black.withAlpha(0.f));
     docBodyEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
                          juce::Colours::black.withAlpha(0.f));
+    docBodyEd->setColour(juce::TextEditor::ColourIds::focusedOutlineColourId,
+                         juce::Colours::black.withAlpha(0.f));
     docBodyEd->setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white.darker(0.2f));
     addAndMakeVisible(*docBodyEd);
     awTag = std::make_unique<AWLink>(jakartaSansSemi);
@@ -666,12 +668,17 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     accessibleOrderWeakRefs.push_back(docBodyLabel.get());
     accessibleOrderWeakRefs.push_back(docBodyEd.get());
 
+    resizeDocArea();
+
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
     options.folderName = "AirwindowsConsolidated";
     options.filenameSuffix = "settings";
     options.osxLibrarySubFolder = "Preferences";
     properties = std::make_unique<juce::PropertiesFile>(options);
+
+    auto isRO = properties->getBoolValue("editorIsReadOnly", true);
+    docBodyEd->setReadOnly(isRO);
 }
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
@@ -683,10 +690,6 @@ void AWConsolidatedAudioProcessorEditor::idle()
 {
     if (processor.rebuildUI.exchange(false))
     {
-        docString = AirwinRegistry::documentationStringFor(processor.curentProcessorIndex);
-        docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
-        docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
-
         resizeDocArea();
 
         for (auto &k : knobs)
@@ -704,6 +707,10 @@ void AWConsolidatedAudioProcessorEditor::idle()
 
 void AWConsolidatedAudioProcessorEditor::resizeDocArea()
 {
+    docString = AirwinRegistry::documentationStringFor(processor.curentProcessorIndex);
+    docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
+    docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
+
     auto r = docAreaRect;
     auto tFont = juce::Font(jakartaSansSemi).withHeight(18);
     juce::GlyphArrangement gaTitle;
@@ -792,6 +799,13 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
               []() { juce::URL("https://www.airwindows.com").launchInDefaultBrowser(); });
 
     auto settingsMenu = juce::PopupMenu();
+    auto isRO = properties->getBoolValue("editorIsReadOnly");
+    settingsMenu.addItem(isRO ? "Make Documentation Editable for Screen Readers" : "Make Documentation Read-Only",
+                             [isRO, w = juce::Component::SafePointer(this)]() {
+                                 w->properties->setValue("editorIsReadOnly", !isRO);
+                                 w->docBodyEd->setReadOnly(!isRO);
+                             });
+
     settingsMenu.addItem("Alphabetical Order Menus", true, !isChrisOrder,
                          [w = juce::Component::SafePointer(this)]() {
                              if (w)
@@ -874,6 +888,18 @@ struct FxFocusTrav : public juce::ComponentTraverser
     }
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
 };
+
+bool AWConsolidatedAudioProcessorEditor::keyPressed(const juce::KeyPress &k)
+{
+    if (k.getKeyCode() == juce::KeyPress::F7Key)
+    {
+        auto isRO = properties->getBoolValue("editorIsReadOnly");
+
+        properties->setValue("editorIsReadOnly", !isRO);
+        docBodyEd->setReadOnly(!isRO);
+    }
+    return false;
+}
 
 std::unique_ptr<juce::ComponentTraverser>
 AWConsolidatedAudioProcessorEditor::createKeyboardFocusTraverser()
