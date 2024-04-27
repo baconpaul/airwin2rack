@@ -193,6 +193,7 @@ bool AWConsolidatedAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor *AWConsolidatedAudioProcessor::createEditor()
 {
+    rebuildUI = true;
     return new AWConsolidatedAudioProcessorEditor(*this);
 }
 
