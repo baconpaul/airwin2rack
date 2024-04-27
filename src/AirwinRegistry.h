@@ -15,6 +15,7 @@
 #include <vector>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 #include <map>
 #include <iostream>
 #include <functional>
@@ -41,6 +42,8 @@ struct AirwinRegistry
     static std::map<std::string, std::vector<std::string>> fxByCategoryChrisOrder;
     static std::vector<int> fxAlphaOrdering;
     static std::unordered_map<std::string, int> nameToIndex;
+
+    static std::map<std::string, std::unordered_set<std::string>> namesByCollection;
 
     static int registerAirwindow(const awReg &r)
     {
@@ -105,6 +108,14 @@ struct AirwinRegistry
                 auto bi = AirwinRegistry::nameToIndex[b];
                 return AirwinRegistry::registry[ai].catChrisOrdering < AirwinRegistry::registry[bi].catChrisOrdering;
             });
+        }
+
+        for (const auto &r : registry)
+        {
+            for (const auto &c : r.collections)
+            {
+                namesByCollection[c].insert(r.name);
+            }
         }
 
         return 0;

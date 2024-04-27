@@ -776,9 +776,9 @@ void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
 
 void AWConsolidatedAudioProcessorEditor::jog(int dir)
 {
-    auto coll = properties->getValue("collection", "All");
+    auto coll = getCurrentCollection();
 
-    if (coll == "All")
+    if (coll == "All" || AirwinRegistry::namesByCollection.find(coll) == AirwinRegistry::namesByCollection.end())
     {
         auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
         processor.pushResetTypeFromUI(nx);
@@ -786,17 +786,15 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     else
     {
         int sidx = processor.curentProcessorIndex;
+        auto &collFX = AirwinRegistry::namesByCollection.at(coll);
         auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
         while (nx != sidx)
         {
             auto rg = AirwinRegistry::registry[nx];
-            for (auto c : rg.collections)
+            if (collFX.find(rg.name) != collFX.end())
             {
-                if (c == coll)
-                {
-                    processor.pushResetTypeFromUI(nx);
-                    return;
-                }
+                processor.pushResetTypeFromUI(nx);
+                return;
             }
 
             nx = AirwinRegistry::neighborIndexFor(nx, dir);
@@ -812,28 +810,20 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
     p.addSectionHeader("Airwindows Consolidated");
     p.addSeparator();
     auto collMenu = juce::PopupMenu();
-    std::set<std::string> colls;
-    for (auto &rg : AirwinRegistry::registry)
+    auto ccoll = getCurrentCollection();
+    for (const auto &[c, _] : AirwinRegistry::namesByCollection)
     {
-        for (auto s : rg.collections)
-        {
-            colls.insert(s);
-        }
-    }
-    auto ccoll = properties->getValue("collection", "All");
-    for (auto c : colls)
-    {
-        collMenu.addItem(c, true, c == ccoll, [c, w = juce::Component::SafePointer(this)]() {
+        collMenu.addItem(c, true, c == ccoll, [cv = c, w = juce::Component::SafePointer(this)]() {
             if (!w)
                 return;
-            w->properties->setValue("collection", juce::String(c));
+            w->setCurrentCollection(cv);
         });
     }
     collMenu.addSeparator();
-    collMenu.addItem("All Plugins", true, ccoll == "All", [w = juce::Component::SafePointer(this)]() {
+    collMenu.addItem("All Plugins", true, ccoll == allCollection, [w = juce::Component::SafePointer(this)]() {
         if (!w)
             return;
-        w->properties->setValue("collection", juce::String("All"));
+        w->setCurrentCollection(w->allCollection);
     });
     p.addSubMenu("Filter by Collection", collMenu);
     p.addSeparator();
@@ -844,7 +834,11 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
     if (isChrisOrder)
         order = &AirwinRegistry::fxByCategoryChrisOrder;
 
-    auto coll = properties->getValue("collection", "All");
+    auto coll = getCurrentCollection();
+
+    std::unordered_set<std::string> inCol;
+    if (AirwinRegistry::namesByCollection.find(coll) != AirwinRegistry::namesByCollection.end())
+        inCol = AirwinRegistry::namesByCollection.at(coll);
 
     for (const auto &[cat, set] : *order)
     {
@@ -852,17 +846,16 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
         for (const auto &nm : set)
         {
             bool include{false};
-            if (coll == "All")
+            if (coll == allCollection || inCol.empty())
             {
                 include = true;
             }
             else
             {
                 auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex.at(nm)];
-                for (auto c : rg.collections)
+                if (inCol.find(rg.name) != inCol.end())
                 {
-                    if (c == coll)
-                        include = true;
+                    include = true;
                 }
             }
             if (include)
