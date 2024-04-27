@@ -47,7 +47,11 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     std::unique_ptr<juce::Drawable> clipperIcon;
     std::unique_ptr<juce::Component> awTag;
 
-    std::unique_ptr<DocPanel> docArea;
+    juce::Rectangle<int> docAreaRect;
+    std::unique_ptr<juce::TextEditor> docBodyEd;
+    std::unique_ptr<juce::Label> docBodyLabel;
+
+    void resizeDocArea();
 
     juce::String docString, docHeader;
 
