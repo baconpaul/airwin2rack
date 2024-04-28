@@ -42,7 +42,7 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
     }
 };
 
-struct Picker : public juce::Component
+struct Picker : public juce::Component, public juce::TextEditor::Listener
 {
     struct Jog : public juce::Button
     {
@@ -171,6 +171,19 @@ struct Picker : public juce::Component
         addAndMakeVisible(*up);
         addAndMakeVisible(*down);
         addAndMakeVisible(*hamburger);
+
+        typeinEd = std::make_unique<juce::TextEditor>("Typeahead");
+        typeinEd->setFont(juce::Font(editor->jakartaSansMedium).withHeight(28));
+        typeinEd->setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white);
+        typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
+                            juce::Colour(10, 10, 15));
+        typeinEd->addListener(this);
+        addChildComponent(*typeinEd);
+    }
+    ~Picker()
+    {
+        if (listBox)
+            listBox->setModel(nullptr);
     }
     juce::Rectangle<float> titleBox;
 
@@ -187,7 +200,8 @@ struct Picker : public juce::Component
         g.drawRoundedRectangle(bounds, 5, 1);
         g.setColour(juce::Colours::white);
         g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(28));
-        g.drawText(rg.name, bounds.reduced(8, 5), juce::Justification::centredBottom);
+        if (!typeinEd->isVisible())
+            g.drawText(rg.name, bounds.reduced(8, 5), juce::Justification::centredBottom);
         auto ga = juce::GlyphArrangement();
         auto tbx = bounds.reduced(8, 5);
         ga.addFittedText(juce::Font(editor->jakartaSansSemi).withHeight(28), rg.name, tbx.getX(),
@@ -214,6 +228,9 @@ struct Picker : public juce::Component
         auto bx = getLocalBounds().reduced(8, 16);
         bx = bx.withWidth(bx.getHeight());
         hamburger->setBounds(bx);
+
+        auto bd = getLocalBounds().reduced(90, 0).withHeight(32).translated(0, getHeight() - 38);
+        typeinEd->setBounds(bd);
     }
 
     bool keyPressed(const juce::KeyPress &p) override
@@ -236,7 +253,34 @@ struct Picker : public juce::Component
     {
         if (titleBox.toFloat().contains(e.position))
         {
-            std::cout << "Starting edit gesture" << std::endl;
+            int idx = editor->processor.curentProcessorIndex;
+            auto &rg = AirwinRegistry::registry[idx];
+
+            typeinEd->setVisible(true);
+            typeinEd->grabKeyboardFocus();
+            typeinEd->selectAll();
+            typeinEd->setText(rg.name, juce::NotificationType::dontSendNotification);
+
+            if (!listBox)
+            {
+                listBoxModel = std::make_unique<TALBM>(this);
+                listBox = std::make_unique<juce::ListBox>();
+                listBox->setModel(listBoxModel.get());
+                listBox->setRowHeight(40);
+                listBox->setColour(juce::ListBox::backgroundColourId, juce::Colour(10, 10, 20));
+                listBox->setColour(juce::ListBox::outlineColourId, juce::Colour(120, 120, 125));
+
+                getParentComponent()->addAndMakeVisible(*listBox);
+            }
+
+            listBox->setVisible(true);
+            auto teb = typeinEd->getBounds();
+            teb.setX(teb.getX() + getBounds().getX());
+            teb.setY(teb.getY() + getBounds().getY() + teb.getHeight());
+            teb = teb.withHeight(400);
+            listBox->setBounds(teb);
+
+            populateForTypein();
         }
         else
         {
@@ -288,8 +332,122 @@ struct Picker : public juce::Component
         if (down->getAccessibilityHandler())
             down->getAccessibilityHandler()->notifyAccessibilityEvent(
                 juce::AccessibilityEvent::titleChanged);
+
+        typeinEd->clear();
+        typeinEd->setText(rg.name, juce::NotificationType::dontSendNotification);
+        typeinEd->setJustification(juce::Justification::centred);
     }
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
+
+    std::unique_ptr<juce::TextEditor> typeinEd;
+    std::unique_ptr<juce::ListBox> listBox;
+
+    void populateForTypein()
+    {
+        if (!listBoxModel)
+            return;
+        std::vector<int> rr;
+        auto m = typeinEd->getText().toLowerCase().toStdString();
+        auto coll = editor->getCurrentCollection();
+        std::unordered_set<std::string> inCol;
+        if (AirwinRegistry::namesByCollection.find(coll) != AirwinRegistry::namesByCollection.end())
+            inCol = AirwinRegistry::namesByCollection.at(coll);
+
+        for (auto r : AirwinRegistry::fxAlphaOrdering)
+        {
+            auto n = AirwinRegistry::registry[r].name;
+            std::transform(n.begin(), n.end(), n.begin(),
+                           [](unsigned char c) { return std::tolower(c); });
+            auto cat = AirwinRegistry::registry[r].category;
+            std::transform(cat.begin(), cat.end(), cat.begin(),
+                           [](unsigned char c) { return std::tolower(c); });
+            if (n.find(m) != std::string::npos || cat.find(m) != std::string::npos)
+            {
+                if (coll == editor->allCollection || inCol.empty())
+                {
+                    rr.push_back(r);
+                }
+                else
+                {
+                    if (inCol.find(AirwinRegistry::registry[r].name) != inCol.end())
+                    {
+                        rr.push_back(r);
+                    }
+                }
+            }
+            if (rr.size() > 30)
+                break;
+        }
+        listBoxModel->entries = rr;
+        listBox->updateContent();
+    }
+
+    void dismissTE()
+    {
+        typeinEd->setVisible(false);
+        listBox->setVisible(false);
+    }
+
+    void selectTE(int which)
+    {
+        editor->processor.pushResetTypeFromUI(which);
+        dismissTE();
+    }
+
+    void textEditorTextChanged(juce::TextEditor &editor) override { populateForTypein(); }
+
+    void textEditorReturnKeyPressed(juce::TextEditor &editor) override
+    {
+        if (listBoxModel->entries.empty())
+            dismissTE();
+        selectTE(listBoxModel->entries[0]);
+    }
+
+    void textEditorEscapeKeyPressed(juce::TextEditor &editor) override { dismissTE(); }
+
+    struct TALBM : juce::ListBoxModel
+    {
+        std::vector<int> entries;
+
+        Picker *picker{nullptr};
+        TALBM(Picker *p) : picker(p) {}
+        int getNumRows() override { return entries.size(); }
+        void paintListBoxItem(int rowNumber, juce::Graphics &g, int width, int height,
+                              bool rowIsSelected) override
+        {
+            if (rowNumber < 0 || rowNumber >= (int)entries.size())
+                return;
+
+            auto bx = juce::Rectangle<int>(0, 0, width, height).reduced(2);
+
+            auto &rg = AirwinRegistry::registry[entries[rowNumber]];
+
+            g.setFont(juce::Font(picker->editor->jakartaSansSemi).withHeight(22));
+            g.setColour(juce::Colours::white);
+            g.drawText(rg.name, bx, juce::Justification::bottomLeft);
+
+            g.setColour(juce::Colours::white.darker(0.2));
+
+            g.setFont(juce::Font(picker->editor->jakartaSansMedium).withHeight(14));
+            g.drawText(rg.category, bx, juce::Justification::topLeft);
+
+            g.setFont(juce::Font(picker->editor->jakartaSansMedium).withHeight(14));
+            g.drawFittedText(rg.whatText, bx.withTrimmedLeft(bx.getWidth() / 2),
+                             juce::Justification::bottomRight, 3);
+
+            g.setColour(juce::Colour(90, 90, 95));
+            g.drawLine(5, height, width - 5, height, 1);
+        }
+
+        void listBoxItemClicked(int row, const juce::MouseEvent &event) override
+        {
+            if (row < 0 || row >= (int)entries.size())
+                return;
+
+            picker->selectTE(entries[row]);
+        }
+    };
+    std::unique_ptr<TALBM> listBoxModel;
 };
 
 struct AWLink : public juce::Component
@@ -778,7 +936,8 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
 {
     auto coll = getCurrentCollection();
 
-    if (coll == "All" || AirwinRegistry::namesByCollection.find(coll) == AirwinRegistry::namesByCollection.end())
+    if (coll == allCollection ||
+        AirwinRegistry::namesByCollection.find(coll) == AirwinRegistry::namesByCollection.end())
     {
         auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
         processor.pushResetTypeFromUI(nx);
@@ -820,11 +979,12 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
         });
     }
     collMenu.addSeparator();
-    collMenu.addItem("All Plugins", true, ccoll == allCollection, [w = juce::Component::SafePointer(this)]() {
-        if (!w)
-            return;
-        w->setCurrentCollection(w->allCollection);
-    });
+    collMenu.addItem("All Plugins", true, ccoll == allCollection,
+                     [w = juce::Component::SafePointer(this)]() {
+                         if (!w)
+                             return;
+                         w->setCurrentCollection(w->allCollection);
+                     });
     p.addSubMenu("Filter by Collection", collMenu);
     p.addSeparator();
 
@@ -859,10 +1019,11 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
                 }
             }
             if (include)
-                sub.addItem(nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
-                    if (w)
-                        w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
-                });
+                sub.addItem(
+                    nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
+                        if (w)
+                            w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
+                    });
         }
         if (sub.getNumItems() > 0)
             p.addSubMenu(cat, sub, true, nullptr, cat == ent.category);
