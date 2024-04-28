@@ -1036,12 +1036,13 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     auto settingsMenu = juce::PopupMenu();
     auto isRO = properties->getBoolValue("editorIsReadOnly");
-    settingsMenu.addItem(isRO ? "Make Documentation Editable for Screen Readers"
-                              : "Make Documentation Read-Only",
+    settingsMenu.addItem("Use Accessible Documentation Component", true, !isRO,
                          [isRO, w = juce::Component::SafePointer(this)]() {
                              w->properties->setValue("editorIsReadOnly", !isRO);
                              w->docBodyEd->setReadOnly(!isRO);
                          });
+
+    settingsMenu.addSeparator();
 
     settingsMenu.addItem("Alphabetical Order Menus", true, !isChrisOrder,
                          [w = juce::Component::SafePointer(this)]() {
@@ -1134,6 +1135,14 @@ bool AWConsolidatedAudioProcessorEditor::keyPressed(const juce::KeyPress &k)
 
         properties->setValue("editorIsReadOnly", !isRO);
         docBodyEd->setReadOnly(!isRO);
+
+        // OK so readonly state is !RO and if it is readonly then
+        // it is bad for accessibility so !ro means acc off
+
+        if (getAccessibilityHandler())
+            getAccessibilityHandler()->postAnnouncement(
+                juce::String() + "Accessible Documentation Component is " + (!isRO ? "Off" : "On"),
+                juce::AccessibilityHandler::AnnouncementPriority::medium);
     }
     return false;
 }
