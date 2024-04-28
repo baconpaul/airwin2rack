@@ -1,6 +1,6 @@
 # All the Airwindows Consolidated
 
-It's all the [airwindows](https://www.airwindows.co) presented in three lovely flavors
+It's all the [airwindows](https://www.airwindows.com) presented in three lovely flavors
 
 1. As a static library with a uniform registry and access pattern for you to use
    as a submodule to expose the airwindows
