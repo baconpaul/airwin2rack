@@ -1037,6 +1037,9 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     p.addSeparator();
 
+    p.addItem("Read the Plugin Manual",
+              []() { juce::URL("https://github.com/baconpaul/airwin2rack/blob/main/doc/manualdaw.md").launchInDefaultBrowser(); });
+
     p.addItem("Visit Airwindows.com",
               []() { juce::URL("https://www.airwindows.com").launchInDefaultBrowser(); });
 
