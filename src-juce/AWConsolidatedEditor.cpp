@@ -405,6 +405,11 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
     void textEditorEscapeKeyPressed(juce::TextEditor &editor) override { dismissTE(); }
 
+    void textEditorFocusLost(juce::TextEditor &editor) override
+    {
+        dismissTE();
+    }
+
     struct TALBM : juce::ListBoxModel
     {
         std::vector<int> entries;
@@ -884,7 +889,8 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
     auto r = docAreaRect;
     auto tFont = juce::Font(jakartaSansSemi).withHeight(18);
     juce::GlyphArrangement gaTitle;
-    gaTitle.addFittedText(tFont, docHeader.substring(2), r.getX(), r.getY(), r.getWidth(),
+    // use a slightly narrower box to force an extra line to simulate the label insets
+    gaTitle.addFittedText(tFont, docHeader.substring(2), r.getX() + 5, r.getY(), r.getWidth() - 10,
                           r.getHeight(), juce::Justification::topLeft, 3);
     auto bounds = gaTitle.getBoundingBox(0, -1, true);
 
