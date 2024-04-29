@@ -58,17 +58,27 @@ RACK_DIR=(path-to-sdk) make -j install
 
 ## A note on licensing
 
-Airwindows is MIT licensed and the source code here is also. But using the
-GPL3 JUCE and VST3 sdk results in a combined work licensed under GPL3, and
-similarly the Rack plugin is a GPL3 dependency
+Airwindows is MIT licensed and the source code here is also.  For
+avoidance of doubt, all code and content in `src`, in `libs/airwindows` and in
+`res/awdoc` is freely available, under the MIT license, and fine to use
+in closed source code. This means you can just link the `airwin-registry` 
+cmake target, use `AirwinRegistry.h` and do what you want.
 
-We made the standalone consoldiated effecfs library MIT so that you can build *just* the static library
-and use the code in your MIT or closed source project, though.
+But a combined work with JUCE and the VST3 SDK (for the DAW plugin)
+and with the VCV Rack SDK (for the Rack plugin) brings in GPL3
+and GPL3+ dependencies. So even though the code in `src-juce`
+and `src-rack` is MIT licensed code, building a distributable
+product with those source files may result in your including
+GPL3 assets.
 
 Still unsure what you can use in a closed source environment?  The answer
 is basicaly `AirwinRegistry.h` and its dependencies, the cmake target
-`airwin-registry` and the documentation in `res/awdoc`. Still stil unsure?
-Open an issue and ask!
+`airwin-registry`, the documentation in `res/awdoc`, the top level
+`CMakeLists.txt` and 
+everyting in `src`. 
+
+Still unclear? Open an issue with your particular situation 
+and explain it.
 
 The clipper airwindows graphic is freely distributed by airwindows
 

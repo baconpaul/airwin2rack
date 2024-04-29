@@ -63,10 +63,10 @@ if (${BUILD_RACK_PLUGIN})
 
     add_subdirectory(libs/sst-rackhelpers)
 
-    target_include_directories(${RACK_PLUGIN_LIB} PRIVATE src src/autogen_airwin/)
+    target_include_directories(${RACK_PLUGIN_LIB} PRIVATE src src-rack)
     target_sources(${RACK_PLUGIN_LIB} PRIVATE
-            src/Airwin2Rack.cpp
-            src/Module.cpp
+            src-rack/Airwin2Rack.cpp
+            src-rack/Module.cpp
             )
 
     target_compile_options(${RACK_PLUGIN_LIB} PUBLIC -Wno-suggest-override -Wno-multichar -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-variable )
