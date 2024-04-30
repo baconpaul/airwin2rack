@@ -73,6 +73,10 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
             }
             return this->fxParams[i]->get();
         };
+        fxParams[i]->getDefaultValueHandler = [i, this]()
+        {
+            return this->defaultValues[i];
+        };
         fxParams[i]->addListener(this);
         addParameter(fxParams[i]);
     }

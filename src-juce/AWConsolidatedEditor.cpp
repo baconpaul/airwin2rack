@@ -489,9 +489,9 @@ struct AWLink : public juce::Component
 
 struct ParamKnob : juce::Component
 {
-    juce::AudioParameterFloat *weakParam{nullptr};
+    AWConsolidatedAudioProcessor::AWParam *weakParam{nullptr};
     const std::atomic<bool> &active;
-    ParamKnob(const juce::String &cn, juce::AudioParameterFloat *param, const std::atomic<bool> &a)
+    ParamKnob(const juce::String &cn, AWConsolidatedAudioProcessor::AWParam *param, const std::atomic<bool> &a)
         : juce::Component(cn), weakParam{param}, active{a}
     {
         refreshModel();
@@ -669,7 +669,21 @@ struct ParamKnob : juce::Component
             setValue(0.);
             return true;
         }
+
+        if (key.getKeyCode() == juce::KeyPress::deleteKey && weakParam)
+        {
+            setValue(weakParam->getDefaultValue());
+            return true;
+        }
         return false;
+    }
+
+    void mouseDoubleClick(const juce::MouseEvent &event) override
+    {
+        if (weakParam)
+        {
+            setValue(weakParam->getDefaultValue());
+        }
     }
 
     std::unique_ptr<juce::AccessibilityHandler> createAccessibilityHandler() override
