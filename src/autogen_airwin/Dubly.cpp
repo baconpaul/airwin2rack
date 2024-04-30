@@ -6,6 +6,8 @@
 #ifndef __Dubly_H
 #include "Dubly.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Dubly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dubly(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Loud_H
 #include "Loud.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Loud {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Loud(audioMaster);}

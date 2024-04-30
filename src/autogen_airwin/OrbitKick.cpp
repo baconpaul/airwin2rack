@@ -6,6 +6,8 @@
 #ifndef __OrbitKick_H
 #include "OrbitKick.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::OrbitKick {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new OrbitKick(audioMaster);}

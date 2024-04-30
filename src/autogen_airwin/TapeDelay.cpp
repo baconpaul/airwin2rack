@@ -6,6 +6,8 @@
 #ifndef __TapeDelay_H
 #include "TapeDelay.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TapeDelay {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TapeDelay(audioMaster);}

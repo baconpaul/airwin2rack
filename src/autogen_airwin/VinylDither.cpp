@@ -6,6 +6,8 @@
 #ifndef __VinylDither_H
 #include "VinylDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::VinylDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new VinylDither(audioMaster);}

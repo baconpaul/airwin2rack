@@ -6,6 +6,8 @@
 #ifndef __AutoPan_H
 #include "AutoPan.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::AutoPan {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new AutoPan(audioMaster);}

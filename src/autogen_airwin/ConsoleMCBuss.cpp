@@ -6,6 +6,8 @@
 #ifndef __ConsoleMCBuss_H
 #include "ConsoleMCBuss.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ConsoleMCBuss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ConsoleMCBuss(audioMaster);}

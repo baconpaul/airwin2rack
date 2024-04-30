@@ -6,6 +6,8 @@
 #ifndef __NaturalizeDither_H
 #include "NaturalizeDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::NaturalizeDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new NaturalizeDither(audioMaster);}

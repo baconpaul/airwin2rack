@@ -6,6 +6,8 @@
 #ifndef __Tremolo_H
 #include "Tremolo.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Tremolo {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Tremolo(audioMaster);}

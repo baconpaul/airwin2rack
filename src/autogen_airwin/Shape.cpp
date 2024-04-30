@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "Shape.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Shape {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Shape(audioMaster);}

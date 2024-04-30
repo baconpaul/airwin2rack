@@ -6,6 +6,8 @@
 #ifndef __Crystal_H
 #include "Crystal.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Crystal {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Crystal(audioMaster);}

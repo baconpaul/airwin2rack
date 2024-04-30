@@ -6,6 +6,8 @@
 #ifndef __DrumSlam_H
 #include "DrumSlam.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DrumSlam {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DrumSlam(audioMaster);}

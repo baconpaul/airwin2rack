@@ -6,6 +6,8 @@
 #ifndef __MultiBandDistortion_H
 #include "MultiBandDistortion.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::MultiBandDistortion {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MultiBandDistortion(audioMaster);}

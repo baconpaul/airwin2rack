@@ -6,6 +6,8 @@
 #ifndef __BiquadOneHalf_H
 #include "BiquadOneHalf.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BiquadOneHalf {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BiquadOneHalf(audioMaster);}
@@ -117,6 +119,8 @@ bool BiquadOneHalf::getVendorString(char* text) {
 }
 bool BiquadOneHalf::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamB: { auto b = string2float(text, value); if (b) { value = std::cbrt((value - 0.0001) / (0.9999)); } return b; break; }
+    case kParamC: { auto b = string2float(text, value); if (b) { value = std::cbrt((value - 0.01) / (29.99)); } return b; break; }
     case kParamD: { auto b = string2float(text, value); if (b) { value = (value + 1.0) / (2.0); } return b; break; }
 
     }
@@ -124,6 +128,8 @@ bool BiquadOneHalf::parameterTextToValue(VstInt32 index, const char *text, float
 }
 bool BiquadOneHalf::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamB: return true;
+        case kParamC: return true;
         case kParamD: return true;
 
     }

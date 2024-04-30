@@ -6,6 +6,8 @@
 #ifndef __TransDesk_H
 #include "TransDesk.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TransDesk {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TransDesk(audioMaster);}

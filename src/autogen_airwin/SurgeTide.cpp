@@ -6,6 +6,8 @@
 #ifndef __SurgeTide_H
 #include "SurgeTide.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::SurgeTide {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SurgeTide(audioMaster);}

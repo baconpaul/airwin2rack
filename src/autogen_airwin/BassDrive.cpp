@@ -6,6 +6,8 @@
 #ifndef __BassDrive_H
 #include "BassDrive.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BassDrive {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BassDrive(audioMaster);}

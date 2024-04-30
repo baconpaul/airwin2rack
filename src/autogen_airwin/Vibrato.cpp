@@ -6,6 +6,8 @@
 #ifndef __Vibrato_H
 #include "Vibrato.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Vibrato {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Vibrato(audioMaster);}

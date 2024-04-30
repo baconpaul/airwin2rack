@@ -6,6 +6,8 @@
 #ifndef __BussColors4_H
 #include "BussColors4.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BussColors4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BussColors4(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __PitchNasty_H
 #include "PitchNasty.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PitchNasty {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PitchNasty(audioMaster);}

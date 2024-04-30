@@ -6,6 +6,8 @@
 #ifndef __IronOxideClassic2_H
 #include "IronOxideClassic2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::IronOxideClassic2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new IronOxideClassic2(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __ZRegion_H
 #include "ZRegion.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ZRegion {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZRegion(audioMaster);}

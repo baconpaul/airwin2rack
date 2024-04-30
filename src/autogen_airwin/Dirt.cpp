@@ -6,6 +6,8 @@
 #ifndef __Dirt_H
 #include "Dirt.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Dirt {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dirt(audioMaster);}

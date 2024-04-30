@@ -6,6 +6,8 @@
 #ifndef __EveryConsole_H
 #include "EveryConsole.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::EveryConsole {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new EveryConsole(audioMaster);}

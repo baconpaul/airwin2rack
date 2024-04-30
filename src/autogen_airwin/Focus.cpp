@@ -6,6 +6,8 @@
 #ifndef __Focus_H
 #include "Focus.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Focus {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Focus(audioMaster);}

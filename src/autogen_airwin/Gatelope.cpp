@@ -6,6 +6,8 @@
 #ifndef __Gatelope_H
 #include "Gatelope.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Gatelope {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Gatelope(audioMaster);}

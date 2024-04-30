@@ -6,6 +6,8 @@
 #ifndef __PurestFade_H
 #include "PurestFade.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PurestFade {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestFade(audioMaster);}

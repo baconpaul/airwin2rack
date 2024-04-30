@@ -6,6 +6,8 @@
 #ifndef __Coils_H
 #include "Coils.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Coils {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Coils(audioMaster);}

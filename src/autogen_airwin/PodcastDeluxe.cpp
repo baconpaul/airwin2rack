@@ -6,6 +6,8 @@
 #ifndef __PodcastDeluxe_H
 #include "PodcastDeluxe.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PodcastDeluxe {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PodcastDeluxe(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Fracture2_H
 #include "Fracture2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Fracture2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Fracture2(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __BitShiftGain_H
 #include "BitShiftGain.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BitShiftGain {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BitShiftGain(audioMaster);}

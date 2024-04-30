@@ -6,6 +6,8 @@
 #ifndef __TapeDither_H
 #include "TapeDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TapeDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TapeDither(audioMaster);}

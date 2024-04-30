@@ -6,6 +6,8 @@
 #ifndef __Aura_H
 #include "Aura.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Aura {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Aura(audioMaster);}

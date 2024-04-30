@@ -6,6 +6,8 @@
 #ifndef __Weight_H
 #include "Weight.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Weight {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Weight(audioMaster);}

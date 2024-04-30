@@ -6,6 +6,8 @@
 #ifndef __Pear_H
 #include "Pear.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Pear {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pear(audioMaster);}

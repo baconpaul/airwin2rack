@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "Isolator2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Isolator2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Isolator2(audioMaster);}

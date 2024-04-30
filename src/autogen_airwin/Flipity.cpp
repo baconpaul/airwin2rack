@@ -6,6 +6,8 @@
 #ifndef __Flipity_H
 #include "Flipity.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Flipity {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Flipity(audioMaster);}

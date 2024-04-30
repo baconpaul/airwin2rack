@@ -6,6 +6,8 @@
 #ifndef __Smooth_H
 #include "Smooth.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Smooth {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Smooth(audioMaster);}

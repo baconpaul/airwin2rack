@@ -6,6 +6,8 @@
 #ifndef __Drive_H
 #include "Drive.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Drive {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Drive(audioMaster);}

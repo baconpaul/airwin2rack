@@ -6,6 +6,8 @@
 #ifndef __Swell_H
 #include "Swell.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Swell {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Swell(audioMaster);}

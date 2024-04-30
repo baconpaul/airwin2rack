@@ -6,6 +6,8 @@
 #ifndef __Dyno_H
 #include "Dyno.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Dyno {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dyno(audioMaster);}

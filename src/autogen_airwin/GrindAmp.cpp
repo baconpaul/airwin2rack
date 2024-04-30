@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "GrindAmp.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::GrindAmp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new GrindAmp(audioMaster);}

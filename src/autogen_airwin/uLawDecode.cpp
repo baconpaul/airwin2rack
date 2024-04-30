@@ -6,6 +6,8 @@
 #ifndef __uLawDecode_H
 #include "uLawDecode.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::uLawDecode {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new uLawDecode(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Noise_H
 #include "Noise.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Noise {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Noise(audioMaster);}

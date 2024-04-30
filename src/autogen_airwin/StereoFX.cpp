@@ -6,6 +6,8 @@
 #ifndef __StereoFX_H
 #include "StereoFX.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::StereoFX {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StereoFX(audioMaster);}

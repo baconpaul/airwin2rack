@@ -6,6 +6,8 @@
 #ifndef __Console8BussOut_H
 #include "Console8BussOut.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console8BussOut {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8BussOut(audioMaster);}

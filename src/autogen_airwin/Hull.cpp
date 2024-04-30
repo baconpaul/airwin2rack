@@ -6,6 +6,8 @@
 #ifndef __Hull_H
 #include "Hull.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Hull {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Hull(audioMaster);}

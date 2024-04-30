@@ -6,6 +6,8 @@
 #ifndef __PaulDither_H
 #include "PaulDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PaulDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PaulDither(audioMaster);}

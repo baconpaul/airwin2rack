@@ -6,6 +6,8 @@
 #ifndef __ContentHideD_H
 #include "ContentHideD.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ContentHideD {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ContentHideD(audioMaster);}

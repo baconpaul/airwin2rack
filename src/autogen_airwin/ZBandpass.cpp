@@ -6,6 +6,8 @@
 #ifndef __ZBandpass_H
 #include "ZBandpass.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ZBandpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZBandpass(audioMaster);}

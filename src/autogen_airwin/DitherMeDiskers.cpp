@@ -6,6 +6,8 @@
 #ifndef __DitherMeDiskers_H
 #include "DitherMeDiskers.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DitherMeDiskers {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DitherMeDiskers(audioMaster);}

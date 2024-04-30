@@ -6,6 +6,8 @@
 #ifndef __MoNoam_H
 #include "MoNoam.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::MoNoam {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MoNoam(audioMaster);}

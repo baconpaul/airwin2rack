@@ -6,6 +6,8 @@
 #ifndef __RawGlitters_H
 #include "RawGlitters.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::RawGlitters {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new RawGlitters(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Console8BussHype_H
 #include "Console8BussHype.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console8BussHype {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8BussHype(audioMaster);}

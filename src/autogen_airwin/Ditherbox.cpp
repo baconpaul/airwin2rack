@@ -6,6 +6,8 @@
 #ifndef __Ditherbox_H
 #include "Ditherbox.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Ditherbox {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Ditherbox(audioMaster);}

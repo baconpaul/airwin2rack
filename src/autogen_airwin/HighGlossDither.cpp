@@ -6,6 +6,8 @@
 #ifndef __HighGlossDither_H
 #include "HighGlossDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::HighGlossDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new HighGlossDither(audioMaster);}

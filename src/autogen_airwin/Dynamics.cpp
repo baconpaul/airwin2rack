@@ -6,6 +6,8 @@
 #ifndef __Dynamics_H
 #include "Dynamics.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Dynamics {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dynamics(audioMaster);}

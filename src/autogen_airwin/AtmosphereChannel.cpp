@@ -6,6 +6,8 @@
 #ifndef __AtmosphereChannel_H
 #include "AtmosphereChannel.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::AtmosphereChannel {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new AtmosphereChannel(audioMaster);}

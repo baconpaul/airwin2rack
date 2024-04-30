@@ -6,6 +6,8 @@
 #ifndef __FinalClip_H
 #include "FinalClip.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::FinalClip {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new FinalClip(audioMaster);}

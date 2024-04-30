@@ -6,6 +6,8 @@
 #ifndef __Highpass2_H
 #include "Highpass2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Highpass2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Highpass2(audioMaster);}

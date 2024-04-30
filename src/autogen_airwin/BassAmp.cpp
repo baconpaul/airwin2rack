@@ -6,6 +6,8 @@
 #ifndef __BassAmp_H
 #include "BassAmp.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BassAmp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BassAmp(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __DoublePaul_H
 #include "DoublePaul.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DoublePaul {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DoublePaul(audioMaster);}

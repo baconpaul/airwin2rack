@@ -6,6 +6,8 @@
 #ifndef __ZLowpass_H
 #include "ZLowpass.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ZLowpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZLowpass(audioMaster);}

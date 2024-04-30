@@ -6,6 +6,8 @@
 #ifndef __PocketVerbs_H
 #include "PocketVerbs.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PocketVerbs {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PocketVerbs(audioMaster);}

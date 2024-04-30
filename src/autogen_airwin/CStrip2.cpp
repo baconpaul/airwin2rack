@@ -6,6 +6,8 @@
 #ifndef __CStrip2_H
 #include "CStrip2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::CStrip2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new CStrip2(audioMaster);}
@@ -245,6 +247,8 @@ bool CStrip2::parameterTextToValue(VstInt32 index, const char *text, float &valu
     case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 12.0) / (24.0); } return b; break; }
     case kParamB: { auto b = string2float(text, value); if (b) { value = (value + 12.0) / (24.0); } return b; break; }
     case kParamC: { auto b = string2float(text, value); if (b) { value = (value + 12.0) / (24.0); } return b; break; }
+    case kParamD: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 1.0) / (15.0), 0.)); } return b; break; }
+    case kParamE: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 30.0) / (1570.0), 0.)); } return b; break; }
     case kParamF: { auto b = string2float(text, value); return b; break; }
     case kParamG: { auto b = string2float(text, value); return b; break; }
     case kParamH: { auto b = string2float(text, value); return b; break; }
@@ -259,6 +263,8 @@ bool CStrip2::canConvertParameterTextToValue(VstInt32 index) {
         case kParamA: return true;
         case kParamB: return true;
         case kParamC: return true;
+        case kParamD: return true;
+        case kParamE: return true;
         case kParamF: return true;
         case kParamG: return true;
         case kParamH: return true;

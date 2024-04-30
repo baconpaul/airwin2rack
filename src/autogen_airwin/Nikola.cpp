@@ -6,6 +6,8 @@
 #ifndef __Nikola_H
 #include "Nikola.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Nikola {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Nikola(audioMaster);}

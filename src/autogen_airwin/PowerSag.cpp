@@ -6,6 +6,8 @@
 #ifndef __PowerSag_H
 #include "PowerSag.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PowerSag {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PowerSag(audioMaster);}

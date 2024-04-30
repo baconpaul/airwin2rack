@@ -6,6 +6,8 @@
 #ifndef __Ultrasonic_H
 #include "Ultrasonic.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Ultrasonic {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Ultrasonic(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __PurestEcho_H
 #include "PurestEcho.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PurestEcho {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestEcho(audioMaster);}

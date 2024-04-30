@@ -6,6 +6,8 @@
 #ifndef __StereoDoubler_H
 #include "StereoDoubler.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::StereoDoubler {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StereoDoubler(audioMaster);}

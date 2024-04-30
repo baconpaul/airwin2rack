@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "FireAmp.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::FireAmp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new FireAmp(audioMaster);}

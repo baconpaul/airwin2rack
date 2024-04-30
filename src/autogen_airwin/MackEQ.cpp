@@ -6,6 +6,8 @@
 #ifndef __MackEQ_H
 #include "MackEQ.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::MackEQ {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MackEQ(audioMaster);}

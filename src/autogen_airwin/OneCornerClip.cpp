@@ -6,6 +6,8 @@
 #ifndef __OneCornerClip_H
 #include "OneCornerClip.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::OneCornerClip {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new OneCornerClip(audioMaster);}

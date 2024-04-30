@@ -6,6 +6,8 @@
 #ifndef __Chamber_H
 #include "Chamber.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Chamber {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Chamber(audioMaster);}

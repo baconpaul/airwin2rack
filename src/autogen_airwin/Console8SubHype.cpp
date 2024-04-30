@@ -6,6 +6,8 @@
 #ifndef __Console8SubHype_H
 #include "Console8SubHype.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console8SubHype {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8SubHype(audioMaster);}

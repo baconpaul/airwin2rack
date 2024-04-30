@@ -6,6 +6,8 @@
 #ifndef __ToTape6_H
 #include "ToTape6.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ToTape6 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ToTape6(audioMaster);}

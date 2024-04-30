@@ -6,6 +6,8 @@
 #ifndef __PDChannel_H
 #include "PDChannel.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PDChannel {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PDChannel(audioMaster);}

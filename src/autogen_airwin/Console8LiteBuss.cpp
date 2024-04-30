@@ -6,6 +6,8 @@
 #ifndef __Console8LiteBuss_H
 #include "Console8LiteBuss.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console8LiteBuss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8LiteBuss(audioMaster);}

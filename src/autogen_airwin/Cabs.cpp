@@ -6,6 +6,8 @@
 #ifndef __Cabs_H
 #include "Cabs.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Cabs {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Cabs(audioMaster);}

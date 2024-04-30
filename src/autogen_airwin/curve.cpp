@@ -6,6 +6,8 @@
 #ifndef __curve_H
 #include "curve.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::curve {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new curve(audioMaster);}

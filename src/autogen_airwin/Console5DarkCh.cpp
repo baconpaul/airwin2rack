@@ -6,6 +6,8 @@
 #ifndef __Console5DarkCh_H
 #include "Console5DarkCh.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console5DarkCh {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console5DarkCh(audioMaster);}

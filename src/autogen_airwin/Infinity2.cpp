@@ -6,6 +6,8 @@
 #ifndef __Infinity2_H
 #include "Infinity2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Infinity2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Infinity2(audioMaster);}

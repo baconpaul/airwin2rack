@@ -6,6 +6,8 @@
 #ifndef __Overheads_H
 #include "Overheads.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Overheads {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Overheads(audioMaster);}

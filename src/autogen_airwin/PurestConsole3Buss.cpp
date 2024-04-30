@@ -6,6 +6,8 @@
 #ifndef __PurestConsole3Buss_H
 #include "PurestConsole3Buss.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PurestConsole3Buss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestConsole3Buss(audioMaster);}

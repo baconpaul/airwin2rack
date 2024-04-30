@@ -6,6 +6,8 @@
 #ifndef __Slew3_H
 #include "Slew3.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Slew3 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Slew3(audioMaster);}

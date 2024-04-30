@@ -6,6 +6,8 @@
 #ifndef __TubeDesk_H
 #include "TubeDesk.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TubeDesk {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TubeDesk(audioMaster);}

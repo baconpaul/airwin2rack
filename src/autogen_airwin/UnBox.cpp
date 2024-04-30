@@ -6,6 +6,8 @@
 #ifndef __UnBox_H
 #include "UnBox.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::UnBox {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new UnBox(audioMaster);}

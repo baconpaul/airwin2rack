@@ -6,6 +6,8 @@
 #ifndef __HighImpact_H
 #include "HighImpact.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::HighImpact {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new HighImpact(audioMaster);}

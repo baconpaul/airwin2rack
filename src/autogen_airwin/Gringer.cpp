@@ -6,6 +6,8 @@
 #ifndef __Gringer_H
 #include "Gringer.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Gringer {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Gringer(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Apicolypse_H
 #include "Apicolypse.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Apicolypse {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Apicolypse(audioMaster);}

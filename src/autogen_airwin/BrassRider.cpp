@@ -6,6 +6,8 @@
 #ifndef __BrassRider_H
 #include "BrassRider.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BrassRider {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BrassRider(audioMaster);}

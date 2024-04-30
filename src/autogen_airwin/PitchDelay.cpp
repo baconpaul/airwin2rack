@@ -6,6 +6,8 @@
 #ifndef __PitchDelay_H
 #include "PitchDelay.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PitchDelay {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PitchDelay(audioMaster);}

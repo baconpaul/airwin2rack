@@ -6,6 +6,8 @@
 #ifndef __Melt_H
 #include "Melt.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Melt {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Melt(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Air_H
 #include "Air.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Air {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Air(audioMaster);}

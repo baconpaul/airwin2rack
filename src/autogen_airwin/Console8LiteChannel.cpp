@@ -6,6 +6,8 @@
 #ifndef __Console8LiteChannel_H
 #include "Console8LiteChannel.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console8LiteChannel {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8LiteChannel(audioMaster);}

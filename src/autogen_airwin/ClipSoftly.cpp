@@ -6,6 +6,8 @@
 #ifndef __ClipSoftly_H
 #include "ClipSoftly.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ClipSoftly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ClipSoftly(audioMaster);}

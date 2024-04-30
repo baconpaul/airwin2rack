@@ -6,6 +6,8 @@
 #ifndef __kCathedral_H
 #include "kCathedral.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::kCathedral {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new kCathedral(audioMaster);}

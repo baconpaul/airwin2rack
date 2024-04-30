@@ -6,6 +6,8 @@
 #ifndef __EdIsDim_H
 #include "EdIsDim.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::EdIsDim {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new EdIsDim(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Preponderant_H
 #include "Preponderant.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Preponderant {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Preponderant(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __BlockParty_H
 #include "BlockParty.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BlockParty {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BlockParty(audioMaster);}

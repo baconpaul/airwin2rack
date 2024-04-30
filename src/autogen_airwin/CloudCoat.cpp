@@ -6,6 +6,8 @@
 #ifndef __CloudCoat_H
 #include "CloudCoat.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::CloudCoat {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new CloudCoat(audioMaster);}

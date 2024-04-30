@@ -6,6 +6,8 @@
 #ifndef __GalacticVibe_H
 #include "GalacticVibe.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::GalacticVibe {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new GalacticVibe(audioMaster);}

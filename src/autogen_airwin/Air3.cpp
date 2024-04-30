@@ -6,6 +6,8 @@
 #ifndef __Air3_H
 #include "Air3.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Air3 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Air3(audioMaster);}

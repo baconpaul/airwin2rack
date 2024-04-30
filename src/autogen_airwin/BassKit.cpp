@@ -6,6 +6,8 @@
 #ifndef __BassKit_H
 #include "BassKit.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BassKit {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BassKit(audioMaster);}
