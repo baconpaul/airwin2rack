@@ -73,10 +73,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
             }
             return this->fxParams[i]->get();
         };
-        fxParams[i]->getDefaultValueHandler = [i, this]()
-        {
-            return this->defaultValues[i];
-        };
+        fxParams[i]->getDefaultValueHandler = [i, this]() { return this->defaultValues[i]; };
         fxParams[i]->addListener(this);
         addParameter(fxParams[i]);
     }
@@ -97,12 +94,10 @@ bool AWConsolidatedAudioProcessor::isMidiEffect() const { return false; }
 
 double AWConsolidatedAudioProcessor::getTailLengthSeconds() const { return 2.0; }
 
-int AWConsolidatedAudioProcessor::getNumPrograms()
-{
-    return AirwinRegistry::registry.size();
-}
+int AWConsolidatedAudioProcessor::getNumPrograms() { return AirwinRegistry::registry.size(); }
 
-int AWConsolidatedAudioProcessor::getCurrentProgram() {
+int AWConsolidatedAudioProcessor::getCurrentProgram()
+{
     // not super efficient obvs
     int idx{0};
     for (auto &i : AirwinRegistry::fxAlphaOrdering)
@@ -114,7 +109,8 @@ int AWConsolidatedAudioProcessor::getCurrentProgram() {
     return 0;
 }
 
-void AWConsolidatedAudioProcessor::setCurrentProgram(int index) {
+void AWConsolidatedAudioProcessor::setCurrentProgram(int index)
+{
     auto rs = AirwinRegistry::fxAlphaOrdering[index];
     pushResetTypeFromUI(rs);
 }
