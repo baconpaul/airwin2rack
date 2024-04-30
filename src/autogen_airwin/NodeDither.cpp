@@ -109,12 +109,14 @@ bool NodeDither::getVendorString(char* text) {
 }
 bool NodeDither::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / 100; } return b; break; }
 
     }
     return false;
 }
 bool NodeDither::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
 
     }
     return false;

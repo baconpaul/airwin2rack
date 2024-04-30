@@ -99,12 +99,14 @@ bool Balanced::getVendorString(char* text) {
 }
 bool Balanced::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / 8; } return b; break; }
 
     }
     return false;
 }
 bool Balanced::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
 
     }
     return false;

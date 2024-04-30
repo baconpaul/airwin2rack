@@ -136,12 +136,14 @@ bool Channel4::getVendorString(char* text) {
 }
 bool Channel4::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamB: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / 100; } return b; break; }
 
     }
     return false;
 }
 bool Channel4::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamB: return true;
 
     }
     return false;
