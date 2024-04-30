@@ -123,6 +123,7 @@ bool IronOxideClassic2::getVendorString(char* text) {
 bool IronOxideClassic2::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 18.0) / (36.0); } return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = std::clamp( pow(std::max((value - 1.5) / 148.5, 0.), 0.25), 0., 1. ); } return b; break; }
     case kParamC: { auto b = string2float(text, value); if (b) { value = (value + 18.0) / (36.0); } return b; break; }
 
     }
@@ -131,6 +132,7 @@ bool IronOxideClassic2::parameterTextToValue(VstInt32 index, const char *text, f
 bool IronOxideClassic2::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
+        case kParamB: return true;
         case kParamC: return true;
 
     }

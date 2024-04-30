@@ -120,6 +120,7 @@ bool VoiceOfTheStarship::getVendorString(char* text) {
 bool VoiceOfTheStarship::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = std::clamp( (std::round(value) + 0.1 - (0))/16.9, 0., 1. ); } return b; break; }
 
     }
     return false;
@@ -127,6 +128,7 @@ bool VoiceOfTheStarship::parameterTextToValue(VstInt32 index, const char *text, 
 bool VoiceOfTheStarship::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
+        case kParamB: return true;
 
     }
     return false;

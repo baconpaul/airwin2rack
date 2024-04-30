@@ -119,6 +119,7 @@ bool BiquadOneHalf::getVendorString(char* text) {
 }
 bool BiquadOneHalf::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = std::clamp(std::round(value) * 0.25 - 0.245, 0., 1.); } return b; break; }
     case kParamB: { auto b = string2float(text, value); if (b) { value = std::cbrt((value - 0.0001) / (0.9999)); } return b; break; }
     case kParamC: { auto b = string2float(text, value); if (b) { value = std::cbrt((value - 0.01) / (29.99)); } return b; break; }
     case kParamD: { auto b = string2float(text, value); if (b) { value = (value + 1.0) / (2.0); } return b; break; }
@@ -128,6 +129,7 @@ bool BiquadOneHalf::parameterTextToValue(VstInt32 index, const char *text, float
 }
 bool BiquadOneHalf::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
         case kParamB: return true;
         case kParamC: return true;
         case kParamD: return true;

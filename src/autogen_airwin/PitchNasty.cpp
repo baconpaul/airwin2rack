@@ -137,7 +137,9 @@ bool PitchNasty::getVendorString(char* text) {
 }
 bool PitchNasty::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = std::clamp( (std::round(value) + 0.1 - (-12))/24, 0., 1. ); } return b; break; }
     case kParamB: { auto b = string2float(text, value); if (b) { value = (value + 12.0) / (24.0); } return b; break; }
+    case kParamC: { auto b = string2float(text, value); if (b) { value = std::clamp( (std::round(value) + 0.1 - (-36))/72, 0., 1. ); } return b; break; }
     case kParamD: { auto b = string2float(text, value); return b; break; }
     case kParamE: { auto b = string2float(text, value); return b; break; }
     case kParamF: { auto b = string2float(text, value); return b; break; }
@@ -147,7 +149,9 @@ bool PitchNasty::parameterTextToValue(VstInt32 index, const char *text, float &v
 }
 bool PitchNasty::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
         case kParamB: return true;
+        case kParamC: return true;
         case kParamD: return true;
         case kParamE: return true;
         case kParamF: return true;
