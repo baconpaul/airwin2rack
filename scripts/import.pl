@@ -191,22 +191,6 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
         $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = pow(std::max((value/$mul), 0.), (1.0/$exp)); } return b; break; }\n";
         $ok = 1;
     }
-    elsif ($formatter =~ m/float2string\s*\(([^,]+),[^;]+;\s*$/)
-    {
-        my $arg = $1;
-        print " CUSTOM ARG :" . $f . "::" . $param . " >> " . $arg . "\n";
-        print "      INPUT : " . $formatter . "\n";
-
-        if ($arg =~ m/^\s*\(([${param}\*]+)([0-9.]+)\)\+([0-9.]+)/)
-        {
-            print "     - GOT $1 $2 $3\n";
-        }
-        else
-        {
-            print "      - UNKNOWN\n"
-        }
-        $ok = 0;
-    }
     # db2string
     elsif ($formatter =~ m/dB2string\s*\(\s*${param}\s*,[^;]+;\s*$/)
     {
@@ -230,16 +214,52 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
             $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / ${scl}; } return b; break; }\n";
             $ok = 1;
         }
-        else
-        {
-            print "  INT BODY: " . $f . "::" . $param . " / " . $body . "\n";
-            $ok = 0;
-        }
     }
-    else
+    elsif ($formatter =~ m/ceil\(\(A\*3.999\)/)
     {
-        $printed = 1;
-        print " Skipping convert :" . $f . "::" . $param . " / " . $formatter . "\n";
+        # those pesky biquads
+        $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = std::clamp(std::round(value) * 0.25 - 0.245, 0., 1.); } return b; break; }\n";
+        $ok = 1;
+    }
+
+
+    if (!$ok)
+    {
+        # sometimes you just give up you know?
+        my %specialCases;
+
+        $specialCases{"IronOxide5::B"} = "pow(std::max((value - 1.5) / 148.5, 0.), 0.25)";
+        $specialCases{"IronOxide5::C"} = "pow(std::max((value - 1.5) / 148.5, 0.), 0.25)";
+        $specialCases{"IronOxideClassic::B"} = "pow(std::max((value - 1.5) / 148.5, 0.), 0.25)";
+        $specialCases{"IronOxideClassic2::B"} = "pow(std::max((value - 1.5) / 148.5, 0.), 0.25)";
+        $specialCases{"Pockey2::B"} = "(value - 4.0) / 12.0";
+        $specialCases{"Compresaturator::C"} = "std::sqrt(std::max(value/5000.0,0.))";
+        $specialCases{"AQuickVoiceClip::A"} = "std::cbrt((value - 30.)/2070.)";
+
+        my $intLike = sub {
+            my ($b, $o) = @_;
+            return "(std::round(value) + 0.1 - (${o}))/${b}"
+        };
+
+        $specialCases{"VoiceOfTheStarship::B"} = $intLike->(16.9, 0);
+        $specialCases{"Ensemble::A"} = $intLike->(46.0, 2.9);
+        $specialCases{"BitShiftGain::A"} = $intLike->(32, -16);
+        $specialCases{"Fracture::B"} = $intLike->(2.9999, 1);
+        $specialCases{"GlitchShifter::A"} = $intLike->(24.9999, -12);
+        $specialCases{"PitchNasty::A"} = $intLike->(24, -12);
+        $specialCases{"PitchNasty::C"} = $intLike->(72, -36);
+        $specialCases{"TapeDelay::F"} = $intLike->(29, 3);
+        $specialCases{"TapeFat::B"} = $intLike->(29, 3);
+
+
+
+        my $key = $f . "::" . $param;
+
+        if (exists $specialCases{$key})
+        {
+            $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = std::clamp( $specialCases{$key}, 0., 1. ); } return b; break; }\n";
+            $ok = 1;
+        }
     }
 
     if ($ok)
@@ -249,14 +269,15 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
     elsif ($isSwitch)
     {
         # supress this warning
+        # print "  UNINVERTED SWTCH : " . $f . "::" . $param .  "\n";
     }
     elsif ($formatter =~ m/int2string/)
     {
-        print "  INT UNDONE: " . $f . "::" . $param . " / " . $formatter . "\n";
+        print "  UNINVERTED INT : " . $f . "::" . $param . " / " . $formatter . "\n";
     }
     else
     {
-        print "  UNINVERTED: " . $f . "::" . $param . " / " . $formatter . "\n";
+        print "  UNINVERTED FLT : " . $f . "::" . $param . " / " . $formatter . "\n";
     }
 
     $pdt =~ s/^.*?case kParam(\S+):(.*?)break;//s;

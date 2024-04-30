@@ -97,12 +97,14 @@ bool BitShiftGain::getVendorString(char* text) {
 }
 bool BitShiftGain::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = std::clamp( (std::round(value) + 0.1 - (-16))/32, 0., 1. ); } return b; break; }
 
     }
     return false;
 }
 bool BitShiftGain::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
 
     }
     return false;

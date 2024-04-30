@@ -123,6 +123,7 @@ bool Pockey2::getVendorString(char* text) {
 bool Pockey2::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = std::clamp( (value - 4.0) / 12.0, 0., 1. ); } return b; break; }
     case kParamC: { auto b = string2float(text, value); return b; break; }
 
     }
@@ -131,6 +132,7 @@ bool Pockey2::parameterTextToValue(VstInt32 index, const char *text, float &valu
 bool Pockey2::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
+        case kParamB: return true;
         case kParamC: return true;
 
     }

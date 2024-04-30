@@ -142,6 +142,7 @@ bool TapeDelay::parameterTextToValue(VstInt32 index, const char *text, float &va
     case kParamC: { auto b = string2float(text, value); return b; break; }
     case kParamD: { auto b = string2float(text, value); return b; break; }
     case kParamE: { auto b = string2float(text, value); if (b) { value = (value + 1.0) / (2.0); } return b; break; }
+    case kParamF: { auto b = string2float(text, value); if (b) { value = std::clamp( (std::round(value) + 0.1 - (3))/29, 0., 1. ); } return b; break; }
 
     }
     return false;
@@ -153,6 +154,7 @@ bool TapeDelay::canConvertParameterTextToValue(VstInt32 index) {
         case kParamC: return true;
         case kParamD: return true;
         case kParamE: return true;
+        case kParamF: return true;
 
     }
     return false;

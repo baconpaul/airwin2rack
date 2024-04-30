@@ -133,6 +133,7 @@ bool Compresaturator::parameterTextToValue(VstInt32 index, const char *text, flo
     switch(index) {
     case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 12.0) / (24.0); } return b; break; }
     case kParamB: { auto b = string2float(text, value); if (b) { value = value / (100); } return b; break; }
+    case kParamC: { auto b = string2float(text, value); if (b) { value = std::clamp( std::sqrt(std::max(value/5000.0,0.)), 0., 1. ); } return b; break; }
     case kParamD: { auto b = string2float(text, value); return b; break; }
     case kParamE: { auto b = string2float(text, value); return b; break; }
 
@@ -143,6 +144,7 @@ bool Compresaturator::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
         case kParamB: return true;
+        case kParamC: return true;
         case kParamD: return true;
         case kParamE: return true;
 

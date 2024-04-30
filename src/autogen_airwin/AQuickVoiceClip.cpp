@@ -143,12 +143,14 @@ bool AQuickVoiceClip::getVendorString(char* text) {
 }
 bool AQuickVoiceClip::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = std::clamp( std::cbrt((value - 30.)/2070.), 0., 1. ); } return b; break; }
 
     }
     return false;
 }
 bool AQuickVoiceClip::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
 
     }
     return false;
