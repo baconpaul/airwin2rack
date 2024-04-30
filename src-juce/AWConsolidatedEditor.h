@@ -9,6 +9,7 @@
  */
 struct DocPanel;
 struct ParamKnob;
+struct ParamDisp;
 struct Picker;
 class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, juce::AsyncUpdater
 {
@@ -26,7 +27,8 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     void showMenu();
     void jog(int dir);
 
-    std::string getCurrentCollection() {
+    std::string getCurrentCollection()
+    {
         return properties->getValue("collection", "Recommended").toStdString();
     }
     void setCurrentCollection(const std::string &s)
@@ -52,7 +54,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
     std::unique_ptr<IdleTimer> idleTimer;
     std::unique_ptr<Picker> menuPicker;
     std::array<std::unique_ptr<ParamKnob>, AWConsolidatedAudioProcessor::nAWParams> knobs;
-    std::array<std::unique_ptr<juce::Component>, AWConsolidatedAudioProcessor::nAWParams> labels;
+    std::array<std::unique_ptr<ParamDisp>, AWConsolidatedAudioProcessor::nAWParams> labels;
 
     std::unique_ptr<juce::Drawable> clipperIcon;
     std::unique_ptr<juce::Component> awTag;

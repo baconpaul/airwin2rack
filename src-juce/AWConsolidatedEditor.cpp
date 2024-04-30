@@ -405,10 +405,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
     void textEditorEscapeKeyPressed(juce::TextEditor &editor) override { dismissTE(); }
 
-    void textEditorFocusLost(juce::TextEditor &editor) override
-    {
-        dismissTE();
-    }
+    void textEditorFocusLost(juce::TextEditor &editor) override { dismissTE(); }
 
     struct TALBM : juce::ListBoxModel
     {
@@ -487,12 +484,147 @@ struct AWLink : public juce::Component
     }
 };
 
+struct ParamDisp : juce::Component, juce::TextEditor::Listener
+{
+    AWConsolidatedAudioProcessor::AWParam *weakParam{nullptr};
+    const std::atomic<bool> &active;
+    bool isP0{false};
+    int index{0};
+    AWConsolidatedAudioProcessorEditor *editor{nullptr};
+
+    ParamDisp(const juce::String &cn, AWConsolidatedAudioProcessor::AWParam *param,
+              const std::atomic<bool> &a, int idx, AWConsolidatedAudioProcessorEditor *ed)
+        : juce::Component(cn), weakParam{param}, active(a), index(idx), editor(ed)
+    {
+        typeinEd = std::make_unique<juce::TextEditor>("Editor");
+
+        typeinEd->setFont(juce::Font(editor->firaMono).withHeight(18));
+        typeinEd->setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white);
+        typeinEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
+                            juce::Colours::white.withAlpha(0.2f));
+        typeinEd->setColour(juce::TextEditor::ColourIds::focusedOutlineColourId,
+                            juce::Colours::white.withAlpha(0.2f));
+        typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
+                            juce::Colour(10, 10, 15));
+        typeinEd->addListener(this);
+
+        addChildComponent(*typeinEd);
+    }
+
+    float getValue() const { return weakParam ? weakParam->get() : 0.f; }
+
+    std::unique_ptr<juce::TextEditor> typeinEd;
+
+    void resized() override
+    {
+        auto bounds = getLocalBounds().reduced(5, 2);
+        typeinEd->setBounds(
+            bounds.withTrimmedTop(bounds.getHeight() - 24).expanded(1).translated(-3, 0));
+    }
+
+    void showEd()
+    {
+        bool go{false};
+        {
+            std::lock_guard<std::mutex> g(editor->processor.displayProcessorMutex);
+            go = editor->processor.awDisplayProcessor->canConvertParameterTextToValue(index);
+        }
+
+        if (!go)
+            return;
+
+        typeinEd->setVisible(true);
+        typeinEd->setText(weakParam->getCurrentValueAsText().trim(),
+                          juce::NotificationType::dontSendNotification);
+        typeinEd->selectAll();
+        typeinEd->grabKeyboardFocus();
+    }
+    void dismissEd();
+
+    void refreshModel() {
+        typeinEd->setTitle("Edit " + weakParam->getName(64));
+        dismissEd();
+    }
+
+    void textEditorReturnKeyPressed(juce::TextEditor &ed) override
+    {
+        if (ed.getText().trim().isEmpty())
+        {
+            if (weakParam)
+                weakParam->setValueNotifyingHost(weakParam->getDefaultValue());
+            if (getAccessibilityHandler())
+                getAccessibilityHandler()->notifyAccessibilityEvent(
+                    juce::AccessibilityEvent::valueChanged);
+        }
+        else
+        {
+            float f{0};
+            bool worked{false};
+            {
+                std::lock_guard<std::mutex> g(editor->processor.displayProcessorMutex);
+                worked = editor->processor.awDisplayProcessor->parameterTextToValue(
+                    index, ed.getText().toRawUTF8(), f);
+            }
+
+            if (worked)
+            {
+                if (weakParam)
+                    weakParam->setValueNotifyingHost(f);
+                if (getAccessibilityHandler())
+                    getAccessibilityHandler()->notifyAccessibilityEvent(
+                        juce::AccessibilityEvent::valueChanged);
+            }
+        }
+
+        dismissEd();
+    }
+    void textEditorEscapeKeyPressed(juce::TextEditor &editor) override { dismissEd(); }
+    void textEditorFocusLost(juce::TextEditor &editor) override { dismissEd(); }
+
+    void mouseDown(const juce::MouseEvent &e) override
+    {
+        if (active)
+            showEd();
+    }
+
+    void paint(juce::Graphics &g) override
+    {
+        if (!active)
+        {
+            if (isP0)
+            {
+                auto b = getLocalBounds().withTrimmedRight(43);
+
+                g.setColour(juce::Colours::white);
+                g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(20));
+                g.drawText("No Parameters", b, juce::Justification::centredTop);
+            }
+            return;
+        }
+        g.setColour(juce::Colours::black);
+        g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
+        g.setColour(juce::Colours::white);
+        g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
+
+        auto bounds = getLocalBounds().reduced(5, 2);
+        g.setFont(juce::Font(editor->firaMono).withHeight(18));
+        g.drawText(weakParam->getCurrentValueAsText().trim(), bounds.withTrimmedBottom(2),
+                   juce::Justification::bottomLeft);
+
+        g.setFont(juce::Font(editor->jakartaSansMedium).withHeight(14));
+        g.drawText(weakParam->getName(64), bounds, juce::Justification::topLeft);
+    }
+};
+
 struct ParamKnob : juce::Component
 {
     AWConsolidatedAudioProcessor::AWParam *weakParam{nullptr};
     const std::atomic<bool> &active;
-    ParamKnob(const juce::String &cn, AWConsolidatedAudioProcessor::AWParam *param, const std::atomic<bool> &a)
-        : juce::Component(cn), weakParam{param}, active{a}
+    AWConsolidatedAudioProcessorEditor *editor{nullptr};
+    int index{0};
+    ParamKnob(const juce::String &cn, AWConsolidatedAudioProcessor::AWParam *param,
+              const std::atomic<bool> &a, AWConsolidatedAudioProcessorEditor *ed, int idx)
+        : juce::Component(cn), weakParam{param}, active{a}, editor{ed}, index{idx}
     {
         refreshModel();
     }
@@ -675,6 +807,12 @@ struct ParamKnob : juce::Component
             setValue(weakParam->getDefaultValue());
             return true;
         }
+
+        if (key.getKeyCode() == juce::KeyPress::F10Key && key.getModifiers().isShiftDown())
+        {
+            editor->labels[index]->showEd();
+            return true;
+        }
         return false;
     }
 
@@ -692,49 +830,12 @@ struct ParamKnob : juce::Component
     }
 };
 
-struct ParamDisp : juce::Component
+void ParamDisp::dismissEd()
 {
-    juce::AudioParameterFloat *weakParam{nullptr};
-    const std::atomic<bool> &active;
-    bool isP0{false};
-    AWConsolidatedAudioProcessorEditor *editor{nullptr};
+    typeinEd->setVisible(false);
+    editor->knobs[index]->grabKeyboardFocus();
+}
 
-    ParamDisp(const juce::String &cn, juce::AudioParameterFloat *param, const std::atomic<bool> &a,
-              AWConsolidatedAudioProcessorEditor *ed)
-        : juce::Component(cn), weakParam{param}, active(a), editor(ed)
-    {
-    }
-
-    float getValue() const { return weakParam ? weakParam->get() : 0.f; }
-
-    void paint(juce::Graphics &g) override
-    {
-        if (!active)
-        {
-            if (isP0)
-            {
-                auto b = getLocalBounds().withTrimmedRight(43);
-
-                g.setColour(juce::Colours::white);
-                g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(20));
-                g.drawText("No Parameters", b, juce::Justification::centredTop);
-            }
-            return;
-        }
-        g.setColour(juce::Colours::black);
-        g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
-        g.setColour(juce::Colours::white);
-        g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
-
-        auto bounds = getLocalBounds().reduced(5, 2);
-        g.setFont(juce::Font(editor->firaMono).withHeight(18));
-        g.drawText(weakParam->getCurrentValueAsText().trim(), bounds.withTrimmedBottom(2),
-                   juce::Justification::bottomLeft);
-
-        g.setFont(juce::Font(editor->jakartaSansMedium).withHeight(14));
-        g.drawText(weakParam->getName(64), bounds, juce::Justification::topLeft);
-    }
-};
 //==============================================================================
 AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     AWConsolidatedAudioProcessor &p)
@@ -792,14 +893,14 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     for (int i = 0; i < AWConsolidatedAudioProcessor::nAWParams; ++i)
     {
         auto sl = std::make_unique<ParamKnob>(juce::String("kb") + std::to_string(i),
-                                              processor.fxParams[i], processor.active[i]);
+                                              processor.fxParams[i], processor.active[i], this, i);
         sl->setBounds(kb);
         addAndMakeVisible(*sl);
 
         knobs[i] = std::move(sl);
 
         auto lb = std::make_unique<ParamDisp>(juce::String("lb") + std::to_string(i),
-                                              processor.fxParams[i], processor.active[i], this);
+                                              processor.fxParams[i], processor.active[i], i, this);
         lb->isP0 = (i == 0);
         lb->setBounds(kb.withWidth(180).translated(sz + margin, 0));
         addAndMakeVisible(*lb);
@@ -882,6 +983,9 @@ void AWConsolidatedAudioProcessorEditor::idle()
         resizeDocArea();
 
         for (auto &k : knobs)
+            k->refreshModel();
+
+        for (auto &k : labels)
             k->refreshModel();
 
         menuPicker->rebuild();
@@ -1051,8 +1155,10 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     p.addSeparator();
 
-    p.addItem("Read the Plugin Manual",
-              []() { juce::URL("https://github.com/baconpaul/airwin2rack/blob/main/doc/manualdaw.md").launchInDefaultBrowser(); });
+    p.addItem("Read the Plugin Manual", []() {
+        juce::URL("https://github.com/baconpaul/airwin2rack/blob/main/doc/manualdaw.md")
+            .launchInDefaultBrowser();
+    });
 
     p.addItem("Visit Airwindows.com",
               []() { juce::URL("https://www.airwindows.com").launchInDefaultBrowser(); });

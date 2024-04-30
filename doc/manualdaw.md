@@ -38,7 +38,10 @@ allows you to type a partial plugin or category name and see a set of matching
 effects with their documentation to select.
 
 The parameters display the current value and parameter name with a knob to
-edit the value. Shift allows slower knob drags.
+edit the value. Shift allows slower knob drags. If you click on the value, 
+a text editor appears allowing you to type in a value. For a very small
+number of parameters, text entry isn't supported; in these cases no editor
+will appear on click.
 
 The documentation section displays the description of the effect which Chris
 wrote on launch day in a scrollable area.
@@ -60,6 +63,9 @@ menu and select a collection you want. "All plugins" choice removes any filterin
 The User Interface is exposed via a Screen Reader on macOS and Windows.
 Tab moves between elements, as expected. On the controls the arrow keys
 change values, with shift depressed change values in a smaller increment.
+On a given knob, Shift-F10 will activate the typein area allowing you to
+key in a value. As noted above, a small number of parameters do not support
+text-to-value; for those Shift-F10 will do nothing.
 
 The documentation region by default is a read-only label, but many screen
 readers present large labels poorly. For Screen Reader users we recommend
