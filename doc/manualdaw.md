@@ -38,8 +38,10 @@ allows you to type a partial plugin or category name and see a set of matching
 effects with their documentation to select.
 
 The parameters display the current value and parameter name with a knob to
-edit the value. Shift allows slower knob drags. If you click on the value, 
-a text editor appears allowing you to type in a value. For a very small
+edit the value. Shift allows slower knob drags. Double clicking a knob returns
+to default value. If you click on the value, 
+a text editor appears allowing you to type in a value, or delete the value to 
+return to default. For a very small
 number of parameters, text entry isn't supported; in these cases no editor
 will appear on click.
 
@@ -63,6 +65,7 @@ menu and select a collection you want. "All plugins" choice removes any filterin
 The User Interface is exposed via a Screen Reader on macOS and Windows.
 Tab moves between elements, as expected. On the controls the arrow keys
 change values, with shift depressed change values in a smaller increment.
+Home and End will set a value to extrema, and delete will set it to default.
 On a given knob, Shift-F10 will activate the typein area allowing you to
 key in a value. As noted above, a small number of parameters do not support
 text-to-value; for those Shift-F10 will do nothing.
