@@ -144,6 +144,13 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
         {
             return getTextToValue(text);
         }
+
+        std::function<float()> getDefaultValueHandler{nullptr};
+        float getDefaultValue() const override {
+            if (getDefaultValueHandler)
+                return getDefaultValueHandler();
+            return 0;
+        }
     };
 
     //==============================================================================
