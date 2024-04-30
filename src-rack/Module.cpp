@@ -551,6 +551,8 @@ struct AWSkin
         CHRIS
     } menuOrdering{ALPHA};
 
+    std::string collection{"All"};
+
     void changeTo(Skin s, bool write)
     {
         skin = s;
@@ -574,6 +576,7 @@ struct AWSkin
         json_t *rootJ = json_object();
         json_object_set_new(rootJ, "defaultSkin", json_integer(skin));
         json_object_set_new(rootJ, "defaultMenuOrdering", json_integer(menuOrdering));
+        json_object_set_new(rootJ, "collection", json_string(collection.c_str()));
 
         FILE *f = std::fopen(defaultsFile.c_str(), "w");
         if (f)
@@ -608,6 +611,7 @@ struct AWSkin
             menuOrdering =
                 (MenuOrdering)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultMenuOrdering")
                     .value_or(ALPHA);
+            collection = sst::rackhelpers::json::jsonSafeGet<std::string>(rootJ, "collection").value_or("All");
         }
     }
 
@@ -1041,9 +1045,32 @@ struct AWJog : rack::Widget
         if (module && !module->lockedType && e.action == GLFW_PRESS &&
             e.button == GLFW_MOUSE_BUTTON_LEFT)
         {
-            // FIXME : move to a static helper somewhere
-            auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
-            pushFXChange(module, n);
+            std::unordered_set<std::string> coll;
+            if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
+                    coll = AirwinRegistry::namesByCollection[awSkin.collection];
+
+            if (coll.empty())
+            {
+                // FIXME : move to a static helper somewhere
+                auto n = AirwinRegistry::neighborIndexFor(module->selectedFX, dir);
+                pushFXChange(module, n);
+            }
+            else
+            {
+                int sidx = AirwinRegistry::nameToIndex[module->selectedFX];
+                auto nx = AirwinRegistry::neighborIndexFor(sidx, dir);
+                while (nx != sidx)
+                {
+                    auto rg = AirwinRegistry::registry[nx];
+                    if (coll.find(rg.name) != coll.end())
+                    {
+                        pushFXChange(module, nx);
+                        break;
+                    }
+
+                    nx = AirwinRegistry::neighborIndexFor(nx, dir);
+                }
+            }
             e.consume(this);
         }
     }
@@ -1333,6 +1360,9 @@ struct AWSelector : rack::Widget
         sf->selector = this;
         m->addChild(sf);
 
+        m->addChild(rack::createSubmenuItem("Filter by Collection", "",
+                                            [this](auto *m) { createCollectionMenu(m); }));
+
         m->addChild(new rack::MenuSeparator);
         buildCategoryMenuOnto(m);
     }
@@ -1363,14 +1393,21 @@ struct AWSelector : rack::Widget
         }
         else
         {
+            std::unordered_set<std::string> coll;
+            if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
+                coll = AirwinRegistry::namesByCollection[awSkin.collection];
+
             auto st = rack::string::lowercase(msg);
             std::map<std::string, int> result;
             for (auto i = 0U; i < AirwinRegistry::registry.size(); ++i)
             {
                 const auto &r = AirwinRegistry::registry[i];
-                auto tg = rack::string::lowercase(r.name);
-                if (tg.find(st) != std::string::npos)
-                    result[r.name] = i;
+                if (coll.empty() || (coll.find(r.name) != coll.end()))
+                {
+                    auto tg = rack::string::lowercase(r.name);
+                    if (tg.find(st) != std::string::npos)
+                        result[r.name] = i;
+                }
             }
 
             int maxEntries = 25;
@@ -1401,10 +1438,31 @@ struct AWSelector : rack::Widget
 
     void buildCategoryMenuOnto(rack::Menu *m)
     {
+        std::unordered_set<std::string> coll;
+        if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
+            coll = AirwinRegistry::namesByCollection[awSkin.collection];
+
         for (const auto &cat : AirwinRegistry::categories)
         {
-            m->addChild(rack::createSubmenuItem(
-                cat, "", [this, cat](auto *m) { createCategoryMenu(m, cat); }));
+            bool include = true;
+            if (!coll.empty())
+            {
+                for (const auto &reg : AirwinRegistry::registry)
+                {
+                    if (reg.category == cat)
+                    {
+                        if (coll.find(reg.name) != coll.end())
+                        {
+                            include = true;
+                        }
+                    }
+                }
+            }
+            if (include)
+            {
+                m->addChild(rack::createSubmenuItem(
+                    cat, "", [this, cat](auto *m) { createCategoryMenu(m, cat); }));
+            }
         }
 
         m->addChild(new rack::MenuSeparator);
@@ -1426,8 +1484,28 @@ struct AWSelector : rack::Widget
                                          CHECKMARK(awSkin.menuOrdering == AWSkin::CHRIS),
                                          []() { awSkin.changeOrderingTo(AWSkin::CHRIS); }));
     }
+    void createCollectionMenu(rack::Menu *m)
+    {
+        auto coll = awSkin.collection;
+        for (const auto &[c, _] : AirwinRegistry::namesByCollection)
+        {
+            m->addChild(rack::createMenuItem(c, CHECKMARK(coll == c), [cx = c](){
+                awSkin.collection = cx;
+                awSkin.writeConfig();
+            }));
+        }
+        m->addChild(new rack::MenuSeparator());
+        m->addChild(rack::createMenuItem("All Effects", CHECKMARK(coll == "All"), [](){
+            awSkin.collection = "All";
+            awSkin.writeConfig();
+        }));
+    }
     void createCategoryMenu(rack::Menu *m, const std::string &cat)
     {
+        std::unordered_set<std::string> coll;
+        if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
+            coll = AirwinRegistry::namesByCollection[awSkin.collection];
+
         if (awSkin.menuOrdering == AWSkin::CHRIS)
         {
             int idx = 0;
@@ -1447,11 +1525,14 @@ struct AWSelector : rack::Widget
             {
                 const auto &r = AirwinRegistry::registry[ridx];
                 const auto &name = r.name;
-                auto checked = name == module->selectedFX;
-                auto mi = rack::createMenuItem(name, CHECKMARK(checked),
-                                               [this, i = ridx]() { pushFXChange(module, i); });
-                mi->disabled = module->lockedType;
-                m->addChild(mi);
+                if (coll.empty() || (coll.find(name) != coll.end()))
+                {
+                    auto checked = name == module->selectedFX;
+                    auto mi = rack::createMenuItem(name, CHECKMARK(checked),
+                                                   [this, i = ridx]() { pushFXChange(module, i); });
+                    mi->disabled = module->lockedType;
+                    m->addChild(mi);
+                }
             }
         }
         else
@@ -1469,10 +1550,13 @@ struct AWSelector : rack::Widget
             for (const auto &[name, idx] : contents)
             {
                 auto checked = name == module->selectedFX;
-                auto mi = rack::createMenuItem(name, CHECKMARK(checked),
-                                               [this, i = idx]() { pushFXChange(module, i); });
-                mi->disabled = module->lockedType;
-                m->addChild(mi);
+                if (coll.empty() || (coll.find(name) != coll.end()))
+                {
+                    auto mi = rack::createMenuItem(name, CHECKMARK(checked),
+                                                   [this, i = idx]() { pushFXChange(module, i); });
+                    mi->disabled = module->lockedType;
+                    m->addChild(mi);
+                }
             }
         }
     }
@@ -1816,7 +1900,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
                 nvgSave(vg);
                 nvgScale(vg, APP->scene->rackScroll->getZoom(), APP->scene->rackScroll->getZoom());
-                nvgFontSize(vg, 10);
+                nvgFontSize(vg, 12);
                 nvgFontFaceId(vg, fidm);
                 nvgTextBox(vg, margin + 2, bnd[3] + margin + 2,
                            box.size.x / APP->scene->rackScroll->getZoom() - 2 * (margin + 2),
