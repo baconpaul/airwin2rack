@@ -8,14 +8,14 @@
 #define __ShortBuss_ShortBuss_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::ShortBuss {
+namespace airwinconsolidated::ShortBuss {
 enum {
 	kParamA = 0,
 	kParamB = 1,

@@ -6,7 +6,7 @@
 #ifndef __Dark_H
 #include "Dark.h"
 #endif
-namespace airwin2rack::Dark {
+namespace airwinconsolidated::Dark {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dark(audioMaster);}
 

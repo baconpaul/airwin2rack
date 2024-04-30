@@ -6,7 +6,7 @@
 #ifndef __Holt_H
 #include "Holt.h"
 #endif
-namespace airwin2rack::Holt {
+namespace airwinconsolidated::Holt {
 
 void Holt::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -8,14 +8,14 @@
 #define __Console6Buss_Console6Buss_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console6Buss {
+namespace airwinconsolidated::Console6Buss {
 enum {
 	kParamA = 0,
   kNumParameters = 1

@@ -6,7 +6,7 @@
 #ifndef __MidSide_H
 #include "MidSide.h"
 #endif
-namespace airwin2rack::MidSide {
+namespace airwinconsolidated::MidSide {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MidSide(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __DitherFloat_H
 #include "DitherFloat.h"
 #endif
-namespace airwin2rack::DitherFloat {
+namespace airwinconsolidated::DitherFloat {
 
 void DitherFloat::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

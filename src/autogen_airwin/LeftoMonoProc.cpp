@@ -6,7 +6,7 @@
 #ifndef __LeftoMono_H
 #include "LeftoMono.h"
 #endif
-namespace airwin2rack::LeftoMono {
+namespace airwinconsolidated::LeftoMono {
 
 void LeftoMono::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

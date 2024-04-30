@@ -6,7 +6,7 @@
 #ifndef __PDBuss_H
 #include "PDBuss.h"
 #endif
-namespace airwin2rack::PDBuss {
+namespace airwinconsolidated::PDBuss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PDBuss(audioMaster);}
 

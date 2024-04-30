@@ -6,7 +6,7 @@
 #ifndef __Hull_H
 #include "Hull.h"
 #endif
-namespace airwin2rack::Hull {
+namespace airwinconsolidated::Hull {
 
 void Hull::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __DubCenter_H
 #include "DubCenter.h"
 #endif
-namespace airwin2rack::DubCenter {
+namespace airwinconsolidated::DubCenter {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DubCenter(audioMaster);}
 

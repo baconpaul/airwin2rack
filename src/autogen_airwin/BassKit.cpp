@@ -6,7 +6,7 @@
 #ifndef __BassKit_H
 #include "BassKit.h"
 #endif
-namespace airwin2rack::BassKit {
+namespace airwinconsolidated::BassKit {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BassKit(audioMaster);}
 

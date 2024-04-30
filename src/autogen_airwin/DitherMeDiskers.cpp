@@ -6,7 +6,7 @@
 #ifndef __DitherMeDiskers_H
 #include "DitherMeDiskers.h"
 #endif
-namespace airwin2rack::DitherMeDiskers {
+namespace airwinconsolidated::DitherMeDiskers {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DitherMeDiskers(audioMaster);}
 

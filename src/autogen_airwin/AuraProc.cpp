@@ -6,7 +6,7 @@
 #ifndef __Aura_H
 #include "Aura.h"
 #endif
-namespace airwin2rack::Aura {
+namespace airwinconsolidated::Aura {
 
 void Aura::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

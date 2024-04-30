@@ -6,7 +6,7 @@
 #ifndef __YNotNotch_H
 #include "YNotNotch.h"
 #endif
-namespace airwin2rack::YNotNotch {
+namespace airwinconsolidated::YNotNotch {
 
 void YNotNotch::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

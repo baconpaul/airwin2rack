@@ -6,7 +6,7 @@
 #ifndef __Console7Crunch_H
 #include "Console7Crunch.h"
 #endif
-namespace airwin2rack::Console7Crunch {
+namespace airwinconsolidated::Console7Crunch {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console7Crunch(audioMaster);}
 

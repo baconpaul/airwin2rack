@@ -6,7 +6,7 @@
 #ifndef __MoNoam_H
 #include "MoNoam.h"
 #endif
-namespace airwin2rack::MoNoam {
+namespace airwinconsolidated::MoNoam {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MoNoam(audioMaster);}
 

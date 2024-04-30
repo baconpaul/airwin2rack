@@ -6,7 +6,7 @@
 #ifndef __Verbity_H
 #include "Verbity.h"
 #endif
-namespace airwin2rack::Verbity {
+namespace airwinconsolidated::Verbity {
 
 void Verbity::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

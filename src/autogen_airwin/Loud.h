@@ -8,14 +8,14 @@
 #define __Loud_Loud_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Loud {
+namespace airwinconsolidated::Loud {
 enum {
 	kParamA = 0,
 	kParamB = 1,

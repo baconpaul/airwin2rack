@@ -6,7 +6,7 @@
 #ifndef __MoNoam_H
 #include "MoNoam.h"
 #endif
-namespace airwin2rack::MoNoam {
+namespace airwinconsolidated::MoNoam {
 
 void MoNoam::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

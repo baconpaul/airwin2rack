@@ -6,7 +6,7 @@
 #ifndef __TexturizeMS_H
 #include "TexturizeMS.h"
 #endif
-namespace airwin2rack::TexturizeMS {
+namespace airwinconsolidated::TexturizeMS {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TexturizeMS(audioMaster);}
 

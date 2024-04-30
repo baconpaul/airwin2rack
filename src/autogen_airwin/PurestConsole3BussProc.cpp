@@ -6,7 +6,7 @@
 #ifndef __PurestConsole3Buss_H
 #include "PurestConsole3Buss.h"
 #endif
-namespace airwin2rack::PurestConsole3Buss {
+namespace airwinconsolidated::PurestConsole3Buss {
 
 void PurestConsole3Buss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Dark_H
 #include "Dark.h"
 #endif
-namespace airwin2rack::Dark {
+namespace airwinconsolidated::Dark {
 
 void Dark::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

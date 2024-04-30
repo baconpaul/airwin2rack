@@ -6,7 +6,7 @@
 #ifndef __AQuickVoiceClip_H
 #include "AQuickVoiceClip.h"
 #endif
-namespace airwin2rack::AQuickVoiceClip {
+namespace airwinconsolidated::AQuickVoiceClip {
 
 void AQuickVoiceClip::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

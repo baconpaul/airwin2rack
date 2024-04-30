@@ -6,7 +6,7 @@
 #ifndef __Gain_H
 #include "MidAmp.h"
 #endif
-namespace airwin2rack::MidAmp {
+namespace airwinconsolidated::MidAmp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MidAmp(audioMaster);}
 

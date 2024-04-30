@@ -6,7 +6,7 @@
 #ifndef __NaturalizeDither_H
 #include "NaturalizeDither.h"
 #endif
-namespace airwin2rack::NaturalizeDither {
+namespace airwinconsolidated::NaturalizeDither {
 
 void NaturalizeDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

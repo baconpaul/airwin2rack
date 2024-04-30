@@ -6,7 +6,7 @@
 #ifndef __ToneSlant_H
 #include "ToneSlant.h"
 #endif
-namespace airwin2rack::ToneSlant {
+namespace airwinconsolidated::ToneSlant {
 
 void ToneSlant::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

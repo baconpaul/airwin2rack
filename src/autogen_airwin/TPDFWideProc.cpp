@@ -6,7 +6,7 @@
 #ifndef __TPDFWide_H
 #include "TPDFWide.h"
 #endif
-namespace airwin2rack::TPDFWide {
+namespace airwinconsolidated::TPDFWide {
 
 void TPDFWide::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

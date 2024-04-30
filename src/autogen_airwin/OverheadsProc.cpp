@@ -6,7 +6,7 @@
 #ifndef __Overheads_H
 #include "Overheads.h"
 #endif
-namespace airwin2rack::Overheads {
+namespace airwinconsolidated::Overheads {
 
 void Overheads::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

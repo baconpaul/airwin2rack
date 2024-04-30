@@ -6,7 +6,7 @@
 #ifndef __Remap_H
 #include "Remap.h"
 #endif
-namespace airwin2rack::Remap {
+namespace airwinconsolidated::Remap {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Remap(audioMaster);}
 

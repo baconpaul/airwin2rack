@@ -6,7 +6,7 @@
 #ifndef __MidSide_H
 #include "MidSide.h"
 #endif
-namespace airwin2rack::MidSide {
+namespace airwinconsolidated::MidSide {
 
 void MidSide::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

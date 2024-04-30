@@ -6,7 +6,7 @@
 #ifndef __LeftoMono_H
 #include "LeftoMono.h"
 #endif
-namespace airwin2rack::LeftoMono {
+namespace airwinconsolidated::LeftoMono {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new LeftoMono(audioMaster);}
 

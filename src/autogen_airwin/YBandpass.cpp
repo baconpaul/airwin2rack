@@ -6,7 +6,7 @@
 #ifndef __YBandpass_H
 #include "YBandpass.h"
 #endif
-namespace airwin2rack::YBandpass {
+namespace airwinconsolidated::YBandpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new YBandpass(audioMaster);}
 

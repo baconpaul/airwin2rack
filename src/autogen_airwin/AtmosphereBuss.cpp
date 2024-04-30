@@ -6,7 +6,7 @@
 #ifndef __AtmosphereBuss_H
 #include "AtmosphereBuss.h"
 #endif
-namespace airwin2rack::AtmosphereBuss {
+namespace airwinconsolidated::AtmosphereBuss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new AtmosphereBuss(audioMaster);}
 

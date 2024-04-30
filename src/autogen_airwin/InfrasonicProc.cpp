@@ -6,7 +6,7 @@
 #ifndef __Infrasonic_H
 #include "Infrasonic.h"
 #endif
-namespace airwin2rack::Infrasonic {
+namespace airwinconsolidated::Infrasonic {
 
 void Infrasonic::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

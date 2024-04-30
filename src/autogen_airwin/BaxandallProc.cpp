@@ -6,7 +6,7 @@
 #ifndef __Baxandall_H
 #include "Baxandall.h"
 #endif
-namespace airwin2rack::Baxandall {
+namespace airwinconsolidated::Baxandall {
 
 void Baxandall::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

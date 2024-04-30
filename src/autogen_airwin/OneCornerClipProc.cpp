@@ -6,7 +6,7 @@
 #ifndef __OneCornerClip_H
 #include "OneCornerClip.h"
 #endif
-namespace airwin2rack::OneCornerClip {
+namespace airwinconsolidated::OneCornerClip {
 
 void OneCornerClip::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

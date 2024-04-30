@@ -6,7 +6,7 @@
 #ifndef __Distance_H
 #include "Distance.h"
 #endif
-namespace airwin2rack::Distance {
+namespace airwinconsolidated::Distance {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Distance(audioMaster);}
 

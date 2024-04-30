@@ -6,7 +6,7 @@
 #ifndef __Cabs_H
 #include "Cabs.h"
 #endif
-namespace airwin2rack::Cabs {
+namespace airwinconsolidated::Cabs {
 
 void Cabs::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

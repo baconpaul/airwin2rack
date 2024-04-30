@@ -8,14 +8,14 @@
 #define __Melt_Melt_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Melt {
+namespace airwinconsolidated::Melt {
 enum {
 	kParamA = 0,
 	kParamB = 1,

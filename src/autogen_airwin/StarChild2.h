@@ -8,14 +8,14 @@
 #define __StarChild2_StarChild2_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::StarChild2 {
+namespace airwinconsolidated::StarChild2 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

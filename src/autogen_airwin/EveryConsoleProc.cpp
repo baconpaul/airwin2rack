@@ -6,7 +6,7 @@
 #ifndef __EveryConsole_H
 #include "EveryConsole.h"
 #endif
-namespace airwin2rack::EveryConsole {
+namespace airwinconsolidated::EveryConsole {
 
 void EveryConsole::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

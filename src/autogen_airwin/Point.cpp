@@ -6,7 +6,7 @@
 #ifndef __Point_H
 #include "Point.h"
 #endif
-namespace airwin2rack::Point {
+namespace airwinconsolidated::Point {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Point(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __ZRegion_H
 #include "ZRegion.h"
 #endif
-namespace airwin2rack::ZRegion {
+namespace airwinconsolidated::ZRegion {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZRegion(audioMaster);}
 

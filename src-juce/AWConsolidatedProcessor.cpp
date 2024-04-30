@@ -36,7 +36,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
                          .withInput("Input", juce::AudioChannelSet::stereo(), true)
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true))
 {
-    Airwin2RackBase::defaultSampleRate = 48000;
+    AirwinConsolidatedBase::defaultSampleRate = 48000;
 
     // Multiple calls to addParameter here
     for (int i = 0; i < nAWParams; ++i)
@@ -127,7 +127,7 @@ void AWConsolidatedAudioProcessor::changeProgramName(int index, const juce::Stri
 //==============================================================================
 void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
 {
-    Airwin2RackBase::defaultSampleRate = sr;
+    AirwinConsolidatedBase::defaultSampleRate = sr;
     if (awProcessor)
         awProcessor->setSampleRate(sr);
     isPlaying = true;

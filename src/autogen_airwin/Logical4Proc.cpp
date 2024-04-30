@@ -6,7 +6,7 @@
 #ifndef __Logical4_H
 #include "Logical4.h"
 #endif
-namespace airwin2rack::Logical4 {
+namespace airwinconsolidated::Logical4 {
 
 void Logical4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

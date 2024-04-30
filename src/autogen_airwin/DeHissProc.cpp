@@ -6,7 +6,7 @@
 #ifndef __DeHiss_H
 #include "DeHiss.h"
 #endif
-namespace airwin2rack::DeHiss {
+namespace airwinconsolidated::DeHiss {
 
 void DeHiss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

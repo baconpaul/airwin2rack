@@ -6,7 +6,7 @@
 #ifndef __Console8SubIn_H
 #include "Console8SubIn.h"
 #endif
-namespace airwin2rack::Console8SubIn {
+namespace airwinconsolidated::Console8SubIn {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8SubIn(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Bite_H
 #include "Bite.h"
 #endif
-namespace airwin2rack::Bite {
+namespace airwinconsolidated::Bite {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Bite(audioMaster);}
 

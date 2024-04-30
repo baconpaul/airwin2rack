@@ -6,7 +6,7 @@
 #ifndef __Nikola_H
 #include "Nikola.h"
 #endif
-namespace airwin2rack::Nikola {
+namespace airwinconsolidated::Nikola {
 
 void Nikola::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

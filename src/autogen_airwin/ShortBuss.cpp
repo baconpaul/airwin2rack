@@ -6,7 +6,7 @@
 #ifndef __ShortBuss_H
 #include "ShortBuss.h"
 #endif
-namespace airwin2rack::ShortBuss {
+namespace airwinconsolidated::ShortBuss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ShortBuss(audioMaster);}
 

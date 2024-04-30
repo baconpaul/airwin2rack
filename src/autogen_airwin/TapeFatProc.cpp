@@ -6,7 +6,7 @@
 #ifndef __TapeFat_H
 #include "TapeFat.h"
 #endif
-namespace airwin2rack::TapeFat {
+namespace airwinconsolidated::TapeFat {
 
 void TapeFat::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

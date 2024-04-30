@@ -6,7 +6,7 @@
 #ifndef __ADClip8_H
 #include "ADClip8.h"
 #endif
-namespace airwin2rack::ADClip8 {
+namespace airwinconsolidated::ADClip8 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ADClip8(audioMaster);}
 

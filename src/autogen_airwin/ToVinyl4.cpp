@@ -6,7 +6,7 @@
 #ifndef __ToVinyl4_H
 #include "ToVinyl4.h"
 #endif
-namespace airwin2rack::ToVinyl4 {
+namespace airwinconsolidated::ToVinyl4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ToVinyl4(audioMaster);}
 

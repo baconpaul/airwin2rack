@@ -8,14 +8,14 @@
 #define __Console8LiteBuss_Console8LiteBuss_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console8LiteBuss {
+namespace airwinconsolidated::Console8LiteBuss {
 enum {
 	kParamA = 0,
   kNumParameters = 1

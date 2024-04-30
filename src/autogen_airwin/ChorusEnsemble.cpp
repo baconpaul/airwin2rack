@@ -6,7 +6,7 @@
 #ifndef __ChorusEnsemble_H
 #include "ChorusEnsemble.h"
 #endif
-namespace airwin2rack::ChorusEnsemble {
+namespace airwinconsolidated::ChorusEnsemble {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ChorusEnsemble(audioMaster);}
 

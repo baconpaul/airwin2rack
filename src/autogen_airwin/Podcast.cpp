@@ -6,7 +6,7 @@
 #ifndef __Podcast_H
 #include "Podcast.h"
 #endif
-namespace airwin2rack::Podcast {
+namespace airwinconsolidated::Podcast {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Podcast(audioMaster);}
 

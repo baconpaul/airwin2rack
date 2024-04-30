@@ -6,7 +6,7 @@
 #ifndef __PurestWarm_H
 #include "PurestWarm.h"
 #endif
-namespace airwin2rack::PurestWarm {
+namespace airwinconsolidated::PurestWarm {
 
 void PurestWarm::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

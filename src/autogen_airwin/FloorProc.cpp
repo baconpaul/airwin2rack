@@ -6,7 +6,7 @@
 #ifndef __Floor_H
 #include "Floor.h"
 #endif
-namespace airwin2rack::Floor {
+namespace airwinconsolidated::Floor {
 
 void Floor::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

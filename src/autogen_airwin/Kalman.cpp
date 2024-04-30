@@ -6,7 +6,7 @@
 #ifndef __Kalman_H
 #include "Kalman.h"
 #endif
-namespace airwin2rack::Kalman {
+namespace airwinconsolidated::Kalman {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Kalman(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Stonefire_H
 #include "Stonefire.h"
 #endif
-namespace airwin2rack::Stonefire {
+namespace airwinconsolidated::Stonefire {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Stonefire(audioMaster);}
 

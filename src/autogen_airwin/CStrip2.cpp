@@ -6,7 +6,7 @@
 #ifndef __CStrip2_H
 #include "CStrip2.h"
 #endif
-namespace airwin2rack::CStrip2 {
+namespace airwinconsolidated::CStrip2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new CStrip2(audioMaster);}
 

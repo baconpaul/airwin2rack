@@ -6,7 +6,7 @@
 #ifndef __XLowpass_H
 #include "XLowpass.h"
 #endif
-namespace airwin2rack::XLowpass {
+namespace airwinconsolidated::XLowpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new XLowpass(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Kalman_H
 #include "Kalman.h"
 #endif
-namespace airwin2rack::Kalman {
+namespace airwinconsolidated::Kalman {
 
 void Kalman::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

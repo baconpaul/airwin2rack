@@ -6,7 +6,7 @@
 #ifndef __PeaksOnly_H
 #include "PeaksOnly.h"
 #endif
-namespace airwin2rack::PeaksOnly {
+namespace airwinconsolidated::PeaksOnly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PeaksOnly(audioMaster);}
 

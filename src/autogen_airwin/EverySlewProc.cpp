@@ -6,7 +6,7 @@
 #ifndef __EverySlew_H
 #include "EverySlew.h"
 #endif
-namespace airwin2rack::EverySlew {
+namespace airwinconsolidated::EverySlew {
 
 void EverySlew::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

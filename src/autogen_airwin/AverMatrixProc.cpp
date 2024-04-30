@@ -6,7 +6,7 @@
 #ifndef __AverMatrix_H
 #include "AverMatrix.h"
 #endif
-namespace airwin2rack::AverMatrix {
+namespace airwinconsolidated::AverMatrix {
 
 void AverMatrix::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

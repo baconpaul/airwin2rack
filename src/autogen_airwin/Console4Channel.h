@@ -8,7 +8,7 @@
 #define __Console4Channel_Console4Channel_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
@@ -17,7 +17,7 @@
 
 
 // TODO: Change kFirstParameter to your first parameter and add any additional parameters.
-namespace airwin2rack::Console4Channel {
+namespace airwinconsolidated::Console4Channel {
 enum {
   kConsole4ChannelParam = 0,
   kNumParameters = 1

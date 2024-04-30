@@ -6,7 +6,7 @@
 #ifndef __AutoPan_H
 #include "AutoPan.h"
 #endif
-namespace airwin2rack::AutoPan {
+namespace airwinconsolidated::AutoPan {
 
 void AutoPan::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

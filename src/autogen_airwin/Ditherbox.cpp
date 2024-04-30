@@ -6,7 +6,7 @@
 #ifndef __Ditherbox_H
 #include "Ditherbox.h"
 #endif
-namespace airwin2rack::Ditherbox {
+namespace airwinconsolidated::Ditherbox {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Ditherbox(audioMaster);}
 

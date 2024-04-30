@@ -8,14 +8,14 @@
 #define __ZRegion_ZRegion_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::ZRegion {
+namespace airwinconsolidated::ZRegion {
 enum {
 	kParamA = 0,
 	kParamB = 1,

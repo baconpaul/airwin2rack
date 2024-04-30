@@ -6,7 +6,7 @@
 #ifndef __Tremolo_H
 #include "Tremolo.h"
 #endif
-namespace airwin2rack::Tremolo {
+namespace airwinconsolidated::Tremolo {
 
 void Tremolo::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

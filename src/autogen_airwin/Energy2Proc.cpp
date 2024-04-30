@@ -6,7 +6,7 @@
 #ifndef __Energy2_H
 #include "Energy2.h"
 #endif
-namespace airwin2rack::Energy2 {
+namespace airwinconsolidated::Energy2 {
 
 void Energy2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

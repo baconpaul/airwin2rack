@@ -6,7 +6,7 @@
 #ifndef __Remap_H
 #include "Remap.h"
 #endif
-namespace airwin2rack::Remap {
+namespace airwinconsolidated::Remap {
 
 void Remap::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

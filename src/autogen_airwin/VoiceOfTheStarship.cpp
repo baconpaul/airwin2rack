@@ -6,7 +6,7 @@
 #ifndef __VoiceOfTheStarship_H
 #include "VoiceOfTheStarship.h"
 #endif
-namespace airwin2rack::VoiceOfTheStarship {
+namespace airwinconsolidated::VoiceOfTheStarship {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new VoiceOfTheStarship(audioMaster);}
 

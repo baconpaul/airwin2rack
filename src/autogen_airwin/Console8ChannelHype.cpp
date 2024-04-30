@@ -6,7 +6,7 @@
 #ifndef __Console8ChannelHype_H
 #include "Console8ChannelHype.h"
 #endif
-namespace airwin2rack::Console8ChannelHype {
+namespace airwinconsolidated::Console8ChannelHype {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8ChannelHype(audioMaster);}
 

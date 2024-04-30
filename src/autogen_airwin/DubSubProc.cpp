@@ -6,7 +6,7 @@
 #ifndef __DubSub_H
 #include "DubSub.h"
 #endif
-namespace airwin2rack::DubSub {
+namespace airwinconsolidated::DubSub {
 
 void DubSub::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __DeHiss_H
 #include "DeHiss.h"
 #endif
-namespace airwin2rack::DeHiss {
+namespace airwinconsolidated::DeHiss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DeHiss(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Pear_H
 #include "Pear.h"
 #endif
-namespace airwin2rack::Pear {
+namespace airwinconsolidated::Pear {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pear(audioMaster);}
 

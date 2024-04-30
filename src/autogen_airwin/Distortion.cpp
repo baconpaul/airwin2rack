@@ -6,7 +6,7 @@
 #ifndef __Distortion_H
 #include "Distortion.h"
 #endif
-namespace airwin2rack::Distortion {
+namespace airwinconsolidated::Distortion {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Distortion(audioMaster);}
 

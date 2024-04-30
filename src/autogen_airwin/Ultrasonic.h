@@ -8,14 +8,14 @@
 #define __Ultrasonic_Ultrasonic_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Ultrasonic {
+namespace airwinconsolidated::Ultrasonic {
 enum {
   kNumParameters = 0
 }; //

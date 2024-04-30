@@ -6,7 +6,7 @@
 #ifndef __Balanced_H
 #include "Balanced.h"
 #endif
-namespace airwin2rack::Balanced {
+namespace airwinconsolidated::Balanced {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Balanced(audioMaster);}
 

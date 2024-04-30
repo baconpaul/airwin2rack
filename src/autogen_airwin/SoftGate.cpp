@@ -6,7 +6,7 @@
 #ifndef __SoftGate_H
 #include "SoftGate.h"
 #endif
-namespace airwin2rack::SoftGate {
+namespace airwinconsolidated::SoftGate {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SoftGate(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Wider_H
 #include "Wider.h"
 #endif
-namespace airwin2rack::Wider {
+namespace airwinconsolidated::Wider {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Wider(audioMaster);}
 

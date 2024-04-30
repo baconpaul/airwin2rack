@@ -6,7 +6,7 @@
 #ifndef __EQ_H
 #include "EQ.h"
 #endif
-namespace airwin2rack::EQ {
+namespace airwinconsolidated::EQ {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new EQ(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Deckwrecka_H
 #include "Deckwrecka.h"
 #endif
-namespace airwin2rack::Deckwrecka {
+namespace airwinconsolidated::Deckwrecka {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Deckwrecka(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __ADClip8_H
 #include "ADClip8.h"
 #endif
-namespace airwin2rack::ADClip8 {
+namespace airwinconsolidated::ADClip8 {
 
 void ADClip8::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

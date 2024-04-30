@@ -6,7 +6,7 @@
 #ifndef __ToTape5_H
 #include "ToTape5.h"
 #endif
-namespace airwin2rack::ToTape5 {
+namespace airwinconsolidated::ToTape5 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ToTape5(audioMaster);}
 

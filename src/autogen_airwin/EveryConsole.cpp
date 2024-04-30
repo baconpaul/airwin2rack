@@ -6,7 +6,7 @@
 #ifndef __EveryConsole_H
 #include "EveryConsole.h"
 #endif
-namespace airwin2rack::EveryConsole {
+namespace airwinconsolidated::EveryConsole {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new EveryConsole(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Mojo_H
 #include "Mojo.h"
 #endif
-namespace airwin2rack::Mojo {
+namespace airwinconsolidated::Mojo {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Mojo(audioMaster);}
 

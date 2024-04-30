@@ -6,7 +6,7 @@
 #ifndef __Sweeten_H
 #include "Sweeten.h"
 #endif
-namespace airwin2rack::Sweeten {
+namespace airwinconsolidated::Sweeten {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Sweeten(audioMaster);}
 

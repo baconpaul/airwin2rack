@@ -6,7 +6,7 @@
 #ifndef __ZBandpass_H
 #include "ZBandpass.h"
 #endif
-namespace airwin2rack::ZBandpass {
+namespace airwinconsolidated::ZBandpass {
 
 void ZBandpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

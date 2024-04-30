@@ -6,7 +6,7 @@
 #ifndef __ClipOnly2_H
 #include "ClipOnly2.h"
 #endif
-namespace airwin2rack::ClipOnly2 {
+namespace airwinconsolidated::ClipOnly2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ClipOnly2(audioMaster);}
 

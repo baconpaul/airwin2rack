@@ -6,7 +6,7 @@
 #ifndef __ResEQ_H
 #include "ResEQ.h"
 #endif
-namespace airwin2rack::ResEQ {
+namespace airwinconsolidated::ResEQ {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ResEQ(audioMaster);}
 

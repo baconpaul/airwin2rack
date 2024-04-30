@@ -6,7 +6,7 @@
 #ifndef __SideDull_H
 #include "SideDull.h"
 #endif
-namespace airwin2rack::SideDull {
+namespace airwinconsolidated::SideDull {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SideDull(audioMaster);}
 

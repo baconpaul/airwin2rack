@@ -6,7 +6,7 @@
 #ifndef __YNotLowpass_H
 #include "YNotLowpass.h"
 #endif
-namespace airwin2rack::YNotLowpass {
+namespace airwinconsolidated::YNotLowpass {
 
 void YNotLowpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __YNotHighpass_H
 #include "YNotHighpass.h"
 #endif
-namespace airwin2rack::YNotHighpass {
+namespace airwinconsolidated::YNotHighpass {
 
 void YNotHighpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

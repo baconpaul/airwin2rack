@@ -6,7 +6,7 @@
 #ifndef __DrumSlam_H
 #include "DrumSlam.h"
 #endif
-namespace airwin2rack::DrumSlam {
+namespace airwinconsolidated::DrumSlam {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DrumSlam(audioMaster);}
 

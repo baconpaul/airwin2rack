@@ -6,7 +6,7 @@
 #ifndef __ChromeOxide_H
 #include "ChromeOxide.h"
 #endif
-namespace airwin2rack::ChromeOxide {
+namespace airwinconsolidated::ChromeOxide {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ChromeOxide(audioMaster);}
 

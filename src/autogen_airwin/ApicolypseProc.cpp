@@ -6,7 +6,7 @@
 #ifndef __Apicolypse_H
 #include "Apicolypse.h"
 #endif
-namespace airwin2rack::Apicolypse {
+namespace airwinconsolidated::Apicolypse {
 
 void Apicolypse::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

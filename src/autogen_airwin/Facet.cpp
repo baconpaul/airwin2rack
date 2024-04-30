@@ -6,7 +6,7 @@
 #ifndef __Facet_H
 #include "Facet.h"
 #endif
-namespace airwin2rack::Facet {
+namespace airwinconsolidated::Facet {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Facet(audioMaster);}
 

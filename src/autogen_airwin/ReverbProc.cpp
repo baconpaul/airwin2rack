@@ -6,7 +6,7 @@
 #ifndef __Reverb_H
 #include "Reverb.h"
 #endif
-namespace airwin2rack::Reverb {
+namespace airwinconsolidated::Reverb {
 
 void Reverb::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

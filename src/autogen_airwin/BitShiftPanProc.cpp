@@ -6,7 +6,7 @@
 #ifndef __BitShiftPan_H
 #include "BitShiftPan.h"
 #endif
-namespace airwin2rack::BitShiftPan {
+namespace airwinconsolidated::BitShiftPan {
 
 void BitShiftPan::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Noise_H
 #include "Noise.h"
 #endif
-namespace airwin2rack::Noise {
+namespace airwinconsolidated::Noise {
 
 void Noise::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

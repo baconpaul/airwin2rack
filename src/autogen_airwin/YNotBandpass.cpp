@@ -6,7 +6,7 @@
 #ifndef __YNotBandpass_H
 #include "YNotBandpass.h"
 #endif
-namespace airwin2rack::YNotBandpass {
+namespace airwinconsolidated::YNotBandpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new YNotBandpass(audioMaster);}
 

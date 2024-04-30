@@ -6,7 +6,7 @@
 #ifndef __NotJustAnotherDither_H
 #include "NotJustAnotherDither.h"
 #endif
-namespace airwin2rack::NotJustAnotherDither {
+namespace airwinconsolidated::NotJustAnotherDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new NotJustAnotherDither(audioMaster);}
 

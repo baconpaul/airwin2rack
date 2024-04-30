@@ -6,7 +6,7 @@
 #ifndef __Srsly_H
 #include "Srsly.h"
 #endif
-namespace airwin2rack::Srsly {
+namespace airwinconsolidated::Srsly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Srsly(audioMaster);}
 

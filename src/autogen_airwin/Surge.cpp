@@ -6,7 +6,7 @@
 #ifndef __Surge_H
 #include "Surge.h"
 #endif
-namespace airwin2rack::Surge {
+namespace airwinconsolidated::Surge {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Surge(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __BassDrive_H
 #include "BassDrive.h"
 #endif
-namespace airwin2rack::BassDrive {
+namespace airwinconsolidated::BassDrive {
 
 void BassDrive::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

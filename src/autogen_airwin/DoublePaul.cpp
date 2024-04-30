@@ -6,7 +6,7 @@
 #ifndef __DoublePaul_H
 #include "DoublePaul.h"
 #endif
-namespace airwin2rack::DoublePaul {
+namespace airwinconsolidated::DoublePaul {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DoublePaul(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Hull_H
 #include "Hull.h"
 #endif
-namespace airwin2rack::Hull {
+namespace airwinconsolidated::Hull {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Hull(audioMaster);}
 

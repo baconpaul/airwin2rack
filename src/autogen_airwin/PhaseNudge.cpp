@@ -6,7 +6,7 @@
 #ifndef __PhaseNudge_H
 #include "PhaseNudge.h"
 #endif
-namespace airwin2rack::PhaseNudge {
+namespace airwinconsolidated::PhaseNudge {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PhaseNudge(audioMaster);}
 

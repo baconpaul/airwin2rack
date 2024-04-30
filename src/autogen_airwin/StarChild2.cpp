@@ -6,7 +6,7 @@
 #ifndef __StarChild2_H
 #include "StarChild2.h"
 #endif
-namespace airwin2rack::StarChild2 {
+namespace airwinconsolidated::StarChild2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StarChild2(audioMaster);}
 

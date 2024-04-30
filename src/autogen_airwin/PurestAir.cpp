@@ -6,7 +6,7 @@
 #ifndef __PurestAir_H
 #include "PurestAir.h"
 #endif
-namespace airwin2rack::PurestAir {
+namespace airwinconsolidated::PurestAir {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestAir(audioMaster);}
 

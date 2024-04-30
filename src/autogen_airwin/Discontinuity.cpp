@@ -6,7 +6,7 @@
 #ifndef __Discontinuity_H
 #include "Discontinuity.h"
 #endif
-namespace airwin2rack::Discontinuity {
+namespace airwinconsolidated::Discontinuity {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Discontinuity(audioMaster);}
 

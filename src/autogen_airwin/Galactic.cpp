@@ -6,7 +6,7 @@
 #ifndef __Galactic_H
 #include "Galactic.h"
 #endif
-namespace airwin2rack::Galactic {
+namespace airwinconsolidated::Galactic {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Galactic(audioMaster);}
 

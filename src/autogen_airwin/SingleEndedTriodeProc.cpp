@@ -6,7 +6,7 @@
 #ifndef __SingleEndedTriode_H
 #include "SingleEndedTriode.h"
 #endif
-namespace airwin2rack::SingleEndedTriode {
+namespace airwinconsolidated::SingleEndedTriode {
 
 void SingleEndedTriode::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Holt_H
 #include "Holt.h"
 #endif
-namespace airwin2rack::Holt {
+namespace airwinconsolidated::Holt {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Holt(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __PocketVerbs_H
 #include "PocketVerbs.h"
 #endif
-namespace airwin2rack::PocketVerbs {
+namespace airwinconsolidated::PocketVerbs {
 
 void PocketVerbs::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

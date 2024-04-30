@@ -8,14 +8,14 @@
 #define __PeaksOnly_PeaksOnly_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::PeaksOnly {
+namespace airwinconsolidated::PeaksOnly {
 enum {
   kNumParameters = 0
 }; //

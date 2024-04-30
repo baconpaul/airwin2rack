@@ -6,7 +6,7 @@
 #ifndef __ConsoleXSubOut_H
 #include "ConsoleXSubOut.h"
 #endif
-namespace airwin2rack::ConsoleXSubOut {
+namespace airwinconsolidated::ConsoleXSubOut {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ConsoleXSubOut(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Lowpass_H
 #include "Lowpass.h"
 #endif
-namespace airwin2rack::Lowpass {
+namespace airwinconsolidated::Lowpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Lowpass(audioMaster);}
 

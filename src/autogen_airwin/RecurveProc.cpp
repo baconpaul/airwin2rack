@@ -6,7 +6,7 @@
 #ifndef __Recurve_H
 #include "Recurve.h"
 #endif
-namespace airwin2rack::Recurve {
+namespace airwinconsolidated::Recurve {
 
 void Recurve::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

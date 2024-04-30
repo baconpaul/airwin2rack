@@ -6,7 +6,7 @@
 #ifndef __Righteous4_H
 #include "Righteous4.h"
 #endif
-namespace airwin2rack::Righteous4 {
+namespace airwinconsolidated::Righteous4 {
 
 void Righteous4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

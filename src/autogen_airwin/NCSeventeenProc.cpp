@@ -6,7 +6,7 @@
 #ifndef __NCSeventeen_H
 #include "NCSeventeen.h"
 #endif
-namespace airwin2rack::NCSeventeen {
+namespace airwinconsolidated::NCSeventeen {
 
 void NCSeventeen::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

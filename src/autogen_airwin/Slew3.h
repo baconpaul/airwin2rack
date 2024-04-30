@@ -8,14 +8,14 @@
 #define __Slew3_Slew3_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Slew3 {
+namespace airwinconsolidated::Slew3 {
 enum {
 	kParamA = 0,
   kNumParameters = 1

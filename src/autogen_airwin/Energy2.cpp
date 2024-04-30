@@ -6,7 +6,7 @@
 #ifndef __Energy2_H
 #include "Energy2.h"
 #endif
-namespace airwin2rack::Energy2 {
+namespace airwinconsolidated::Energy2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Energy2(audioMaster);}
 

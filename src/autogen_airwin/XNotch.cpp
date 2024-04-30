@@ -6,7 +6,7 @@
 #ifndef __XNotch_H
 #include "XNotch.h"
 #endif
-namespace airwin2rack::XNotch {
+namespace airwinconsolidated::XNotch {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new XNotch(audioMaster);}
 

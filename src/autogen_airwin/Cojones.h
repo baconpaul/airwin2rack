@@ -8,14 +8,14 @@
 #define __Cojones_Cojones_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Cojones {
+namespace airwinconsolidated::Cojones {
 enum {
 	kParamA = 0,
 	kParamB = 1,

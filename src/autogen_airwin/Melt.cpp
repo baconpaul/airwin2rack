@@ -6,7 +6,7 @@
 #ifndef __Melt_H
 #include "Melt.h"
 #endif
-namespace airwin2rack::Melt {
+namespace airwinconsolidated::Melt {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Melt(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Console9Channel_H
 #include "Console9Channel.h"
 #endif
-namespace airwin2rack::Console9Channel {
+namespace airwinconsolidated::Console9Channel {
 
 void Console9Channel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

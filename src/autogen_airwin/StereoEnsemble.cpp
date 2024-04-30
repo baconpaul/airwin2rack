@@ -6,7 +6,7 @@
 #ifndef __StereoEnsemble_H
 #include "StereoEnsemble.h"
 #endif
-namespace airwin2rack::StereoEnsemble {
+namespace airwinconsolidated::StereoEnsemble {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StereoEnsemble(audioMaster);}
 

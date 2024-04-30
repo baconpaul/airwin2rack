@@ -6,7 +6,7 @@
 #ifndef __Galactic_H
 #include "Galactic.h"
 #endif
-namespace airwin2rack::Galactic {
+namespace airwinconsolidated::Galactic {
 
 void Galactic::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

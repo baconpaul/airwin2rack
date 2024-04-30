@@ -6,7 +6,7 @@
 #ifndef __Spiral_H
 #include "Spiral.h"
 #endif
-namespace airwin2rack::Spiral {
+namespace airwinconsolidated::Spiral {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Spiral(audioMaster);}
 

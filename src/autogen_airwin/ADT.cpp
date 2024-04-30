@@ -6,7 +6,7 @@
 #ifndef __ADT_H
 #include "ADT.h"
 #endif
-namespace airwin2rack::ADT {
+namespace airwinconsolidated::ADT {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ADT(audioMaster);}
 

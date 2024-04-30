@@ -6,7 +6,7 @@
 #ifndef __Gain_H
 #include "Silhouette.h"
 #endif
-namespace airwin2rack::Silhouette {
+namespace airwinconsolidated::Silhouette {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Silhouette(audioMaster);}
 

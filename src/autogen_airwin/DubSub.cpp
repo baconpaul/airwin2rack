@@ -6,7 +6,7 @@
 #ifndef __DubSub_H
 #include "DubSub.h"
 #endif
-namespace airwin2rack::DubSub {
+namespace airwinconsolidated::DubSub {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DubSub(audioMaster);}
 

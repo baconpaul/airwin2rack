@@ -6,7 +6,7 @@
 #ifndef __Creature_H
 #include "Creature.h"
 #endif
-namespace airwin2rack::Creature {
+namespace airwinconsolidated::Creature {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Creature(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Weight_H
 #include "Weight.h"
 #endif
-namespace airwin2rack::Weight {
+namespace airwinconsolidated::Weight {
 
 void Weight::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

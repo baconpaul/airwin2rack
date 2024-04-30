@@ -6,7 +6,7 @@
 #ifndef __Hombre_H
 #include "Hombre.h"
 #endif
-namespace airwin2rack::Hombre {
+namespace airwinconsolidated::Hombre {
 
 void Hombre::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

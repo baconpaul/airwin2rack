@@ -8,7 +8,7 @@
 #define __Slew_Slew_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
@@ -16,7 +16,7 @@
 #include <math.h>
 
 // TODO: Change kFirstParameter to your first parameter and add any additional parameters.
-namespace airwin2rack::Slew {
+namespace airwinconsolidated::Slew {
 enum {
   kSlewParam = 0,
   kNumParameters = 1

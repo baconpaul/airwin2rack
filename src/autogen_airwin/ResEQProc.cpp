@@ -6,7 +6,7 @@
 #ifndef __ResEQ_H
 #include "ResEQ.h"
 #endif
-namespace airwin2rack::ResEQ {
+namespace airwinconsolidated::ResEQ {
 
 void ResEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

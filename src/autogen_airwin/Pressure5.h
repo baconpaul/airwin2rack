@@ -8,14 +8,14 @@
 #define __Pressure5_Pressure5_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Pressure5 {
+namespace airwinconsolidated::Pressure5 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

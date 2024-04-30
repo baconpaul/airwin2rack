@@ -8,14 +8,14 @@
 #define __Weight_Weight_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Weight {
+namespace airwinconsolidated::Weight {
 enum {
 	kParamA = 0,
 	kParamB = 1,

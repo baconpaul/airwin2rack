@@ -8,14 +8,14 @@
 #define __PurestConsole2Buss_PurestConsole2Buss_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::PurestConsole2Buss {
+namespace airwinconsolidated::PurestConsole2Buss {
 enum {
   kNumParameters = 0
 }; //

@@ -6,7 +6,7 @@
 #ifndef __Density2_H
 #include "Density2.h"
 #endif
-namespace airwin2rack::Density2 {
+namespace airwinconsolidated::Density2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Density2(audioMaster);}
 

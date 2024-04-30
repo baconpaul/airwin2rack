@@ -6,7 +6,7 @@
 #ifndef __FathomFive_H
 #include "FathomFive.h"
 #endif
-namespace airwin2rack::FathomFive {
+namespace airwinconsolidated::FathomFive {
 
 void FathomFive::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

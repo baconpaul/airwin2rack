@@ -6,7 +6,7 @@
 #ifndef __SlewOnly_H
 #include "SlewOnly.h"
 #endif
-namespace airwin2rack::SlewOnly {
+namespace airwinconsolidated::SlewOnly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SlewOnly(audioMaster);}
 

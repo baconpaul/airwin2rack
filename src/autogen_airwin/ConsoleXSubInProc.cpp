@@ -6,7 +6,7 @@
 #ifndef __ConsoleXSubIn_H
 #include "ConsoleXSubIn.h"
 #endif
-namespace airwin2rack::ConsoleXSubIn {
+namespace airwinconsolidated::ConsoleXSubIn {
 
 void ConsoleXSubIn::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __PaulWide_H
 #include "PaulWide.h"
 #endif
-namespace airwin2rack::PaulWide {
+namespace airwinconsolidated::PaulWide {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PaulWide(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Point_H
 #include "Point.h"
 #endif
-namespace airwin2rack::Point {
+namespace airwinconsolidated::Point {
 
 void Point::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

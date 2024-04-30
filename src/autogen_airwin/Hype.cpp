@@ -6,7 +6,7 @@
 #ifndef __Hype_H
 #include "Hype.h"
 #endif
-namespace airwin2rack::Hype {
+namespace airwinconsolidated::Hype {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Hype(audioMaster);}
 

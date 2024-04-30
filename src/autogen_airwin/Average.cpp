@@ -6,7 +6,7 @@
 #ifndef __Average_H
 #include "Average.h"
 #endif
-namespace airwin2rack::Average {
+namespace airwinconsolidated::Average {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Average(audioMaster);}
 

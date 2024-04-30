@@ -6,7 +6,7 @@
 #ifndef __DustBunny_H
 #include "DustBunny.h"
 #endif
-namespace airwin2rack::DustBunny {
+namespace airwinconsolidated::DustBunny {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DustBunny(audioMaster);}
 

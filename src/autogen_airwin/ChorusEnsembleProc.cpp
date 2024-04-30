@@ -6,7 +6,7 @@
 #ifndef __ChorusEnsemble_H
 #include "ChorusEnsemble.h"
 #endif
-namespace airwin2rack::ChorusEnsemble {
+namespace airwinconsolidated::ChorusEnsemble {
 
 void ChorusEnsemble::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

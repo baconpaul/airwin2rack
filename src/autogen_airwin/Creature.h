@@ -8,14 +8,14 @@
 #define __Creature_Creature_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Creature {
+namespace airwinconsolidated::Creature {
 enum {
 	kParamA = 0,
 	kParamB = 1,

@@ -6,7 +6,7 @@
 #ifndef __Slew3_H
 #include "Slew3.h"
 #endif
-namespace airwin2rack::Slew3 {
+namespace airwinconsolidated::Slew3 {
 
 void Slew3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

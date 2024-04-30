@@ -6,7 +6,7 @@
 #ifndef __Spiral2_H
 #include "Spiral2.h"
 #endif
-namespace airwin2rack::Spiral2 {
+namespace airwinconsolidated::Spiral2 {
 
 void Spiral2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

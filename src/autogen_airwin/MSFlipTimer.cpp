@@ -6,7 +6,7 @@
 #ifndef __MSFlipTimer_H
 #include "MSFlipTimer.h"
 #endif
-namespace airwin2rack::MSFlipTimer {
+namespace airwinconsolidated::MSFlipTimer {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MSFlipTimer(audioMaster);}
 

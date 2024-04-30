@@ -6,7 +6,7 @@
 #ifndef __DeBess_H
 #include "DeBess.h"
 #endif
-namespace airwin2rack::DeBess {
+namespace airwinconsolidated::DeBess {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DeBess(audioMaster);}
 

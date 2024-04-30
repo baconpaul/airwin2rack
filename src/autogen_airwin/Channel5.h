@@ -8,14 +8,14 @@
 #define __Channel5_Channel5_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Channel5 {
+namespace airwinconsolidated::Channel5 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

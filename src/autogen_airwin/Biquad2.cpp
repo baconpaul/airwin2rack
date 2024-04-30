@@ -6,7 +6,7 @@
 #ifndef __Biquad2_H
 #include "Biquad2.h"
 #endif
-namespace airwin2rack::Biquad2 {
+namespace airwinconsolidated::Biquad2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Biquad2(audioMaster);}
 

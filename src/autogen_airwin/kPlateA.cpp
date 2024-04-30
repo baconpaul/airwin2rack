@@ -6,7 +6,7 @@
 #ifndef __kPlateA_H
 #include "kPlateA.h"
 #endif
-namespace airwin2rack::kPlateA {
+namespace airwinconsolidated::kPlateA {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new kPlateA(audioMaster);}
 

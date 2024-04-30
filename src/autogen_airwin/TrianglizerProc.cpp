@@ -6,7 +6,7 @@
 #ifndef __Trianglizer_H
 #include "Trianglizer.h"
 #endif
-namespace airwin2rack::Trianglizer {
+namespace airwinconsolidated::Trianglizer {
 
 void Trianglizer::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

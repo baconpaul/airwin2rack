@@ -6,7 +6,7 @@
 #ifndef __PurestFade_H
 #include "PurestFade.h"
 #endif
-namespace airwin2rack::PurestFade {
+namespace airwinconsolidated::PurestFade {
 
 void PurestFade::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

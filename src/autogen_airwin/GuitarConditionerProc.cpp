@@ -6,7 +6,7 @@
 #ifndef __GuitarConditioner_H
 #include "GuitarConditioner.h"
 #endif
-namespace airwin2rack::GuitarConditioner {
+namespace airwinconsolidated::GuitarConditioner {
 
 void GuitarConditioner::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

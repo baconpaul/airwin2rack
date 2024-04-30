@@ -6,7 +6,7 @@
 #ifndef __DCVoltage_H
 #include "DCVoltage.h"
 #endif
-namespace airwin2rack::DCVoltage {
+namespace airwinconsolidated::DCVoltage {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DCVoltage(audioMaster);}
 

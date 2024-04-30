@@ -6,7 +6,7 @@
 #ifndef __Reverb_H
 #include "Reverb.h"
 #endif
-namespace airwin2rack::Reverb {
+namespace airwinconsolidated::Reverb {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Reverb(audioMaster);}
 

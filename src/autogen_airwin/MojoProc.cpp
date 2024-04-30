@@ -6,7 +6,7 @@
 #ifndef __Mojo_H
 #include "Mojo.h"
 #endif
-namespace airwin2rack::Mojo {
+namespace airwinconsolidated::Mojo {
 
 void Mojo::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

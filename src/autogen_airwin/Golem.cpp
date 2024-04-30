@@ -6,7 +6,7 @@
 #ifndef __Golem_H
 #include "Golem.h"
 #endif
-namespace airwin2rack::Golem {
+namespace airwinconsolidated::Golem {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Golem(audioMaster);}
 

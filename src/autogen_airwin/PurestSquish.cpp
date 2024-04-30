@@ -6,7 +6,7 @@
 #ifndef __PurestSquish_H
 #include "PurestSquish.h"
 #endif
-namespace airwin2rack::PurestSquish {
+namespace airwinconsolidated::PurestSquish {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestSquish(audioMaster);}
 

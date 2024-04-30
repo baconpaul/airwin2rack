@@ -6,7 +6,7 @@
 #ifndef __Elation_H
 #include "Elation.h"
 #endif
-namespace airwin2rack::Elation {
+namespace airwinconsolidated::Elation {
 
 void Elation::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

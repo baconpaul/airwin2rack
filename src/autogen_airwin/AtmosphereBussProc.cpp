@@ -6,7 +6,7 @@
 #ifndef __AtmosphereBuss_H
 #include "AtmosphereBuss.h"
 #endif
-namespace airwin2rack::AtmosphereBuss {
+namespace airwinconsolidated::AtmosphereBuss {
 
 void AtmosphereBuss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

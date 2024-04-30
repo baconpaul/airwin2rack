@@ -6,7 +6,7 @@
 #ifndef __Recurve_H
 #include "Recurve.h"
 #endif
-namespace airwin2rack::Recurve {
+namespace airwinconsolidated::Recurve {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Recurve(audioMaster);}
 

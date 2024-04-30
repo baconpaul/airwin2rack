@@ -6,7 +6,7 @@
 #ifndef __Melt_H
 #include "Melt.h"
 #endif
-namespace airwin2rack::Melt {
+namespace airwinconsolidated::Melt {
 
 void Melt::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Exciter_H
 #include "Exciter.h"
 #endif
-namespace airwin2rack::Exciter {
+namespace airwinconsolidated::Exciter {
 
 void Exciter::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Deckwrecka_H
 #include "Deckwrecka.h"
 #endif
-namespace airwin2rack::Deckwrecka {
+namespace airwinconsolidated::Deckwrecka {
 
 void Deckwrecka::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __ZNotch_H
 #include "ZNotch.h"
 #endif
-namespace airwin2rack::ZNotch {
+namespace airwinconsolidated::ZNotch {
 
 void ZNotch::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

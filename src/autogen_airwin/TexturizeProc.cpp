@@ -6,7 +6,7 @@
 #ifndef __Gain_H
 #include "Texturize.h"
 #endif
-namespace airwin2rack::Texturize {
+namespace airwinconsolidated::Texturize {
 
 void Texturize::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

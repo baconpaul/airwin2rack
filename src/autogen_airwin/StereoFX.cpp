@@ -6,7 +6,7 @@
 #ifndef __StereoFX_H
 #include "StereoFX.h"
 #endif
-namespace airwin2rack::StereoFX {
+namespace airwinconsolidated::StereoFX {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StereoFX(audioMaster);}
 

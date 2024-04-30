@@ -6,7 +6,7 @@
 #ifndef __Logical4_H
 #include "Logical4.h"
 #endif
-namespace airwin2rack::Logical4 {
+namespace airwinconsolidated::Logical4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Logical4(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Cojones_H
 #include "Cojones.h"
 #endif
-namespace airwin2rack::Cojones {
+namespace airwinconsolidated::Cojones {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Cojones(audioMaster);}
 

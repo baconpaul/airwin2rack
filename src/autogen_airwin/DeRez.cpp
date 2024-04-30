@@ -6,7 +6,7 @@
 #ifndef __DeRez_H
 #include "DeRez.h"
 #endif
-namespace airwin2rack::DeRez {
+namespace airwinconsolidated::DeRez {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DeRez(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __HypersonX_H
 #include "HypersonX.h"
 #endif
-namespace airwin2rack::HypersonX {
+namespace airwinconsolidated::HypersonX {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new HypersonX(audioMaster);}
 
