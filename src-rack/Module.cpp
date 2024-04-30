@@ -1489,8 +1489,8 @@ struct AWSelector : rack::Widget
         auto coll = awSkin.collection;
         for (const auto &[c, _] : AirwinRegistry::namesByCollection)
         {
-            m->addChild(rack::createMenuItem(c, CHECKMARK(coll == c), [c](){
-                awSkin.collection = c;
+            m->addChild(rack::createMenuItem(c, CHECKMARK(coll == c), [cx = c](){
+                awSkin.collection = cx;
                 awSkin.writeConfig();
             }));
         }
