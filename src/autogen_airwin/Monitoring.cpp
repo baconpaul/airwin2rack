@@ -6,7 +6,7 @@
 #ifndef __Monitoring_H
 #include "Monitoring.h"
 #endif
-namespace airwin2rack::Monitoring {
+namespace airwinconsolidated::Monitoring {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Monitoring(audioMaster);}
 

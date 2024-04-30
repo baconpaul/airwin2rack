@@ -6,7 +6,7 @@
 #ifndef __BiquadTriple_H
 #include "BiquadTriple.h"
 #endif
-namespace airwin2rack::BiquadTriple {
+namespace airwinconsolidated::BiquadTriple {
 
 void BiquadTriple::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

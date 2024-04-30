@@ -6,7 +6,7 @@
 #ifndef __DustBunny_H
 #include "DustBunny.h"
 #endif
-namespace airwin2rack::DustBunny {
+namespace airwinconsolidated::DustBunny {
 
 void DustBunny::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

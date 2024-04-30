@@ -6,7 +6,7 @@
 #ifndef __HardVacuum_H
 #include "HardVacuum.h"
 #endif
-namespace airwin2rack::HardVacuum {
+namespace airwinconsolidated::HardVacuum {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new HardVacuum(audioMaster);}
 

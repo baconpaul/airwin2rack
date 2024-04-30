@@ -6,7 +6,7 @@
 #ifndef __XNotch_H
 #include "XNotch.h"
 #endif
-namespace airwin2rack::XNotch {
+namespace airwinconsolidated::XNotch {
 
 void XNotch::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Acceleration2_H
 #include "Acceleration2.h"
 #endif
-namespace airwin2rack::Acceleration2 {
+namespace airwinconsolidated::Acceleration2 {
 
 void Acceleration2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

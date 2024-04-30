@@ -6,7 +6,7 @@
 #ifndef __NotJustAnotherCD_H
 #include "NotJustAnotherCD.h"
 #endif
-namespace airwin2rack::NotJustAnotherCD {
+namespace airwinconsolidated::NotJustAnotherCD {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new NotJustAnotherCD(audioMaster);}
 

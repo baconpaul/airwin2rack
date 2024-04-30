@@ -6,7 +6,7 @@
 #ifndef __PurestConsoleChannel_H
 #include "PurestConsoleChannel.h"
 #endif
-namespace airwin2rack::PurestConsoleChannel {
+namespace airwinconsolidated::PurestConsoleChannel {
 
 void PurestConsoleChannel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

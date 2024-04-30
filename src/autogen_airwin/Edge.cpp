@@ -6,7 +6,7 @@
 #ifndef __Edge_H
 #include "Edge.h"
 #endif
-namespace airwin2rack::Edge {
+namespace airwinconsolidated::Edge {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Edge(audioMaster);}
 

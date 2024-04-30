@@ -6,7 +6,7 @@
 #ifndef __ZOutputStage_H
 #include "ZOutputStage.h"
 #endif
-namespace airwin2rack::ZOutputStage {
+namespace airwinconsolidated::ZOutputStage {
 
 void ZOutputStage::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

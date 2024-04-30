@@ -6,7 +6,7 @@
 #ifndef __BlockParty_H
 #include "BlockParty.h"
 #endif
-namespace airwin2rack::BlockParty {
+namespace airwinconsolidated::BlockParty {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BlockParty(audioMaster);}
 

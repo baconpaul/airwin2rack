@@ -6,7 +6,7 @@
 #ifndef __Console7Cascade_H
 #include "Console7Cascade.h"
 #endif
-namespace airwin2rack::Console7Cascade {
+namespace airwinconsolidated::Console7Cascade {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console7Cascade(audioMaster);}
 

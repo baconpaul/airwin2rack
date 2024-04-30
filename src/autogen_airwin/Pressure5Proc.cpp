@@ -6,7 +6,7 @@
 #ifndef __Pressure5_H
 #include "Pressure5.h"
 #endif
-namespace airwin2rack::Pressure5 {
+namespace airwinconsolidated::Pressure5 {
 
 void Pressure5::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

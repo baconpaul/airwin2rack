@@ -34,7 +34,7 @@ cmrc_add_resource_library(awdoc_resources ${AWDOC_RESOURCES_GLOB})
 
 add_library(airwin-registry STATIC
         src/AirwinRegistry.cpp
-        src/airwin2rackbase.cpp
+        src/airwin_consolidated_base.cpp
 
         ${AIRWIN_SOURCES})
 

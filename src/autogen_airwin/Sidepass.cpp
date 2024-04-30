@@ -6,7 +6,7 @@
 #ifndef __Sidepass_H
 #include "Sidepass.h"
 #endif
-namespace airwin2rack::Sidepass {
+namespace airwinconsolidated::Sidepass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Sidepass(audioMaster);}
 

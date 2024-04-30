@@ -6,7 +6,7 @@
 #ifndef __Gain_H
 #include "FireAmp.h"
 #endif
-namespace airwin2rack::FireAmp {
+namespace airwinconsolidated::FireAmp {
 
 void FireAmp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

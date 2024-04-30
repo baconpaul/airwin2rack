@@ -6,7 +6,7 @@
 #ifndef __StarChild2_H
 #include "StarChild2.h"
 #endif
-namespace airwin2rack::StarChild2 {
+namespace airwinconsolidated::StarChild2 {
 
 void StarChild2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

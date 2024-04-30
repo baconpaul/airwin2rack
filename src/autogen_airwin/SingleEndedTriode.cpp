@@ -6,7 +6,7 @@
 #ifndef __SingleEndedTriode_H
 #include "SingleEndedTriode.h"
 #endif
-namespace airwin2rack::SingleEndedTriode {
+namespace airwinconsolidated::SingleEndedTriode {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SingleEndedTriode(audioMaster);}
 

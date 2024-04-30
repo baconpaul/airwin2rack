@@ -6,7 +6,7 @@
 #ifndef __Channel8_H
 #include "Channel8.h"
 #endif
-namespace airwin2rack::Channel8 {
+namespace airwinconsolidated::Channel8 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Channel8(audioMaster);}
 

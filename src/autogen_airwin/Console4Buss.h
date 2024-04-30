@@ -8,7 +8,7 @@
 #define __Console4Buss_Console4Buss_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
@@ -16,7 +16,7 @@
 #include <math.h>
 
 // TODO: Change kFirstParameter to your first parameter and add any additional parameters.
-namespace airwin2rack::Console4Buss {
+namespace airwinconsolidated::Console4Buss {
 enum {
   kConsole4BussParam = 0,
   kNumParameters = 1

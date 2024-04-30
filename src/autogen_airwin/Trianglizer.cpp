@@ -6,7 +6,7 @@
 #ifndef __Trianglizer_H
 #include "Trianglizer.h"
 #endif
-namespace airwin2rack::Trianglizer {
+namespace airwinconsolidated::Trianglizer {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Trianglizer(audioMaster);}
 

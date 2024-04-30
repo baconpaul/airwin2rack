@@ -6,7 +6,7 @@
 #ifndef __DeRez_H
 #include "DeRez.h"
 #endif
-namespace airwin2rack::DeRez {
+namespace airwinconsolidated::DeRez {
 
 void DeRez::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

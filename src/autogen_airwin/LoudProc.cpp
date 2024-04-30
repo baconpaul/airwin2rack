@@ -6,7 +6,7 @@
 #ifndef __Loud_H
 #include "Loud.h"
 #endif
-namespace airwin2rack::Loud {
+namespace airwinconsolidated::Loud {
 
 void Loud::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

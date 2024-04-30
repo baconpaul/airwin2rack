@@ -8,14 +8,14 @@
 #define __VinylDither_VinylDither_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::VinylDither {
+namespace airwinconsolidated::VinylDither {
 enum {
 	kParamA = 0,
 	kParamB = 1,

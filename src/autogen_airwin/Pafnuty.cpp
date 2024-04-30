@@ -6,7 +6,7 @@
 #ifndef __Pafnuty_H
 #include "Pafnuty.h"
 #endif
-namespace airwin2rack::Pafnuty {
+namespace airwinconsolidated::Pafnuty {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pafnuty(audioMaster);}
 

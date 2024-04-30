@@ -6,7 +6,7 @@
 #ifndef __Dyno_H
 #include "Dyno.h"
 #endif
-namespace airwin2rack::Dyno {
+namespace airwinconsolidated::Dyno {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dyno(audioMaster);}
 

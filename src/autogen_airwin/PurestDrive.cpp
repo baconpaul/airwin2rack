@@ -6,7 +6,7 @@
 #ifndef __PurestDrive_H
 #include "PurestDrive.h"
 #endif
-namespace airwin2rack::PurestDrive {
+namespace airwinconsolidated::PurestDrive {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestDrive(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Dubly_H
 #include "Dubly.h"
 #endif
-namespace airwin2rack::Dubly {
+namespace airwinconsolidated::Dubly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dubly(audioMaster);}
 

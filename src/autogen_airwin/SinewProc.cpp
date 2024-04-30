@@ -6,7 +6,7 @@
 #ifndef __Sinew_H
 #include "Sinew.h"
 #endif
-namespace airwin2rack::Sinew {
+namespace airwinconsolidated::Sinew {
 
 void Sinew::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

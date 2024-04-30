@@ -6,7 +6,7 @@
 #ifndef __HighImpact_H
 #include "HighImpact.h"
 #endif
-namespace airwin2rack::HighImpact {
+namespace airwinconsolidated::HighImpact {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new HighImpact(audioMaster);}
 

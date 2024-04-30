@@ -8,14 +8,14 @@
 #define __BrightAmbience2_BrightAmbience2_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::BrightAmbience2 {
+namespace airwinconsolidated::BrightAmbience2 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

@@ -6,7 +6,7 @@
 #ifndef __HighGlossDither_H
 #include "HighGlossDither.h"
 #endif
-namespace airwin2rack::HighGlossDither {
+namespace airwinconsolidated::HighGlossDither {
 
 void HighGlossDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

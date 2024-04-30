@@ -6,7 +6,7 @@
 #ifndef __DitherMeTimbers_H
 #include "DitherMeTimbers.h"
 #endif
-namespace airwin2rack::DitherMeTimbers {
+namespace airwinconsolidated::DitherMeTimbers {
 
 void DitherMeTimbers::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

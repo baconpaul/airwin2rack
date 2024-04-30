@@ -6,7 +6,7 @@
 #ifndef __Sinew_H
 #include "Sinew.h"
 #endif
-namespace airwin2rack::Sinew {
+namespace airwinconsolidated::Sinew {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Sinew(audioMaster);}
 

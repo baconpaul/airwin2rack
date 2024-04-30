@@ -6,7 +6,7 @@
 #ifndef __Acceleration_H
 #include "Acceleration.h"
 #endif
-namespace airwin2rack::Acceleration {
+namespace airwinconsolidated::Acceleration {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Acceleration(audioMaster);}
 

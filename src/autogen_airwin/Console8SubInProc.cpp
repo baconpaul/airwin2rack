@@ -6,7 +6,7 @@
 #ifndef __Console8SubIn_H
 #include "Console8SubIn.h"
 #endif
-namespace airwin2rack::Console8SubIn {
+namespace airwinconsolidated::Console8SubIn {
 
 void Console8SubIn::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Luxor_H
 #include "Luxor.h"
 #endif
-namespace airwin2rack::Luxor {
+namespace airwinconsolidated::Luxor {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Luxor(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __Chorus_H
 #include "Chorus.h"
 #endif
-namespace airwin2rack::Chorus {
+namespace airwinconsolidated::Chorus {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Chorus(audioMaster);}
 

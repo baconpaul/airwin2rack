@@ -6,7 +6,7 @@
 #ifndef __TripleSpread_H
 #include "TripleSpread.h"
 #endif
-namespace airwin2rack::TripleSpread {
+namespace airwinconsolidated::TripleSpread {
 
 void TripleSpread::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

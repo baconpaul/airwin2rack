@@ -6,7 +6,7 @@
 #ifndef __RawTimbers_H
 #include "RawTimbers.h"
 #endif
-namespace airwin2rack::RawTimbers {
+namespace airwinconsolidated::RawTimbers {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new RawTimbers(audioMaster);}
 

@@ -8,14 +8,14 @@
 #define __Flutter_Flutter_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Flutter {
+namespace airwinconsolidated::Flutter {
 enum {
 	kParamA = 0,
   kNumParameters = 1

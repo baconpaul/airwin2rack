@@ -1,13 +1,14 @@
 /*
-* Airwin2Rack - an adaptation of the airwindows effect suite for VCVRack
+* AirwinConsolidated - an adaptation of the airwindows effect suite
+* for various open source clients
 *
 * This source released under the MIT License, found in ~/LICENSE.md.
 *
 * Copyright 2023 by the authors as described in the github transaction log
 */
 
-#ifndef AIRWIN2RACK_AIRWINREGISTRY_H
-#define AIRWIN2RACK_AIRWINREGISTRY_H
+#ifndef AIRWINCONSOLIDATED_AIRWINREGISTRY_H
+#define AIRWINCONSOLIDATED_AIRWINREGISTRY_H
 
 #include <string>
 #include <memory>
@@ -21,7 +22,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "airwin2rackbase.h"
+#include "airwin_consolidated_base.h"
 
 struct AirwinRegistry
 {
@@ -32,7 +33,7 @@ struct AirwinRegistry
         int catChrisOrdering;
         std::string whatText;
         int nParams{0};
-        std::function<std::unique_ptr<Airwin2RackBase>()> generator{[]() { return nullptr; }};
+        std::function<std::unique_ptr<AirwinConsolidatedBase>()> generator{[]() { return nullptr; }};
         int ordering{-1};
         std::vector<std::string> collections{};
     };
@@ -140,4 +141,4 @@ struct AirwinRegistry
 
     static void dumpStatsToStdout();
 };
-#endif // AIRWIN2RACK_AIRWINREGISTRY_H
+#endif // AIRWINCONSOLIDATED_AIRWINREGISTRY_H

@@ -6,7 +6,7 @@
 #ifndef __Air2_H
 #include "Air2.h"
 #endif
-namespace airwin2rack::Air2 {
+namespace airwinconsolidated::Air2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Air2(audioMaster);}
 

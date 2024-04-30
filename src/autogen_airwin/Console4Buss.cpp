@@ -7,7 +7,7 @@
 #ifndef __Console4Buss_H
 #include "Console4Buss.h"
 #endif
-namespace airwin2rack::Console4Buss {
+namespace airwinconsolidated::Console4Buss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) 
 {

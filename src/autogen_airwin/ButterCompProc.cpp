@@ -6,7 +6,7 @@
 #ifndef __ButterComp_H
 #include "ButterComp.h"
 #endif
-namespace airwin2rack::ButterComp {
+namespace airwinconsolidated::ButterComp {
 
 void ButterComp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

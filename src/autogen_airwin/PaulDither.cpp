@@ -6,7 +6,7 @@
 #ifndef __PaulDither_H
 #include "PaulDither.h"
 #endif
-namespace airwin2rack::PaulDither {
+namespace airwinconsolidated::PaulDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PaulDither(audioMaster);}
 

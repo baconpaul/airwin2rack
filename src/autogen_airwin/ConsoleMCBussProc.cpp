@@ -6,7 +6,7 @@
 #ifndef __ConsoleMCBuss_H
 #include "ConsoleMCBuss.h"
 #endif
-namespace airwin2rack::ConsoleMCBuss {
+namespace airwinconsolidated::ConsoleMCBuss {
 
 void ConsoleMCBuss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __curve_H
 #include "curve.h"
 #endif
-namespace airwin2rack::curve {
+namespace airwinconsolidated::curve {
 
 void curve::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

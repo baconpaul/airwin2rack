@@ -6,7 +6,7 @@
 #ifndef __EdIsDim_H
 #include "EdIsDim.h"
 #endif
-namespace airwin2rack::EdIsDim {
+namespace airwinconsolidated::EdIsDim {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new EdIsDim(audioMaster);}
 

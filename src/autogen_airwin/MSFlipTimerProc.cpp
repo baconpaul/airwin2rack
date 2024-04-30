@@ -6,7 +6,7 @@
 #ifndef __MSFlipTimer_H
 #include "MSFlipTimer.h"
 #endif
-namespace airwin2rack::MSFlipTimer {
+namespace airwinconsolidated::MSFlipTimer {
 
 void MSFlipTimer::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

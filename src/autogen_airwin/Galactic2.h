@@ -8,14 +8,14 @@
 #define __Galactic2_Galactic2_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Galactic2 {
+namespace airwinconsolidated::Galactic2 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

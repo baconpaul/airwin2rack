@@ -6,7 +6,7 @@
 #ifndef __Isolator_H
 #include "Isolator.h"
 #endif
-namespace airwin2rack::Isolator {
+namespace airwinconsolidated::Isolator {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Isolator(audioMaster);}
 

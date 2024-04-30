@@ -6,7 +6,7 @@
 #ifndef __CrickBass_H
 #include "CrickBass.h"
 #endif
-namespace airwin2rack::CrickBass {
+namespace airwinconsolidated::CrickBass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new CrickBass(audioMaster);}
 

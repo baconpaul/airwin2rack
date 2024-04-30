@@ -6,7 +6,7 @@
 #ifndef __Density_H
 #include "Density.h"
 #endif
-namespace airwin2rack::Density {
+namespace airwinconsolidated::Density {
 
 void Density::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -8,14 +8,14 @@
 #define __ConsoleXSubOut_ConsoleXSubOut_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::ConsoleXSubOut {
+namespace airwinconsolidated::ConsoleXSubOut {
 enum {
 	kParamA = 0,
 	kParamB = 1,

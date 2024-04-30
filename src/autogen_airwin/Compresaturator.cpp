@@ -6,7 +6,7 @@
 #ifndef __Compresaturator_H
 #include "Compresaturator.h"
 #endif
-namespace airwin2rack::Compresaturator {
+namespace airwinconsolidated::Compresaturator {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Compresaturator(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __BassKit_H
 #include "BassKit.h"
 #endif
-namespace airwin2rack::BassKit {
+namespace airwinconsolidated::BassKit {
 
 void BassKit::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

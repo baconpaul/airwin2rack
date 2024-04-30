@@ -6,7 +6,7 @@
 #ifndef __NonlinearSpace_H
 #include "NonlinearSpace.h"
 #endif
-namespace airwin2rack::NonlinearSpace {
+namespace airwinconsolidated::NonlinearSpace {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new NonlinearSpace(audioMaster);}
 

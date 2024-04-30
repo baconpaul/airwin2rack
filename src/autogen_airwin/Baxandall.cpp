@@ -6,7 +6,7 @@
 #ifndef __Baxandall_H
 #include "Baxandall.h"
 #endif
-namespace airwin2rack::Baxandall {
+namespace airwinconsolidated::Baxandall {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Baxandall(audioMaster);}
 

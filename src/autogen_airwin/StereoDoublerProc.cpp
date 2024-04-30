@@ -6,7 +6,7 @@
 #ifndef __StereoDoubler_H
 #include "StereoDoubler.h"
 #endif
-namespace airwin2rack::StereoDoubler {
+namespace airwinconsolidated::StereoDoubler {
 
 void StereoDoubler::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

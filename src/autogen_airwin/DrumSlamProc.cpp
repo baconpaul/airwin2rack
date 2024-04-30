@@ -6,7 +6,7 @@
 #ifndef __DrumSlam_H
 #include "DrumSlam.h"
 #endif
-namespace airwin2rack::DrumSlam {
+namespace airwinconsolidated::DrumSlam {
 
 void DrumSlam::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

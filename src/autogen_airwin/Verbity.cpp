@@ -6,7 +6,7 @@
 #ifndef __Verbity_H
 #include "Verbity.h"
 #endif
-namespace airwin2rack::Verbity {
+namespace airwinconsolidated::Verbity {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Verbity(audioMaster);}
 

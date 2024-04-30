@@ -6,7 +6,7 @@
 #ifndef __ZNotch2_H
 #include "ZNotch2.h"
 #endif
-namespace airwin2rack::ZNotch2 {
+namespace airwinconsolidated::ZNotch2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZNotch2(audioMaster);}
 

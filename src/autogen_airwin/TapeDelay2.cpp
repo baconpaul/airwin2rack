@@ -6,7 +6,7 @@
 #ifndef __TapeDelay2_H
 #include "TapeDelay2.h"
 #endif
-namespace airwin2rack::TapeDelay2 {
+namespace airwinconsolidated::TapeDelay2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TapeDelay2(audioMaster);}
 

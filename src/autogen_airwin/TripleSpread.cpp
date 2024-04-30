@@ -6,7 +6,7 @@
 #ifndef __TripleSpread_H
 #include "TripleSpread.h"
 #endif
-namespace airwin2rack::TripleSpread {
+namespace airwinconsolidated::TripleSpread {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TripleSpread(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __curve_H
 #include "curve.h"
 #endif
-namespace airwin2rack::curve {
+namespace airwinconsolidated::curve {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new curve(audioMaster);}
 

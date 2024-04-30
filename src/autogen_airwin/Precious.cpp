@@ -6,7 +6,7 @@
 #ifndef __Precious_H
 #include "Precious.h"
 #endif
-namespace airwin2rack::Precious {
+namespace airwinconsolidated::Precious {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Precious(audioMaster);}
 

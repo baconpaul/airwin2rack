@@ -6,7 +6,7 @@
 #ifndef __UnBox_H
 #include "UnBox.h"
 #endif
-namespace airwin2rack::UnBox {
+namespace airwinconsolidated::UnBox {
 
 void UnBox::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -1,16 +1,17 @@
 /*
-* Airwin2Rack - an adaptation of the airwindows effect suite for VCVRack
+* AirwinConsolidated - an adaptation of the airwindows effect suite
+* for various open source clients
 *
 * This source released under the MIT License, found in ~/LICENSE.md.
 *
 * Copyright 2023 by the authors as described in the github transaction log
 */
 
-#include "airwin2rackbase.h"
+#include "airwin_consolidated_base.h"
 #include <string>
 #include <iostream>
 
-float Airwin2RackBase::defaultSampleRate{0.f};
+float AirwinConsolidatedBase::defaultSampleRate{0.f};
 
 bool string2float(const char *txt, float &f)
 {

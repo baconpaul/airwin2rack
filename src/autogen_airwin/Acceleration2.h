@@ -8,14 +8,14 @@
 #define __Acceleration2_Acceleration2_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Acceleration2 {
+namespace airwinconsolidated::Acceleration2 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

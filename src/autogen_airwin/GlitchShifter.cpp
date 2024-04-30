@@ -6,7 +6,7 @@
 #ifndef __GlitchShifter_H
 #include "GlitchShifter.h"
 #endif
-namespace airwin2rack::GlitchShifter {
+namespace airwinconsolidated::GlitchShifter {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new GlitchShifter(audioMaster);}
 

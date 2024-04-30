@@ -6,7 +6,7 @@
 #ifndef __Fracture2_H
 #include "Fracture2.h"
 #endif
-namespace airwin2rack::Fracture2 {
+namespace airwinconsolidated::Fracture2 {
 
 void Fracture2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

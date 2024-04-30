@@ -6,7 +6,7 @@
 #ifndef __Inflamer_H
 #include "Inflamer.h"
 #endif
-namespace airwin2rack::Inflamer {
+namespace airwinconsolidated::Inflamer {
 
 void Inflamer::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

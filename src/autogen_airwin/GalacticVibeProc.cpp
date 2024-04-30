@@ -6,7 +6,7 @@
 #ifndef __GalacticVibe_H
 #include "GalacticVibe.h"
 #endif
-namespace airwin2rack::GalacticVibe {
+namespace airwinconsolidated::GalacticVibe {
 
 void GalacticVibe::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

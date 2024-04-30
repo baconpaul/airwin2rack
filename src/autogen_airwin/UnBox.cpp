@@ -6,7 +6,7 @@
 #ifndef __UnBox_H
 #include "UnBox.h"
 #endif
-namespace airwin2rack::UnBox {
+namespace airwinconsolidated::UnBox {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new UnBox(audioMaster);}
 

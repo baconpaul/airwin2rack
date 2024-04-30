@@ -6,7 +6,7 @@
 #ifndef __TapeDither_H
 #include "TapeDither.h"
 #endif
-namespace airwin2rack::TapeDither {
+namespace airwinconsolidated::TapeDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TapeDither(audioMaster);}
 

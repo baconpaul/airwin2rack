@@ -6,7 +6,7 @@
 #ifndef __Dynamics_H
 #include "Dynamics.h"
 #endif
-namespace airwin2rack::Dynamics {
+namespace airwinconsolidated::Dynamics {
 
 void Dynamics::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

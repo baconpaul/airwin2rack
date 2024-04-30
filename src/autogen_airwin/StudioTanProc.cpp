@@ -6,7 +6,7 @@
 #ifndef __StudioTan_H
 #include "StudioTan.h"
 #endif
-namespace airwin2rack::StudioTan {
+namespace airwinconsolidated::StudioTan {
 
 void StudioTan::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

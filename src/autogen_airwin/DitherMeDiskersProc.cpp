@@ -6,7 +6,7 @@
 #ifndef __DitherMeDiskers_H
 #include "DitherMeDiskers.h"
 #endif
-namespace airwin2rack::DitherMeDiskers {
+namespace airwinconsolidated::DitherMeDiskers {
 
 void DitherMeDiskers::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

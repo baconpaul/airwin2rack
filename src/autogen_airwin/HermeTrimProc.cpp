@@ -6,7 +6,7 @@
 #ifndef __HermeTrim_H
 #include "HermeTrim.h"
 #endif
-namespace airwin2rack::HermeTrim {
+namespace airwinconsolidated::HermeTrim {
 
 void HermeTrim::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

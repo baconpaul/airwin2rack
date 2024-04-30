@@ -6,7 +6,7 @@
 #ifndef __SubsOnly_H
 #include "SubsOnly.h"
 #endif
-namespace airwin2rack::SubsOnly {
+namespace airwinconsolidated::SubsOnly {
 
 void SubsOnly::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

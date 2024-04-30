@@ -6,7 +6,7 @@
 #ifndef __TapeDust_H
 #include "TapeDust.h"
 #endif
-namespace airwin2rack::TapeDust {
+namespace airwinconsolidated::TapeDust {
 
 void TapeDust::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

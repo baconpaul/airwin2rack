@@ -6,7 +6,7 @@
 #ifndef __Fracture2_H
 #include "Fracture2.h"
 #endif
-namespace airwin2rack::Fracture2 {
+namespace airwinconsolidated::Fracture2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Fracture2(audioMaster);}
 

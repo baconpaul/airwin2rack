@@ -6,7 +6,7 @@
 #ifndef __Channel5_H
 #include "Channel5.h"
 #endif
-namespace airwin2rack::Channel5 {
+namespace airwinconsolidated::Channel5 {
 
 void Channel5::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

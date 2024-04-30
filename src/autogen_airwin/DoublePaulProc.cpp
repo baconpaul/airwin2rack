@@ -6,7 +6,7 @@
 #ifndef __DoublePaul_H
 #include "DoublePaul.h"
 #endif
-namespace airwin2rack::DoublePaul {
+namespace airwinconsolidated::DoublePaul {
 
 void DoublePaul::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

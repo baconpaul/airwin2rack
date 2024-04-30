@@ -6,7 +6,7 @@
 #ifndef __Thunder_H
 #include "Thunder.h"
 #endif
-namespace airwin2rack::Thunder {
+namespace airwinconsolidated::Thunder {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Thunder(audioMaster);}
 

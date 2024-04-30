@@ -6,7 +6,7 @@
 #ifndef __NodeDither_H
 #include "NodeDither.h"
 #endif
-namespace airwin2rack::NodeDither {
+namespace airwinconsolidated::NodeDither {
 
 void NodeDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __Tape_H
 #include "Tape.h"
 #endif
-namespace airwin2rack::Tape {
+namespace airwinconsolidated::Tape {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Tape(audioMaster);}
 

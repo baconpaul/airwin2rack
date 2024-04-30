@@ -6,7 +6,7 @@
 #ifndef __Ditherbox_H
 #include "Ditherbox.h"
 #endif
-namespace airwin2rack::Ditherbox {
+namespace airwinconsolidated::Ditherbox {
 
 void Ditherbox::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

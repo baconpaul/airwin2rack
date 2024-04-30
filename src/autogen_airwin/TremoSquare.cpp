@@ -6,7 +6,7 @@
 #ifndef __TremoSquare_H
 #include "TremoSquare.h"
 #endif
-namespace airwin2rack::TremoSquare {
+namespace airwinconsolidated::TremoSquare {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TremoSquare(audioMaster);}
 

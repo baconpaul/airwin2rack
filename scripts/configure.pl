@@ -112,7 +112,7 @@ foreach my $fx (@plugins) {
     system("perl scripts/import.pl $fx");
 
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
-    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, \"${what}\", airwin2rack::${fx}::kNumParameters, []() { return std::make_unique<airwin2rack::${fx}::${fx}>(0); }, -1, $coll});";
+    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, \"${what}\", airwinconsolidated::${fx}::kNumParameters, []() { return std::make_unique<airwinconsolidated::${fx}::${fx}>(0); }, -1, $coll});";
     print OFH "\n";
 }
 

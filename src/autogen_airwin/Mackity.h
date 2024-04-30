@@ -8,14 +8,14 @@
 #define __Mackity_Mackity_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Mackity {
+namespace airwinconsolidated::Mackity {
 enum {
 	kParamA = 0,
 	kParamB = 1,

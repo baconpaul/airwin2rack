@@ -6,7 +6,7 @@
 #ifndef __ShortBuss_H
 #include "ShortBuss.h"
 #endif
-namespace airwin2rack::ShortBuss {
+namespace airwinconsolidated::ShortBuss {
 
 void ShortBuss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

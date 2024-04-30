@@ -6,7 +6,7 @@
 #ifndef __ButterComp_H
 #include "ButterComp.h"
 #endif
-namespace airwin2rack::ButterComp {
+namespace airwinconsolidated::ButterComp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ButterComp(audioMaster);}
 

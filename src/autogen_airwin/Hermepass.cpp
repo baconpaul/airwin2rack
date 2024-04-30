@@ -6,7 +6,7 @@
 #ifndef __Hermepass_H
 #include "Hermepass.h"
 #endif
-namespace airwin2rack::Hermepass {
+namespace airwinconsolidated::Hermepass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Hermepass(audioMaster);}
 

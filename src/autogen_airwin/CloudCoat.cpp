@@ -6,7 +6,7 @@
 #ifndef __CloudCoat_H
 #include "CloudCoat.h"
 #endif
-namespace airwin2rack::CloudCoat {
+namespace airwinconsolidated::CloudCoat {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new CloudCoat(audioMaster);}
 

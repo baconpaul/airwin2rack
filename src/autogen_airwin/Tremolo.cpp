@@ -6,7 +6,7 @@
 #ifndef __Tremolo_H
 #include "Tremolo.h"
 #endif
-namespace airwin2rack::Tremolo {
+namespace airwinconsolidated::Tremolo {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Tremolo(audioMaster);}
 

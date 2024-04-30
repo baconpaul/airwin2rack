@@ -6,7 +6,7 @@
 #ifndef __PowerSag_H
 #include "PowerSag.h"
 #endif
-namespace airwin2rack::PowerSag {
+namespace airwinconsolidated::PowerSag {
 
 void PowerSag::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

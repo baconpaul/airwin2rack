@@ -6,7 +6,7 @@
 #ifndef __ToneSlant_H
 #include "ToneSlant.h"
 #endif
-namespace airwin2rack::ToneSlant {
+namespace airwinconsolidated::ToneSlant {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ToneSlant(audioMaster);}
 

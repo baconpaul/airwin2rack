@@ -6,7 +6,7 @@
 #ifndef __FathomFive_H
 #include "FathomFive.h"
 #endif
-namespace airwin2rack::FathomFive {
+namespace airwinconsolidated::FathomFive {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new FathomFive(audioMaster);}
 

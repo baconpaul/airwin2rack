@@ -6,7 +6,7 @@
 #ifndef __YNotHighpass_H
 #include "YNotHighpass.h"
 #endif
-namespace airwin2rack::YNotHighpass {
+namespace airwinconsolidated::YNotHighpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new YNotHighpass(audioMaster);}
 

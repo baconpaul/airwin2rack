@@ -6,7 +6,7 @@
 #ifndef __MackEQ_H
 #include "MackEQ.h"
 #endif
-namespace airwin2rack::MackEQ {
+namespace airwinconsolidated::MackEQ {
 
 void MackEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

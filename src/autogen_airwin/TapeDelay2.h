@@ -8,14 +8,14 @@
 #define __TapeDelay2_TapeDelay2_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::TapeDelay2 {
+namespace airwinconsolidated::TapeDelay2 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

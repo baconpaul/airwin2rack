@@ -6,7 +6,7 @@
 #ifndef __TransDesk_H
 #include "TransDesk.h"
 #endif
-namespace airwin2rack::TransDesk {
+namespace airwinconsolidated::TransDesk {
 
 void TransDesk::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

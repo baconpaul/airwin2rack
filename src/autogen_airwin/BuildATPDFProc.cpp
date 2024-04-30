@@ -6,7 +6,7 @@
 #ifndef __BuildATPDF_H
 #include "BuildATPDF.h"
 #endif
-namespace airwin2rack::BuildATPDF {
+namespace airwinconsolidated::BuildATPDF {
 
 void BuildATPDF::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

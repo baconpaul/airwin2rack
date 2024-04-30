@@ -6,7 +6,7 @@
 #ifndef __CloudCoat_H
 #include "CloudCoat.h"
 #endif
-namespace airwin2rack::CloudCoat {
+namespace airwinconsolidated::CloudCoat {
 
 void CloudCoat::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

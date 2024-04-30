@@ -6,7 +6,7 @@
 #ifndef __EveryTrim_H
 #include "EveryTrim.h"
 #endif
-namespace airwin2rack::EveryTrim {
+namespace airwinconsolidated::EveryTrim {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new EveryTrim(audioMaster);}
 

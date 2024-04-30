@@ -6,7 +6,7 @@
 #ifndef __TubeDesk_H
 #include "TubeDesk.h"
 #endif
-namespace airwin2rack::TubeDesk {
+namespace airwinconsolidated::TubeDesk {
 
 void TubeDesk::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

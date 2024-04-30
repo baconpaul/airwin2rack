@@ -8,14 +8,14 @@
 #define __Console8ChannelIn_Console8ChannelIn_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console8ChannelIn {
+namespace airwinconsolidated::Console8ChannelIn {
 enum {
   kNumParameters = 0
 }; //

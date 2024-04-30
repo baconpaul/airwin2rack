@@ -6,7 +6,7 @@
 #ifndef __RightoMono_H
 #include "RightoMono.h"
 #endif
-namespace airwin2rack::RightoMono {
+namespace airwinconsolidated::RightoMono {
 
 void RightoMono::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

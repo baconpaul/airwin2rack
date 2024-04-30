@@ -8,14 +8,14 @@
 #define __Console8SubHype_Console8SubHype_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console8SubHype {
+namespace airwinconsolidated::Console8SubHype {
 enum {
   kNumParameters = 0
 }; //

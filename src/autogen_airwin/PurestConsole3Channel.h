@@ -8,14 +8,14 @@
 #define __PurestConsole3Channel_PurestConsole3Channel_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::PurestConsole3Channel {
+namespace airwinconsolidated::PurestConsole3Channel {
 enum {
   kNumParameters = 0
 }; //

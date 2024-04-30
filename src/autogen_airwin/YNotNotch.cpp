@@ -6,7 +6,7 @@
 #ifndef __YNotNotch_H
 #include "YNotNotch.h"
 #endif
-namespace airwin2rack::YNotNotch {
+namespace airwinconsolidated::YNotNotch {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new YNotNotch(audioMaster);}
 

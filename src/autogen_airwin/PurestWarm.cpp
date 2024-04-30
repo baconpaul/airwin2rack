@@ -6,7 +6,7 @@
 #ifndef __PurestWarm_H
 #include "PurestWarm.h"
 #endif
-namespace airwin2rack::PurestWarm {
+namespace airwinconsolidated::PurestWarm {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestWarm(audioMaster);}
 

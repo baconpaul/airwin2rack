@@ -6,7 +6,7 @@
 #ifndef __ConsoleLAChannel_H
 #include "ConsoleLAChannel.h"
 #endif
-namespace airwin2rack::ConsoleLAChannel {
+namespace airwinconsolidated::ConsoleLAChannel {
 
 void ConsoleLAChannel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

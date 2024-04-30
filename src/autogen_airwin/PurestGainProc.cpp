@@ -6,7 +6,7 @@
 #ifndef __PurestGain_H
 #include "PurestGain.h"
 #endif
-namespace airwin2rack::PurestGain {
+namespace airwinconsolidated::PurestGain {
 
 void PurestGain::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

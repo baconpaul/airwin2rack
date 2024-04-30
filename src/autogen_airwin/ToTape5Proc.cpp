@@ -6,7 +6,7 @@
 #ifndef __ToTape5_H
 #include "ToTape5.h"
 #endif
-namespace airwin2rack::ToTape5 {
+namespace airwinconsolidated::ToTape5 {
 
 void ToTape5::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

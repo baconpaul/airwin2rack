@@ -6,7 +6,7 @@
 #ifndef __Coils_H
 #include "Coils.h"
 #endif
-namespace airwin2rack::Coils {
+namespace airwinconsolidated::Coils {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Coils(audioMaster);}
 

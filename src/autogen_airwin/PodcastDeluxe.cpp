@@ -6,7 +6,7 @@
 #ifndef __PodcastDeluxe_H
 #include "PodcastDeluxe.h"
 #endif
-namespace airwin2rack::PodcastDeluxe {
+namespace airwinconsolidated::PodcastDeluxe {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PodcastDeluxe(audioMaster);}
 

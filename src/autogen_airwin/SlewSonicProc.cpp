@@ -6,7 +6,7 @@
 #ifndef __SlewSonic_H
 #include "SlewSonic.h"
 #endif
-namespace airwin2rack::SlewSonic {
+namespace airwinconsolidated::SlewSonic {
 
 void SlewSonic::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __SubsOnly_H
 #include "SubsOnly.h"
 #endif
-namespace airwin2rack::SubsOnly {
+namespace airwinconsolidated::SubsOnly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SubsOnly(audioMaster);}
 

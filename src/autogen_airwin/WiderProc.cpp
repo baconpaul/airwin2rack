@@ -6,7 +6,7 @@
 #ifndef __Wider_H
 #include "Wider.h"
 #endif
-namespace airwin2rack::Wider {
+namespace airwinconsolidated::Wider {
 
 void Wider::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

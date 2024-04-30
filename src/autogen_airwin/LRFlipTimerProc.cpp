@@ -6,7 +6,7 @@
 #ifndef __LRFlipTimer_H
 #include "LRFlipTimer.h"
 #endif
-namespace airwin2rack::LRFlipTimer {
+namespace airwinconsolidated::LRFlipTimer {
 
 void LRFlipTimer::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

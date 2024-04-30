@@ -6,7 +6,7 @@
 #ifndef __Gain_H
 #include "MidAmp.h"
 #endif
-namespace airwin2rack::MidAmp {
+namespace airwinconsolidated::MidAmp {
 
 void MidAmp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

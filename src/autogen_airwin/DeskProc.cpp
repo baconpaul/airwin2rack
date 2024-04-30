@@ -6,7 +6,7 @@
 #ifndef __Desk_H
 #include "Desk.h"
 #endif
-namespace airwin2rack::Desk {
+namespace airwinconsolidated::Desk {
 
 void Desk::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

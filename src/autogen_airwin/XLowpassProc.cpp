@@ -6,7 +6,7 @@
 #ifndef __XLowpass_H
 #include "XLowpass.h"
 #endif
-namespace airwin2rack::XLowpass {
+namespace airwinconsolidated::XLowpass {
 
 void XLowpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

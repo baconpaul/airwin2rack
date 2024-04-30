@@ -6,7 +6,7 @@
 #ifndef __FromTape_H
 #include "FromTape.h"
 #endif
-namespace airwin2rack::FromTape {
+namespace airwinconsolidated::FromTape {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new FromTape(audioMaster);}
 

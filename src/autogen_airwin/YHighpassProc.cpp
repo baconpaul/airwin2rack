@@ -6,7 +6,7 @@
 #ifndef __YHighpass_H
 #include "YHighpass.h"
 #endif
-namespace airwin2rack::YHighpass {
+namespace airwinconsolidated::YHighpass {
 
 void YHighpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

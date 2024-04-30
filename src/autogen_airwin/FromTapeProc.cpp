@@ -6,7 +6,7 @@
 #ifndef __FromTape_H
 #include "FromTape.h"
 #endif
-namespace airwin2rack::FromTape {
+namespace airwinconsolidated::FromTape {
 
 void FromTape::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

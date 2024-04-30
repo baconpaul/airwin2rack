@@ -6,7 +6,7 @@
 #ifndef __StereoChorus_H
 #include "StereoChorus.h"
 #endif
-namespace airwin2rack::StereoChorus {
+namespace airwinconsolidated::StereoChorus {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StereoChorus(audioMaster);}
 

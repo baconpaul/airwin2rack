@@ -6,7 +6,7 @@
 #ifndef __Mackity_H
 #include "Mackity.h"
 #endif
-namespace airwin2rack::Mackity {
+namespace airwinconsolidated::Mackity {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Mackity(audioMaster);}
 

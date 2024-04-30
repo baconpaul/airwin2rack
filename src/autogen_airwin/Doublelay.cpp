@@ -6,7 +6,7 @@
 #ifndef __Doublelay_H
 #include "Doublelay.h"
 #endif
-namespace airwin2rack::Doublelay {
+namespace airwinconsolidated::Doublelay {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Doublelay(audioMaster);}
 

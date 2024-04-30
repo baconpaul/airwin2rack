@@ -10,8 +10,8 @@ print "Importing " . $f . "\n";
 
 # Header File
 #
-# 1. replace "audioeffectx.h" with "../airwin2rackbase.h"
-# 2. add a `namespace airwin2rack::(name)` at the first enum
+# 1. replace "audioeffectx.h" with "../airwin_consolidated_base.h"
+# 2. add a `namespace airwinconsolidated::(name)` at the first enum
 # 3. Make sure the define guards are unique
 
 my $inh = "libs/airwindows/plugins/MacVST/$f/source/$f.h";
@@ -27,12 +27,12 @@ while (<IFH>)
     if (m/enum/ && ! $namespaced)
     {
         $namespaced = 1;
-        print OFH "namespace airwin2rack::$f {\n";
+        print OFH "namespace airwinconsolidated::$f {\n";
     }
 
     s/^\#ifndef\s+__(.*)_H/#ifndef __$1_${f}_H/;
     s/^\#define\s+__(.*)_H/#define __$1_${f}_H/;
-    s/audioeffectx.h/..\/airwin2rackbase.h/;
+    s/audioeffectx.h/..\/airwin_consolidated_base.h/;
 
     next if m/getChunk/;
     next if m/setChunk/;
@@ -56,7 +56,7 @@ close(IFH);
 
 # .cpp file
 #
-#    1. add a `namespace airwin2rack::(name)` after the endif
+#    1. add a `namespace airwinconsolidated::(name)` after the endif
 
 
 $inh = "libs/airwindows/plugins/MacVST/$f/source/$f.cpp";
@@ -90,7 +90,7 @@ while (<IFH>)
 
     if (m/#endif/ && !$namespaced)
     {
-        print OFH "namespace airwin2rack::$f {\n";
+        print OFH "namespace airwinconsolidated::$f {\n";
     }
 
 
@@ -226,7 +226,7 @@ while (<IFH>)
     print OFH;
     if (m/#endif/ && !$namespaced)
     {
-        print OFH "namespace airwin2rack::$f {\n";
+        print OFH "namespace airwinconsolidated::$f {\n";
     }
 }
 

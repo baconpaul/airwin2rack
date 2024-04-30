@@ -6,7 +6,7 @@
 #ifndef __Distortion_H
 #include "Distortion.h"
 #endif
-namespace airwin2rack::Distortion {
+namespace airwinconsolidated::Distortion {
 
 void Distortion::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

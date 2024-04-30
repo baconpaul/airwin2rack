@@ -1,5 +1,6 @@
 /*
-* Airwin2Rack - an adaptation of the airwindows effect suite for VCVRack
+* AirwinConsolidated - an adaptation of the airwindows effect suite
+* for various open source clients
 *
 * This source released under the MIT License, found in ~/LICENSE.md.
 *

@@ -6,7 +6,7 @@
 #ifndef __DCVoltage_H
 #include "DCVoltage.h"
 #endif
-namespace airwin2rack::DCVoltage {
+namespace airwinconsolidated::DCVoltage {
 
 void DCVoltage::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __SlewOnly_H
 #include "SlewOnly.h"
 #endif
-namespace airwin2rack::SlewOnly {
+namespace airwinconsolidated::SlewOnly {
 
 void SlewOnly::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

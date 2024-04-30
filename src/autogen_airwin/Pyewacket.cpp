@@ -6,7 +6,7 @@
 #ifndef __Pyewacket_H
 #include "Pyewacket.h"
 #endif
-namespace airwin2rack::Pyewacket {
+namespace airwinconsolidated::Pyewacket {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pyewacket(audioMaster);}
 

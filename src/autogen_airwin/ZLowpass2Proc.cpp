@@ -6,7 +6,7 @@
 #ifndef __ZLowpass2_H
 #include "ZLowpass2.h"
 #endif
-namespace airwin2rack::ZLowpass2 {
+namespace airwinconsolidated::ZLowpass2 {
 
 void ZLowpass2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

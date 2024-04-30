@@ -6,7 +6,7 @@
 #ifndef __Hombre_H
 #include "Hombre.h"
 #endif
-namespace airwin2rack::Hombre {
+namespace airwinconsolidated::Hombre {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Hombre(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __SurgeTide_H
 #include "SurgeTide.h"
 #endif
-namespace airwin2rack::SurgeTide {
+namespace airwinconsolidated::SurgeTide {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SurgeTide(audioMaster);}
 

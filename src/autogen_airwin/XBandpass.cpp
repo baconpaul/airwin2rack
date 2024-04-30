@@ -6,7 +6,7 @@
 #ifndef __XBandpass_H
 #include "XBandpass.h"
 #endif
-namespace airwin2rack::XBandpass {
+namespace airwinconsolidated::XBandpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new XBandpass(audioMaster);}
 

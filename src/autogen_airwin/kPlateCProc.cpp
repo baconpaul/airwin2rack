@@ -6,7 +6,7 @@
 #ifndef __kPlateC_H
 #include "kPlateC.h"
 #endif
-namespace airwin2rack::kPlateC {
+namespace airwinconsolidated::kPlateC {
 
 void kPlateC::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

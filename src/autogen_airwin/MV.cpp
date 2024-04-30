@@ -6,7 +6,7 @@
 #ifndef __MV_H
 #include "MV.h"
 #endif
-namespace airwin2rack::MV {
+namespace airwinconsolidated::MV {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MV(audioMaster);}
 

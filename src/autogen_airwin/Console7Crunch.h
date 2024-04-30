@@ -8,14 +8,14 @@
 #define __Console7Crunch_Console7Crunch_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Console7Crunch {
+namespace airwinconsolidated::Console7Crunch {
 enum {
 	kParamA = 0,
   kNumParameters = 1

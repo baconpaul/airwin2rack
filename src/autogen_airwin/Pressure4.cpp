@@ -6,7 +6,7 @@
 #ifndef __Pressure4_H
 #include "Pressure4.h"
 #endif
-namespace airwin2rack::Pressure4 {
+namespace airwinconsolidated::Pressure4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pressure4(audioMaster);}
 

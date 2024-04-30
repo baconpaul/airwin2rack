@@ -6,7 +6,7 @@
 #ifndef __Tube_H
 #include "Tube.h"
 #endif
-namespace airwin2rack::Tube {
+namespace airwinconsolidated::Tube {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Tube(audioMaster);}
 

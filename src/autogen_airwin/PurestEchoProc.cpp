@@ -6,7 +6,7 @@
 #ifndef __PurestEcho_H
 #include "PurestEcho.h"
 #endif
-namespace airwin2rack::PurestEcho {
+namespace airwinconsolidated::PurestEcho {
 
 void PurestEcho::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

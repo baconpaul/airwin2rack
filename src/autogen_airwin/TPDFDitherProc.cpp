@@ -6,7 +6,7 @@
 #ifndef __TPDFDither_H
 #include "TPDFDither.h"
 #endif
-namespace airwin2rack::TPDFDither {
+namespace airwinconsolidated::TPDFDither {
 
 void TPDFDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

@@ -6,7 +6,7 @@
 #ifndef __ElectroHat_H
 #include "ElectroHat.h"
 #endif
-namespace airwin2rack::ElectroHat {
+namespace airwinconsolidated::ElectroHat {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ElectroHat(audioMaster);}
 

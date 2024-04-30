@@ -6,7 +6,7 @@
 #ifndef __IronOxideClassic_H
 #include "IronOxideClassic.h"
 #endif
-namespace airwin2rack::IronOxideClassic {
+namespace airwinconsolidated::IronOxideClassic {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new IronOxideClassic(audioMaster);}
 

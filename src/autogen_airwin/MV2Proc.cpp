@@ -6,7 +6,7 @@
 #ifndef __MV2_H
 #include "MV2.h"
 #endif
-namespace airwin2rack::MV2 {
+namespace airwinconsolidated::MV2 {
 
 void MV2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

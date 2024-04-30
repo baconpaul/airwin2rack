@@ -6,7 +6,7 @@
 #ifndef __ZBandpass_H
 #include "ZBandpass.h"
 #endif
-namespace airwin2rack::ZBandpass {
+namespace airwinconsolidated::ZBandpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZBandpass(audioMaster);}
 

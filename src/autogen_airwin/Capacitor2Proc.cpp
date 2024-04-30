@@ -6,7 +6,7 @@
 #ifndef __Capacitor2_H
 #include "Capacitor2.h"
 #endif
-namespace airwin2rack::Capacitor2 {
+namespace airwinconsolidated::Capacitor2 {
 
 void Capacitor2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

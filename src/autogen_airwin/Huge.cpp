@@ -6,7 +6,7 @@
 #ifndef __Huge_H
 #include "Huge.h"
 #endif
-namespace airwin2rack::Huge {
+namespace airwinconsolidated::Huge {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Huge(audioMaster);}
 

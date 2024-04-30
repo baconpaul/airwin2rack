@@ -6,7 +6,7 @@
 #ifndef __BiquadNonLin_H
 #include "BiquadNonLin.h"
 #endif
-namespace airwin2rack::BiquadNonLin {
+namespace airwinconsolidated::BiquadNonLin {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BiquadNonLin(audioMaster);}
 

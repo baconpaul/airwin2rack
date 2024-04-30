@@ -8,14 +8,14 @@
 #define __kPlateC_kPlateC_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::kPlateC {
+namespace airwinconsolidated::kPlateC {
 enum {
 	kParamA = 0,
 	kParamB = 1,

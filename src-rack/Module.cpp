@@ -7,7 +7,7 @@
  */
 
 #include "Airwin2Rack.hpp"
-#include "airwin2rackbase.h"
+#include "airwin_consolidated_base.h"
 #include <iostream>
 #include <array>
 #include <vector>
@@ -29,8 +29,8 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
 {
     static constexpr int maxParams{10};
 
-    std::unique_ptr<Airwin2RackBase> airwin{}, airwin_display{};
-    std::array<std::unique_ptr<Airwin2RackBase>, MAX_POLY> poly_airwin;
+    std::unique_ptr<AirwinConsolidatedBase> airwin{}, airwin_display{};
+    std::array<std::unique_ptr<AirwinConsolidatedBase>, MAX_POLY> poly_airwin;
     std::atomic<int32_t> forceSelect{-1}, resetCount{0}, selectedIdx{-1};
     std::atomic<bool> panicReset;
     std::string selectedFX{}, selectedWhat{}, selectedCat{};
@@ -127,7 +127,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
     std::atomic<bool> lockedType{false}, randomizeFX{false};
     AW2RModule()
     {
-        Airwin2RackBase::defaultSampleRate = APP->engine->getSampleRate();
+        AirwinConsolidatedBase::defaultSampleRate = APP->engine->getSampleRate();
 
         assert(!AirwinRegistry::registry.empty());
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -189,7 +189,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         selectedCat = AirwinRegistry::registry[registryIdx].category;
         selectedWhat = AirwinRegistry::registry[registryIdx].whatText;
 
-        Airwin2RackBase::defaultSampleRate = APP->engine->getSampleRate();
+        AirwinConsolidatedBase::defaultSampleRate = APP->engine->getSampleRate();
 
         airwin_display = AirwinRegistry::registry[registryIdx].generator();
         airwin_display->setSampleRate(APP->engine->getSampleRate());
@@ -242,7 +242,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
     void updateSampleRates()
     {
         auto sr = APP->engine->getSampleRate();
-        Airwin2RackBase::defaultSampleRate = sr;
+        AirwinConsolidatedBase::defaultSampleRate = sr;
         airwin_display->setSampleRate(sr);
         if (airwin)
             airwin->setSampleRate(sr);

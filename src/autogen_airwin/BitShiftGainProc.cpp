@@ -6,7 +6,7 @@
 #ifndef __BitShiftGain_H
 #include "BitShiftGain.h"
 #endif
-namespace airwin2rack::BitShiftGain {
+namespace airwinconsolidated::BitShiftGain {
 
 void BitShiftGain::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

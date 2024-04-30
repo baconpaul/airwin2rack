@@ -6,7 +6,7 @@
 #ifndef __Inflamer_H
 #include "Inflamer.h"
 #endif
-namespace airwin2rack::Inflamer {
+namespace airwinconsolidated::Inflamer {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Inflamer(audioMaster);}
 

@@ -6,7 +6,7 @@
 #ifndef __NotJustAnotherCD_H
 #include "NotJustAnotherCD.h"
 #endif
-namespace airwin2rack::NotJustAnotherCD {
+namespace airwinconsolidated::NotJustAnotherCD {
 
 void NotJustAnotherCD::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

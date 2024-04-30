@@ -7,7 +7,7 @@
 #ifndef __Console4Channel_H
 #include "Console4Channel.h"
 #endif
-namespace airwin2rack::Console4Channel {
+namespace airwinconsolidated::Console4Channel {
 
 void Console4Channel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

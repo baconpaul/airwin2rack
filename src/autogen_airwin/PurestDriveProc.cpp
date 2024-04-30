@@ -6,7 +6,7 @@
 #ifndef __PurestDrive_H
 #include "PurestDrive.h"
 #endif
-namespace airwin2rack::PurestDrive {
+namespace airwinconsolidated::PurestDrive {
 
 void PurestDrive::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

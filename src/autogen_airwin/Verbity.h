@@ -8,14 +8,14 @@
 #define __Verbity_Verbity_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Verbity {
+namespace airwinconsolidated::Verbity {
 enum {
 	kParamA = 0,
 	kParamB = 1,

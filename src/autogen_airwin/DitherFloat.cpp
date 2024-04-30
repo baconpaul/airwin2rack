@@ -6,7 +6,7 @@
 #ifndef __DitherFloat_H
 #include "DitherFloat.h"
 #endif
-namespace airwin2rack::DitherFloat {
+namespace airwinconsolidated::DitherFloat {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DitherFloat(audioMaster);}
 

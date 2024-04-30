@@ -6,7 +6,7 @@
 #ifndef __Doublelay_H
 #include "Doublelay.h"
 #endif
-namespace airwin2rack::Doublelay {
+namespace airwinconsolidated::Doublelay {
 
 void Doublelay::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

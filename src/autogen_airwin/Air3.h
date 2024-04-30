@@ -8,14 +8,14 @@
 #define __Air3_Air3_H
 
 #ifndef __audioeffect__
-#include "../airwin2rackbase.h"
+#include "../airwin_consolidated_base.h"
 #endif
 
 #include <set>
 #include <string>
 #include <math.h>
 
-namespace airwin2rack::Air3 {
+namespace airwinconsolidated::Air3 {
 enum {
 	kParamA = 0,
 	kParamB = 1,

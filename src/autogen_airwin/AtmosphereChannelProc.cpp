@@ -6,7 +6,7 @@
 #ifndef __AtmosphereChannel_H
 #include "AtmosphereChannel.h"
 #endif
-namespace airwin2rack::AtmosphereChannel {
+namespace airwinconsolidated::AtmosphereChannel {
 
 void AtmosphereChannel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

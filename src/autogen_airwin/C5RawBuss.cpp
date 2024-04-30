@@ -6,7 +6,7 @@
 #ifndef __C5RawBuss_H
 #include "C5RawBuss.h"
 #endif
-namespace airwin2rack::C5RawBuss {
+namespace airwinconsolidated::C5RawBuss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new C5RawBuss(audioMaster);}
 

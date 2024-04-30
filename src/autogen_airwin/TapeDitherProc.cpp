@@ -6,7 +6,7 @@
 #ifndef __TapeDither_H
 #include "TapeDither.h"
 #endif
-namespace airwin2rack::TapeDither {
+namespace airwinconsolidated::TapeDither {
 
 void TapeDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

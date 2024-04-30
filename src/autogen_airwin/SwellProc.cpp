@@ -6,7 +6,7 @@
 #ifndef __Swell_H
 #include "Swell.h"
 #endif
-namespace airwin2rack::Swell {
+namespace airwinconsolidated::Swell {
 
 void Swell::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {

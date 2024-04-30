@@ -6,7 +6,7 @@
 #ifndef __PaulDither_H
 #include "PaulDither.h"
 #endif
-namespace airwin2rack::PaulDither {
+namespace airwinconsolidated::PaulDither {
 
 void PaulDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {
