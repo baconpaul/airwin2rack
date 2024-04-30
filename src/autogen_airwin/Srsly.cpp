@@ -6,6 +6,8 @@
 #ifndef __Srsly_H
 #include "Srsly.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Srsly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Srsly(audioMaster);}

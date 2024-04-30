@@ -6,6 +6,8 @@
 #ifndef __AverMatrix_H
 #include "AverMatrix.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::AverMatrix {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new AverMatrix(audioMaster);}

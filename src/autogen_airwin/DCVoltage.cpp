@@ -6,6 +6,8 @@
 #ifndef __DCVoltage_H
 #include "DCVoltage.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DCVoltage {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DCVoltage(audioMaster);}

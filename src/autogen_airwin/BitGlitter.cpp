@@ -6,6 +6,8 @@
 #ifndef __BitGlitter_H
 #include "BitGlitter.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BitGlitter {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BitGlitter(audioMaster);}

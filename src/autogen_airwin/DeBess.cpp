@@ -6,6 +6,8 @@
 #ifndef __DeBess_H
 #include "DeBess.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DeBess {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DeBess(audioMaster);}

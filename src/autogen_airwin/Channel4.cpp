@@ -6,6 +6,8 @@
 #ifndef __Channel4_H
 #include "Channel4.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Channel4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Channel4(audioMaster);}

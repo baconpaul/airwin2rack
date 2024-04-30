@@ -6,6 +6,8 @@
 #ifndef __XRegion_H
 #include "XRegion.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::XRegion {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new XRegion(audioMaster);}

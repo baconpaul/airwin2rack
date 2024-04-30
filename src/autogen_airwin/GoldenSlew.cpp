@@ -6,6 +6,8 @@
 #ifndef __GoldenSlew_H
 #include "GoldenSlew.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::GoldenSlew {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new GoldenSlew(audioMaster);}

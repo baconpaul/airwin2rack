@@ -6,6 +6,8 @@
 #ifndef __Exciter_H
 #include "Exciter.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Exciter {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Exciter(audioMaster);}

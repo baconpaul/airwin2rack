@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "LilAmp.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::LilAmp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new LilAmp(audioMaster);}

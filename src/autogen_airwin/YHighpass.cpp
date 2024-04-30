@@ -6,6 +6,8 @@
 #ifndef __YHighpass_H
 #include "YHighpass.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::YHighpass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new YHighpass(audioMaster);}

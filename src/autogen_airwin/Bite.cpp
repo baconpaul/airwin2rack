@@ -6,6 +6,8 @@
 #ifndef __Bite_H
 #include "Bite.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Bite {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Bite(audioMaster);}

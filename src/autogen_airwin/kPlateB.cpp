@@ -6,6 +6,8 @@
 #ifndef __kPlateB_H
 #include "kPlateB.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::kPlateB {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new kPlateB(audioMaster);}
@@ -299,6 +301,7 @@ bool kPlateB::parameterTextToValue(VstInt32 index, const char *text, float &valu
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); if (b) { value = value / (10.0); } return b; break; }
     case kParamC: { auto b = string2float(text, value); if (b) { value = value / (3.0); } return b; break; }
+    case kParamD: { auto b = string2float(text, value); if (b) { value = pow(std::max((value/0.5), 0.), (1.0/2)); } return b; break; }
     case kParamE: { auto b = string2float(text, value); return b; break; }
 
     }
@@ -309,6 +312,7 @@ bool kPlateB::canConvertParameterTextToValue(VstInt32 index) {
         case kParamA: return true;
         case kParamB: return true;
         case kParamC: return true;
+        case kParamD: return true;
         case kParamE: return true;
 
     }

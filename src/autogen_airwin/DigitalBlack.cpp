@@ -6,6 +6,8 @@
 #ifndef __DigitalBlack_H
 #include "DigitalBlack.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DigitalBlack {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DigitalBlack(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Neverland_H
 #include "Neverland.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Neverland {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Neverland(audioMaster);}

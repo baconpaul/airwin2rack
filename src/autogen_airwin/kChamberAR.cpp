@@ -6,6 +6,8 @@
 #ifndef __kChamberAR_H
 #include "kChamberAR.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::kChamberAR {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new kChamberAR(audioMaster);}

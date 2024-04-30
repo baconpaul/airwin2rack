@@ -6,6 +6,8 @@
 #ifndef __Desk_H
 #include "Desk.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Desk {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Desk(audioMaster);}

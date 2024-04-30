@@ -6,6 +6,8 @@
 #ifndef __Point_H
 #include "Point.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Point {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Point(audioMaster);}

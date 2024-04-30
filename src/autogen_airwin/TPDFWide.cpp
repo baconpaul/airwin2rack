@@ -6,6 +6,8 @@
 #ifndef __TPDFWide_H
 #include "TPDFWide.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TPDFWide {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TPDFWide(audioMaster);}

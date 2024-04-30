@@ -6,6 +6,8 @@
 #ifndef __VariMu_H
 #include "VariMu.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::VariMu {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new VariMu(audioMaster);}

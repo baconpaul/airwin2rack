@@ -6,6 +6,8 @@
 #ifndef __ConsoleMDBuss_H
 #include "ConsoleMDBuss.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ConsoleMDBuss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ConsoleMDBuss(audioMaster);}

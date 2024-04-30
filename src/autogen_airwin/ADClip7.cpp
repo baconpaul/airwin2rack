@@ -6,6 +6,8 @@
 #ifndef __ADClip7_H
 #include "ADClip7.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ADClip7 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ADClip7(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Capacitor_H
 #include "Capacitor.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Capacitor {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Capacitor(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __ZOutputStage_H
 #include "ZOutputStage.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ZOutputStage {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZOutputStage(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __HermeTrim_H
 #include "HermeTrim.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::HermeTrim {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new HermeTrim(audioMaster);}

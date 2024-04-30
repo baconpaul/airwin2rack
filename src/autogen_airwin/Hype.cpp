@@ -6,6 +6,8 @@
 #ifndef __Hype_H
 #include "Hype.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Hype {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Hype(audioMaster);}

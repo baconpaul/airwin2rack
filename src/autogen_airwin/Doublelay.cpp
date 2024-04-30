@@ -6,6 +6,8 @@
 #ifndef __Doublelay_H
 #include "Doublelay.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Doublelay {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Doublelay(audioMaster);}

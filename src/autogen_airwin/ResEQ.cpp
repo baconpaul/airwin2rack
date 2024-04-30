@@ -6,6 +6,8 @@
 #ifndef __ResEQ_H
 #include "ResEQ.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ResEQ {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ResEQ(audioMaster);}

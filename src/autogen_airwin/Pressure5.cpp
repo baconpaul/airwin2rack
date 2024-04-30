@@ -6,6 +6,8 @@
 #ifndef __Pressure5_H
 #include "Pressure5.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Pressure5 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pressure5(audioMaster);}

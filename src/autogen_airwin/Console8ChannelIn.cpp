@@ -6,6 +6,8 @@
 #ifndef __Console8ChannelIn_H
 #include "Console8ChannelIn.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console8ChannelIn {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8ChannelIn(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __CrunchyGrooveWear_H
 #include "CrunchyGrooveWear.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::CrunchyGrooveWear {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new CrunchyGrooveWear(audioMaster);}

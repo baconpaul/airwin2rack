@@ -6,6 +6,8 @@
 #ifndef __Desk4_H
 #include "Desk4.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Desk4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Desk4(audioMaster);}

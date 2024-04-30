@@ -6,6 +6,8 @@
 #ifndef __Interstage_H
 #include "Interstage.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Interstage {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Interstage(audioMaster);}

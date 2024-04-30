@@ -6,6 +6,8 @@
 #ifndef __PurestConsoleChannel_H
 #include "PurestConsoleChannel.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PurestConsoleChannel {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestConsoleChannel(audioMaster);}

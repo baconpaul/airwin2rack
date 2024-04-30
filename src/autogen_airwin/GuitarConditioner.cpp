@@ -6,6 +6,8 @@
 #ifndef __GuitarConditioner_H
 #include "GuitarConditioner.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::GuitarConditioner {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new GuitarConditioner(audioMaster);}

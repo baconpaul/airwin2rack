@@ -6,6 +6,8 @@
 #ifndef __Cider_H
 #include "Cider.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Cider {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Cider(audioMaster);}

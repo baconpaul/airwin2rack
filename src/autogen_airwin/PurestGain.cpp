@@ -6,6 +6,8 @@
 #ifndef __PurestGain_H
 #include "PurestGain.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PurestGain {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestGain(audioMaster);}

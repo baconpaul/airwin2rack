@@ -6,6 +6,8 @@
 #ifndef __Pop_H
 #include "Pop.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Pop {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pop(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __ZNotch_H
 #include "ZNotch.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ZNotch {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ZNotch(audioMaster);}

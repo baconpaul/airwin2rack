@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "PurestWarm2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PurestWarm2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PurestWarm2(audioMaster);}

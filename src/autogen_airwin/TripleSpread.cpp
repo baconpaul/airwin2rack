@@ -6,6 +6,8 @@
 #ifndef __TripleSpread_H
 #include "TripleSpread.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TripleSpread {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TripleSpread(audioMaster);}

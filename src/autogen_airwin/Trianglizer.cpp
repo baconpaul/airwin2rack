@@ -6,6 +6,8 @@
 #ifndef __Trianglizer_H
 #include "Trianglizer.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Trianglizer {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Trianglizer(audioMaster);}

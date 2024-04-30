@@ -6,6 +6,8 @@
 #ifndef __Distance_H
 #include "Distance.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Distance {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Distance(audioMaster);}

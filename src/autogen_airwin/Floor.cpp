@@ -6,6 +6,8 @@
 #ifndef __Floor_H
 #include "Floor.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Floor {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Floor(audioMaster);}

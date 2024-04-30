@@ -6,6 +6,8 @@
 #ifndef __Surge_H
 #include "Surge.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Surge {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Surge(audioMaster);}

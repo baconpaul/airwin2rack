@@ -6,6 +6,8 @@
 #ifndef __Calibre_H
 #include "Calibre.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Calibre {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Calibre(audioMaster);}

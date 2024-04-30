@@ -6,6 +6,8 @@
 #ifndef __EverySlew_H
 #include "EverySlew.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::EverySlew {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new EverySlew(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __SlewOnly_H
 #include "SlewOnly.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::SlewOnly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SlewOnly(audioMaster);}

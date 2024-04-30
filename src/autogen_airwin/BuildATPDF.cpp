@@ -6,6 +6,8 @@
 #ifndef __BuildATPDF_H
 #include "BuildATPDF.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BuildATPDF {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BuildATPDF(audioMaster);}

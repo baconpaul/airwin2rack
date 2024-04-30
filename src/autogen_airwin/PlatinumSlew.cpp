@@ -6,6 +6,8 @@
 #ifndef __PlatinumSlew_H
 #include "PlatinumSlew.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PlatinumSlew {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PlatinumSlew(audioMaster);}

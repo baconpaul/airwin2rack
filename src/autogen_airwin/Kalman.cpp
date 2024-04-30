@@ -6,6 +6,8 @@
 #ifndef __Kalman_H
 #include "Kalman.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Kalman {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Kalman(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __LeftoMono_H
 #include "LeftoMono.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::LeftoMono {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new LeftoMono(audioMaster);}

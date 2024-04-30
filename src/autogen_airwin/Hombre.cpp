@@ -6,6 +6,8 @@
 #ifndef __Hombre_H
 #include "Hombre.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Hombre {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Hombre(audioMaster);}

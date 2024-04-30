@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "LeadAmp.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::LeadAmp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new LeadAmp(audioMaster);}

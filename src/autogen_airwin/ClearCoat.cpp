@@ -6,6 +6,8 @@
 #ifndef __ClearCoat_H
 #include "ClearCoat.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ClearCoat {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ClearCoat(audioMaster);}

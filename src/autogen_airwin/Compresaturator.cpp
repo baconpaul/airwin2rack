@@ -6,6 +6,8 @@
 #ifndef __Compresaturator_H
 #include "Compresaturator.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Compresaturator {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Compresaturator(audioMaster);}

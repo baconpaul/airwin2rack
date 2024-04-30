@@ -6,6 +6,8 @@
 #ifndef __Pockey_H
 #include "Pockey.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Pockey {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Pockey(audioMaster);}

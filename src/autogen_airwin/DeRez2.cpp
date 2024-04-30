@@ -6,6 +6,8 @@
 #ifndef __DeRez2_H
 #include "DeRez2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DeRez2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DeRez2(audioMaster);}

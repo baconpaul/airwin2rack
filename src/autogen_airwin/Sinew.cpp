@@ -6,6 +6,8 @@
 #ifndef __Sinew_H
 #include "Sinew.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Sinew {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Sinew(audioMaster);}

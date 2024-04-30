@@ -6,6 +6,8 @@
 #ifndef __TPDFDither_H
 #include "TPDFDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TPDFDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TPDFDither(audioMaster);}

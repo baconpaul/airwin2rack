@@ -6,6 +6,8 @@
 #ifndef __StereoChorus_H
 #include "StereoChorus.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::StereoChorus {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StereoChorus(audioMaster);}

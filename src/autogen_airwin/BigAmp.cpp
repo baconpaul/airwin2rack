@@ -6,6 +6,8 @@
 #ifndef __Gain_H
 #include "BigAmp.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BigAmp {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BigAmp(audioMaster);}

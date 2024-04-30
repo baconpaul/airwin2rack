@@ -6,6 +6,8 @@
 #ifndef __GrooveWear_H
 #include "GrooveWear.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::GrooveWear {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new GrooveWear(audioMaster);}

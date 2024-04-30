@@ -6,6 +6,8 @@
 #ifndef __Biquad2_H
 #include "Biquad2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Biquad2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Biquad2(audioMaster);}
@@ -134,6 +136,8 @@ bool Biquad2::getVendorString(char* text) {
 }
 bool Biquad2::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamB: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 0.0001) / (0.9999), 0.)); } return b; break; }
+    case kParamC: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 0.01) / (49.99), 0.)); } return b; break; }
     case kParamD: { auto b = string2float(text, value); return b; break; }
     case kParamE: { auto b = string2float(text, value); if (b) { value = (value + 1.0) / (2.0); } return b; break; }
 
@@ -142,6 +146,8 @@ bool Biquad2::parameterTextToValue(VstInt32 index, const char *text, float &valu
 }
 bool Biquad2::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamB: return true;
+        case kParamC: return true;
         case kParamD: return true;
         case kParamE: return true;
 

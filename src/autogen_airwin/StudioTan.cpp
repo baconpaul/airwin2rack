@@ -6,6 +6,8 @@
 #ifndef __StudioTan_H
 #include "StudioTan.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::StudioTan {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StudioTan(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __DarkNoise_H
 #include "DarkNoise.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DarkNoise {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DarkNoise(audioMaster);}

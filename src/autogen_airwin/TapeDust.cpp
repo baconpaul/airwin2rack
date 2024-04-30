@@ -6,6 +6,8 @@
 #ifndef __TapeDust_H
 #include "TapeDust.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TapeDust {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TapeDust(audioMaster);}

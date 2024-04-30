@@ -6,6 +6,8 @@
 #ifndef __Golem_H
 #include "Golem.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Golem {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Golem(audioMaster);}

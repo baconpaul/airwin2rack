@@ -6,6 +6,8 @@
 #ifndef __Acceleration2_H
 #include "Acceleration2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Acceleration2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Acceleration2(audioMaster);}

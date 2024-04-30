@@ -6,6 +6,8 @@
 #ifndef __Console8SubOut_H
 #include "Console8SubOut.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console8SubOut {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console8SubOut(audioMaster);}

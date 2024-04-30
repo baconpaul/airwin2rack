@@ -6,6 +6,8 @@
 #ifndef __SampleDelay_H
 #include "SampleDelay.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::SampleDelay {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SampleDelay(audioMaster);}

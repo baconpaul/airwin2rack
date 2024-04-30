@@ -6,6 +6,8 @@
 #ifndef __MV2_H
 #include "MV2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::MV2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MV2(audioMaster);}

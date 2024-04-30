@@ -6,6 +6,8 @@
 #ifndef __Balanced_H
 #include "Balanced.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Balanced {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Balanced(audioMaster);}

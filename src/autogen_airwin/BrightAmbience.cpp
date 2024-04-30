@@ -6,6 +6,8 @@
 #ifndef __BrightAmbience_H
 #include "BrightAmbience.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BrightAmbience {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BrightAmbience(audioMaster);}

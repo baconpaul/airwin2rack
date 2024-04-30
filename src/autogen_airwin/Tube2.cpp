@@ -6,6 +6,8 @@
 #ifndef __Tube2_H
 #include "Tube2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Tube2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Tube2(audioMaster);}

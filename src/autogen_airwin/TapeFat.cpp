@@ -6,6 +6,8 @@
 #ifndef __TapeFat_H
 #include "TapeFat.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::TapeFat {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TapeFat(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Creature_H
 #include "Creature.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Creature {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Creature(audioMaster);}

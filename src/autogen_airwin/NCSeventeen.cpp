@@ -6,6 +6,8 @@
 #ifndef __NCSeventeen_H
 #include "NCSeventeen.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::NCSeventeen {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new NCSeventeen(audioMaster);}

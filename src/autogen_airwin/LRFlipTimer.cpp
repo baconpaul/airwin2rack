@@ -6,6 +6,8 @@
 #ifndef __LRFlipTimer_H
 #include "LRFlipTimer.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::LRFlipTimer {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new LRFlipTimer(audioMaster);}

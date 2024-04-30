@@ -6,6 +6,8 @@
 #ifndef __ToVinyl4_H
 #include "ToVinyl4.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ToVinyl4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ToVinyl4(audioMaster);}
@@ -186,6 +188,8 @@ bool ToVinyl4::getVendorString(char* text) {
 }
 bool ToVinyl4::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 10.0) / (290.0), 0.)); } return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 10.0) / (290.0), 0.)); } return b; break; }
     case kParamC: { auto b = string2float(text, value); return b; break; }
     case kParamD: { auto b = string2float(text, value); return b; break; }
 
@@ -194,6 +198,8 @@ bool ToVinyl4::parameterTextToValue(VstInt32 index, const char *text, float &val
 }
 bool ToVinyl4::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
+        case kParamB: return true;
         case kParamC: return true;
         case kParamD: return true;
 

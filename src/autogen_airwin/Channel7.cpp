@@ -6,6 +6,8 @@
 #ifndef __Channel7_H
 #include "Channel7.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Channel7 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Channel7(audioMaster);}

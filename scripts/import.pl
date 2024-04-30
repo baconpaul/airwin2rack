@@ -90,6 +90,8 @@ while (<IFH>)
 
     if (m/#endif/ && !$namespaced)
     {
+        print OFH "#include <cmath>\n";
+        print OFH "#include <algorithm>\n";
         print OFH "namespace airwinconsolidated::$f {\n";
     }
 
@@ -159,10 +161,38 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
         $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = (value / ${scale}) + ${offset}; } return b; break; }\n";
         $ok = 1;
     }
+    # ((P*P)*m)+o - inverse is sqrt(std::min((n-o)/m, 0.001)
+    elsif ($formatter =~ /float2string\s*\(\s*\(\s*\(*${param}\*${param}\)*\*([\d\.]+)\)\+([\d\.]+)/)
+    {
+        my $sqmul = $1;
+        my $offst = $2;
+
+        $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - ${offst}) / ($sqmul), 0.)); } return b; break; }\n";
+        $ok = 1;
+    }
+    # ((P*P*P)*m)+o - inverse is cbrt(std::min((n-o)/m, 0.001)
+    elsif ($formatter =~ /float2string\s*\(\s*\(\s*\(*${param}\*${param}\*${param}\)*\*([\d\.]+)\)\+([\d\.]+)/)
+    {
+        my $sqmul = $1;
+        my $offst = $2;
+
+        $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = std::cbrt((value - ${offst}) / ($sqmul)); } return b; break; }\n";
+        $ok = 1;
+    }
+    # pow(param,N)*M
+    elsif ($formatter =~ /float2string\s*\(\s*pow\(${param},([\d\.]+)\)\*([\d\.]+)/)
+    {
+        my $exp = $1;
+        my $mul = $2;
+
+        $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = pow(std::max((value/$mul), 0.), (1.0/$exp)); } return b; break; }\n";
+        $ok = 1;
+    }
     elsif ($formatter =~ m/float2string\s*\(([^,]+),[^;]+;\s*$/)
     {
         my $arg = $1;
         print " CUSTOM ARG :" . $f . "::" . $param . " >> " . $arg . "\n";
+        print "      INPUT : " . $formatter . "\n";
 
         if ($arg =~ m/^\s*\(([${param}\*]+)([0-9.]+)\)\+([0-9.]+)/)
         {

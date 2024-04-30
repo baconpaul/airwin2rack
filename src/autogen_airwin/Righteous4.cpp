@@ -6,6 +6,8 @@
 #ifndef __Righteous4_H
 #include "Righteous4.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Righteous4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Righteous4(audioMaster);}

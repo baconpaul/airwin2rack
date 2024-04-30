@@ -6,6 +6,8 @@
 #ifndef __VoiceTrick_H
 #include "VoiceTrick.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::VoiceTrick {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new VoiceTrick(audioMaster);}

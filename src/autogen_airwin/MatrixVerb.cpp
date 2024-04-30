@@ -6,6 +6,8 @@
 #ifndef __MatrixVerb_H
 #include "MatrixVerb.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::MatrixVerb {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new MatrixVerb(audioMaster);}

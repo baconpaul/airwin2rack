@@ -6,6 +6,8 @@
 #ifndef __ConsoleLAChannel_H
 #include "ConsoleLAChannel.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ConsoleLAChannel {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ConsoleLAChannel(audioMaster);}

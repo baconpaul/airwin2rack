@@ -6,6 +6,8 @@
 #ifndef __SubTight_H
 #include "SubTight.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::SubTight {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SubTight(audioMaster);}

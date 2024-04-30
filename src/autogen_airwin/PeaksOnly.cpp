@@ -6,6 +6,8 @@
 #ifndef __PeaksOnly_H
 #include "PeaksOnly.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::PeaksOnly {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new PeaksOnly(audioMaster);}

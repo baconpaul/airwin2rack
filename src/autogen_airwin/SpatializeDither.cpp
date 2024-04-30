@@ -6,6 +6,8 @@
 #ifndef __SpatializeDither_H
 #include "SpatializeDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::SpatializeDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SpatializeDither(audioMaster);}

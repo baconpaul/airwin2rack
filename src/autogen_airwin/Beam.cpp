@@ -6,6 +6,8 @@
 #ifndef __Beam_H
 #include "Beam.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Beam {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Beam(audioMaster);}

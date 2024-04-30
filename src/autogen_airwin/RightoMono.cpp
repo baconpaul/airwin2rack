@@ -6,6 +6,8 @@
 #ifndef __RightoMono_H
 #include "RightoMono.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::RightoMono {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new RightoMono(audioMaster);}

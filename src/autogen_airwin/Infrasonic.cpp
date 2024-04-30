@@ -6,6 +6,8 @@
 #ifndef __Infrasonic_H
 #include "Infrasonic.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Infrasonic {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Infrasonic(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __DubCenter_H
 #include "DubCenter.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DubCenter {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DubCenter(audioMaster);}

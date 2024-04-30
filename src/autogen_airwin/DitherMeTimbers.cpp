@@ -6,6 +6,8 @@
 #ifndef __DitherMeTimbers_H
 #include "DitherMeTimbers.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DitherMeTimbers {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DitherMeTimbers(audioMaster);}

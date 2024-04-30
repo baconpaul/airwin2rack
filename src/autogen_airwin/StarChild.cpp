@@ -6,6 +6,8 @@
 #ifndef __StarChild_H
 #include "StarChild.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::StarChild {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new StarChild(audioMaster);}

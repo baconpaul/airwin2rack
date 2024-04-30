@@ -6,6 +6,8 @@
 #ifndef __AQuickVoiceClip_H
 #include "AQuickVoiceClip.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::AQuickVoiceClip {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new AQuickVoiceClip(audioMaster);}

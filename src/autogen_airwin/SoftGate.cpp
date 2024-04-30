@@ -6,6 +6,8 @@
 #ifndef __SoftGate_H
 #include "SoftGate.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::SoftGate {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new SoftGate(audioMaster);}

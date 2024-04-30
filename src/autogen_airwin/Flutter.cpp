@@ -6,6 +6,8 @@
 #ifndef __Flutter_H
 #include "Flutter.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Flutter {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Flutter(audioMaster);}

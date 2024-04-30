@@ -6,6 +6,8 @@
 #ifndef __Cojones_H
 #include "Cojones.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Cojones {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Cojones(audioMaster);}

@@ -6,6 +6,8 @@
 #ifndef __Sidepass_H
 #include "Sidepass.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Sidepass {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Sidepass(audioMaster);}

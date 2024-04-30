@@ -6,6 +6,8 @@
 #ifndef __BitShiftPan_H
 #include "BitShiftPan.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::BitShiftPan {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new BitShiftPan(audioMaster);}

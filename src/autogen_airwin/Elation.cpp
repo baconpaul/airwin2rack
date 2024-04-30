@@ -6,6 +6,8 @@
 #ifndef __Elation_H
 #include "Elation.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Elation {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Elation(audioMaster);}

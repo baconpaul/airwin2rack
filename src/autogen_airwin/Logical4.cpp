@@ -6,6 +6,8 @@
 #ifndef __Logical4_H
 #include "Logical4.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Logical4 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Logical4(audioMaster);}
@@ -183,6 +185,8 @@ bool Logical4::getVendorString(char* text) {
 bool Logical4::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 20.0) / (40.0); } return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 1.0) / (15.0), 0.)); } return b; break; }
+    case kParamC: { auto b = string2float(text, value); if (b) { value = sqrt(std::max((value - 1.0) / (99.0), 0.)); } return b; break; }
     case kParamD: { auto b = string2float(text, value); if (b) { value = (value + 20.0) / (40.0); } return b; break; }
     case kParamE: { auto b = string2float(text, value); return b; break; }
 
@@ -192,6 +196,8 @@ bool Logical4::parameterTextToValue(VstInt32 index, const char *text, float &val
 bool Logical4::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
+        case kParamB: return true;
+        case kParamC: return true;
         case kParamD: return true;
         case kParamE: return true;
 

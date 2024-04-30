@@ -6,6 +6,8 @@
 #ifndef __DeEss_H
 #include "DeEss.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::DeEss {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DeEss(audioMaster);}

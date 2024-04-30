@@ -6,6 +6,8 @@
 #ifndef __NodeDither_H
 #include "NodeDither.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::NodeDither {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new NodeDither(audioMaster);}

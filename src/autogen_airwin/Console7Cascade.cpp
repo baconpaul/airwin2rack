@@ -6,6 +6,8 @@
 #ifndef __Console7Cascade_H
 #include "Console7Cascade.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::Console7Cascade {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Console7Cascade(audioMaster);}

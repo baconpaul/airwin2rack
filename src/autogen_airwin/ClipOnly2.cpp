@@ -6,6 +6,8 @@
 #ifndef __ClipOnly2_H
 #include "ClipOnly2.h"
 #endif
+#include <cmath>
+#include <algorithm>
 namespace airwinconsolidated::ClipOnly2 {
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ClipOnly2(audioMaster);}
