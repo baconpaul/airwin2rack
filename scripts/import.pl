@@ -230,6 +230,10 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
     {
         $ccpt .= "        case kParam${param}: return true;\n"
     }
+    else
+    {
+        print "  UNINVERTED: " . $f . "::" . $param . " / " . $formatter . "\n";
+    }
 
     $pdt =~ s/^.*?case kParam(\S+):(.*?)break;//s;
 }
