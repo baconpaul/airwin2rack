@@ -137,6 +137,7 @@ bool Channel6::getVendorString(char* text) {
 }
 bool Channel6::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamB: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / 100; } return b; break; }
     case kParamC: { auto b = string2float(text, value); return b; break; }
 
     }
@@ -144,6 +145,7 @@ bool Channel6::parameterTextToValue(VstInt32 index, const char *text, float &val
 }
 bool Channel6::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamB: return true;
         case kParamC: return true;
 
     }

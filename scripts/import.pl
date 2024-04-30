@@ -122,6 +122,7 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
     my $param = $1;
     my $formatter = $2;
     my $ok = 0;
+    my $isSwitch = 0;
 
     # Chris is insanely regular with his transformations here
     # Easy case - just a float2string
@@ -138,11 +139,13 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
         $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = value / (${scaling}); } return b; break; }\n"
     }
     # Scaled offsetfloat to string p * scale - off
-    elsif ($formatter =~ m/float2string\s*\(\s*\(?\s*\(\s*${param}\s*\*\s*([\d\.]+)\s*\)\s*-\s*([\d\.]+)\s*\)?\s*,[^;]+;\s*$/)
+    elsif ($formatter =~ m/float2string\s*\(\s*\(?\s*\(\s*${param}\s*\*\s*([\d\.]+)\s*\)\s*([\+-])\s*([\d\.]+)\s*\)?\s*,[^;]+;\s*$/)
     {
         my $scaling = $1;
-        my $offset = $2;
-        $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = (value + ${offset}) / (${scaling}); } return b; break; }\n";
+        my $pm = $2;
+        my $offset = $3;
+        if ($pm =~ m/\+/) { $pm = "-";} else { $pm = "+" };
+        $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = (value $pm ${offset}) / (${scaling}); } return b; break; }\n";
         $ok = 1;
     }
     # Lazy - offset positive
@@ -213,12 +216,25 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
     elsif ($formatter =~ m/switch/)
     {
         # We know we can't do these
+        $isSwitch = 1;
         $ok = 0;
     }
-    elsif ($formatter =~ m/switch/)
+    elsif ($formatter =~ m/int2string\s*\((\(VstInt32\)|\(int\))?\s*(floor)?\((.*)\),/)
     {
-        # We know we can't do these
-        $ok = 0;
+        my $body = $3;
+        $body =~ s/drive/$param/;
+
+        if ($body =~ m/^\s*${param}\s*\*\s*([\d\.]+)\s*$/)
+        {
+            my $scl = $1;
+            $pttv .= "    case kParam${param}: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / ${scl}; } return b; break; }\n";
+            $ok = 1;
+        }
+        else
+        {
+            print "  INT BODY: " . $f . "::" . $param . " / " . $body . "\n";
+            $ok = 0;
+        }
     }
     else
     {
@@ -229,6 +245,14 @@ while ($pdt =~ m/^.*?case kParam(\S+):(.*?)break;/s)
     if ($ok)
     {
         $ccpt .= "        case kParam${param}: return true;\n"
+    }
+    elsif ($isSwitch)
+    {
+        # supress this warning
+    }
+    elsif ($formatter =~ m/int2string/)
+    {
+        print "  INT UNDONE: " . $f . "::" . $param . " / " . $formatter . "\n";
     }
     else
     {

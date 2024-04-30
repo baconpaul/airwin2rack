@@ -209,6 +209,7 @@ bool ClearCoat::getVendorString(char* text) {
 }
 bool ClearCoat::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / 16.999; } return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
 
     }
@@ -216,6 +217,7 @@ bool ClearCoat::parameterTextToValue(VstInt32 index, const char *text, float &va
 }
 bool ClearCoat::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
         case kParamB: return true;
 
     }

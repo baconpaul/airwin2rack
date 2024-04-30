@@ -105,6 +105,7 @@ bool DitherFloat::getVendorString(char* text) {
 }
 bool DitherFloat::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
+    case kParamA: { auto b = string2float(text, value); if (b) { value = (value + 0.1) / 32; } return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
 
     }
@@ -112,6 +113,7 @@ bool DitherFloat::parameterTextToValue(VstInt32 index, const char *text, float &
 }
 bool DitherFloat::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
+        case kParamA: return true;
         case kParamB: return true;
 
     }
