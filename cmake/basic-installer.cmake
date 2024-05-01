@@ -94,10 +94,10 @@ elseif (WIN32)
     add_custom_command(
             TARGET awcons-installer
             POST_BUILD
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMAND ${CMAKE_COMMAND} -E make_directory installer
-            COMMAND 7z a -r installer/${AWCONS_ZIP} ${AWCONS_PRODUCT_DIR}/
-            COMMAND ${CMAKE_COMMAND} -E echo "ZIP Installer in: installer/${AWCONS_ZIP}")
+            WORKING_DIRECTORY ${AWCONS_PRODUCT_DIR}
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/installer
+            COMMAND 7z a -r ${CMAKE_BINARY_DIR}/installer/${AWCONS_ZIP} .
+            COMMAND ${CMAKE_COMMAND} -E echo "ZIP Installer in: ${CMAKE_BINARY_DIR}/installer/${AWCONS_ZIP}")
     #find_program(AWCONS_NUGET_EXE nuget.exe PATHS ENV "PATH")
     #if(AWCONS_NUGET_EXE)
     #    message(STATUS "NuGet found at ${AWCONS_NUGET_EXE}")
