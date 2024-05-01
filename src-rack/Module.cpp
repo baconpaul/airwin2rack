@@ -142,8 +142,10 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         configParam(MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS, 0, 1, 0, "Unused");
         configParam(MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_ATTENS, 0, 1, 0, "Unused");
 
-        configParam(IN_LEVEL, 0, 1, 1, "Input Gain", "%", 0, 100);
-        configParam(OUT_LEVEL, 0, 1, 1, "Output Gain", "%", 0, 100);
+        auto pin = configParam(IN_LEVEL, 0, 1, 1, "Input Gain", "%", 0, 100);
+        pin->randomizeEnabled = false;
+        auto pou = configParam(OUT_LEVEL, 0, 1, 1, "Output Gain", "%", 0, 100);
+        pou->randomizeEnabled = false;
 
         for (int i = 0; i < maxParams; ++i)
         {
