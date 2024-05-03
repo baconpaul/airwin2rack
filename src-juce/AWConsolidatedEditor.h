@@ -11,7 +11,65 @@ struct DocPanel;
 struct ParamKnob;
 struct ParamDisp;
 struct Picker;
-class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, juce::AsyncUpdater
+enum ColourIds
+{
+    gradientStart,
+    gradientStop,
+    jog,
+    jogHovered,
+    jogStroke,
+    hamburger,
+    hamburgerHovered,
+    hamburgerStroke,
+    pickerTypeinForeground,
+    pickerTypeinBackground,
+    pickerBackground,
+    pickerForeground,
+    pickerStroke,
+    pickerListBoxBackground,
+    pickerListBoxStroke,
+    typeaheadCategory,
+    typeaheadName,
+    typeaheadStroke,
+    awLink,
+    awLinkHovered,
+    paramDispEditorBackground,
+    paramDispEditorForeground,
+    paramDispEditorStroke,
+    paramDispEditorStrokeFocused,
+    paramDispBackground,
+    paramDispForeground,
+    paramDispStroke,
+    paramKnob,
+    paramKnobHovered,
+    paramKnobBackground,
+    paramKnobFilled,
+    paramKnobStroke,
+    documentationBackground,
+    documentationForeground,
+    documentationStroke,
+    documentationStrokeFocused,
+    documentationHeader,
+    footerBackground,
+    footerForeground,
+    footerStroke,
+};
+struct AWLookAndFeel : public juce::LookAndFeel_V4
+{
+    AWLookAndFeel();
+
+    void setDarkTheme();
+    void setLightTheme();
+
+    juce::Typeface::Ptr jakartaSansMedium;
+    juce::Font getPopupMenuFont() override;
+
+    void drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
+                                            const juce::PopupMenu::Options &o) override;
+};
+class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
+                                           juce::AsyncUpdater,
+                                           juce::DarkModeSettingListener
 {
   public:
     AWConsolidatedAudioProcessorEditor(AWConsolidatedAudioProcessor &);
@@ -69,11 +127,13 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor, ju
 
     juce::Typeface::Ptr jakartaSansMedium, jakartaSansSemi, firaMono;
 
-    std::unique_ptr<juce::LookAndFeel_V4> lnf;
+    std::unique_ptr<AWLookAndFeel> lnf;
     std::unique_ptr<juce::PropertiesFile> properties;
 
     std::vector<juce::Component *> accessibleOrderWeakRefs;
     std::unique_ptr<juce::ComponentTraverser> createKeyboardFocusTraverser() override;
+
+    void darkModeSettingChanged() override;
 
   private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessorEditor)
