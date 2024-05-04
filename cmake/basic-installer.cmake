@@ -98,18 +98,18 @@ elseif (WIN32)
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/installer
             COMMAND 7z a -r ${CMAKE_BINARY_DIR}/installer/${AWCONS_ZIP} .
             COMMAND ${CMAKE_COMMAND} -E echo "ZIP Installer in: ${CMAKE_BINARY_DIR}/installer/${AWCONS_ZIP}")
-    #find_program(AWCONS_NUGET_EXE nuget.exe PATHS ENV "PATH")
-    #if(AWCONS_NUGET_EXE)
-    #    message(STATUS "NuGet found at ${AWCONS_NUGET_EXE}")
-    #    add_custom_command(
-    #        TARGET awcons-installer
-    #        POST_BUILD
-    #        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    #        COMMAND ${AWCONS_NUGET_EXE} install Tools.InnoSetup -version 6.2.1
-    #        COMMAND Tools.InnoSetup.6.2.1/tools/iscc.exe /O"installer" /DAWCONS_SRC="${CMAKE_SOURCE_DIR}" /DAWCONS_BIN="${CMAKE_BINARY_DIR}" /DMyAppVersion="${AWCONS_DATE}-${VERSION_CHUNK}" "${CMAKE_SOURCE_DIR}/scripts/awcons.iss")
-    #else()
-    #    message(STATUS "NuGet not found!")
-    #endif()
+    find_program(AWCONS_NUGET_EXE nuget.exe PATHS ENV "PATH")
+    if(AWCONS_NUGET_EXE)
+       message(STATUS "NuGet found at ${AWCONS_NUGET_EXE}")
+       add_custom_command(
+           TARGET awcons-installer
+           POST_BUILD
+           WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+           COMMAND ${AWCONS_NUGET_EXE} install Tools.InnoSetup -version 6.2.2
+           COMMAND Tools.InnoSetup.6.2.2/tools/iscc.exe /O"installer" /DAWCONS_SRC="${CMAKE_SOURCE_DIR}" /DAWCONS_BIN="${CMAKE_BINARY_DIR}" /DMyAppVersion="${AWCONS_DATE}-${VERSION_CHUNK}" "${CMAKE_SOURCE_DIR}/scripts/installer_win/awcons.iss")
+    else()
+       message(STATUS "NuGet not found!")
+    endif()
 else ()
     message(STATUS "Basic installer: Target is installer/${AWCONS_ZIP}")
     add_custom_command(
