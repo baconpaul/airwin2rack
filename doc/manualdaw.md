@@ -4,7 +4,7 @@
 
 The Airwindows Consolidated Plugin is a [CLAP](https://cleveraudio.org)/AU/VST3/LV2/Standalone which uses
 [JUCE](https://juce.com) to expose all the Airwindows as a single plugin,
-completely with documentation. It is a standard stereo plugin which works 
+complete with documentation. It is a standard stereo plugin which works 
 in your DAW like any other effect.
 
 The Airwindows Consolidated Plugin is open source software. You can [access the complete source code 
@@ -16,11 +16,14 @@ and read about licensing here](https://github.com/baconpaul/airwin2rack) or just
 [Releases of the plugin are available on this github](https://github.com/baconpaul/airwin2rack/releases/tag/DAWPlugin) and
 are updated every time Chris releases a new effect. 
 
-To install, on Windows or Linux unzip the zip
-file and move the plugin in your favorite flavor to your plugin area. On macOS, we provide a signed
-dmg with an installer. 
+To install
+- on Windows download the `...-Setup.exe` file which is an installer and run it; or alternately download the
+windows .zip file and place the plugins in the appropriate location. If you aren't sure which to choose,
+choose the `...-Setup.exe` file.
+- on macOS we provide a signed dmg containing a standard installer.
+- on Linux, we provide a zip file of the plugins for you to move.
 
-As open source software, if you prefer, you can always build yourself
+As open source software, on all three operating systems, if you prefer, you can always build yourself
 using the [instructions on our README.](https://github.com/baconpaul/airwin2rack?tab=readme-ov-file#the-juce-plugin)
 The binaries above use exactly that mechanism, run in github actions.
 
