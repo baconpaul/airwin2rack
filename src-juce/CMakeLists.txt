@@ -46,7 +46,7 @@ juce_add_plugin(${PROJECT_NAME}
   BLUETOOTH_PERMISSION_TEXT "Airwindows Effects would like to use BlueTooth"
 
 
-  COPY_PLUGIN_AFTER_BUILD TRUE
+  COPY_PLUGIN_AFTER_BUILD ${COPY_PLUGIN_AFTER_BUILD}
 
   VST3_CATEGORIES Fx
   AU_MAIN_TYPE kAudioUnitType_Effect
