@@ -50,7 +50,7 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::pickerForeground, juce::Colours::white);
     setColour(ColourIds::pickerStroke, juce::Colours::lightgrey);
     setColour(ColourIds::pickerListBoxBackground, juce::Colour(10, 10, 20));
-    setColour(ColourIds::pickerListBoxStroke, juce::Colour(120, 120, 125));
+    setColour(ColourIds::pickerListBoxStroke, juce::Colours::red);
 
     setColour(ColourIds::typeaheadCategory, juce::Colours::white.darker(0.2));
     setColour(ColourIds::typeaheadName, juce::Colours::white);
@@ -114,14 +114,14 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::pickerForeground, juce::Colours::black);
     setColour(ColourIds::pickerStroke, juce::Colours::darkgrey);
     setColour(ColourIds::pickerListBoxBackground, juce::Colour(245, 245, 235));
-    setColour(ColourIds::pickerListBoxStroke, juce::Colour(135, 135, 130));
+    setColour(ColourIds::pickerListBoxStroke, juce::Colours::red);
 
     setColour(ColourIds::typeaheadCategory, juce::Colours::black.darker(0.2));
     setColour(ColourIds::typeaheadName, juce::Colours::black);
     setColour(ColourIds::typeaheadStroke, juce::Colour(165, 165, 160));
 
     setColour(ColourIds::awLink, juce::Colours::white);
-    setColour(ColourIds::awLinkHovered, juce::Colour(225, 225, 135));
+    setColour(ColourIds::awLinkHovered, juce::Colour(30, 30, 120));
 
     setColour(ColourIds::paramDispEditorBackground, juce::Colour(245, 245, 240));
     setColour(ColourIds::paramDispEditorForeground, juce::Colours::black);
@@ -1416,19 +1416,37 @@ void AWConsolidatedAudioProcessorEditor::darkModeSettingChanged()
 {
     juce::Desktop::getInstance().isDarkModeActive() ? lnf->setDarkTheme() : lnf->setLightTheme();
 
-    docBodyLabel->setColour(juce::Label::textColourId, findColour(ColourIds::documentationHeader));
-    docBodyEd->applyColourToAllText(findColour(ColourIds::documentationForeground));
+    if (docBodyLabel)
+    {
+        docBodyLabel->setColour(juce::Label::textColourId,
+                                findColour(ColourIds::documentationHeader));
+    }
 
-    menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
-                                    findColour(ColourIds::pickerTypeinForeground));
-    menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
-                                    findColour(ColourIds::pickerTypeinBackground));
-    menuPicker->typeinEd->applyColourToAllText(findColour(ColourIds::pickerTypeinForeground));
+    if (docBodyEd)
+    {
+        docBodyEd->applyColourToAllText(findColour(ColourIds::documentationForeground));
+    }
 
-    menuPicker->listBox->setColour(juce::ListBox::backgroundColourId,
-                                   findColour(ColourIds::pickerListBoxBackground));
-    menuPicker->listBox->setColour(juce::ListBox::outlineColourId,
-                                   findColour(ColourIds::pickerListBoxStroke));
+    if (menuPicker)
+    {
+        if (menuPicker->typeinEd)
+        {
+            menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
+                                            findColour(ColourIds::pickerTypeinForeground));
+            menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
+                                            findColour(ColourIds::pickerTypeinBackground));
+            menuPicker->typeinEd->applyColourToAllText(
+                findColour(ColourIds::pickerTypeinForeground));
+        }
+
+        if (menuPicker->listBox)
+        {
+            menuPicker->listBox->setColour(juce::ListBox::backgroundColourId,
+                                           findColour(ColourIds::pickerListBoxBackground));
+            menuPicker->listBox->setColour(juce::ListBox::outlineColourId,
+                                           findColour(ColourIds::pickerListBoxStroke));
+        }
+    }
 
     repaint();
 }
