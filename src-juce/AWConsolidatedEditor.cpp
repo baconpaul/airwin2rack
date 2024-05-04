@@ -1168,14 +1168,19 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
     docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
     docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
 
+    int fontOffset = 0;
+    if (properties)
+        fontOffset = properties->getIntValue("docFontSize", 0);
+
     auto r = docAreaRect;
-    auto tFont = juce::Font(jakartaSansSemi).withHeight(18);
+    auto tFont = juce::Font(jakartaSansSemi).withHeight(19 + fontOffset);
     juce::GlyphArrangement gaTitle;
     // use a slightly narrower box to force an extra line to simulate the label insets
     gaTitle.addFittedText(tFont, docHeader.substring(2), r.getX() + 5, r.getY(), r.getWidth() - 10,
                           r.getHeight(), juce::Justification::topLeft, 3);
     auto bounds = gaTitle.getBoundingBox(0, -1, true);
 
+    docBodyLabel->setFont(juce::Font(jakartaSansMedium).withHeight(19 + fontOffset));
     docBodyLabel->setBounds(r.withHeight(bounds.getHeight() + 4));
     docBodyLabel->setText(docHeader.substring(2), juce::NotificationType::dontSendNotification);
     if (docBodyLabel->getAccessibilityHandler())
@@ -1185,6 +1190,8 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
     auto q = r.withTrimmedTop(bounds.getHeight() + 8);
 
     docBodyEd->setBounds(q);
+    docBodyEd->clear();
+    docBodyEd->setFont(juce::Font(jakartaSansMedium).withHeight(16 + fontOffset));
     docBodyEd->setText(docString, false);
 }
 
@@ -1347,6 +1354,27 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
                            w->updateColorStrategy(ALWAYS_LIGHT, true);
                    });
     settingsMenu.addSubMenu("Color Scheme", csMenu);
+
+    auto fsMenu = juce::PopupMenu();
+    int fontOffset = 0;
+    if (properties)
+        fontOffset = properties->getIntValue("docFontSize", 0);
+
+    for (const auto &[off, nm] : { std::make_pair(-2, std::string("Small")),
+                                  {0, "Regular"},
+                                  {2, "Large"},
+                                  {4, "Extra-Large"}})
+    {
+        fsMenu.addItem(nm, true, fontOffset == off, [o = off, w = juce::Component::SafePointer(this)](){
+            if (!w)
+                return;
+            w->properties->setValue("docFontSize", o);
+            w->resizeDocArea();
+        } );
+    }
+
+    settingsMenu.addSubMenu("Documentation Font", fsMenu);
+
     settingsMenu.addSeparator();
 
     auto isRO = properties->getBoolValue("editorIsReadOnly");
@@ -1373,6 +1401,7 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
                              }
                          });
 
+    p.addSeparator();
     p.addSubMenu("Settings", settingsMenu);
 
     p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1));
