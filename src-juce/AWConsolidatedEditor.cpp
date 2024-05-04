@@ -288,28 +288,29 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         }
     }
 
-    bool isJogHeld{false};
+    uint64_t jogHoldCounter{0};
     void startJogHold(int dir)
     {
-        isJogHeld = true;
-        juce::Timer::callAfterDelay(800, [dir, w = juce::Component::SafePointer(this)]() {
+        juce::Timer::callAfterDelay(800, [hc = jogHoldCounter, dir, w = juce::Component::SafePointer(this)]() {
             if (w)
             {
-                w->doJogHold(dir);
+                w->doJogHold(dir, hc);
             }
         });
     }
 
-    void stopJogHold() { isJogHeld = false; }
-    void doJogHold(int dir)
+    void stopJogHold() { jogHoldCounter ++; }
+    void doJogHold(int dir, uint64_t hc)
     {
-        if (!isJogHeld)
+        if (hc != jogHoldCounter)
+        {
             return;
+        }
         editor->jog(dir);
-        juce::Timer::callAfterDelay(200, [dir, w = juce::Component::SafePointer(this)]() {
+        juce::Timer::callAfterDelay(200, [hc, dir, w = juce::Component::SafePointer(this)]() {
             if (w)
             {
-                w->doJogHold(dir);
+                w->doJogHold(dir, hc);
             }
         });
     }
