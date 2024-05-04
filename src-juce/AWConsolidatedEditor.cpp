@@ -1415,5 +1415,20 @@ AWConsolidatedAudioProcessorEditor::createKeyboardFocusTraverser()
 void AWConsolidatedAudioProcessorEditor::darkModeSettingChanged()
 {
     juce::Desktop::getInstance().isDarkModeActive() ? lnf->setDarkTheme() : lnf->setLightTheme();
+
+    docBodyLabel->setColour(juce::Label::textColourId, findColour(ColourIds::documentationHeader));
+    docBodyEd->applyColourToAllText(findColour(ColourIds::documentationForeground));
+
+    menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
+                                    findColour(ColourIds::pickerTypeinForeground));
+    menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
+                                    findColour(ColourIds::pickerTypeinBackground));
+    menuPicker->typeinEd->applyColourToAllText(findColour(ColourIds::pickerTypeinForeground));
+
+    menuPicker->listBox->setColour(juce::ListBox::backgroundColourId,
+                                   findColour(ColourIds::pickerListBoxBackground));
+    menuPicker->listBox->setColour(juce::ListBox::outlineColourId,
+                                   findColour(ColourIds::pickerListBoxStroke));
+
     repaint();
 }
