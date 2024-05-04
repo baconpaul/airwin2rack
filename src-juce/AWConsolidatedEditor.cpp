@@ -12,8 +12,7 @@ namespace awres = cmrc::awconsolidated_resources;
 
 AWLookAndFeel::AWLookAndFeel()
 {
-    juce::Desktop::getInstance().isDarkModeActive() ? setDarkTheme() : setLightTheme();
-
+    setToSystemTheme();
     auto fs = awres::get_filesystem();
     if (fs.is_file("res/PlusJakartaSans-Medium.ttf"))
     {
@@ -22,6 +21,10 @@ AWLookAndFeel::AWLookAndFeel()
     }
 }
 
+void AWLookAndFeel::setToSystemTheme()
+{
+    juce::Desktop::getInstance().isDarkModeActive() ? setDarkTheme() : setLightTheme();
+}
 void AWLookAndFeel::setDarkTheme()
 {
     setColour(juce::PopupMenu::ColourIds::backgroundColourId, juce::Colour(10, 10, 15));
@@ -70,8 +73,8 @@ void AWLookAndFeel::setDarkTheme()
 
     setColour(ColourIds::paramKnob, juce::Colour(60, 60, 65));
     setColour(ColourIds::paramKnobHovered, juce::Colour(75, 75, 80));
-    setColour(ColourIds::paramKnobBackground, juce::Colour(220, 220, 230));
-    setColour(ColourIds::paramKnobFilled, juce::Colour(0, 0, 0));
+    setColour(ColourIds::paramKnobValueStroke, juce::Colour(220, 220, 230));
+    setColour(ColourIds::paramKnobGutter, juce::Colour(0, 0, 0));
     setColour(ColourIds::paramKnobStroke, juce::Colour(140, 140, 150));
 
     setColour(ColourIds::documentationHeader, juce::Colours::white);
@@ -121,7 +124,7 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::typeaheadStroke, juce::Colour(165, 165, 160));
 
     setColour(ColourIds::awLink, juce::Colours::white);
-    setColour(ColourIds::awLinkHovered, juce::Colour(30, 30, 120));
+    setColour(ColourIds::awLinkHovered, juce::Colour(60, 60, 180));
 
     setColour(ColourIds::paramDispEditorBackground, juce::Colour(245, 245, 240));
     setColour(ColourIds::paramDispEditorForeground, juce::Colours::black);
@@ -134,8 +137,8 @@ void AWLookAndFeel::setLightTheme()
 
     setColour(ColourIds::paramKnob, juce::Colour(195, 195, 190));
     setColour(ColourIds::paramKnobHovered, juce::Colour(180, 180, 175));
-    setColour(ColourIds::paramKnobBackground, juce::Colour(35, 35, 25));
-    setColour(ColourIds::paramKnobFilled, juce::Colour(255, 255, 255));
+    setColour(ColourIds::paramKnobValueStroke, juce::Colour(245, 245, 255));
+    setColour(ColourIds::paramKnobGutter, juce::Colour(65, 65, 75));
     setColour(ColourIds::paramKnobStroke, juce::Colour(115, 115, 105));
 
     setColour(ColourIds::documentationHeader, juce::Colours::black);
@@ -623,6 +626,13 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
     {
         typeinEd = std::make_unique<juce::TextEditor>("Editor");
 
+        resetColors();
+
+        addChildComponent(*typeinEd);
+    }
+
+    void resetColors()
+    {
         typeinEd->setFont(juce::Font(editor->firaMono).withHeight(18));
         typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
                             findColour(ColourIds::paramDispEditorForeground));
@@ -633,8 +643,6 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
         typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
                             findColour(ColourIds::paramDispEditorBackground));
         typeinEd->addListener(this);
-
-        addChildComponent(*typeinEd);
     }
 
     float getValue() const { return weakParam ? weakParam->get() : 0.f; }
@@ -728,10 +736,11 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
             }
             return;
         }
+        auto rb = getLocalBounds().toFloat().reduced(1);
         g.setColour(findColour(ColourIds::paramDispBackground));
-        g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
+        g.fillRoundedRectangle(rb, 3);
         g.setColour(findColour(ColourIds::paramDispStroke));
-        g.drawRoundedRectangle(getLocalBounds().toFloat(), 3, 1);
+        g.drawRoundedRectangle(rb, 3, 1);
 
         auto bounds = getLocalBounds().reduced(5, 2);
         g.setFont(juce::Font(editor->firaMono).withHeight(18));
@@ -815,10 +824,10 @@ struct ParamKnob : juce::Component
         g.setColour(findColour(ColourIds::paramKnobStroke));
         g.strokePath(arc(-0.01f, 1.01f), juce::PathStrokeType(6));
 
-        g.setColour(findColour(ColourIds::paramKnobFilled));
+        g.setColour(findColour(ColourIds::paramKnobGutter));
         g.strokePath(arc(0.f, 1.f), juce::PathStrokeType(4));
 
-        g.setColour(findColour(ColourIds::paramKnobBackground));
+        g.setColour(findColour(ColourIds::paramKnobValueStroke));
         g.strokePath(arc(0.f, getValue()), juce::PathStrokeType(4));
     }
 
@@ -1097,12 +1106,37 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
     auto isRO = properties->getBoolValue("editorIsReadOnly", true);
     docBodyEd->setReadOnly(isRO);
+
+    auto cs = properties->getIntValue("colorStrategy", (int)ColorStrategy::FOLLOW_SYSTEM);
+    updateColorStrategy((ColorStrategy)cs, false);
 }
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
 {
     juce::Desktop::getInstance().removeDarkModeSettingListener(this);
     idleTimer->stopTimer();
+}
+
+void AWConsolidatedAudioProcessorEditor::updateColorStrategy(AWConsolidatedAudioProcessorEditor::ColorStrategy s, bool writeProperties)
+{
+    if (!lnf)
+        return;
+    currentColorStrategy = s;
+    if (writeProperties)
+        properties->setValue("colorStrategy", (int)s);
+    switch(s)
+    {
+    case ALWAYS_DARK:
+        lnf->setDarkTheme();
+        break;
+    case ALWAYS_LIGHT:
+        lnf->setLightTheme();
+        break;
+    case FOLLOW_SYSTEM:
+        lnf->setToSystemTheme();
+        break;
+    }
+    darkModeSettingChanged();
 }
 
 void AWConsolidatedAudioProcessorEditor::idle()
@@ -1294,6 +1328,26 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
               []() { juce::URL("https://www.airwindows.com").launchInDefaultBrowser(); });
 
     auto settingsMenu = juce::PopupMenu();
+
+    auto csMenu = juce::PopupMenu();
+    csMenu.addItem("Follow System Settings", true, currentColorStrategy == FOLLOW_SYSTEM,
+                   [w = juce::Component::SafePointer(this)]() {
+                       if (w)
+                           w->updateColorStrategy(FOLLOW_SYSTEM, true);
+                   });
+    csMenu.addItem("Always Dark", true, currentColorStrategy == ALWAYS_DARK,
+                   [w = juce::Component::SafePointer(this)]() {
+                       if (w)
+                           w->updateColorStrategy(ALWAYS_DARK, true);
+                   });
+    csMenu.addItem("Always Light", true, currentColorStrategy == ALWAYS_LIGHT,
+                   [w = juce::Component::SafePointer(this)]() {
+                       if (w)
+                           w->updateColorStrategy(ALWAYS_LIGHT, true);
+                   });
+    settingsMenu.addSubMenu("Color Scheme", csMenu);
+    settingsMenu.addSeparator();
+
     auto isRO = properties->getBoolValue("editorIsReadOnly");
     settingsMenu.addItem("Use Accessible Documentation Component", true, !isRO,
                          [isRO, w = juce::Component::SafePointer(this)]() {
@@ -1414,7 +1468,8 @@ AWConsolidatedAudioProcessorEditor::createKeyboardFocusTraverser()
 
 void AWConsolidatedAudioProcessorEditor::darkModeSettingChanged()
 {
-    juce::Desktop::getInstance().isDarkModeActive() ? lnf->setDarkTheme() : lnf->setLightTheme();
+    if (currentColorStrategy == FOLLOW_SYSTEM)
+        juce::Desktop::getInstance().isDarkModeActive() ? lnf->setDarkTheme() : lnf->setLightTheme();
 
     if (docBodyLabel)
     {
@@ -1446,6 +1501,11 @@ void AWConsolidatedAudioProcessorEditor::darkModeSettingChanged()
             menuPicker->listBox->setColour(juce::ListBox::outlineColourId,
                                            findColour(ColourIds::pickerListBoxStroke));
         }
+    }
+
+    for (const auto &p : labels)
+    {
+        p->resetColors();
     }
 
     repaint();

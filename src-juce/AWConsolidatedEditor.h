@@ -42,8 +42,8 @@ enum ColourIds
     paramDispStroke,
     paramKnob,
     paramKnobHovered,
-    paramKnobBackground,
-    paramKnobFilled,
+    paramKnobValueStroke,
+    paramKnobGutter,
     paramKnobStroke,
     documentationBackground,
     documentationForeground,
@@ -58,6 +58,7 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
 {
     AWLookAndFeel();
 
+    void setToSystemTheme();
     void setDarkTheme();
     void setLightTheme();
 
@@ -136,6 +137,14 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     void darkModeSettingChanged() override;
 
   private:
+    enum ColorStrategy
+    {
+        FOLLOW_SYSTEM = 1,
+        ALWAYS_DARK = 2,
+        ALWAYS_LIGHT = 3
+    } currentColorStrategy{FOLLOW_SYSTEM};
+    void updateColorStrategy(ColorStrategy s, bool writeProperties);
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessorEditor)
 };
 
