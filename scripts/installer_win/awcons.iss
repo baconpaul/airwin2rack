@@ -1,5 +1,5 @@
-#define MyAppPublisher "Surge Synth Team"
-#define MyAppURL "https://www.surge-synth-team.org/"
+#define MyAppPublisher "Airwindows (with BaconPaul and members of the Surge Synth Team)"
+#define MyAppURL "https://airwindows.com/"
 #define MyAppName "Airwindows Consolidated"
 #define MyAppNameCondensed "AirwindowsConsolidated"
 #define MyID "1762E8B5-648B-4581-93D8-41CCE83DE14B"
