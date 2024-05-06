@@ -7,10 +7,12 @@
 //==============================================================================
 /**
  */
-struct DocPanel;
 struct ParamKnob;
 struct ParamDisp;
 struct Picker;
+struct SettingsCog;
+struct DocHeader;
+
 enum ColourIds
 {
     gradientStart,
@@ -18,6 +20,8 @@ enum ColourIds
     jog,
     jogHovered,
     jogStroke,
+    help,
+    helpHovered,
     hamburger,
     hamburgerHovered,
     hamburgerStroke,
@@ -32,7 +36,6 @@ enum ColourIds
     typeaheadName,
     typeaheadStroke,
     awLink,
-    awLinkHovered,
     paramDispEditorBackground,
     paramDispEditorForeground,
     paramDispEditorStroke,
@@ -53,29 +56,35 @@ enum ColourIds
     footerBackground,
     footerForeground,
     footerStroke,
+
+    settingCogOutline,
+    settingCogFill,
+    settingCogHover,
 };
 
 enum FontIDs
 {
-    pluginName, // juce::Font(editor->jakartaSansMedium).withHeight(28)
-    pluginCategory, // juce::Font(editor->jakartaSansMedium).withHeight(18)edi
-    pluginTypeaheadName, // juce::Font(picker->editor->jakartaSansSemi).withHeight(22)
+    pluginName,              // juce::Font(editor->jakartaSansMedium).withHeight(28)
+    pluginCategory,          // juce::Font(editor->jakartaSansMedium).withHeight(18)edi
+    pluginTypeaheadName,     // juce::Font(picker->editor->jakartaSansSemi).withHeight(22)
     pluginTypeaheadCategory, // jjuce::Font(picker->editor->jakartaSansMedium).withHeight(14)
-    pluginTypeaheadWhat, // juce::Font(picker->editor->jakartaSansMedium).withHeight(14)
+    pluginTypeaheadWhat,     // juce::Font(picker->editor->jakartaSansMedium).withHeight(14)
 
-    paramValue, // juce::Font(editor->firaMono).withHeight(18)
-    paramTitle, // juce::Font(editor->jakartaSansMedium).withHeight(14)
+    paramValue,     // juce::Font(editor->firaMono).withHeight(18)
+    paramTitle,     // juce::Font(editor->jakartaSansMedium).withHeight(14)
     paramNoParamas, // juce::Font(editor->jakartaSansSemi).withHeight(20)
 
-
-   // if (properties)
-    //    fontOffset = properties->getIntValue("docFontSize", 0);
-
     documentationLabel, // juce::Font(jakartaSansMedium).withHeight(18)
-    documentationBody, // juce::Font(jakartaSansMedium).withHeight(15)
+    documentationBody,  // juce::Font(jakartaSansMedium).withHeight(15)
 
     airwindowsFooter, // jakartaSaneSmi at 28
-    dateFooter // medium 12
+    dateFooter,       // medium 12
+
+    settingsHeader,
+    settingsSubHeader,
+    settinsLabel,
+
+    hideDoc // medium 17
 };
 struct AWLookAndFeel : public juce::LookAndFeel_V4
 {
@@ -127,7 +136,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     // access the processor object that created it.
     AWConsolidatedAudioProcessor &processor;
 
-    static constexpr int baseWidth = 400, baseHeight = 600;
+    static constexpr int baseWidth = 600, baseHeight = 600;
 
     struct IdleTimer : juce::Timer
     {
@@ -143,13 +152,18 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     std::array<std::unique_ptr<ParamDisp>, AWConsolidatedAudioProcessor::nAWParams> labels;
 
     std::unique_ptr<juce::Drawable> clipperIcon;
-    std::unique_ptr<juce::Component> awTag;
 
     juce::Rectangle<int> docAreaRect;
     std::unique_ptr<juce::TextEditor> docBodyEd;
-    std::unique_ptr<juce::Label> docBodyLabel;
+    std::unique_ptr<DocHeader> docBodyLabel;
 
     void resizeDocArea();
+    bool isDocDisplayed();
+    void toggleDocDisplay();
+    void sizeBasedOnDocAreaDisplay();
+
+    std::unique_ptr<SettingsCog> settingsCog;
+    juce::PopupMenu makeSettingsMenu(bool withHeader);
 
     juce::String docString, docHeader;
 
