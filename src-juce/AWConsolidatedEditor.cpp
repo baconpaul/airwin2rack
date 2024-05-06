@@ -154,7 +154,12 @@ void AWLookAndFeel::setLightTheme()
 
 juce::Font AWLookAndFeel::getPopupMenuFont()
 {
+    // Seems this font has different metrics on windows
+#if JUCE_WINDOWS
+    return juce::Font(jakartaSansMedium).withHeight(19);
+#else
     return juce::Font(jakartaSansMedium).withHeight(16);
+#endif
 }
 
 void AWLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
@@ -1404,7 +1409,9 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
     p.addSeparator();
     p.addSubMenu("Settings", settingsMenu);
 
-    p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1));
+    const auto mousePos = juce::Desktop::getInstance().getMousePosition();
+    const auto targetArea = juce::Rectangle<int>{}.withPosition (mousePos);
+    p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1).withTargetComponent(this).withTargetScreenArea(targetArea));
 }
 
 struct FxFocusTrav : public juce::ComponentTraverser
