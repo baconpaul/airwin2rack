@@ -728,6 +728,8 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
             showEd();
     }
 
+    void mouseWheelMove(const juce::MouseEvent &event,
+                        const juce::MouseWheelDetails &wheel) override;
     void paint(juce::Graphics &g) override
     {
         if (!active)
@@ -860,6 +862,27 @@ struct ParamKnob : juce::Component
         weakParam->setValueNotifyingHost(nv);
     }
 
+    void mouseWheelMove(const juce::MouseEvent &event,
+                        const juce::MouseWheelDetails &wheel) override
+    {
+#if JUCE_MAC
+        auto scaleFac = 1.0;
+#else
+        auto scaleFac = 0.1;
+#endif
+        auto amt = wheel.deltaY * scaleFac;
+        if (wheel.isReversed)
+            amt = -amt;
+
+        if (event.mods.isShiftDown())
+            amt *= 0.1;
+
+        auto nv = std::clamp(weakParam->get() + amt, 0., 1.);
+        weakParam->beginChangeGesture();
+        weakParam->setValueNotifyingHost(nv);
+        weakParam->endChangeGesture();
+    }
+
     bool isHovered{false};
     void mouseEnter(const juce::MouseEvent &) override
     {
@@ -978,6 +1001,11 @@ void ParamDisp::dismissEd()
     editor->knobs[index]->grabKeyboardFocus();
 }
 
+void ParamDisp::mouseWheelMove(const juce::MouseEvent &event, const juce::MouseWheelDetails &wheel)
+{
+    if (editor->knobs[index])
+        editor->knobs[index]->mouseWheelMove(event, wheel);
+}
 //==============================================================================
 AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     AWConsolidatedAudioProcessor &p)
