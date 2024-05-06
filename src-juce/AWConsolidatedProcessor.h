@@ -114,8 +114,11 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
             awDisplayProcessor = rg.generator();
             awDisplayProcessor->setSampleRate(getSampleRate());
         }
+        setupParamDisplaysFromDisplayProcessor(index);
+
         if (isPlaying)
         {
+            curentProcessorIndex = index;
             resetType.push({-1, index, 0.f});
         }
         else
@@ -123,6 +126,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
             setAWProcessorTo(index, false);
         }
     }
+    void setupParamDisplaysFromDisplayProcessor(int index);
+
     std::atomic<bool> refreshUI{false},
         rebuildUI{false}; // repaint vs re-setup everything. Value vs type
 
