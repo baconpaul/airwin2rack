@@ -1133,7 +1133,12 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
+#if JUCE_LINUX
+    options.folderName = ".config/AirwindowsConsolidated";
+#else
     options.folderName = "AirwindowsConsolidated";
+#endif
+
     options.filenameSuffix = "settings";
     options.osxLibrarySubFolder = "Preferences";
     properties = std::make_unique<juce::PropertiesFile>(options);
