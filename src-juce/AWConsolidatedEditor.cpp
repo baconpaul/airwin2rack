@@ -154,7 +154,12 @@ void AWLookAndFeel::setLightTheme()
 
 juce::Font AWLookAndFeel::getPopupMenuFont()
 {
+    // Seems this font has different metrics on windows
+#if JUCE_WINDOWS
+    return juce::Font(jakartaSansMedium).withHeight(19);
+#else
     return juce::Font(jakartaSansMedium).withHeight(16);
+#endif
 }
 
 void AWLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
