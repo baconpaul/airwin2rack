@@ -225,14 +225,33 @@ void AWConsolidatedAudioProcessor::setAWProcessorTo(int registryIndex, bool init
     if (awProcessor)
     {
         awProcessor->setSampleRate(getSampleRate());
+    }
+
+    if (initDisplay)
+    {
+        std::lock_guard<std::mutex> g(displayProcessorMutex);
+        awDisplayProcessor = rg.generator();
+        awDisplayProcessor->setSampleRate(getSampleRate());
+    }
+
+    setupParamDisplaysFromDisplayProcessor(registryIndex);
+}
+
+void AWConsolidatedAudioProcessor::setupParamDisplaysFromDisplayProcessor(int index)
+{
+    {
+        std::lock_guard<std::mutex> g(displayProcessorMutex);
+
+        auto rg = AirwinRegistry::registry[index];
+
         nProcessorParams = rg.nParams;
         for (int i = 0; i < rg.nParams; ++i)
         {
             char txt[kVstMaxParamStrLen];
-            awProcessor->getParameterName(i, txt);
+            awDisplayProcessor->getParameterName(i, txt);
             fxParams[i]->mutableName = txt;
-            fxParams[i]->setValueNotifyingHost(awProcessor->getParameter(i));
-            defaultValues[i] = awProcessor->getParameter(i);
+            fxParams[i]->setValueNotifyingHost(awDisplayProcessor->getParameter(i));
+            defaultValues[i] = awDisplayProcessor->getParameter(i);
             active[i] = true;
         }
         for (int i = rg.nParams; i < nAWParams; ++i)
@@ -243,16 +262,10 @@ void AWConsolidatedAudioProcessor::setAWProcessorTo(int registryIndex, bool init
         }
     }
 
-    if (initDisplay)
-    {
-        std::lock_guard<std::mutex> g(displayProcessorMutex);
-        awDisplayProcessor = rg.generator();
-        awDisplayProcessor->setSampleRate(getSampleRate());
-    }
-
     updateHostDisplay(juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
     rebuildUI = true;
 }
+
 //==============================================================================
 void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destData)
 {
