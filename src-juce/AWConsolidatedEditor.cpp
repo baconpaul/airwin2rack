@@ -865,7 +865,11 @@ struct ParamKnob : juce::Component
     void mouseWheelMove(const juce::MouseEvent &event,
                         const juce::MouseWheelDetails &wheel) override
     {
+#if JUCE_MAC
+        auto scaleFac = 1.0;
+#else
         auto scaleFac = 0.1;
+#endif
         auto amt = wheel.deltaY * scaleFac;
         if (wheel.isReversed)
             amt = -amt;
