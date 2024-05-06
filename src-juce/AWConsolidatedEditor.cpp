@@ -1404,7 +1404,9 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
     p.addSeparator();
     p.addSubMenu("Settings", settingsMenu);
 
-    p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1));
+    const auto mousePos = juce::Desktop::getInstance().getMousePosition();
+    const auto targetArea = juce::Rectangle<int>{}.withPosition (mousePos);
+    p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1).withTargetComponent(this).withTargetScreenArea(targetArea));
 }
 
 struct FxFocusTrav : public juce::ComponentTraverser
