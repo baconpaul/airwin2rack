@@ -687,7 +687,7 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
     {
         bool go{false};
         {
-            std::lock_guard<std::mutex> g(editor->processor.displayProcessorMutex);
+            LOCK(editor->processor.displayProcessorMutex);
             go = editor->processor.awDisplayProcessor->canConvertParameterTextToValue(index);
         }
 
@@ -723,7 +723,7 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
             float f{0};
             bool worked{false};
             {
-                std::lock_guard<std::mutex> g(editor->processor.displayProcessorMutex);
+                LOCK(editor->processor.displayProcessorMutex);
                 worked = editor->processor.awDisplayProcessor->parameterTextToValue(
                     index, ed.getText().toRawUTF8(), f);
             }

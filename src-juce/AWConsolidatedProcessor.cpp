@@ -44,7 +44,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
         fxParams[i] = new AWParam(juce::ParameterID(std::string("ctrl_") + std::to_string(i), 1),
                                   "Name", juce::NormalisableRange<float>(0.f, 1.f), 0.f);
         fxParams[i]->getTextHandler = [i, this](auto f, auto iv) {
-            std::lock_guard<std::mutex> g(this->displayProcessorMutex);
+            LOCK(this->displayProcessorMutex);
             if (this->awDisplayProcessor && i < this->nProcessorParams)
             {
                 for (int id = 0; id < this->nProcessorParams; ++id)
@@ -62,7 +62,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
             }
         };
         fxParams[i]->getTextToValue = [i, this](auto s) {
-            std::lock_guard<std::mutex> g(this->displayProcessorMutex);
+            LOCK(this->displayProcessorMutex);
             if (this->awDisplayProcessor && i < this->nProcessorParams)
             {
                 float rv = 0.f;
@@ -229,18 +229,26 @@ void AWConsolidatedAudioProcessor::setAWProcessorTo(int registryIndex, bool init
 
     if (initDisplay)
     {
-        std::lock_guard<std::mutex> g(displayProcessorMutex);
+        LOCK(displayProcessorMutex);
         awDisplayProcessor = rg.generator();
         awDisplayProcessor->setSampleRate(getSampleRate());
     }
 
-    setupParamDisplaysFromDisplayProcessor(registryIndex);
+    if (initDisplay)
+    {
+        setupParamDisplaysFromDisplayProcessor(registryIndex);
+    }
 }
 
 void AWConsolidatedAudioProcessor::setupParamDisplaysFromDisplayProcessor(int index)
 {
+    // Renoise re-enters to get text when you set value notifying host
+    // so don't setvalue notifying host under the lock.
+    // See https://forum.renoise.com/t/macos-crash-with-airwindows-vst-when-changing-presets/72288/11
+    std::array<float, nAWParams> setParamsTo{};
+
     {
-        std::lock_guard<std::mutex> g(displayProcessorMutex);
+        LOCK(displayProcessorMutex);
 
         auto rg = AirwinRegistry::registry[index];
 
@@ -250,16 +258,21 @@ void AWConsolidatedAudioProcessor::setupParamDisplaysFromDisplayProcessor(int in
             char txt[kVstMaxParamStrLen];
             awDisplayProcessor->getParameterName(i, txt);
             fxParams[i]->mutableName = txt;
-            fxParams[i]->setValueNotifyingHost(awDisplayProcessor->getParameter(i));
+            setParamsTo[i] = awDisplayProcessor->getParameter(i);
             defaultValues[i] = awDisplayProcessor->getParameter(i);
             active[i] = true;
         }
         for (int i = rg.nParams; i < nAWParams; ++i)
         {
             fxParams[i]->mutableName = "-";
-            fxParams[i]->setValueNotifyingHost(0.f);
+            setParamsTo[i] = 0.f;
             active[i] = false;
         }
+    }
+
+    for (int i=0; i<nAWParams; ++i)
+    {
+        fxParams[i]->setValueNotifyingHost(setParamsTo[i]);
     }
 
     updateHostDisplay(juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
