@@ -9,6 +9,28 @@
 #include <execinfo.h>
 #endif
 
+#if DEBUG_LOCK
+struct LP {
+    std::string st;
+    int ln;
+    LP(const std::string &s, int l) : st(s), ln(l) {
+        std::cout << "LP LOCK " << st << ":" << ln << std::endl;
+    }
+
+    ~LP() {
+        std::cout << "LP UNLOCK " << st << ":" << ln << std::endl;
+    }
+};
+
+#define LOCK(x)                                                                                    \
+    std::cout << __FILE__ << ":" << __LINE__ << " Locking " << #x << std::endl;                    \
+    LP lpCheck(__FILE__, __LINE__);                                                                                               \
+    std::lock_guard<std::mutex> g(x);                                                              \
+    std::cout << __FILE__ << ":" << __LINE__ << " Lock Garnerd " << #x << std::endl;
+#else
+#define LOCK(x) std::lock_guard<std::mutex> g(x);
+#endif
+
 template <typename T, int Capacity = 4096> class LockFreeQueue
 {
   public:
@@ -110,7 +132,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     {
         auto &rg = AirwinRegistry::registry[index];
         {
-            std::lock_guard<std::mutex> g(displayProcessorMutex);
+            LOCK(displayProcessorMutex);
             awDisplayProcessor = rg.generator();
             awDisplayProcessor->setSampleRate(getSampleRate());
         }
