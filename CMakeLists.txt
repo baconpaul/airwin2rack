@@ -13,7 +13,7 @@ set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 option(BUILD_JUCE_PLUGIN "Build a JUCE plugin" OFF)
 option(BUILD_RACK_PLUGIN "Build a VCV Rack plugin" OFF)
-option(COPY_PLUGIN_AFTER_BUILD "Copy plugin after build" ON)
+option(COPY_PLUGIN_AFTER_BUILD "Copy plugin after build" OFF)
 
 message(STATUS "AirwinRackAdapter for Rack Build Process" )
 message(STATUS "Installing into '${CMAKE_INSTALL_PREFIX}'")
