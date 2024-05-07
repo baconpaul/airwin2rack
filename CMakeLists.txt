@@ -15,6 +15,9 @@ option(BUILD_JUCE_PLUGIN "Build a JUCE plugin" OFF)
 option(BUILD_RACK_PLUGIN "Build a VCV Rack plugin" OFF)
 option(COPY_PLUGIN_AFTER_BUILD "Copy plugin after build" OFF)
 
+math(EXPR AW_BITNESS "${CMAKE_SIZEOF_VOID_P} * 8" OUTPUT_FORMAT DECIMAL)
+message(STATUS "Performing ${AW_BITNESS}-bit build")
+
 message(STATUS "AirwinRackAdapter for Rack Build Process" )
 message(STATUS "Installing into '${CMAKE_INSTALL_PREFIX}'")
 
