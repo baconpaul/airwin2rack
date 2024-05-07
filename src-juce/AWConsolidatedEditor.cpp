@@ -13,11 +13,37 @@ namespace awres = cmrc::awconsolidated_resources;
 AWLookAndFeel::AWLookAndFeel()
 {
     setToSystemTheme();
-    auto fs = awres::get_filesystem();
-    if (fs.is_file("res/PlusJakartaSans-Medium.ttf"))
+    try
     {
-        auto f = fs.open("res/PlusJakartaSans-Medium.ttf");
-        jakartaSansMedium = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
+
+        auto fs = awres::get_filesystem();
+        if (fs.is_file("res/PlusJakartaSans-Medium.ttf"))
+        {
+            auto f = fs.open("res/PlusJakartaSans-Medium.ttf");
+            jakartaSansMedium = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
+        }
+
+        if (fs.is_file("res/PlusJakartaSans-Medium.ttf"))
+        {
+            auto f = fs.open("res/PlusJakartaSans-Medium.ttf");
+            jakartaSansMedium = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
+        }
+
+        if (fs.is_file("res/PlusJakartaSans-SemiBold.ttf"))
+        {
+            auto f = fs.open("res/PlusJakartaSans-SemiBold.ttf");
+            jakartaSansSemi = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
+        }
+
+        if (fs.is_file("res/FiraMono-Regular.ttf"))
+        {
+            auto f = fs.open("res/FiraMono-Regular.ttf");
+            firaMono = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
+        }
+    }
+    catch (const std::exception &e)
+    {
+        // shrug
     }
 }
 
@@ -303,7 +329,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         addAndMakeVisible(*hamburger);
 
         typeinEd = std::make_unique<juce::TextEditor>("Typeahead");
-        typeinEd->setFont(juce::Font(editor->jakartaSansMedium).withHeight(28));
+        typeinEd->setFont(editor->lnf->lookupFont(pluginName));
         typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
                             findColour(ColourIds::pickerTypeinForeground));
         typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
@@ -330,18 +356,18 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         g.setColour(findColour(ColourIds::pickerStroke));
         g.drawRoundedRectangle(bounds, 5, 1);
         g.setColour(findColour(ColourIds::pickerForeground));
-        g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(28));
+        g.setFont(editor->lnf->lookupFont(pluginName));
         if (!typeinEd->isVisible())
             g.drawText(rg.name, bounds.reduced(8, 5), juce::Justification::centredBottom);
         auto ga = juce::GlyphArrangement();
         auto tbx = bounds.reduced(8, 5);
-        ga.addFittedText(juce::Font(editor->jakartaSansSemi).withHeight(28), rg.name, tbx.getX(),
+        ga.addFittedText(editor->lnf->lookupFont(pluginName), rg.name, tbx.getX(),
                          tbx.getY(), tbx.getWidth(), tbx.getHeight(),
                          juce::Justification::centredBottom, 1);
         titleBox = ga.getBoundingBox(0, -1, true);
 
         auto catString = rg.category;
-        g.setFont(juce::Font(editor->jakartaSansMedium).withHeight(18));
+        g.setFont(editor->lnf->lookupFont(pluginCategory));
         g.drawText(catString, bounds.reduced(8, 3), juce::Justification::centredTop);
     }
 
@@ -558,16 +584,16 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
             auto &rg = AirwinRegistry::registry[entries[rowNumber]];
 
-            g.setFont(juce::Font(picker->editor->jakartaSansSemi).withHeight(22));
+            g.setFont(picker->editor->lnf->lookupFont(pluginTypeaheadName));
             g.setColour(picker->findColour(ColourIds::typeaheadName));
             g.drawText(rg.name, bx, juce::Justification::bottomLeft);
 
             g.setColour(picker->findColour(ColourIds::typeaheadCategory));
 
-            g.setFont(juce::Font(picker->editor->jakartaSansMedium).withHeight(14));
+            g.setFont(picker->editor->lnf->lookupFont(pluginTypeaheadCategory));
             g.drawText(rg.category, bx, juce::Justification::topLeft);
 
-            g.setFont(juce::Font(picker->editor->jakartaSansMedium).withHeight(14));
+            g.setFont(picker->editor->lnf->lookupFont(pluginTypeaheadWhat));
             g.drawFittedText(rg.whatText, bx.withTrimmedLeft(bx.getWidth() / 2),
                              juce::Justification::bottomRight, 3);
 
@@ -588,14 +614,14 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
 struct AWLink : public juce::Component
 {
-    juce::Typeface::Ptr ft;
-    AWLink(juce::Typeface::Ptr f) : ft(f) {}
+    AWLookAndFeel *lnf;
+    AWLink(AWLookAndFeel *l) : lnf(l) {}
     void paint(juce::Graphics &g) override
     {
         g.setColour(findColour(ColourIds::awLink));
         if (isHovered)
             g.setColour(findColour(ColourIds::awLinkHovered));
-        g.setFont(juce::Font(ft).withHeight(28));
+        g.setFont(lnf->lookupFont(airwindowsFooter));
         g.drawText("Airwindows", getLocalBounds(), juce::Justification::centred);
     }
 
@@ -639,7 +665,7 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
 
     void resetColors()
     {
-        typeinEd->setFont(juce::Font(editor->firaMono).withHeight(18));
+        typeinEd->setFont(editor->lnf->lookupFont(paramValue));
         typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
                             findColour(ColourIds::paramDispEditorForeground));
         typeinEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
@@ -739,7 +765,7 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
                 auto b = getLocalBounds().withTrimmedRight(43);
 
                 g.setColour(findColour(ColourIds::paramDispForeground));
-                g.setFont(juce::Font(editor->jakartaSansSemi).withHeight(20));
+                g.setFont(editor->lnf->lookupFont(paramNoParamas));
                 g.drawText("No Parameters", b, juce::Justification::centredTop);
             }
             return;
@@ -751,11 +777,11 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
         g.drawRoundedRectangle(rb, 3, 1);
 
         auto bounds = getLocalBounds().reduced(5, 2);
-        g.setFont(juce::Font(editor->firaMono).withHeight(18));
+        g.setFont(editor->lnf->lookupFont(paramValue));
         g.drawText(weakParam->getCurrentValueAsText().trim(), bounds.withTrimmedBottom(2),
                    juce::Justification::bottomLeft);
 
-        g.setFont(juce::Font(editor->jakartaSansMedium).withHeight(14));
+        g.setFont(editor->lnf->lookupFont(paramTitle));
         g.drawText(weakParam->getName(64), bounds, juce::Justification::topLeft);
     }
 };
@@ -1028,24 +1054,6 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
             auto f = fs.open("res/clipper.svg");
             clipperIcon = juce::Drawable::createFromImageData(f.begin(), f.size());
         }
-
-        if (fs.is_file("res/PlusJakartaSans-Medium.ttf"))
-        {
-            auto f = fs.open("res/PlusJakartaSans-Medium.ttf");
-            jakartaSansMedium = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
-        }
-
-        if (fs.is_file("res/PlusJakartaSans-SemiBold.ttf"))
-        {
-            auto f = fs.open("res/PlusJakartaSans-SemiBold.ttf");
-            jakartaSansSemi = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
-        }
-
-        if (fs.is_file("res/FiraMono-Regular.ttf"))
-        {
-            auto f = fs.open("res/FiraMono-Regular.ttf");
-            firaMono = juce::Typeface::createSystemTypefaceFor(f.begin(), f.size());
-        }
     }
     catch (std::exception &e)
     {
@@ -1089,14 +1097,14 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     docBodyLabel = std::make_unique<juce::Label>("Documentation Header");
     docBodyLabel->setAccessible(true);
     docBodyLabel->setWantsKeyboardFocus(true);
-    docBodyLabel->setFont(juce::Font(jakartaSansMedium).withHeight(18));
+    docBodyLabel->setFont(lnf->lookupFont(documentationLabel));
     docBodyLabel->setColour(juce::Label::textColourId, findColour(ColourIds::documentationHeader));
     docBodyLabel->setTitle("Documentation Header");
     addAndMakeVisible(*docBodyLabel);
 
     docBodyEd = std::make_unique<juce::TextEditor>("Documentation");
     docBodyEd->setMultiLine(true);
-    docBodyEd->setFont(juce::Font(jakartaSansMedium).withHeight(15));
+    docBodyEd->setFont(lnf->lookupFont(documentationBody));
     docBodyEd->setReadOnly(false);
     docBodyEd->setWantsKeyboardFocus(true);
     docBodyEd->setCaretVisible(true);
@@ -1111,7 +1119,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     docBodyEd->setColour(juce::TextEditor::ColourIds::textColourId,
                          findColour(ColourIds::documentationForeground));
     addAndMakeVisible(*docBodyEd);
-    awTag = std::make_unique<AWLink>(jakartaSansSemi);
+    awTag = std::make_unique<AWLink>(lnf.get());
     auto fa = getLocalBounds()
                   .withHeight(40)
                   .withY(getHeight() - 40)
@@ -1142,6 +1150,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     options.filenameSuffix = "settings";
     options.osxLibrarySubFolder = "Preferences";
     properties = std::make_unique<juce::PropertiesFile>(options);
+    lnf->propFileWeak = properties.get();
 
     auto isRO = properties->getBoolValue("editorIsReadOnly", true);
     docBodyEd->setReadOnly(isRO);
@@ -1152,6 +1161,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
 {
+    lnf->propFileWeak = nullptr;
     juce::Desktop::getInstance().removeDarkModeSettingListener(this);
     idleTimer->stopTimer();
 }
@@ -1206,19 +1216,15 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
     docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
     docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
 
-    int fontOffset = 0;
-    if (properties)
-        fontOffset = properties->getIntValue("docFontSize", 0);
-
     auto r = docAreaRect;
-    auto tFont = juce::Font(jakartaSansSemi).withHeight(19 + fontOffset);
+    auto tFont = lnf->lookupFont(documentationLabel);
     juce::GlyphArrangement gaTitle;
     // use a slightly narrower box to force an extra line to simulate the label insets
     gaTitle.addFittedText(tFont, docHeader.substring(2), r.getX() + 5, r.getY(), r.getWidth() - 10,
                           r.getHeight(), juce::Justification::topLeft, 3);
     auto bounds = gaTitle.getBoundingBox(0, -1, true);
 
-    docBodyLabel->setFont(juce::Font(jakartaSansMedium).withHeight(19 + fontOffset));
+    docBodyLabel->setFont(lnf->lookupFont(documentationLabel));
     docBodyLabel->setBounds(r.withHeight(bounds.getHeight() + 4));
     docBodyLabel->setText(docHeader.substring(2), juce::NotificationType::dontSendNotification);
     if (docBodyLabel->getAccessibilityHandler())
@@ -1229,7 +1235,7 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
 
     docBodyEd->setBounds(q);
     docBodyEd->clear();
-    docBodyEd->setFont(juce::Font(jakartaSansMedium).withHeight(16 + fontOffset));
+    docBodyEd->setFont(lnf->lookupFont(documentationBody));
     docBodyEd->setText(docString, false);
 }
 
@@ -1253,7 +1259,7 @@ void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
     g.setColour(findColour(ColourIds::footerStroke));
     g.drawLine(fa.getX(), fa.getY(), fa.getX() + fa.getWidth(), fa.getY(), 1);
 
-    g.setFont(juce::Font(jakartaSansMedium).withHeight(12));
+    g.setFont(lnf->lookupFont(dateFooter));
     g.setColour(findColour(ColourIds::footerForeground));
 
     g.drawText(std::string("Build : ") + __DATE__, fa.reduced(3), juce::Justification::bottomRight);
@@ -1579,4 +1585,45 @@ void AWConsolidatedAudioProcessorEditor::darkModeSettingChanged()
     }
 
     repaint();
+}
+
+juce::Font AWLookAndFeel::lookupFont(FontIDs fid) const
+{
+    int fontOffset = 0;
+    if (propFileWeak)
+        fontOffset = propFileWeak->getIntValue("docFontSize", 0);
+
+    switch (fid)
+    {
+    case pluginName:
+        return juce::Font(jakartaSansSemi).withHeight(28);
+    case pluginCategory:
+        return juce::Font(jakartaSansMedium).withHeight(18);
+    case pluginTypeaheadName:
+        return juce::Font(jakartaSansSemi).withHeight(20);
+    case pluginTypeaheadCategory:
+        return juce::Font(jakartaSansMedium).withHeight(14);
+    case pluginTypeaheadWhat:
+        return juce::Font(jakartaSansMedium).withHeight(14);
+
+    case paramValue:
+        return juce::Font(firaMono).withHeight(18);
+    case paramTitle:
+        return juce::Font(jakartaSansMedium).withHeight(14);
+    case paramNoParamas:
+        return juce::Font(jakartaSansSemi).withHeight(20);
+
+    case documentationLabel:
+        return juce::Font(jakartaSansMedium).withHeight(19 + fontOffset);
+    case documentationBody:
+        return juce::Font(jakartaSansMedium).withHeight(16 + fontOffset);
+
+    case airwindowsFooter:
+        return juce::Font(jakartaSansSemi).withHeight(28);
+    case dateFooter:
+        return juce::Font(firaMono).withHeight(14);
+
+    default:
+        return juce::Font("Comic Sans MS", 24, juce::Font::bold);
+    }
 }

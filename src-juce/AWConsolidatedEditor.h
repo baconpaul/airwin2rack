@@ -54,6 +54,29 @@ enum ColourIds
     footerForeground,
     footerStroke,
 };
+
+enum FontIDs
+{
+    pluginName, // juce::Font(editor->jakartaSansMedium).withHeight(28)
+    pluginCategory, // juce::Font(editor->jakartaSansMedium).withHeight(18)edi
+    pluginTypeaheadName, // juce::Font(picker->editor->jakartaSansSemi).withHeight(22)
+    pluginTypeaheadCategory, // jjuce::Font(picker->editor->jakartaSansMedium).withHeight(14)
+    pluginTypeaheadWhat, // juce::Font(picker->editor->jakartaSansMedium).withHeight(14)
+
+    paramValue, // juce::Font(editor->firaMono).withHeight(18)
+    paramTitle, // juce::Font(editor->jakartaSansMedium).withHeight(14)
+    paramNoParamas, // juce::Font(editor->jakartaSansSemi).withHeight(20)
+
+
+   // if (properties)
+    //    fontOffset = properties->getIntValue("docFontSize", 0);
+
+    documentationLabel, // juce::Font(jakartaSansMedium).withHeight(18)
+    documentationBody, // juce::Font(jakartaSansMedium).withHeight(15)
+
+    airwindowsFooter, // jakartaSaneSmi at 28
+    dateFooter // medium 12
+};
 struct AWLookAndFeel : public juce::LookAndFeel_V4
 {
     AWLookAndFeel();
@@ -62,11 +85,15 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
     void setDarkTheme();
     void setLightTheme();
 
-    juce::Typeface::Ptr jakartaSansMedium;
+    juce::Typeface::Ptr jakartaSansMedium, jakartaSansSemi, firaMono;
+
     juce::Font getPopupMenuFont() override;
+    juce::Font lookupFont(FontIDs) const;
 
     void drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
                                             const juce::PopupMenu::Options &o) override;
+
+    juce::PropertiesFile *propFileWeak{nullptr};
 };
 class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
                                            juce::AsyncUpdater,
@@ -125,8 +152,6 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     void resizeDocArea();
 
     juce::String docString, docHeader;
-
-    juce::Typeface::Ptr jakartaSansMedium, jakartaSansSemi, firaMono;
 
     std::unique_ptr<AWLookAndFeel> lnf;
     std::unique_ptr<juce::PropertiesFile> properties;
