@@ -91,6 +91,9 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     bool isBusesLayoutSupported(const BusesLayout &layouts) const override;
 
     void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
+    void processBlock(juce::AudioBuffer<double> &, juce::MidiBuffer &) override;
+    bool supportsDoublePrecisionProcessing() const override { return true; }
+    template<typename T> void processBlockT(juce::AudioBuffer<T> &);
 
     //==============================================================================
     juce::AudioProcessorEditor *createEditor() override;
