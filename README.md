@@ -34,6 +34,16 @@ targets to rebuild fully.
 
 ## The JUCE plugin
 
+Assuming you have git and a compiler and cmake working, the build
+is easy.
+If you are on unix install [these packages or their equivalent](https://github.com/baconpaul/airwin2rack/blob/736d9faf975c454cbb0c82746fd5266a4fd8723c/.github/workflows/build-daw-plugin.yml#L52).
+Then clone the repo and execute the following.
+
+Our nightly builds build 64 bit ubuntu x64, mac universal, and win x64,
+but should build anywhere. We know it builds on linux ARM for instance.
+If you are doing a build on an odd system and find a gotcha send us
+a PR.
+
 ```bask
 cmake -Bignore/daw-plugin -DBUILD_JUCE_PLUGIN=TRUE -DCMAKE_BUILD_TYPE=Release
 cmake --build ignore/daw-plugin --target awcons-products
