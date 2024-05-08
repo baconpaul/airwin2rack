@@ -51,7 +51,11 @@ will appear on click.
 The documentation section displays the description of the effect which Chris
 wrote on launch day in a scrollable area.
 
-Finally the footer of the plugin shows the build date. Since this plugin updates
+In the footer, there is a spot to launch the settings menu which can configure
+the plugin in a variety of ways, including color scheme, documentation
+display, menu ordering, and more.
+
+Finally the footer of the plugin shows the git hash and build date. Since this plugin updates
 with every new effect, check back often for new builds!
 
 ## Effect Collections

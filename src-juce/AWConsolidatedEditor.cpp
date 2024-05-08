@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -68,6 +69,9 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::jogHovered, juce::Colour(160, 160, 165));
     setColour(ColourIds::jogStroke, juce::Colours::white);
 
+    setColour(ColourIds::help, juce::Colour(20, 20, 25));
+    setColour(ColourIds::helpHovered, juce::Colour(40, 40, 75));
+
     setColour(ColourIds::hamburger, juce::Colour(90, 90, 95));
     setColour(ColourIds::hamburgerHovered, juce::Colour(160, 160, 165));
     setColour(ColourIds::hamburgerStroke, juce::Colours::white);
@@ -79,14 +83,13 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::pickerForeground, juce::Colours::white);
     setColour(ColourIds::pickerStroke, juce::Colours::lightgrey);
     setColour(ColourIds::pickerListBoxBackground, juce::Colour(10, 10, 20));
-    setColour(ColourIds::pickerListBoxStroke, juce::Colours::red);
+    setColour(ColourIds::pickerListBoxStroke, juce::Colours::lightgrey);
 
     setColour(ColourIds::typeaheadCategory, juce::Colours::white.darker(0.2));
     setColour(ColourIds::typeaheadName, juce::Colours::white);
-    setColour(ColourIds::typeaheadStroke, juce::Colour(90, 90, 95));
+    setColour(ColourIds::typeaheadStroke, juce::Colours::lightgrey);
 
     setColour(ColourIds::awLink, juce::Colours::black);
-    setColour(ColourIds::awLinkHovered, juce::Colour(30, 30, 120));
 
     setColour(ColourIds::paramDispEditorBackground, juce::Colour(10, 10, 15));
     setColour(ColourIds::paramDispEditorForeground, juce::Colours::white);
@@ -112,6 +115,10 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::footerBackground, juce::Colour(160, 160, 170));
     setColour(ColourIds::footerForeground, juce::Colour(110, 110, 115));
     setColour(ColourIds::footerStroke, juce::Colours::black);
+
+    setColour(ColourIds::settingCogOutline, juce::Colours::black);
+    setColour(ColourIds::settingCogFill, juce::Colour(200, 200, 210));
+    setColour(ColourIds::settingCogHover, juce::Colour(240, 240, 240));
 }
 
 void AWLookAndFeel::setLightTheme()
@@ -132,6 +139,9 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::jogHovered, juce::Colour(95, 95, 90));
     setColour(ColourIds::jogStroke, juce::Colours::black);
 
+    setColour(ColourIds::help, juce::Colour(220, 220, 245));
+    setColour(ColourIds::helpHovered, juce::Colours::white);
+
     setColour(ColourIds::hamburger, juce::Colour(165, 165, 160));
     setColour(ColourIds::hamburgerHovered, juce::Colour(95, 95, 90));
     setColour(ColourIds::hamburgerStroke, juce::Colours::black);
@@ -143,14 +153,13 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::pickerForeground, juce::Colours::black);
     setColour(ColourIds::pickerStroke, juce::Colours::darkgrey);
     setColour(ColourIds::pickerListBoxBackground, juce::Colour(245, 245, 235));
-    setColour(ColourIds::pickerListBoxStroke, juce::Colours::red);
+    setColour(ColourIds::pickerListBoxStroke, juce::Colours::darkgrey);
 
     setColour(ColourIds::typeaheadCategory, juce::Colours::black.darker(0.2));
     setColour(ColourIds::typeaheadName, juce::Colours::black);
-    setColour(ColourIds::typeaheadStroke, juce::Colour(165, 165, 160));
+    setColour(ColourIds::typeaheadStroke, juce::Colours::darkgrey);
 
     setColour(ColourIds::awLink, juce::Colours::white);
-    setColour(ColourIds::awLinkHovered, juce::Colour(60, 60, 180));
 
     setColour(ColourIds::paramDispEditorBackground, juce::Colour(245, 245, 240));
     setColour(ColourIds::paramDispEditorForeground, juce::Colours::black);
@@ -169,13 +178,17 @@ void AWLookAndFeel::setLightTheme()
 
     setColour(ColourIds::documentationHeader, juce::Colours::black);
     setColour(ColourIds::documentationBackground, juce::Colours::white.withAlpha(0.f));
-    setColour(ColourIds::documentationForeground, juce::Colours::black.darker(0.2f));
+    setColour(ColourIds::documentationForeground, juce::Colours::black.brighter(0.2f));
     setColour(ColourIds::documentationStroke, juce::Colours::white.withAlpha(0.f));
     setColour(ColourIds::documentationStrokeFocused, juce::Colours::white.withAlpha(0.f));
 
     setColour(ColourIds::footerBackground, juce::Colour(95, 95, 85));
     setColour(ColourIds::footerForeground, juce::Colour(145, 145, 140));
     setColour(ColourIds::footerStroke, juce::Colours::white);
+
+    setColour(ColourIds::settingCogOutline, juce::Colours::white);
+    setColour(ColourIds::settingCogFill, juce::Colour(60, 60, 65));
+    setColour(ColourIds::settingCogHover, juce::Colour(100, 100, 105));
 }
 
 juce::Font AWLookAndFeel::getPopupMenuFont()
@@ -329,6 +342,9 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
                             findColour(ColourIds::pickerTypeinForeground));
         typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
                             findColour(ColourIds::pickerTypeinBackground));
+        typeinEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
+                            findColour(ColourIds::pickerListBoxStroke));
+
         typeinEd->addListener(this);
         addChildComponent(*typeinEd);
     }
@@ -356,9 +372,8 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             g.drawText(rg.name, bounds.reduced(8, 5), juce::Justification::centredBottom);
         auto ga = juce::GlyphArrangement();
         auto tbx = bounds.reduced(8, 5);
-        ga.addFittedText(editor->lnf->lookupFont(pluginName), rg.name, tbx.getX(),
-                         tbx.getY(), tbx.getWidth(), tbx.getHeight(),
-                         juce::Justification::centredBottom, 1);
+        ga.addFittedText(editor->lnf->lookupFont(pluginName), rg.name, tbx.getX(), tbx.getY(),
+                         tbx.getWidth(), tbx.getHeight(), juce::Justification::centredBottom, 1);
         titleBox = ga.getBoundingBox(0, -1, true);
 
         auto catString = rg.category;
@@ -419,6 +434,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
                 listBox = std::make_unique<juce::ListBox>();
                 listBox->setModel(listBoxModel.get());
                 listBox->setRowHeight(40);
+                listBox->setOutlineThickness(1);
                 listBox->setColour(juce::ListBox::backgroundColourId,
                                    findColour(ColourIds::pickerListBoxBackground));
                 listBox->setColour(juce::ListBox::outlineColourId,
@@ -432,6 +448,11 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             teb.setX(teb.getX() + getBounds().getX());
             teb.setY(teb.getY() + getBounds().getY() + teb.getHeight());
             teb = teb.withHeight(400);
+            if (!editor->isDocDisplayed())
+            {
+                auto exp = getWidth() - teb.getWidth();
+                teb = teb.expanded(exp * 0.5 - 5, 0);
+            }
             listBox->setBounds(teb);
 
             populateForTypein();
@@ -445,15 +466,16 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
     uint64_t jogHoldCounter{0};
     void startJogHold(int dir)
     {
-        juce::Timer::callAfterDelay(800, [hc = jogHoldCounter, dir, w = juce::Component::SafePointer(this)]() {
-            if (w)
-            {
-                w->doJogHold(dir, hc);
-            }
-        });
+        juce::Timer::callAfterDelay(
+            800, [hc = jogHoldCounter, dir, w = juce::Component::SafePointer(this)]() {
+                if (w)
+                {
+                    w->doJogHold(dir, hc);
+                }
+            });
     }
 
-    void stopJogHold() { jogHoldCounter ++; }
+    void stopJogHold() { jogHoldCounter++; }
     void doJogHold(int dir, uint64_t hc)
     {
         if (hc != jogHoldCounter)
@@ -575,7 +597,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             if (rowNumber < 0 || rowNumber >= (int)entries.size())
                 return;
 
-            auto bx = juce::Rectangle<int>(0, 0, width, height).reduced(2);
+            auto bx = juce::Rectangle<int>(0, 0, width, height).reduced(4, 2);
 
             auto &rg = AirwinRegistry::registry[entries[rowNumber]];
 
@@ -607,23 +629,44 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
     std::unique_ptr<TALBM> listBoxModel;
 };
 
-struct AWLink : public juce::Component
+struct SettingsCog : public juce::Button
 {
-    AWLookAndFeel *lnf;
-    AWLink(AWLookAndFeel *l) : lnf(l) {}
-    void paint(juce::Graphics &g) override
+    AWConsolidatedAudioProcessorEditor *editor;
+    SettingsCog(AWConsolidatedAudioProcessorEditor *p)
+        : juce::Button(juce::String("Settings")), editor(p)
     {
-        g.setColour(findColour(ColourIds::awLink));
-        if (isHovered)
-            g.setColour(findColour(ColourIds::awLinkHovered));
-        g.setFont(lnf->lookupFont(airwindowsFooter));
-        g.drawText("Airwindows", getLocalBounds(), juce::Justification::centred);
+        setAccessible(true);
+        setTitle("Settings");
     }
-
-    void mouseDown(const juce::MouseEvent &) override
+    void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
+                     bool shouldDrawButtonAsDown) override
     {
-        auto url = juce::URL("https://airwindows.com");
-        url.launchInDefaultBrowser();
+        juce::Path p;
+        auto c = getLocalBounds().getCentre();
+        auto rad = std::min(getWidth(), getHeight()) * 0.45;
+        int nGears = 6;
+        for (int i = 0; i < 2 * nGears; ++i)
+        {
+            auto sh = 0.5;
+            if (i % 2 == 1)
+                sh = 0.31;
+            auto sp = (i - sh) * 2 * M_PI / (2 * nGears);
+            auto ep = (i + sh) * 2 * M_PI / (2 * nGears);
+            auto r = (i % 2 == 1 ? rad * 0.72 : rad);
+            p.addCentredArc(c.x, c.y, r, r, 0, sp, ep, i == 0);
+        }
+        p.closeSubPath();
+        g.setColour(editor->lnf->findColour(settingCogOutline));
+        g.strokePath(p, juce::PathStrokeType(2));
+        g.setColour(isHovered ? editor->lnf->findColour(settingCogHover)
+                              : editor->lnf->findColour(settingCogFill));
+        g.fillPath(p);
+
+        g.setColour(editor->lnf->findColour(footerBackground));
+        auto off = 0.47;
+        g.fillEllipse(c.x - rad * off, c.y - rad * off, rad * off * 2, rad * off * 2);
+        g.setColour(editor->lnf->findColour(settingCogOutline));
+        g.drawEllipse(c.x - rad * off, c.y - rad * off, rad * off * 2, rad * off * 2, 1);
     }
 
     bool isHovered{false};
@@ -636,6 +679,33 @@ struct AWLink : public juce::Component
     {
         isHovered = false;
         repaint();
+    }
+
+    void mouseDown(const juce::MouseEvent &e) override
+    {
+        showMenu(-e.position.x, -e.position.y - 3);
+    }
+
+    void showMenu(int xo = 0, int yo = 0)
+    {
+        auto pm = editor->makeSettingsMenu(true);
+
+        const auto mousePos = juce::Desktop::getInstance().getMousePosition().translated(xo, yo);
+        const auto targetArea = juce::Rectangle<int>{}.withPosition(mousePos);
+        pm.showMenuAsync(juce::PopupMenu::Options()
+                             .withMaximumNumColumns(1)
+                             .withTargetComponent(editor)
+                             .withTargetScreenArea(targetArea));
+    }
+    bool keyPressed(const juce::KeyPress &p) override
+    {
+        if (p.getKeyCode() == juce::KeyPress::returnKey ||
+            (p.getKeyCode() == juce::KeyPress::F10Key && p.getModifiers().isShiftDown()))
+        {
+            showMenu();
+            return true;
+        }
+        return false;
     }
 };
 
@@ -1016,6 +1086,79 @@ struct ParamKnob : juce::Component
     }
 };
 
+struct DocHeader : juce::Component
+{
+    AWConsolidatedAudioProcessorEditor *editor{nullptr};
+    DocHeader(AWConsolidatedAudioProcessorEditor *e) : editor(e)
+    {
+        setAccessible(true);
+        setWantsKeyboardFocus(true);
+        setTitle("Documentation header");
+    }
+
+    juce::String txt;
+    void setText(const juce::String &s)
+    {
+        txt = s;
+        repaint();
+    }
+
+    void paint(juce::Graphics &g) override
+    {
+        g.setColour(editor->lnf->findColour(documentationHeader));
+        g.setFont(editor->lnf->lookupFont(documentationLabel));
+        g.drawFittedText(txt, 5, 0, getWidth() - 10, getHeight(), juce::Justification::topLeft, 10);
+    }
+
+    struct AHValue : public juce::AccessibilityValueInterface
+    {
+        explicit AHValue(ParamKnob *s) : slider(s) {}
+
+        ParamKnob *slider;
+
+        bool isReadOnly() const override { return false; }
+        double getCurrentValue() const override { return slider->getValue(); }
+        void setValue(double newValue) override
+        {
+            slider->setValue(newValue);
+
+            slider->repaint();
+        }
+        virtual juce::String getCurrentValueAsString() const override
+        {
+            if (slider->weakParam)
+            {
+                auto res = slider->weakParam->getCurrentValueAsText();
+                return res;
+            }
+            return "";
+        }
+        void setValueAsString(const juce::String &) override {}
+
+        AccessibleValueRange getRange() const override { return {{0, 1}, 0.01}; }
+
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AHValue);
+    };
+    struct AH : juce::AccessibilityHandler
+    {
+        DocHeader *dh{nullptr};
+        AH(DocHeader *c)
+            : juce::AccessibilityHandler(*c, juce::AccessibilityRole::label,
+                                         juce::AccessibilityActions(),
+                                         AccessibilityHandler::Interfaces{}),
+              dh(c)
+        {
+        }
+
+        juce::String getTitle() const override { return dh->txt; }
+    };
+
+    std::unique_ptr<juce::AccessibilityHandler> createAccessibilityHandler() override
+    {
+        return std::make_unique<AH>(this);
+    }
+};
+
 void ParamDisp::dismissEd()
 {
     typeinEd->setVisible(false);
@@ -1039,7 +1182,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     setFocusContainerType(juce::Component::FocusContainerType::keyboardFocusContainer);
     setWantsKeyboardFocus(true);
 
-    setSize(baseHeight, baseHeight);
+    setSize(baseWidth, baseHeight);
 
     auto fs = awres::get_filesystem();
     try
@@ -1089,11 +1232,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
                       .withTrimmedTop(60 + 2 * margin)
                       .withTrimmedBottom(40 + margin);
 
-    docBodyLabel = std::make_unique<juce::Label>("Documentation Header");
-    docBodyLabel->setAccessible(true);
-    docBodyLabel->setWantsKeyboardFocus(true);
-    docBodyLabel->setFont(lnf->lookupFont(documentationLabel));
-    docBodyLabel->setColour(juce::Label::textColourId, findColour(ColourIds::documentationHeader));
+    docBodyLabel = std::make_unique<DocHeader>(this);
     docBodyLabel->setTitle("Documentation Header");
     addAndMakeVisible(*docBodyLabel);
 
@@ -1114,14 +1253,9 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     docBodyEd->setColour(juce::TextEditor::ColourIds::textColourId,
                          findColour(ColourIds::documentationForeground));
     addAndMakeVisible(*docBodyEd);
-    awTag = std::make_unique<AWLink>(lnf.get());
-    auto fa = getLocalBounds()
-                  .withHeight(40)
-                  .withY(getHeight() - 40)
-                  .withTrimmedLeft(100)
-                  .withTrimmedRight(100);
-    awTag->setBounds(fa);
-    addAndMakeVisible(*awTag);
+
+    settingsCog = std::make_unique<SettingsCog>(this);
+    addAndMakeVisible(*settingsCog);
 
     accessibleOrderWeakRefs.push_back(menuPicker.get());
     accessibleOrderWeakRefs.push_back(menuPicker->hamburger.get());
@@ -1131,8 +1265,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
         accessibleOrderWeakRefs.push_back(k.get());
     accessibleOrderWeakRefs.push_back(docBodyLabel.get());
     accessibleOrderWeakRefs.push_back(docBodyEd.get());
-
-    resizeDocArea();
+    accessibleOrderWeakRefs.push_back(settingsCog.get());
 
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
@@ -1152,6 +1285,9 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
     auto cs = properties->getIntValue("colorStrategy", (int)ColorStrategy::FOLLOW_SYSTEM);
     updateColorStrategy((ColorStrategy)cs, false);
+
+    resized();
+    sizeBasedOnDocAreaDisplay();
 }
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
@@ -1161,14 +1297,15 @@ AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
     idleTimer->stopTimer();
 }
 
-void AWConsolidatedAudioProcessorEditor::updateColorStrategy(AWConsolidatedAudioProcessorEditor::ColorStrategy s, bool writeProperties)
+void AWConsolidatedAudioProcessorEditor::updateColorStrategy(
+    AWConsolidatedAudioProcessorEditor::ColorStrategy s, bool writeProperties)
 {
     if (!lnf)
         return;
     currentColorStrategy = s;
     if (writeProperties)
         properties->setValue("colorStrategy", (int)s);
-    switch(s)
+    switch (s)
     {
     case ALWAYS_DARK:
         lnf->setDarkTheme();
@@ -1207,6 +1344,17 @@ void AWConsolidatedAudioProcessorEditor::idle()
 
 void AWConsolidatedAudioProcessorEditor::resizeDocArea()
 {
+    if (!isDocDisplayed())
+    {
+        docBodyLabel->setVisible(false);
+        docBodyEd->setVisible(false);
+        return;
+    }
+    else
+    {
+        docBodyLabel->setVisible(true);
+        docBodyEd->setVisible(true);
+    }
     docString = AirwinRegistry::documentationStringFor(processor.curentProcessorIndex);
     docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
     docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
@@ -1219,9 +1367,8 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
                           r.getHeight(), juce::Justification::topLeft, 3);
     auto bounds = gaTitle.getBoundingBox(0, -1, true);
 
-    docBodyLabel->setFont(lnf->lookupFont(documentationLabel));
     docBodyLabel->setBounds(r.withHeight(bounds.getHeight() + 4));
-    docBodyLabel->setText(docHeader.substring(2), juce::NotificationType::dontSendNotification);
+    docBodyLabel->setText(docHeader.substring(2));
     if (docBodyLabel->getAccessibilityHandler())
         docBodyLabel->getAccessibilityHandler()->notifyAccessibilityEvent(
             juce::AccessibilityEvent::valueChanged);
@@ -1236,7 +1383,37 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
 
 void AWConsolidatedAudioProcessorEditor::handleAsyncUpdate() {}
 
-void AWConsolidatedAudioProcessorEditor::resized() {}
+void AWConsolidatedAudioProcessorEditor::resized()
+{
+    if (!properties || !menuPicker)
+    {
+        // not set up yet
+        return;
+    }
+
+    auto idd = isDocDisplayed();
+    resizeDocArea();
+
+    menuPicker->setBounds(getLocalBounds().reduced(5).withHeight(60));
+
+    for (const auto &l : labels)
+    {
+        if (idd)
+            l->setSize(180, l->getHeight());
+        else
+        {
+            auto w = getWidth() - 5 - l->getX();
+            l->setSize(w, l->getHeight());
+        }
+    }
+
+    auto ta = getLocalBounds()
+                  .withTrimmedTop(getHeight() - 40)
+                  .withTrimmedLeft(2)
+                  .withWidth(40)
+                  .reduced(4);
+    settingsCog->setBounds(ta);
+}
 
 void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
 {
@@ -1254,10 +1431,15 @@ void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
     g.setColour(findColour(ColourIds::footerStroke));
     g.drawLine(fa.getX(), fa.getY(), fa.getX() + fa.getWidth(), fa.getY(), 1);
 
+    g.setFont(lnf->lookupFont(airwindowsFooter));
+    g.setColour(findColour(ColourIds::awLink));
+    g.drawText("Airwindows", fa.withTrimmedTop(0), juce::Justification::centredTop);
+
     g.setFont(lnf->lookupFont(dateFooter));
     g.setColour(findColour(ColourIds::footerForeground));
 
-    g.drawText(std::string("Build : ") + __DATE__, fa.reduced(3), juce::Justification::bottomRight);
+    auto fs = juce::String(__DATE__) + " " + BUILD_HASH;
+    g.drawText(fs, fa.withTrimmedBottom(2), juce::Justification::centredBottom);
 
     if (clipperIcon)
     {
@@ -1371,10 +1553,31 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
             .launchInDefaultBrowser();
     });
 
-    p.addItem("Visit Airwindows.com",
-              []() { juce::URL("https://www.airwindows.com").launchInDefaultBrowser(); });
+    /*
+    auto settingsMenu = makeSettingsMenu(false);
+
+    p.addSeparator();
+    p.addSubMenu("Settings", settingsMenu);
+    */
+
+    const auto mousePos = juce::Desktop::getInstance().getMousePosition();
+    const auto targetArea = juce::Rectangle<int>{}.withPosition(mousePos);
+    p.showMenuAsync(juce::PopupMenu::Options()
+                        .withMaximumNumColumns(1)
+                        .withTargetComponent(this)
+                        .withTargetScreenArea(targetArea));
+}
+
+juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHeader)
+{
+    bool isChrisOrder = properties->getValue("ordering") == "chris";
 
     auto settingsMenu = juce::PopupMenu();
+    if (withHeader)
+    {
+        settingsMenu.addSectionHeader("Settings");
+        settingsMenu.addSeparator();
+    }
 
     auto csMenu = juce::PopupMenu();
     csMenu.addItem("Follow System Settings", true, currentColorStrategy == FOLLOW_SYSTEM,
@@ -1399,20 +1602,27 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
     if (properties)
         fontOffset = properties->getIntValue("docFontSize", 0);
 
-    for (const auto &[off, nm] : { std::make_pair(-2, std::string("Small")),
+    for (const auto &[off, nm] : {std::make_pair(-2, std::string("Small")),
                                   {0, "Regular"},
                                   {2, "Large"},
                                   {4, "Extra-Large"}})
     {
-        fsMenu.addItem(nm, true, fontOffset == off, [o = off, w = juce::Component::SafePointer(this)](){
-            if (!w)
-                return;
-            w->properties->setValue("docFontSize", o);
-            w->resizeDocArea();
-        } );
+        fsMenu.addItem(nm, true, fontOffset == off,
+                       [o = off, w = juce::Component::SafePointer(this)]() {
+                           if (!w)
+                               return;
+                           w->properties->setValue("docFontSize", o);
+                           w->resizeDocArea();
+                       });
     }
 
     settingsMenu.addSubMenu("Documentation Font", fsMenu);
+
+    settingsMenu.addItem("Show Documentation", true, isDocDisplayed(),
+                         [w = juce::Component::SafePointer(this)]() {
+                             if (w)
+                                 w->toggleDocDisplay();
+                         });
 
     settingsMenu.addSeparator();
 
@@ -1439,13 +1649,33 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
                                  w->properties->setValue("ordering", "chris");
                              }
                          });
+    settingsMenu.addSeparator();
+    settingsMenu.addItem("Open Plugin Manual...", []() {
+        juce::URL("https://github.com/baconpaul/airwin2rack/blob/main/doc/manualdaw.md")
+            .launchInDefaultBrowser();
+    });
 
-    p.addSeparator();
-    p.addSubMenu("Settings", settingsMenu);
+    if (withHeader)
+    {
+        juce::PopupMenu about;
+        settingsMenu.addSeparator();
 
-    const auto mousePos = juce::Desktop::getInstance().getMousePosition();
-    const auto targetArea = juce::Rectangle<int>{}.withPosition (mousePos);
-    p.showMenuAsync(juce::PopupMenu::Options().withMaximumNumColumns(1).withTargetComponent(this).withTargetScreenArea(targetArea));
+        std::vector<std::string> versionInfo;
+        about.addItem("Airwindows.com webpage...",
+                      []() { juce::URL("https://airwindows.com").launchInDefaultBrowser(); });
+
+        about.addItem("Download Latest Version...", []() {
+            juce::URL("https://github.com/baconpaul/airwin2rack/releases/tag/DAWPlugin")
+                .launchInDefaultBrowser();
+        });
+        about.addSeparator();
+        about.addItem(juce::String("Built: ") + __DATE__ + " at " + __TIME__, false, false,
+                      []() {});
+        about.addItem(juce::String("Git Hash: ") + BUILD_HASH, false, false, []() {});
+
+        settingsMenu.addSubMenu("About", about);
+    }
+    return settingsMenu;
 }
 
 struct FxFocusTrav : public juce::ComponentTraverser
@@ -1528,6 +1758,7 @@ bool AWConsolidatedAudioProcessorEditor::keyPressed(const juce::KeyPress &k)
                 juce::String() + "Accessible Documentation Component is " + (!isRO ? "Off" : "On"),
                 juce::AccessibilityHandler::AnnouncementPriority::medium);
     }
+
     return false;
 }
 
@@ -1540,13 +1771,8 @@ AWConsolidatedAudioProcessorEditor::createKeyboardFocusTraverser()
 void AWConsolidatedAudioProcessorEditor::darkModeSettingChanged()
 {
     if (currentColorStrategy == FOLLOW_SYSTEM)
-        juce::Desktop::getInstance().isDarkModeActive() ? lnf->setDarkTheme() : lnf->setLightTheme();
-
-    if (docBodyLabel)
-    {
-        docBodyLabel->setColour(juce::Label::textColourId,
-                                findColour(ColourIds::documentationHeader));
-    }
+        juce::Desktop::getInstance().isDarkModeActive() ? lnf->setDarkTheme()
+                                                        : lnf->setLightTheme();
 
     if (docBodyEd)
     {
@@ -1561,6 +1787,8 @@ void AWConsolidatedAudioProcessorEditor::darkModeSettingChanged()
                                             findColour(ColourIds::pickerTypeinForeground));
             menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
                                             findColour(ColourIds::pickerTypeinBackground));
+            menuPicker->typeinEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
+                                            findColour(ColourIds::pickerListBoxStroke));
             menuPicker->typeinEd->applyColourToAllText(
                 findColour(ColourIds::pickerTypeinForeground));
         }
@@ -1616,9 +1844,48 @@ juce::Font AWLookAndFeel::lookupFont(FontIDs fid) const
     case airwindowsFooter:
         return juce::Font(jakartaSansSemi).withHeight(28);
     case dateFooter:
-        return juce::Font(firaMono).withHeight(14);
+        return juce::Font(firaMono).withHeight(12);
 
+    case settingsHeader:
+        return juce::Font(jakartaSansSemi).withHeight(22);
+
+    case settingsSubHeader:
+        return juce::Font(jakartaSansSemi).withHeight(18);
+    case settinsLabel:
+        return juce::Font(jakartaSansMedium).withHeight(15);
+
+    case hideDoc:
+        return juce::Font(jakartaSansMedium).withHeight(16);
     default:
+        jassertfalse;
         return juce::Font("Comic Sans MS", 24, juce::Font::bold);
     }
+}
+
+bool AWConsolidatedAudioProcessorEditor::isDocDisplayed()
+{
+    if (!properties)
+        return true;
+
+    return properties->getBoolValue("isDocDisplayed", true);
+}
+
+void AWConsolidatedAudioProcessorEditor::toggleDocDisplay()
+{
+    auto res = properties->getBoolValue("isDocDisplayed", true);
+    properties->setValue("isDocDisplayed", !res);
+    sizeBasedOnDocAreaDisplay();
+}
+void AWConsolidatedAudioProcessorEditor::sizeBasedOnDocAreaDisplay()
+{
+    resizeDocArea();
+    if (isDocDisplayed())
+    {
+        setSize(baseWidth, baseHeight);
+    }
+    else
+    {
+        setSize(baseWidth - 270, baseHeight);
+    }
+    repaint();
 }

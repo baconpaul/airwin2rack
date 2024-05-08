@@ -59,6 +59,22 @@ juce_add_plugin(${PROJECT_NAME}
   FORMATS ${AWCO_FORMATS}
   )
 
+
+find_package(Git)
+
+if (Git_FOUND)
+  execute_process(
+          COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+          OUTPUT_VARIABLE BUILD_HASH
+          OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+else ()
+  set(BUILD_HASH "unkown")
+endif ()
+
+message(STATUS "Compiling with git hash ${BUILD_HASH}")
+
 target_compile_definitions(${PROJECT_NAME} PUBLIC
         JUCE_ALLOW_STATIC_NULL_VARIABLES=0
         JUCE_STRICT_REFCOUNTEDPOINTER=1
@@ -82,6 +98,10 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
         JUCE_DIRECTSOUND=1
 
         JUCE_CATCH_UNHANDLED_EXCEPTIONS=0
+
+        BUILD_HASH="${BUILD_HASH}"
+
+        _USE_MATH_DEFINES=1
 )
 target_sources(${PROJECT_NAME} PRIVATE
   AWConsolidatedEditor.cpp
