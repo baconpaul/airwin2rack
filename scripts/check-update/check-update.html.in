@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <title>Version Check</title>
+        <script>
+            if (window.location.hash !== "HASH") {
+                window.location.href =
+                    "https://github.com/baconpaul/airwin2rack/releases/tag/DAWPlugin";
+            }
+        </script>
+    </head>
+    <body>
+        <p>Airwindows Consolidated is up to date. Your version HASH is the most
+        recent build</p>
+    </body>
+</html>
