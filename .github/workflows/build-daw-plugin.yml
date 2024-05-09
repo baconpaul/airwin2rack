@@ -84,7 +84,7 @@ jobs:
           ls -l ./build/installer
 
       - name: Create Update HTML on Linux
-        if: runner.os == 'Linux' && github.event_name != `pull_request`
+        if: runner.os == 'Linux' && github.event_name != 'pull_request'
         run: |
           ./scripts/check-update/make-update.sh > ./build/installer/check-updates.html
 
