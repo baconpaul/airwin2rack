@@ -83,10 +83,11 @@ jobs:
         run: |
           ls -l ./build/installer
 
-      - name: Create Update HTML on Linux
-        if: runner.os == 'Linux' && github.event_name != 'pull_request'
-        run: |
-          ./scripts/check-update/make-update.sh > ./build/installer/check-updates.html
+      # The aborted check updates plan
+      #- name: Create Update HTML on Linux
+      #  if: runner.os == 'Linux' && github.event_name != 'pull_request'
+      #  run: |
+      #    ./scripts/check-update/make-update.sh > ./build/installer/check-updates.html
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
