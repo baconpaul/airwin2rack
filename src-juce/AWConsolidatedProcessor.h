@@ -168,7 +168,11 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
         std::function<juce::String(float, int)> getTextHandler{nullptr};
         std::function<float(const juce::String &)> getTextToValue{nullptr};
-        juce::String getText(float f, int i) const override { return getTextHandler(f, i); }
+        juce::String getText(float f, int i) const override {
+            if (getTextHandler)
+                return getTextHandler(f, i);
+            return std::to_string(f);
+        }
 
         float getValueForText(const juce::String &text) const override
         {
