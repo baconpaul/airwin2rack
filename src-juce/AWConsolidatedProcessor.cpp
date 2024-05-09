@@ -31,6 +31,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
                 {
                     awDisplayProcessor->setParameter(id, fxParams[id]->get());
                 }
+                awDisplayProcessor->setParameter(i, f);
                 char tl[kVstMaxParamStrLen], td[kVstMaxParamStrLen];
                 this->awDisplayProcessor->getParameterDisplay(i, td);
                 this->awDisplayProcessor->getParameterLabel(i, tl);
