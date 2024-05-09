@@ -58,7 +58,23 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
         addParameter(fxParams[i]);
     }
 
-    setAWProcessorTo(AirwinRegistry::nameToIndex.at("Galactic"), true);
+    juce::PropertiesFile::Options options;
+    options.applicationName = "AirwindowsConsolidated";
+#if JUCE_LINUX
+    options.folderName = ".config/AirwindowsConsolidated";
+#else
+    options.folderName = "AirwindowsConsolidated";
+#endif
+
+    options.filenameSuffix = "settings";
+    options.osxLibrarySubFolder = "Application Support";
+    properties = std::make_unique<juce::PropertiesFile>(options);
+
+    auto defaultName = properties->getValue("startupEffect", "Galactic").toStdString();
+    if (AirwinRegistry::nameToIndex.find(defaultName) == AirwinRegistry::nameToIndex.end())
+        defaultName = "Galactic";
+
+    setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
 }
 
 AWConsolidatedAudioProcessor::~AWConsolidatedAudioProcessor() {}

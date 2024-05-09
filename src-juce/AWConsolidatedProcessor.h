@@ -197,6 +197,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     int nProcessorParams{0};
     std::atomic<int> curentProcessorIndex{0};
 
+    std::unique_ptr<juce::PropertiesFile> properties;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
 };
 

@@ -1267,23 +1267,13 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     accessibleOrderWeakRefs.push_back(docBodyEd.get());
     accessibleOrderWeakRefs.push_back(settingsCog.get());
 
-    juce::PropertiesFile::Options options;
-    options.applicationName = "AirwindowsConsolidated";
-#if JUCE_LINUX
-    options.folderName = ".config/AirwindowsConsolidated";
-#else
-    options.folderName = "AirwindowsConsolidated";
-#endif
 
-    options.filenameSuffix = "settings";
-    options.osxLibrarySubFolder = "Preferences";
-    properties = std::make_unique<juce::PropertiesFile>(options);
-    lnf->propFileWeak = properties.get();
+    lnf->propFileWeak = processor.properties.get();
 
-    auto isRO = properties->getBoolValue("editorIsReadOnly", true);
+    auto isRO = processor.properties->getBoolValue("editorIsReadOnly", true);
     docBodyEd->setReadOnly(isRO);
 
-    auto cs = properties->getIntValue("colorStrategy", (int)ColorStrategy::FOLLOW_SYSTEM);
+    auto cs = processor.properties->getIntValue("colorStrategy", (int)ColorStrategy::FOLLOW_SYSTEM);
     updateColorStrategy((ColorStrategy)cs, false);
 
     resized();
@@ -1298,13 +1288,13 @@ AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
 }
 
 void AWConsolidatedAudioProcessorEditor::updateColorStrategy(
-    AWConsolidatedAudioProcessorEditor::ColorStrategy s, bool writeProperties)
+    AWConsolidatedAudioProcessorEditor::ColorStrategy s, bool writeproperties)
 {
     if (!lnf)
         return;
     currentColorStrategy = s;
-    if (writeProperties)
-        properties->setValue("colorStrategy", (int)s);
+    if (writeproperties)
+        processor.properties->setValue("colorStrategy", (int)s);
     switch (s)
     {
     case ALWAYS_DARK:
@@ -1385,7 +1375,7 @@ void AWConsolidatedAudioProcessorEditor::handleAsyncUpdate() {}
 
 void AWConsolidatedAudioProcessorEditor::resized()
 {
-    if (!properties || !menuPicker)
+    if (!processor.properties || !menuPicker)
     {
         // not set up yet
         return;
@@ -1507,7 +1497,7 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     const auto *order = &AirwinRegistry::fxByCategory;
 
-    bool isChrisOrder = properties->getValue("ordering") == "chris";
+    bool isChrisOrder = processor.properties->getValue("ordering") == "chris";
     if (isChrisOrder)
         order = &AirwinRegistry::fxByCategoryChrisOrder;
 
@@ -1570,7 +1560,7 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
 juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHeader)
 {
-    bool isChrisOrder = properties->getValue("ordering") == "chris";
+    bool isChrisOrder = processor.properties->getValue("ordering") == "chris";
 
     auto settingsMenu = juce::PopupMenu();
     if (withHeader)
@@ -1599,8 +1589,8 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
 
     auto fsMenu = juce::PopupMenu();
     int fontOffset = 0;
-    if (properties)
-        fontOffset = properties->getIntValue("docFontSize", 0);
+    if (processor.properties)
+        fontOffset = processor.properties->getIntValue("docFontSize", 0);
 
     for (const auto &[off, nm] : {std::make_pair(-2, std::string("Small")),
                                   {0, "Regular"},
@@ -1611,7 +1601,7 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
                        [o = off, w = juce::Component::SafePointer(this)]() {
                            if (!w)
                                return;
-                           w->properties->setValue("docFontSize", o);
+                           w->processor.properties->setValue("docFontSize", o);
                            w->resizeDocArea();
                        });
     }
@@ -1626,10 +1616,10 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
 
     settingsMenu.addSeparator();
 
-    auto isRO = properties->getBoolValue("editorIsReadOnly");
+    auto isRO = processor.properties->getBoolValue("editorIsReadOnly");
     settingsMenu.addItem("Use Accessible Documentation Component", true, !isRO,
                          [isRO, w = juce::Component::SafePointer(this)]() {
-                             w->properties->setValue("editorIsReadOnly", !isRO);
+                             w->processor.properties->setValue("editorIsReadOnly", !isRO);
                              w->docBodyEd->setReadOnly(!isRO);
                          });
 
@@ -1639,16 +1629,26 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
                          [w = juce::Component::SafePointer(this)]() {
                              if (w)
                              {
-                                 w->properties->setValue("ordering", "alpha");
+                                 w->processor.properties->setValue("ordering", "alpha");
                              }
                          });
     settingsMenu.addItem("Chris (Quality) Order Menus", true, isChrisOrder,
                          [w = juce::Component::SafePointer(this)]() {
                              if (w)
                              {
-                                 w->properties->setValue("ordering", "chris");
+                                 w->processor.properties->setValue("ordering", "chris");
                              }
                          });
+    settingsMenu.addSeparator();
+    auto rg = AirwinRegistry::registry[processor.curentProcessorIndex];
+    auto n = juce::String(rg.name);
+    settingsMenu.addItem("Make " + n + " your default effect",
+                         [n, w = juce::Component::SafePointer(this)](){
+                             if (!w)
+                                 return;
+                             w->processor.properties->setValue("startupEffect", n);
+                         });
+
     settingsMenu.addSeparator();
     settingsMenu.addItem("Open Plugin Manual...", []() {
         juce::URL("https://github.com/baconpaul/airwin2rack/blob/main/doc/manualdaw.md")
@@ -1745,9 +1745,9 @@ bool AWConsolidatedAudioProcessorEditor::keyPressed(const juce::KeyPress &k)
 {
     if (k.getKeyCode() == juce::KeyPress::F7Key)
     {
-        auto isRO = properties->getBoolValue("editorIsReadOnly");
+        auto isRO = processor.properties->getBoolValue("editorIsReadOnly");
 
-        properties->setValue("editorIsReadOnly", !isRO);
+        processor.properties->setValue("editorIsReadOnly", !isRO);
         docBodyEd->setReadOnly(!isRO);
 
         // OK so readonly state is !RO and if it is readonly then
@@ -1864,16 +1864,16 @@ juce::Font AWLookAndFeel::lookupFont(FontIDs fid) const
 
 bool AWConsolidatedAudioProcessorEditor::isDocDisplayed()
 {
-    if (!properties)
+    if (!processor.properties)
         return true;
 
-    return properties->getBoolValue("isDocDisplayed", true);
+    return processor.properties->getBoolValue("isDocDisplayed", true);
 }
 
 void AWConsolidatedAudioProcessorEditor::toggleDocDisplay()
 {
-    auto res = properties->getBoolValue("isDocDisplayed", true);
-    properties->setValue("isDocDisplayed", !res);
+    auto res = processor.properties->getBoolValue("isDocDisplayed", true);
+    processor.properties->setValue("isDocDisplayed", !res);
     sizeBasedOnDocAreaDisplay();
 }
 void AWConsolidatedAudioProcessorEditor::sizeBasedOnDocAreaDisplay()
