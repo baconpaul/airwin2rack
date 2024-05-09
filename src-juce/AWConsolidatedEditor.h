@@ -124,11 +124,11 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
 
     std::string getCurrentCollection()
     {
-        return properties->getValue("collection", "Recommended").toStdString();
+        return processor.properties->getValue("collection", "Recommended").toStdString();
     }
     void setCurrentCollection(const std::string &s)
     {
-        properties->setValue("collection", juce::String(s));
+        processor.properties->setValue("collection", juce::String(s));
     }
     std::string allCollection{"All"};
 
@@ -168,7 +168,6 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     juce::String docString, docHeader;
 
     std::unique_ptr<AWLookAndFeel> lnf;
-    std::unique_ptr<juce::PropertiesFile> properties;
 
     std::vector<juce::Component *> accessibleOrderWeakRefs;
     std::unique_ptr<juce::ComponentTraverser> createKeyboardFocusTraverser() override;
