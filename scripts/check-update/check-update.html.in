@@ -10,10 +10,17 @@
                 window.location.href =
                     "https://github.com/baconpaul/airwin2rack/releases/tag/DAWPlugin";
             }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                document.getElementById("message").innerText =
+                    "Airwindows Consolidated is up to date! HASH is the latest version";
+            });
         </script>
     </head>
     <body>
-        <p>Airwindows Consolidated is up to date. Your version HASH is the most
-        recent build</p>
+        <p id="message">You have JavaScript disabled so we don't know if you
+        are up to date or not. You can find the latest version
+        <a href="https://github.com/baconpaul/airwin2rack/releases/tag/DAWPlugin">here</a>.
+        </p>
     </body>
 </html>
