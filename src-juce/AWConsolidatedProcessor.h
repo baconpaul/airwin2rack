@@ -10,21 +10,21 @@
 #endif
 
 #if DEBUG_LOCK
-struct LP {
+struct LP
+{
     std::string st;
     int ln;
-    LP(const std::string &s, int l) : st(s), ln(l) {
+    LP(const std::string &s, int l) : st(s), ln(l)
+    {
         std::cout << "LP LOCK " << st << ":" << ln << std::endl;
     }
 
-    ~LP() {
-        std::cout << "LP UNLOCK " << st << ":" << ln << std::endl;
-    }
+    ~LP() { std::cout << "LP UNLOCK " << st << ":" << ln << std::endl; }
 };
 
 #define LOCK(x)                                                                                    \
     std::cout << __FILE__ << ":" << __LINE__ << " Locking " << #x << std::endl;                    \
-    LP lpCheck(__FILE__, __LINE__);                                                                                               \
+    LP lpCheck(__FILE__, __LINE__);                                                                \
     std::lock_guard<std::mutex> g(x);                                                              \
     std::cout << __FILE__ << ":" << __LINE__ << " Lock Garnerd " << #x << std::endl;
 #else
@@ -93,7 +93,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
     void processBlock(juce::AudioBuffer<double> &, juce::MidiBuffer &) override;
     bool supportsDoublePrecisionProcessing() const override { return true; }
-    template<typename T> void processBlockT(juce::AudioBuffer<T> &);
+    template <typename T> void processBlockT(juce::AudioBuffer<T> &);
 
     //==============================================================================
     juce::AudioProcessorEditor *createEditor() override;
@@ -168,7 +168,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
         std::function<juce::String(float, int)> getTextHandler{nullptr};
         std::function<float(const juce::String &)> getTextToValue{nullptr};
-        juce::String getText(float f, int i) const override {
+        juce::String getText(float f, int i) const override
+        {
             if (getTextHandler)
                 return getTextHandler(f, i);
             return std::to_string(f);
@@ -193,6 +194,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     float_param_t *fxParams[nAWParams];
     float defaultValues[nAWParams];
     std::array<std::atomic<bool>, nAWParams> active;
+    juce::AudioParameterBool *bypassParam{nullptr};
+    juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
 
     void setAWProcessorTo(int registryIndex, bool initDisplay);
 

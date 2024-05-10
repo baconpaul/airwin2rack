@@ -59,6 +59,10 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
         addParameter(fxParams[i]);
     }
 
+    bypassParam = new juce::AudioParameterBool({"bypass", 0}, "Bypass", 0);
+    bypassParam->addListener(this);
+    addParameter(bypassParam);
+
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
 #if JUCE_LINUX
@@ -142,10 +146,16 @@ bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &lay
     return inputValid && outputValid;
 }
 
-template<typename T>
-void AWConsolidatedAudioProcessor::processBlockT(juce::AudioBuffer<T> &buffer)
+template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::AudioBuffer<T> &buffer)
 {
     juce::ScopedNoDenormals noDenormals;
+
+    if (bypassParam->get())
+    {
+        for (int ch = getMainBusNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch)
+            buffer.clear(ch, 0, buffer.getNumSamples());
+        return;
+    }
 
     ResetTypeMsg item;
     while (resetType.pop(item))
@@ -199,7 +209,8 @@ void AWConsolidatedAudioProcessor::processBlockT(juce::AudioBuffer<T> &buffer)
     }
     else
     {
-        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs, buffer.getNumSamples());
+        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs,
+                                            buffer.getNumSamples());
     }
 }
 
@@ -209,11 +220,11 @@ void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer
     processBlockT(buffer);
 }
 
-void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<double> &buffer, juce::MidiBuffer &)
+void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<double> &buffer,
+                                                juce::MidiBuffer &)
 {
     processBlockT(buffer);
 }
-
 
 //==============================================================================
 bool AWConsolidatedAudioProcessor::hasEditor() const
@@ -260,7 +271,8 @@ void AWConsolidatedAudioProcessor::setupParamDisplaysFromDisplayProcessor(int in
 {
     // Renoise re-enters to get text when you set value notifying host
     // so don't setvalue notifying host under the lock.
-    // See https://forum.renoise.com/t/macos-crash-with-airwindows-vst-when-changing-presets/72288/11
+    // See
+    // https://forum.renoise.com/t/macos-crash-with-airwindows-vst-when-changing-presets/72288/11
     std::array<float, nAWParams> setParamsTo{};
 
     {
@@ -286,7 +298,7 @@ void AWConsolidatedAudioProcessor::setupParamDisplaysFromDisplayProcessor(int in
         }
     }
 
-    for (int i=0; i<nAWParams; ++i)
+    for (int i = 0; i < nAWParams; ++i)
     {
         fxParams[i]->setValueNotifyingHost(setParamsTo[i]);
     }

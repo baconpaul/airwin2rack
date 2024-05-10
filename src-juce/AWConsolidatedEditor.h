@@ -12,6 +12,7 @@ struct ParamDisp;
 struct Picker;
 struct SettingsCog;
 struct DocHeader;
+struct BypassButton;
 
 enum ColourIds
 {
@@ -60,6 +61,13 @@ enum ColourIds
     settingCogOutline,
     settingCogFill,
     settingCogHover,
+
+    bypassButtonOutline,
+    bypassButtonOn,
+    bypassButtonOnHover,
+    bypassButtonBypassed,
+    bypassButtonBypassedHover,
+
 };
 
 enum FontIDs
@@ -163,6 +171,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     void sizeBasedOnDocAreaDisplay();
 
     std::unique_ptr<SettingsCog> settingsCog;
+    std::unique_ptr<BypassButton> bypassButton;
     juce::PopupMenu makeSettingsMenu(bool withHeader);
 
     juce::String docString, docHeader;
