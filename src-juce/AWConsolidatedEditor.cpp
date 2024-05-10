@@ -119,6 +119,12 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::settingCogOutline, juce::Colours::black);
     setColour(ColourIds::settingCogFill, juce::Colour(200, 200, 210));
     setColour(ColourIds::settingCogHover, juce::Colour(240, 240, 240));
+
+    setColour(ColourIds::bypassButtonOutline, juce::Colours::black);
+    setColour(ColourIds::bypassButtonOn, juce::Colour(230, 230, 240));
+    setColour(ColourIds::bypassButtonOnHover, juce::Colour(240, 240, 255));
+    setColour(ColourIds::bypassButtonBypassed, juce::Colour(130, 130, 140));
+    setColour(ColourIds::bypassButtonBypassedHover, juce::Colour(170, 170, 180));
 }
 
 void AWLookAndFeel::setLightTheme()
@@ -189,6 +195,12 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::settingCogOutline, juce::Colours::white);
     setColour(ColourIds::settingCogFill, juce::Colour(60, 60, 65));
     setColour(ColourIds::settingCogHover, juce::Colour(100, 100, 105));
+
+    setColour(ColourIds::bypassButtonOutline, juce::Colours::black);
+    setColour(ColourIds::bypassButtonOn, juce::Colour(230, 230, 240));
+    setColour(ColourIds::bypassButtonOnHover, juce::Colour(240, 240, 255));
+    setColour(ColourIds::bypassButtonBypassed, juce::Colour(130, 130, 140));
+    setColour(ColourIds::bypassButtonBypassedHover, juce::Colour(170, 170, 180));
 }
 
 juce::Font AWLookAndFeel::getPopupMenuFont()
@@ -656,11 +668,13 @@ struct SettingsCog : public juce::Button
             p.addCentredArc(c.x, c.y, r, r, 0, sp, ep, i == 0);
         }
         p.closeSubPath();
-        g.setColour(editor->lnf->findColour(settingCogOutline));
-        g.strokePath(p, juce::PathStrokeType(2));
+
         g.setColour(isHovered ? editor->lnf->findColour(settingCogHover)
                               : editor->lnf->findColour(settingCogFill));
         g.fillPath(p);
+
+        g.setColour(editor->lnf->findColour(settingCogOutline));
+        g.strokePath(p, juce::PathStrokeType(1));
 
         g.setColour(editor->lnf->findColour(footerBackground));
         auto off = 0.47;
@@ -703,6 +717,86 @@ struct SettingsCog : public juce::Button
             (p.getKeyCode() == juce::KeyPress::F10Key && p.getModifiers().isShiftDown()))
         {
             showMenu();
+            return true;
+        }
+        return false;
+    }
+};
+
+struct BypassButton : public juce::ToggleButton
+{
+    AWConsolidatedAudioProcessorEditor *editor;
+    BypassButton(AWConsolidatedAudioProcessorEditor *p)
+        : juce::ToggleButton(juce::String("Bypass")), editor(p)
+    {
+        setAccessible(true);
+        setTitle("Bypass");
+    }
+    void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
+                     bool shouldDrawButtonAsDown) override
+    {
+        juce::Path p;
+        auto c = getLocalBounds().getCentre();
+        auto rad = std::min(getWidth(), getHeight()) * 0.4;
+
+        auto da = 0.85;
+        auto dr = 0.7;
+        p.addCentredArc(c.x, c.y, rad, rad, 0, -M_PI * da, M_PI * da, true);
+        p.addCentredArc(c.x, c.y, rad * dr, rad * dr, 0, M_PI * da, -M_PI * da, false);
+
+        p.closeSubPath();
+
+        juce::Colour fc;
+        if (isOver())
+        {
+            if (getToggleState())
+                fc = editor->lnf->findColour(bypassButtonBypassedHover);
+            else
+                fc = editor->lnf->findColour(bypassButtonOnHover);
+        }
+        else
+        {
+            if (getToggleState())
+                fc = editor->lnf->findColour(bypassButtonBypassed);
+            else
+                fc = editor->lnf->findColour(bypassButtonOn);
+        }
+
+        g.setColour(fc);
+        g.fillPath(p);
+
+        g.setColour(editor->lnf->findColour(bypassButtonOutline));
+        g.strokePath(p, juce::PathStrokeType(1));
+
+        auto tr = getLocalBounds()
+                      .reduced(getWidth() * 0.5 - 2, 0)
+                      .withTrimmedTop(getHeight() * 0.55)
+                      .withTrimmedBottom(2);
+
+        g.setColour(fc);
+        g.fillRect(tr);
+
+        g.setColour(editor->lnf->findColour(bypassButtonOutline));
+        g.drawRect(tr);
+    }
+
+    void buttonStateChanged() override
+    {
+        repaint();
+
+        if (getToggleState() != editor->processor.bypassParam->get())
+        {
+            editor->processor.bypassParam->beginChangeGesture();
+            editor->processor.bypassParam->setValueNotifyingHost(getToggleState());
+            editor->processor.bypassParam->endChangeGesture();
+        }
+    }
+
+    bool keyPressed(const juce::KeyPress &p) override
+    {
+        if (p.getKeyCode() == juce::KeyPress::returnKey)
+        {
+            setToggleState(!getToggleState(), juce::NotificationType::sendNotification);
             return true;
         }
         return false;
@@ -1257,6 +1351,9 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     settingsCog = std::make_unique<SettingsCog>(this);
     addAndMakeVisible(*settingsCog);
 
+    bypassButton = std::make_unique<BypassButton>(this);
+    addAndMakeVisible(*bypassButton);
+
     accessibleOrderWeakRefs.push_back(menuPicker.get());
     accessibleOrderWeakRefs.push_back(menuPicker->hamburger.get());
     accessibleOrderWeakRefs.push_back(menuPicker->up.get());
@@ -1266,7 +1363,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     accessibleOrderWeakRefs.push_back(docBodyLabel.get());
     accessibleOrderWeakRefs.push_back(docBodyEd.get());
     accessibleOrderWeakRefs.push_back(settingsCog.get());
-
+    accessibleOrderWeakRefs.push_back(bypassButton.get());
 
     lnf->propFileWeak = processor.properties.get();
 
@@ -1328,6 +1425,8 @@ void AWConsolidatedAudioProcessorEditor::idle()
 
     if (processor.refreshUI.exchange(false))
     {
+        bypassButton->setToggleState(processor.bypassParam->get(),
+                                     juce::NotificationType::dontSendNotification);
         repaint();
     }
 }
@@ -1403,6 +1502,8 @@ void AWConsolidatedAudioProcessorEditor::resized()
                   .withWidth(40)
                   .reduced(4);
     settingsCog->setBounds(ta);
+    ta = ta.translated(getWidth() - 40 - 4 - 2 - 2, 0);
+    bypassButton->setBounds(ta);
 }
 
 void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
@@ -1643,7 +1744,7 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
     auto rg = AirwinRegistry::registry[processor.curentProcessorIndex];
     auto n = juce::String(rg.name);
     settingsMenu.addItem("Make " + n + " your default effect",
-                         [n, w = juce::Component::SafePointer(this)](){
+                         [n, w = juce::Component::SafePointer(this)]() {
                              if (!w)
                                  return;
                              w->processor.properties->setValue("startupEffect", n);
