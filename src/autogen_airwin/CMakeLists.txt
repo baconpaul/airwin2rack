@@ -53,12 +53,16 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Biquad2Proc.cpp
    src/autogen_airwin/BiquadDouble.cpp
    src/autogen_airwin/BiquadDoubleProc.cpp
+   src/autogen_airwin/BiquadHiLo.cpp
+   src/autogen_airwin/BiquadHiLoProc.cpp
    src/autogen_airwin/BiquadNonLin.cpp
    src/autogen_airwin/BiquadNonLinProc.cpp
    src/autogen_airwin/BiquadOneHalf.cpp
    src/autogen_airwin/BiquadOneHalfProc.cpp
    src/autogen_airwin/BiquadPlus.cpp
    src/autogen_airwin/BiquadPlusProc.cpp
+   src/autogen_airwin/BiquadStack.cpp
+   src/autogen_airwin/BiquadStackProc.cpp
    src/autogen_airwin/BiquadTriple.cpp
    src/autogen_airwin/BiquadTripleProc.cpp
    src/autogen_airwin/BitGlitter.cpp
@@ -211,10 +215,6 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ConsoleXBussProc.cpp
    src/autogen_airwin/ConsoleXChannel.cpp
    src/autogen_airwin/ConsoleXChannelProc.cpp
-   src/autogen_airwin/ConsoleXSubIn.cpp
-   src/autogen_airwin/ConsoleXSubInProc.cpp
-   src/autogen_airwin/ConsoleXSubOut.cpp
-   src/autogen_airwin/ConsoleXSubOutProc.cpp
    src/autogen_airwin/ContentHideD.cpp
    src/autogen_airwin/ContentHideDProc.cpp
    src/autogen_airwin/Creature.cpp
@@ -261,6 +261,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DistanceProc.cpp
    src/autogen_airwin/Distance2.cpp
    src/autogen_airwin/Distance2Proc.cpp
+   src/autogen_airwin/Distance3.cpp
+   src/autogen_airwin/Distance3Proc.cpp
    src/autogen_airwin/Distortion.cpp
    src/autogen_airwin/DistortionProc.cpp
    src/autogen_airwin/DitherFloat.cpp
@@ -493,6 +495,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PafnutyProc.cpp
    src/autogen_airwin/Pafnuty2.cpp
    src/autogen_airwin/Pafnuty2Proc.cpp
+   src/autogen_airwin/Parametric.cpp
+   src/autogen_airwin/ParametricProc.cpp
    src/autogen_airwin/PaulDither.cpp
    src/autogen_airwin/PaulDitherProc.cpp
    src/autogen_airwin/PaulWide.cpp
@@ -527,6 +531,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PopProc.cpp
    src/autogen_airwin/Pop2.cpp
    src/autogen_airwin/Pop2Proc.cpp
+   src/autogen_airwin/Pop3.cpp
+   src/autogen_airwin/Pop3Proc.cpp
    src/autogen_airwin/PowerSag.cpp
    src/autogen_airwin/PowerSagProc.cpp
    src/autogen_airwin/PowerSag2.cpp
@@ -639,6 +645,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/StereoEnsembleProc.cpp
    src/autogen_airwin/StereoFX.cpp
    src/autogen_airwin/StereoFXProc.cpp
+   src/autogen_airwin/StoneFireComp.cpp
+   src/autogen_airwin/StoneFireCompProc.cpp
    src/autogen_airwin/Stonefire.cpp
    src/autogen_airwin/StonefireProc.cpp
    src/autogen_airwin/StudioTan.cpp
