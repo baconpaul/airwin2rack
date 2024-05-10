@@ -1445,8 +1445,16 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
         docBodyEd->setVisible(true);
     }
     docString = AirwinRegistry::documentationStringFor(processor.curentProcessorIndex);
-    docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
-    docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
+    if (docString.isEmpty())
+    {
+        docHeader = "# " + AirwinRegistry::registry[processor.curentProcessorIndex].whatText;
+        docString = "No documentation available.";
+    }
+    else
+    {
+        docHeader = docString.upToFirstOccurrenceOf("\n", false, false);
+        docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
+    }
 
     auto r = docAreaRect;
     auto tFont = lnf->lookupFont(documentationLabel);
