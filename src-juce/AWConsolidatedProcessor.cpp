@@ -81,7 +81,9 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
 
     setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
 
+#if USE_JUCE_PROGRAMS
     updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
+#endif
 }
 
 AWConsolidatedAudioProcessor::~AWConsolidatedAudioProcessor() {}
@@ -97,10 +99,12 @@ bool AWConsolidatedAudioProcessor::isMidiEffect() const { return false; }
 
 double AWConsolidatedAudioProcessor::getTailLengthSeconds() const { return 2.0; }
 
-int AWConsolidatedAudioProcessor::getNumPrograms() { return AirwinRegistry::registry.size(); }
+int AWConsolidatedAudioProcessor::getNumPrograms() { return 1; } // AirwinRegistry::registry.size(); }
 
 int AWConsolidatedAudioProcessor::getCurrentProgram()
 {
+    return 0;
+#if USE_JUCE_PROGRAMS
     // not super efficient obvs
     int idx{0};
     for (auto &i : AirwinRegistry::fxAlphaOrdering)
@@ -112,19 +116,26 @@ int AWConsolidatedAudioProcessor::getCurrentProgram()
         idx++;
     }
     return 0;
+#endif
 }
 
 void AWConsolidatedAudioProcessor::setCurrentProgram(int index)
 {
+#if USE_JUCE_PROGRAMS
     auto rs = AirwinRegistry::fxAlphaOrdering[index];
     pushResetTypeFromUI(rs);
+#endif
 }
 
 const juce::String AWConsolidatedAudioProcessor::getProgramName(int index)
 {
+    return "Airwindows Consolidated";
+#if USE_JUCE_PROGRAMS
     auto rs = AirwinRegistry::fxAlphaOrdering[index];
     auto &rg = AirwinRegistry::registry[rs];
     return rg.category + "/" + rg.name;
+#endif
+
 }
 
 void AWConsolidatedAudioProcessor::changeProgramName(int index, const juce::String &newName) {}
@@ -356,7 +367,10 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
             }
         }
 
+#if USE_JUCE_PROGRAMS
         updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
+#endif
+        refreshUI = true;
     }
 }
 
