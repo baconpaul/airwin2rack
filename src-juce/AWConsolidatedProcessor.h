@@ -150,6 +150,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
         {
             setAWProcessorTo(index, false);
         }
+
+        updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
     }
     void setupParamDisplaysFromDisplayProcessor(int index);
 
