@@ -80,6 +80,8 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
         defaultName = "Galactic";
 
     setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
+
+    updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
 }
 
 AWConsolidatedAudioProcessor::~AWConsolidatedAudioProcessor() {}
@@ -104,7 +106,9 @@ int AWConsolidatedAudioProcessor::getCurrentProgram()
     for (auto &i : AirwinRegistry::fxAlphaOrdering)
     {
         if (i == curentProcessorIndex)
+        {
             return idx;
+        }
         idx++;
     }
     return 0;
@@ -351,6 +355,8 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
                 fxParams[i]->setValueNotifyingHost(f);
             }
         }
+
+        updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
     }
 }
 
