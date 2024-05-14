@@ -59,7 +59,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
         addParameter(fxParams[i]);
     }
 
-    bypassParam = new juce::AudioParameterBool({"bypass", 0}, "Bypass", 0);
+    bypassParam = new juce::AudioParameterBool({"bypass", 1}, "Bypass", 0);
     bypassParam->addListener(this);
     addParameter(bypassParam);
 
