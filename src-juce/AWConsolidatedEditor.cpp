@@ -363,7 +363,8 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
     void parentHierarchyChanged() override
     {
         // We will ahve our LnF changed
-        resetColors();
+        if (getParentComponent())
+            resetColors();
     }
     void resetColors()
     {
@@ -832,8 +833,9 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
     void parentHierarchyChanged() override
     {
         // We will ahve our LnF changed
-        resetColors();
-    }
+        if (getParentComponent())
+            resetColors();
+    };
 
     void resetColors()
     {
@@ -1394,7 +1396,13 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
 {
+    // release any references to the look and feel
+    setLookAndFeel(&juce::LookAndFeel::getDefaultLookAndFeel());
+
+    // detatch from processor prop file
     lnf->propFileWeak = nullptr;
+
+    // stop lsitenres and timers
     juce::Desktop::getInstance().removeDarkModeSettingListener(this);
     idleTimer->stopTimer();
 }
