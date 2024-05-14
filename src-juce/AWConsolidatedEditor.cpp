@@ -349,14 +349,6 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         addAndMakeVisible(*hamburger);
 
         typeinEd = std::make_unique<juce::TextEditor>("Typeahead");
-        typeinEd->setFont(editor->lnf->lookupFont(pluginName));
-        typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
-                            findColour(ColourIds::pickerTypeinForeground));
-        typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
-                            findColour(ColourIds::pickerTypeinBackground));
-        typeinEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
-                            findColour(ColourIds::pickerListBoxStroke));
-
         typeinEd->addListener(this);
         addChildComponent(*typeinEd);
     }
@@ -366,6 +358,23 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             listBox->setModel(nullptr);
     }
     juce::Rectangle<float> titleBox;
+
+
+    void parentHierarchyChanged() override
+    {
+        // We will ahve our LnF changed
+        resetColors();
+    }
+    void resetColors()
+    {
+        typeinEd->setFont(editor->lnf->lookupFont(pluginName));
+        typeinEd->setColour(juce::TextEditor::ColourIds::textColourId,
+                            findColour(ColourIds::pickerTypeinForeground));
+        typeinEd->setColour(juce::TextEditor::ColourIds::backgroundColourId,
+                            findColour(ColourIds::pickerTypeinBackground));
+        typeinEd->setColour(juce::TextEditor::ColourIds::outlineColourId,
+                            findColour(ColourIds::pickerListBoxStroke));
+    }
 
     void paint(juce::Graphics &g) override
     {
@@ -817,9 +826,13 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
     {
         typeinEd = std::make_unique<juce::TextEditor>("Editor");
 
-        resetColors();
-
         addChildComponent(*typeinEd);
+    }
+
+    void parentHierarchyChanged() override
+    {
+        // We will ahve our LnF changed
+        resetColors();
     }
 
     void resetColors()
@@ -1264,6 +1277,7 @@ void ParamDisp::mouseWheelMove(const juce::MouseEvent &event, const juce::MouseW
     if (editor->knobs[index])
         editor->knobs[index]->mouseWheelMove(event, wheel);
 }
+
 //==============================================================================
 AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     AWConsolidatedAudioProcessor &p)
@@ -1271,7 +1285,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 {
     juce::Desktop::getInstance().addDarkModeSettingListener(this);
     lnf = std::make_unique<AWLookAndFeel>();
-    juce::LookAndFeel::setDefaultLookAndFeel(lnf.get());
+    // juce::LookAndFeel::setDefaultLookAndFeel(lnf.get());
+    setLookAndFeel(lnf.get());
     setAccessible(true);
     setFocusContainerType(juce::Component::FocusContainerType::keyboardFocusContainer);
     setWantsKeyboardFocus(true);

@@ -56,7 +56,7 @@ struct AirwinRegistry
             }
             else
             {
-                std::cout << "PROBLEM : " << r.name << " " << r.nParams << std::endl;
+                // std::cout << "PROBLEM : " << r.name << " " << r.nParams << std::endl;
             }
         }
         else if (r.whatText.empty())
