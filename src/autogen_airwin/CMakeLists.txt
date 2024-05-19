@@ -633,6 +633,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SrslyProc.cpp
    src/autogen_airwin/Srsly2.cpp
    src/autogen_airwin/Srsly2Proc.cpp
+   src/autogen_airwin/Srsly3.cpp
+   src/autogen_airwin/Srsly3Proc.cpp
    src/autogen_airwin/StarChild.cpp
    src/autogen_airwin/StarChildProc.cpp
    src/autogen_airwin/StarChild2.cpp
