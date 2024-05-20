@@ -371,6 +371,35 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
         updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
 #endif
         refreshUI = true;
+
+        /*
+         * What the heck is this? We called updateHostDisplay above already so we shouldn't
+         * need this. But LIVE11 has some internal cache which it seems sticks the values
+         * and ignores a call to update in setState. But if you just asunc re-call updateHostDisplay
+         * then its internal cache says "all ok" but the display doesn't update.
+         *
+         * So the trick is, just in live, set the last param name to a random then back a
+         * millisecond later, and things seem to work. For more information, see
+         * https://github.com/baconpaul/airwin2rack/issues/112
+         */
+        if (juce::PluginHostType().isAbletonLive())
+        {
+            juce::Timer::callAfterDelay(1, [this]() {
+                // grab the name
+                auto mnCopy = fxParams[nAWParams - 1]->mutableName;
+                // randomize and update
+                fxParams[nAWParams - 1]->mutableName =
+                    std::string("live_fix_") + std::to_string(rand());
+                updateHostDisplay(
+                    juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
+                // and then later set it back
+                juce::Timer::callAfterDelay(1, [this, mnCopy]() {
+                    fxParams[nAWParams - 1]->mutableName = mnCopy;
+                    updateHostDisplay(
+                        juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
+                });
+            });
+        }
     }
 }
 
