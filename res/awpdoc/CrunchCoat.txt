@@ -1,0 +1,11 @@
+# CrunchCoat is a cursed retro digital reverb!
+
+Such was the reaction of my livestream as this one came to life. Cursed retro digital is such an evocative term, isn't it? Gives you an idea of what you're in store for.
+
+This is no simple bitcrusher. What it's doing, is taking the existing ClearCoat reverb, a bright-ambiences reverb, into unknown territory through relentless abuse of undersampling. This is a first for me: rather than use undersampling to cleanly deliver appropriate reverb sounds whether at 2x or 4x sample rates, this time we're just running with that functionality and allowing you to crunch the sample rate down to about 40 hertz, if you like.
+
+What happens to the waveform when you only get a 'sample' every now and then? In this case, the plugin interpolates so it's not all square-wavey. Good news and/or bad news: it's not doing a clever interpolation. It's basically drawing straight lines between the points. So, depending on what the reverb's doing, you can get fairly soft waves… or pointy spikey nastiness. This, combined with the primitive input not-filtering, means you get a LOT of color and texture, but not the texture it was when it started. Instead… well, 'cursed retro digital' sums it up. Also, you can wildly pitch-swoop the entire reverb and crank up the regeneration to infinite sustain (or cut it out completely, even more than ClearCoat), which I'm sure nobody is going to use for evil at all.
+
+This will lead to great new things for all my reverbs going forward. But this specific reverb is for only certain people, and you know who you are. Have fun!
+
+

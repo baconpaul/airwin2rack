@@ -221,6 +221,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/CreatureProc.cpp
    src/autogen_airwin/CrickBass.cpp
    src/autogen_airwin/CrickBassProc.cpp
+   src/autogen_airwin/CrunchCoat.cpp
+   src/autogen_airwin/CrunchCoatProc.cpp
    src/autogen_airwin/CrunchyGrooveWear.cpp
    src/autogen_airwin/CrunchyGrooveWearProc.cpp
    src/autogen_airwin/Crystal.cpp
@@ -739,6 +741,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/WeightProc.cpp
    src/autogen_airwin/Wider.cpp
    src/autogen_airwin/WiderProc.cpp
+   src/autogen_airwin/Wolfbot.cpp
+   src/autogen_airwin/WolfbotProc.cpp
    src/autogen_airwin/XBandpass.cpp
    src/autogen_airwin/XBandpassProc.cpp
    src/autogen_airwin/XHighpass.cpp
