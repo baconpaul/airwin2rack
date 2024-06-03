@@ -1444,6 +1444,29 @@ void AWConsolidatedAudioProcessorEditor::idle()
 
         menuPicker->rebuild();
         repaint();
+
+        if (postRebuildFocus != NOTHING_SPECIAL)
+        {
+            switch(postRebuildFocus)
+            {
+            case JOG_UP:
+                menuPicker->up->grabKeyboardFocus();
+                break;
+
+            case JOG_DOWN:
+                menuPicker->down->grabKeyboardFocus();
+                break;
+
+            case PICKER_MENU:
+                menuPicker->hamburger->grabKeyboardFocus();
+                break;
+
+            case NOTHING_SPECIAL:
+                menuPicker->grabKeyboardFocus();
+                break;
+            }
+        }
+        postRebuildFocus = NOTHING_SPECIAL;
     }
 
     if (processor.refreshUI.exchange(false))
@@ -1575,6 +1598,11 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
 {
     auto coll = getCurrentCollection();
 
+    if (dir == 1)
+        postRebuildFocus = JOG_DOWN;
+    else
+        postRebuildFocus = JOG_UP;
+
     if (coll == allCollection ||
         AirwinRegistry::namesByCollection.find(coll) == AirwinRegistry::namesByCollection.end())
     {
@@ -1661,7 +1689,10 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
                 sub.addItem(
                     nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
                         if (w)
+                        {
+                            w->postRebuildFocus = PICKER_MENU;
                             w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
+                        }
                     });
         }
         if (sub.getNumItems() > 0)

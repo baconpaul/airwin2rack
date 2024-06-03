@@ -184,6 +184,13 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     void darkModeSettingChanged() override;
 
   private:
+    enum PostRebuidFocusTargetIs {
+        NOTHING_SPECIAL,
+        JOG_UP,
+        JOG_DOWN,
+        PICKER_MENU
+    } postRebuildFocus{NOTHING_SPECIAL};
+
     enum ColorStrategy
     {
         FOLLOW_SYSTEM = 1,
