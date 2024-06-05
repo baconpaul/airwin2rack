@@ -127,7 +127,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
 
     virtual void handleAsyncUpdate() override;
 
-    void showMenu();
+    void showEffectsMenu(bool justCurrentCategory = false);
     void jog(int dir);
 
     std::string getCurrentCollection()
@@ -184,7 +184,8 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     void darkModeSettingChanged() override;
 
   private:
-    enum PostRebuidFocusTargetIs {
+    enum PostRebuidFocusTargetIs
+    {
         NOTHING_SPECIAL,
         JOG_UP,
         JOG_DOWN,

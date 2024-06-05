@@ -317,7 +317,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             isHovered = false;
             repaint();
         }
-        void mouseDown(const juce::MouseEvent &) override { picker->editor->showMenu(); }
+        void mouseDown(const juce::MouseEvent &e) override { picker->editor->showEffectsMenu(); }
 
         bool keyPressed(const juce::KeyPress &p) override
         {
@@ -325,7 +325,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
                 (p.getKeyCode() == juce::KeyPress::F10Key && p.getModifiers().isShiftDown()))
             {
                 // dojog does long hold stuff so go direct
-                picker->editor->showMenu();
+                picker->editor->showEffectsMenu();
                 return true;
             }
             return false;
@@ -358,7 +358,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             listBox->setModel(nullptr);
     }
     juce::Rectangle<float> titleBox;
-
+    juce::Rectangle<float> categoryBox;
 
     void parentHierarchyChanged() override
     {
@@ -401,6 +401,12 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         auto catString = rg.category;
         g.setFont(editor->lnf->lookupFont(pluginCategory));
         g.drawText(catString, bounds.reduced(8, 3), juce::Justification::centredTop);
+
+        auto cga = juce::GlyphArrangement();
+        cga.addFittedText(editor->lnf->lookupFont(pluginCategory), rg.category, bounds.getX(),
+                          bounds.getY(), bounds.getWidth(), bounds.getHeight(),
+                          juce::Justification::centredTop, 1);
+        categoryBox = cga.getBoundingBox(0, -1, true).expanded(10, 3);
     }
 
     juce::Rectangle<int> jogUp, jogDown;
@@ -427,7 +433,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         if (p.getKeyCode() == juce::KeyPress::returnKey ||
             (p.getKeyCode() == juce::KeyPress::F10Key && p.getModifiers().isShiftDown()))
         {
-            editor->showMenu();
+            editor->showEffectsMenu();
             return true;
         }
         return false;
@@ -481,7 +487,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         }
         else
         {
-            editor->showMenu();
+            editor->showEffectsMenu(categoryBox.contains(e.position));
         }
     }
 
@@ -1447,7 +1453,7 @@ void AWConsolidatedAudioProcessorEditor::idle()
 
         if (postRebuildFocus != NOTHING_SPECIAL)
         {
-            switch(postRebuildFocus)
+            switch (postRebuildFocus)
             {
             case JOG_UP:
                 menuPicker->up->grabKeyboardFocus();
@@ -1628,12 +1634,15 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     }
 }
 
-void AWConsolidatedAudioProcessorEditor::showMenu()
+void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategory)
 {
     auto p = juce::PopupMenu();
-    auto ent = AirwinRegistry::registry[processor.curentProcessorIndex];
+    const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
 
-    p.addSectionHeader("Airwindows Consolidated");
+    if (justCurrentCategory)
+        p.addSectionHeader("Airwindows - " + ent.category);
+    else
+        p.addSectionHeader("Airwindows Consolidated");
     p.addSeparator();
     auto collMenu = juce::PopupMenu();
     auto ccoll = getCurrentCollection();
@@ -1669,7 +1678,13 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
 
     for (const auto &[cat, set] : *order)
     {
+        if (justCurrentCategory && cat != ent.category)
+            continue;
+
         juce::PopupMenu sub;
+        auto *target = &sub;
+        if (justCurrentCategory)
+            target = &p;
         for (const auto &nm : set)
         {
             bool include{false};
@@ -1686,7 +1701,7 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
                 }
             }
             if (include)
-                sub.addItem(
+                target->addItem(
                     nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
                         if (w)
                         {
@@ -1695,7 +1710,7 @@ void AWConsolidatedAudioProcessorEditor::showMenu()
                         }
                     });
         }
-        if (sub.getNumItems() > 0)
+        if (!justCurrentCategory && sub.getNumItems() > 0)
             p.addSubMenu(cat, sub, true, nullptr, cat == ent.category);
     }
 
