@@ -12,9 +12,15 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
+      - name: Show Log Loaded
+        run: |
+          pushd libs/airwindows
+          git log plugins/MacVST/Galactic/source/GalacticProc.cpp
+          popd
       - name: Do Update
         run: . ./scripts/updateToLatest.sh
       - name: Commit code 
