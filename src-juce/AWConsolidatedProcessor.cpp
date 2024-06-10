@@ -63,6 +63,13 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
     bypassParam->addListener(this);
     addParameter(bypassParam);
 
+    inLev = new CubicDBParam({"inlev", 2}, "Input Level");
+    inLev->addListener(this);
+    outLev = new CubicDBParam({"outlev", 2}, "Output Level");
+    outLev->addListener(this);
+    addParameter(inLev);
+    addParameter(outLev);
+
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
 #if JUCE_LINUX
@@ -99,7 +106,10 @@ bool AWConsolidatedAudioProcessor::isMidiEffect() const { return false; }
 
 double AWConsolidatedAudioProcessor::getTailLengthSeconds() const { return 2.0; }
 
-int AWConsolidatedAudioProcessor::getNumPrograms() { return 1; } // AirwinRegistry::registry.size(); }
+int AWConsolidatedAudioProcessor::getNumPrograms()
+{
+    return 1;
+} // AirwinRegistry::registry.size(); }
 
 int AWConsolidatedAudioProcessor::getCurrentProgram()
 {
@@ -135,7 +145,6 @@ const juce::String AWConsolidatedAudioProcessor::getProgramName(int index)
     auto &rg = AirwinRegistry::registry[rs];
     return rg.category + "/" + rg.name;
 #endif
-
 }
 
 void AWConsolidatedAudioProcessor::changeProgramName(int index, const juce::String &newName) {}
@@ -218,14 +227,48 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         awProcessor->setParameter(i, fxParams[i]->get());
     }
 
+    T inScale = inLev->get();
+    inScale = inScale * inScale * inScale * CubicDBParam::maxLev;
+
+    T outScale = outLev->get();
+    outScale = outScale * outScale * outScale * CubicDBParam::maxLev;
+
     if constexpr (std::is_same_v<T, float>)
     {
+        // FIXME - deal with very large block case by not skipping level
+        if (buffer.getNumSamples() < maxInBlock)
+        {
+            for (int i = 0; i < buffer.getNumSamples(); ++i)
+            {
+                inputTempBufferF[0][i] = inputs[0][i] * inScale;
+                inputTempBufferF[1][i] = inputs[1][i] * inScale;
+            }
+            inputs[0] = (const float *)&(inputTempBufferF[0][0]);
+            inputs[1] = (const float *)&(inputTempBufferF[1][0]);
+        }
         awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
     }
     else
     {
+        if (buffer.getNumSamples() < maxInBlock)
+        {
+            for (int i = 0; i < buffer.getNumSamples(); ++i)
+            {
+                inputTempBufferD[0][i] = inputs[0][i] * inScale;
+                inputTempBufferD[1][i] = inputs[1][i] * inScale;
+            }
+            inputs[0] = (const double *)&(inputTempBufferD[0][0]);
+            inputs[1] = (const double *)&(inputTempBufferD[1][0]);
+        }
+
         awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs,
                                             buffer.getNumSamples());
+    }
+
+    for (int i = 0; i < buffer.getNumSamples(); ++i)
+    {
+        outputs[0][i] *= outScale;
+        outputs[1][i] *= outScale;
     }
 }
 
@@ -338,6 +381,8 @@ void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destDa
 
         xml->setAttribute(nm, val);
     }
+    xml->setAttribute("inlev", inLev->get());
+    xml->setAttribute("outlev", outLev->get());
 
     copyXmlToBinary(*xml, destData);
 }
@@ -350,7 +395,6 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
     {
         if (xmlState->hasTagName("awconsolidated"))
         {
-            auto streamingVersion = xmlState->getIntAttribute("streamingVersion", (int)2);
             auto effectName = xmlState->getStringAttribute("currentProcessorName");
 
             if (AirwinRegistry::nameToIndex.find(effectName.toStdString()) !=
@@ -365,6 +409,11 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
                 auto f = xmlState->getDoubleAttribute(nm);
                 fxParams[i]->setValueNotifyingHost(f);
             }
+
+            auto il = xmlState->getDoubleAttribute("inlev", std::cbrt(1.f/CubicDBParam::maxLev));
+            inLev->setValueNotifyingHost(il);
+            auto ol = xmlState->getDoubleAttribute("outlev", std::cbrt(1.f/CubicDBParam::maxLev));
+            outLev->setValueNotifyingHost(ol);
         }
 
 #if USE_JUCE_PROGRAMS

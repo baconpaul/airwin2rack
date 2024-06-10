@@ -161,11 +161,20 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     std::atomic<bool> refreshUI{false},
         rebuildUI{false}; // repaint vs re-setup everything. Value vs type
 
-    struct AWParam : public juce::AudioParameterFloat
+    struct APFPublicDefault : public juce::AudioParameterFloat
+    {
+        template <typename... Args>
+        APFPublicDefault(Args &&...args) : juce::AudioParameterFloat(std::forward<Args>(args)...)
+        {
+        }
+        float getDefaultValue() const override { return 0; }
+    };
+
+    struct AWParam : public APFPublicDefault
     {
         juce::String mutableName;
         template <typename... Args>
-        AWParam(Args &&...args) : juce::AudioParameterFloat(std::forward<Args>(args)...)
+        AWParam(Args &&...args) : APFPublicDefault(std::forward<Args>(args)...)
         {
         }
 
@@ -194,11 +203,59 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
         }
     };
 
+    struct CubicDBParam : public APFPublicDefault
+    {
+        static constexpr float maxDb{18.0};
+        static constexpr float maxLev{7.943282347242815}; // pow(10, maxDb/20)
+        CubicDBParam(const juce::ParameterID &id, const juce::String &parameterName)
+            : APFPublicDefault(id, parameterName, juce::NormalisableRange<float>(0.0, 1.0),
+                               std::cbrt(1.f / maxLev))
+        {
+        }
+
+        juce::String getText(float f, int i) const override
+        {
+            auto val = f;
+            if (val <= 0)
+            {
+                return "-inf";
+            }
+
+            auto v3 = val * val * val * maxLev;
+            auto db = 20 * std::log10(v3);
+            char res[64];
+            snprintf(res, 63, "%.2f dB", db);
+            return res;
+        }
+
+        float getValueForText(const juce::String &vj) const override
+        {
+            auto v = vj.toStdString();
+            if (v == "-inf")
+                return 0.f;
+
+            auto r = std::stof(std::string(v));
+            auto db = pow(10.f, r / 20);
+            auto lv = std::cbrt(db / maxLev);
+            if (lv < 0 || lv > 1)
+            {
+                return std::cbrt(1.f / maxLev);
+            }
+
+            return (float)lv;
+        }
+
+        float getDefaultValue() const override { return std::cbrt(1.0 / maxLev); }
+    };
+
     //==============================================================================
     typedef AWParam float_param_t;
     float_param_t *fxParams[nAWParams];
     float defaultValues[nAWParams];
     std::array<std::atomic<bool>, nAWParams> active;
+
+    CubicDBParam *inLev, *outLev;
+
     juce::AudioParameterBool *bypassParam{nullptr};
     juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
 
@@ -208,6 +265,11 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     std::mutex displayProcessorMutex;
     int nProcessorParams{0};
     std::atomic<int> curentProcessorIndex{0};
+
+    // We need a place to write the scaled input
+    static constexpr int maxInBlock{1024 * 128}; // that's about 2 seconds at 48k
+    float inputTempBufferF[2][maxInBlock];
+    double inputTempBufferD[2][maxInBlock];
 
     std::unique_ptr<juce::PropertiesFile> properties;
 

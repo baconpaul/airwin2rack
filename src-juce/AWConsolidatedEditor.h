@@ -36,7 +36,7 @@ enum ColourIds
     typeaheadCategory,
     typeaheadName,
     typeaheadStroke,
-    awLink,
+    footerBrightLabel,
     paramDispEditorBackground,
     paramDispEditorForeground,
     paramDispEditorStroke,
@@ -49,6 +49,9 @@ enum ColourIds
     paramKnobValueStroke,
     paramKnobGutter,
     paramKnobStroke,
+    paramKnobLabelBelow,
+    paramKnobLabelWithin,
+
     documentationBackground,
     documentationForeground,
     documentationStroke,
@@ -159,6 +162,8 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     std::array<std::unique_ptr<ParamKnob>, AWConsolidatedAudioProcessor::nAWParams> knobs;
     std::array<std::unique_ptr<ParamDisp>, AWConsolidatedAudioProcessor::nAWParams> labels;
 
+    std::atomic<bool> inActive{true}, outActive{true};
+    std::unique_ptr<ParamKnob> inLevel, outLevel;
     std::unique_ptr<juce::Drawable> clipperIcon;
 
     juce::Rectangle<int> docAreaRect;

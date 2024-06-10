@@ -89,7 +89,7 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::typeaheadName, juce::Colours::white);
     setColour(ColourIds::typeaheadStroke, juce::Colours::lightgrey);
 
-    setColour(ColourIds::awLink, juce::Colours::black);
+    setColour(ColourIds::footerBrightLabel, juce::Colours::black);
 
     setColour(ColourIds::paramDispEditorBackground, juce::Colour(10, 10, 15));
     setColour(ColourIds::paramDispEditorForeground, juce::Colours::white);
@@ -105,6 +105,8 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::paramKnobValueStroke, juce::Colour(220, 220, 230));
     setColour(ColourIds::paramKnobGutter, juce::Colour(0, 0, 0));
     setColour(ColourIds::paramKnobStroke, juce::Colour(140, 140, 150));
+    setColour(ColourIds::paramKnobLabelBelow, juce::Colours::black);
+    setColour(ColourIds::paramKnobLabelWithin, juce::Colour(160, 160, 180));
 
     setColour(ColourIds::documentationHeader, juce::Colours::white);
     setColour(ColourIds::documentationBackground, juce::Colours::black.withAlpha(0.f));
@@ -165,7 +167,7 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::typeaheadName, juce::Colours::black);
     setColour(ColourIds::typeaheadStroke, juce::Colours::darkgrey);
 
-    setColour(ColourIds::awLink, juce::Colours::white);
+    setColour(ColourIds::footerBrightLabel, juce::Colours::white);
 
     setColour(ColourIds::paramDispEditorBackground, juce::Colour(245, 245, 240));
     setColour(ColourIds::paramDispEditorForeground, juce::Colours::black);
@@ -181,6 +183,8 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::paramKnobValueStroke, juce::Colour(245, 245, 255));
     setColour(ColourIds::paramKnobGutter, juce::Colour(65, 65, 75));
     setColour(ColourIds::paramKnobStroke, juce::Colour(115, 115, 105));
+    setColour(ColourIds::paramKnobLabelBelow, juce::Colours::white);
+    setColour(ColourIds::paramKnobLabelWithin, juce::Colour(65, 65, 75));
 
     setColour(ColourIds::documentationHeader, juce::Colours::black);
     setColour(ColourIds::documentationBackground, juce::Colours::white.withAlpha(0.f));
@@ -968,11 +972,13 @@ struct ParamDisp : juce::Component, juce::TextEditor::Listener
 
 struct ParamKnob : juce::Component
 {
-    AWConsolidatedAudioProcessor::AWParam *weakParam{nullptr};
+    AWConsolidatedAudioProcessor::APFPublicDefault *weakParam{nullptr};
     const std::atomic<bool> &active;
     AWConsolidatedAudioProcessorEditor *editor{nullptr};
     int index{0};
-    ParamKnob(const juce::String &cn, AWConsolidatedAudioProcessor::AWParam *param,
+    bool showValueBelow{false};
+    std::string showValuePrefix{};
+    ParamKnob(const juce::String &cn, AWConsolidatedAudioProcessor::APFPublicDefault *param,
               const std::atomic<bool> &a, AWConsolidatedAudioProcessorEditor *ed, int idx)
         : juce::Component(cn), weakParam{param}, active{a}, editor{ed}, index{idx}
     {
@@ -1014,6 +1020,9 @@ struct ParamKnob : juce::Component
             return;
         }
 
+        if (showValueBelow)
+            knobHandle = knobHandle.expanded(2).reduced(3, 0).withTrimmedBottom(8);
+
         auto arc = [&](auto startV, auto endV) {
             float dPath = 0.2;
             float dAng = juce::MathConstants<float>::pi * (1 - dPath);
@@ -1035,14 +1044,27 @@ struct ParamKnob : juce::Component
 
         g.fillEllipse(knobHandle.reduced(2));
 
+        int wo = showValueBelow ? 3 : 4;
+
         g.setColour(findColour(ColourIds::paramKnobStroke));
-        g.strokePath(arc(-0.01f, 1.01f), juce::PathStrokeType(6));
+        g.strokePath(arc(-0.01f, 1.01f), juce::PathStrokeType(wo + 2));
 
         g.setColour(findColour(ColourIds::paramKnobGutter));
-        g.strokePath(arc(0.f, 1.f), juce::PathStrokeType(4));
+        g.strokePath(arc(0.f, 1.f), juce::PathStrokeType(wo));
 
         g.setColour(findColour(ColourIds::paramKnobValueStroke));
-        g.strokePath(arc(0.f, getValue()), juce::PathStrokeType(4));
+        g.strokePath(arc(0.f, getValue()), juce::PathStrokeType(wo));
+
+        if (showValueBelow)
+        {
+            g.setFont(editor->lnf->lookupFont(documentationLabel).withHeight(8.5));
+            g.setColour(findColour(ColourIds::paramKnobLabelBelow));
+            std::string txt = weakParam->getCurrentValueAsText().toStdString();
+            g.drawText(txt, getLocalBounds(), juce::Justification::centredBottom);
+
+            g.setColour(findColour(ColourIds::paramKnobLabelWithin));
+            g.drawText(showValuePrefix, knobHandle, juce::Justification::centred);
+        }
     }
 
     juce::Point<float> mousePos;
@@ -1066,6 +1088,7 @@ struct ParamKnob : juce::Component
         auto nv = std::clamp(weakParam->get() + dy * mul, 0.f, 1.f);
 
         weakParam->setValueNotifyingHost(nv);
+        repaint();
     }
 
     void mouseWheelMove(const juce::MouseEvent &event,
@@ -1087,6 +1110,7 @@ struct ParamKnob : juce::Component
         weakParam->beginChangeGesture();
         weakParam->setValueNotifyingHost(nv);
         weakParam->endChangeGesture();
+        repaint();
     }
 
     bool isHovered{false};
@@ -1152,36 +1176,44 @@ struct ParamKnob : juce::Component
         if (key.getKeyCode() == juce::KeyPress::upKey)
         {
             setValue(std::clamp((double)getValue() + amt, 0., 1.));
+            repaint();
             return true;
         }
 
         if (key.getKeyCode() == juce::KeyPress::downKey)
         {
             setValue(std::clamp((double)getValue() - amt, 0., 1.));
+            repaint();
             return true;
         }
 
         if (key.getKeyCode() == juce::KeyPress::homeKey)
         {
             setValue(1.);
+            repaint();
             return true;
         }
 
         if (key.getKeyCode() == juce::KeyPress::endKey)
         {
             setValue(0.);
+            repaint();
             return true;
         }
 
         if (key.getKeyCode() == juce::KeyPress::deleteKey && weakParam)
         {
             setValue(weakParam->getDefaultValue());
+            repaint();
             return true;
         }
 
         if (key.getKeyCode() == juce::KeyPress::F10Key && key.getModifiers().isShiftDown())
         {
-            editor->labels[index]->showEd();
+            if (index > 0)
+            {
+                editor->labels[index]->showEd();
+            }
             return true;
         }
         return false;
@@ -1192,6 +1224,7 @@ struct ParamKnob : juce::Component
         if (weakParam)
         {
             setValue(weakParam->getDefaultValue());
+            repaint();
         }
     }
 
@@ -1343,6 +1376,19 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
         kb = kb.translated(0, sz + margin);
     }
 
+    inLevel = std::make_unique<ParamKnob>("inLevel", processor.inLev, inActive, this, -1);
+    inLevel->setAccessible(true);
+    inLevel->showValueBelow = true;
+    inLevel->showValuePrefix = "in";
+    addAndMakeVisible(*inLevel);
+
+    outLevel = std::make_unique<ParamKnob>("outLevel", processor.outLev, outActive, this, -1);
+    outLevel->setAccessible(true);
+
+    outLevel->showValueBelow = true;
+    outLevel->showValuePrefix = "out";
+    addAndMakeVisible(*outLevel);
+
     docAreaRect = getLocalBounds()
                       .withTrimmedLeft(margin * 3 + sz + 180)
                       .withTrimmedRight(margin * 2)
@@ -1386,6 +1432,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     accessibleOrderWeakRefs.push_back(docBodyLabel.get());
     accessibleOrderWeakRefs.push_back(docBodyEd.get());
     accessibleOrderWeakRefs.push_back(settingsCog.get());
+    accessibleOrderWeakRefs.push_back(inLevel.get());
+    accessibleOrderWeakRefs.push_back(outLevel.get());
     accessibleOrderWeakRefs.push_back(bypassButton.get());
 
     lnf->propFileWeak = processor.properties.get();
@@ -1562,7 +1610,9 @@ void AWConsolidatedAudioProcessorEditor::resized()
                   .withWidth(40)
                   .reduced(4);
     settingsCog->setBounds(ta);
+    inLevel->setBounds(ta.translated(ta.getWidth() + 4, 1));
     ta = ta.translated(getWidth() - 40 - 4 - 2 - 2, 0);
+    outLevel->setBounds(ta.translated(-ta.getWidth() - 4, 1));
     bypassButton->setBounds(ta);
 }
 
@@ -1583,7 +1633,7 @@ void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
     g.drawLine(fa.getX(), fa.getY(), fa.getX() + fa.getWidth(), fa.getY(), 1);
 
     g.setFont(lnf->lookupFont(airwindowsFooter));
-    g.setColour(findColour(ColourIds::awLink));
+    g.setColour(findColour(ColourIds::footerBrightLabel));
     g.drawText("Airwindows", fa.withTrimmedTop(0), juce::Justification::centredTop);
 
     g.setFont(lnf->lookupFont(dateFooter));
