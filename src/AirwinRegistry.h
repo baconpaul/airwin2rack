@@ -33,6 +33,7 @@ struct AirwinRegistry
         int catChrisOrdering;
         std::string whatText;
         int nParams{0};
+        std::string firstCommitDate;
         std::function<std::unique_ptr<AirwinConsolidatedBase>()> generator{[]() { return nullptr; }};
         int ordering{-1};
         std::vector<std::string> collections{};
