@@ -1922,13 +1922,18 @@ struct FxFocusTrav : public juce::ComponentTraverser
             return nullptr;
         }
 
+        auto isAccessibleAndVisible = [](auto *r)
+        {
+            return r->isAccessible() && r->isVisible();
+        };
+
         switch (dir)
         {
         case 1:
         {
             auto res = std::next(iter);
 
-            while (res != editor->accessibleOrderWeakRefs.cend() && !(*res)->isAccessible())
+            while (res != editor->accessibleOrderWeakRefs.cend() && !isAccessibleAndVisible(*res))
             {
                 res = std::next(res);
             }
@@ -1943,7 +1948,7 @@ struct FxFocusTrav : public juce::ComponentTraverser
             auto res = iter;
 
             while (res != editor->accessibleOrderWeakRefs.cbegin() &&
-                   !(*std::prev(res))->isAccessible())
+                   !isAccessibleAndVisible(*std::prev(res)))
             {
                 res = std::prev(res);
             }
