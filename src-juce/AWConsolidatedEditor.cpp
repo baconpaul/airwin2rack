@@ -1057,7 +1057,7 @@ struct ParamKnob : juce::Component
 
         if (showValueBelow)
         {
-            g.setFont(editor->lnf->lookupFont(documentationLabel).withHeight(9));
+            g.setFont(editor->lnf->lookupFont(documentationLabel).withHeight(8.5));
             g.setColour(findColour(ColourIds::paramKnobLabelBelow));
             std::string txt = weakParam->getCurrentValueAsText().toStdString();
             g.drawText(txt, getLocalBounds(), juce::Justification::centredBottom);

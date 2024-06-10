@@ -381,6 +381,8 @@ void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destDa
 
         xml->setAttribute(nm, val);
     }
+    xml->setAttribute("inlev", inLev->get());
+    xml->setAttribute("outlev", outLev->get());
 
     copyXmlToBinary(*xml, destData);
 }
@@ -407,6 +409,11 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
                 auto f = xmlState->getDoubleAttribute(nm);
                 fxParams[i]->setValueNotifyingHost(f);
             }
+
+            auto il = xmlState->getDoubleAttribute("inlev", std::cbrt(1.f/CubicDBParam::maxLev));
+            inLev->setValueNotifyingHost(il);
+            auto ol = xmlState->getDoubleAttribute("outlev", std::cbrt(1.f/CubicDBParam::maxLev));
+            outLev->setValueNotifyingHost(ol);
         }
 
 #if USE_JUCE_PROGRAMS
