@@ -227,16 +227,15 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         awProcessor->setParameter(i, fxParams[i]->get());
     }
 
-    T inScale = inLev->get();
-    inScale = inScale * inScale * inScale * CubicDBParam::maxLev;
-
-    T outScale = outLev->get();
-    outScale = outScale * outScale * outScale * CubicDBParam::maxLev;
+    auto inScale = inLev->getAmplitude<T>();
+    auto inScaleActive = inLev->isAmplifiyingOrAttenuating();
+    auto outScale = outLev->getAmplitude<T>();
+    auto outScaleActrive = outLev->isAmplifiyingOrAttenuating();
 
     if constexpr (std::is_same_v<T, float>)
     {
         // FIXME - deal with very large block case by not skipping level
-        if (buffer.getNumSamples() < maxInBlock)
+        if (inScaleActive && buffer.getNumSamples() < maxInBlock)
         {
             for (int i = 0; i < buffer.getNumSamples(); ++i)
             {
@@ -250,7 +249,7 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     }
     else
     {
-        if (buffer.getNumSamples() < maxInBlock)
+        if (inScaleActive && buffer.getNumSamples() < maxInBlock)
         {
             for (int i = 0; i < buffer.getNumSamples(); ++i)
             {
@@ -265,10 +264,13 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
                                             buffer.getNumSamples());
     }
 
-    for (int i = 0; i < buffer.getNumSamples(); ++i)
+    if (outScaleActrive)
     {
-        outputs[0][i] *= outScale;
-        outputs[1][i] *= outScale;
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            outputs[0][i] *= outScale;
+            outputs[1][i] *= outScale;
+        }
     }
 }
 
@@ -410,9 +412,9 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
                 fxParams[i]->setValueNotifyingHost(f);
             }
 
-            auto il = xmlState->getDoubleAttribute("inlev", std::cbrt(1.f/CubicDBParam::maxLev));
+            auto il = xmlState->getDoubleAttribute("inlev", CubicDBParam::defaultVal);
             inLev->setValueNotifyingHost(il);
-            auto ol = xmlState->getDoubleAttribute("outlev", std::cbrt(1.f/CubicDBParam::maxLev));
+            auto ol = xmlState->getDoubleAttribute("outlev", CubicDBParam::defaultVal);
             outLev->setValueNotifyingHost(ol);
         }
 
