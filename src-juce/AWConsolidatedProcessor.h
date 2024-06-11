@@ -206,23 +206,28 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     struct CubicDBParam : public APFPublicDefault
     {
         static constexpr float maxDb{18.0};
-        static constexpr float maxLev{7.943282347242815}; // pow(10, maxDb/20)
+        static constexpr double maxLev{7.943282347242815}; // pow(10, maxDb/20)
+        static constexpr double defaultVal{0.5011872336272724}; // 1.0 / cbrt(maxLeb)
         CubicDBParam(const juce::ParameterID &id, const juce::String &parameterName)
             : APFPublicDefault(id, parameterName, juce::NormalisableRange<float>(0.0, 1.0),
-                               std::cbrt(1.f / maxLev))
+                               defaultVal)
         {
         }
 
         juce::String getText(float f, int i) const override
         {
-            auto val = f;
+            auto val = (double)f;
             if (val <= 0)
             {
                 return "-inf";
             }
 
             auto v3 = val * val * val * maxLev;
-            auto db = 20 * std::log10(v3);
+
+            // This 1e-6 pushes the display off -0.00db to 0.00db
+            // which happens due to float truncation since the
+            // param is float valued
+            auto db = 20 * std::log10(v3 + 1e-6);
             char res[64];
             snprintf(res, 63, "%.2f dB", db);
             return res;
@@ -239,13 +244,27 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
             auto lv = std::cbrt(db / maxLev);
             if (lv < 0 || lv > 1)
             {
-                return std::cbrt(1.f / maxLev);
+                return defaultVal;
             }
 
             return (float)lv;
         }
 
-        float getDefaultValue() const override { return std::cbrt(1.0 / maxLev); }
+        float getDefaultValue() const override { return defaultVal; }
+
+        template<typename T>
+        T getAmplitude() const {
+            T lev = (T)get();
+            lev = lev * lev * lev * maxLev;
+            return lev;
+        }
+
+        bool isAmplifiyingOrAttenuating() const
+        {
+            return std::fabs(get() - defaultVal) > 5e-6;
+        }
+
+
     };
 
     //==============================================================================
