@@ -21,6 +21,7 @@ enum ColourIds
     jog,
     jogHovered,
     jogStroke,
+    favoriteActive,
     help,
     helpHovered,
     hamburger,
@@ -137,11 +138,9 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     {
         return processor.properties->getValue("collection", "Recommended").toStdString();
     }
-    void setCurrentCollection(const std::string &s)
-    {
-        processor.properties->setValue("collection", juce::String(s));
-    }
+    void setCurrentCollection(const std::string &s);
     std::string allCollection{"All"};
+    std::string favoritesCollection{"Favorites"};
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -187,6 +186,13 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     std::unique_ptr<juce::ComponentTraverser> createKeyboardFocusTraverser() override;
 
     void darkModeSettingChanged() override;
+
+    void addCurrentAsFavorite();
+    void removeCurrentAsFavorite();
+    void streamFavorites();
+    void unstreamFavorites();
+    juce::File getFavoritesFile(bool makeDir) const;
+    std::set<std::string> favoritesList{};
 
   private:
     enum PostRebuidFocusTargetIs

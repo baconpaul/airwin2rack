@@ -69,6 +69,8 @@ void AWLookAndFeel::setDarkTheme()
     setColour(ColourIds::jogHovered, juce::Colour(160, 160, 165));
     setColour(ColourIds::jogStroke, juce::Colours::white);
 
+    setColour(ColourIds::favoriteActive, juce::Colour(240, 100, 100));
+
     setColour(ColourIds::help, juce::Colour(20, 20, 25));
     setColour(ColourIds::helpHovered, juce::Colour(40, 40, 75));
 
@@ -146,6 +148,8 @@ void AWLookAndFeel::setLightTheme()
     setColour(ColourIds::jog, juce::Colour(165, 165, 160));
     setColour(ColourIds::jogHovered, juce::Colour(95, 95, 90));
     setColour(ColourIds::jogStroke, juce::Colours::black);
+
+    setColour(ColourIds::favoriteActive, juce::Colour(240, 100, 100));
 
     setColour(ColourIds::help, juce::Colour(220, 220, 245));
     setColour(ColourIds::helpHovered, juce::Colours::white);
@@ -286,6 +290,67 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
     };
     std::unique_ptr<Jog> up, down;
 
+
+    struct Heart : juce::ToggleButton, juce::ToggleButton::Listener
+    {
+        Picker *picker;
+        Heart(Picker *p) : juce::ToggleButton("Favorite"), picker(p) {
+            setAccessible(true);
+            addListener(this); // i know its a bit sloppy to self listen
+        }
+
+        void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
+                         bool shouldDrawButtonAsDown) override
+        {
+            auto gs = juce::Graphics::ScopedSaveState(g);
+            float w = getWidth();
+            float h = getHeight();
+            g.addTransform(juce::AffineTransform().scaled(0.8).translated(w * 0.1, h * 0.1));
+            auto p = juce::Path();
+
+            auto afac{1.25};
+            p.addCentredArc(w/4, h/3, w/4, h/4, 0, -afac * M_PI / 2, -M_PI/2, true);
+            p.addCentredArc(w/4, h/3, w/4, h/3, 0, -M_PI / 2, M_PI/2, false);
+            p.addCentredArc(3*w/4, h/3, w/4, h/3, 0, -M_PI / 2,M_PI/2, false);
+            p.addCentredArc(3*w/4, h/3, w/4, h/4, 0, M_PI / 2, afac * M_PI/2, false);
+            p.lineTo(w/2, h);
+            p.closeSubPath();
+
+            if (getToggleState())
+            {
+                g.setColour(findColour(favoriteActive));
+                g.fillPath(p);
+            }
+            g.setColour(findColour(jogStroke));
+            g.strokePath(p, juce::PathStrokeType(1));
+        }
+
+        bool isHovered{false};
+        void mouseEnter(const juce::MouseEvent &) override
+        {
+            isHovered = true;
+            repaint();
+        }
+        void mouseExit(const juce::MouseEvent &) override
+        {
+            isHovered = false;
+            repaint();
+        }
+
+        void buttonClicked(juce::Button *) override
+        {
+            if (getToggleState())
+            {
+                picker->editor->addCurrentAsFavorite();
+            }
+            else
+            {
+                picker->editor->removeCurrentAsFavorite();
+            }
+        }
+    };
+    std::unique_ptr<Heart> heartButton;
+
     struct Hamburger : juce::Button
     {
         Picker *picker;
@@ -337,6 +402,15 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
     };
     std::unique_ptr<Hamburger> hamburger;
 
+    bool isCurrentEffectFavorite()
+    {
+        int idx = editor->processor.curentProcessorIndex;
+        auto &rg = AirwinRegistry::registry[idx];
+        auto nm = rg.name;
+
+        return editor->favoritesList.find(nm) != editor->favoritesList.end();
+    }
+
     Picker(AWConsolidatedAudioProcessorEditor *ed) : editor(ed)
     {
         setAccessible(true);
@@ -347,10 +421,12 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         up = std::make_unique<Jog>(this, -1);
         down = std::make_unique<Jog>(this, 1);
         hamburger = std::make_unique<Hamburger>(this);
+        heartButton = std::make_unique<Heart>(this);
 
         addAndMakeVisible(*up);
         addAndMakeVisible(*down);
         addAndMakeVisible(*hamburger);
+        addAndMakeVisible(*heartButton);
 
         typeinEd = std::make_unique<juce::TextEditor>("Typeahead");
         typeinEd->addListener(this);
@@ -421,8 +497,12 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         jogUp = b.withHeight(hh).withTrimmedLeft(b.getWidth() - hh);
         jogDown = jogUp.translated(0, hh);
 
+        auto hbSize{22};
+        auto heartPos = jogUp.translated(-hbSize - 1, hh/2).withWidth(hh).withHeight(hh).expanded((hbSize-hh)/2);
+
         up->setBounds(jogUp);
         down->setBounds(jogDown);
+        heartButton->setBounds(heartPos);
 
         auto bx = getLocalBounds().reduced(8, 16);
         bx = bx.withWidth(bx.getHeight());
@@ -541,6 +621,17 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         if (down->getAccessibilityHandler())
             down->getAccessibilityHandler()->notifyAccessibilityEvent(
                 juce::AccessibilityEvent::titleChanged);
+
+        heartButton->setToggleState(isCurrentEffectFavorite(), juce::NotificationType::dontSendNotification);
+        auto coll = editor->getCurrentCollection();
+        if (coll == editor->favoritesCollection)
+        {
+            heartButton->setEnabled(false);
+        }
+        else
+        {
+            heartButton->setEnabled(true);
+        }
 
         typeinEd->clear();
         typeinEd->setText(rg.name, juce::NotificationType::dontSendNotification);
@@ -1332,6 +1423,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     setFocusContainerType(juce::Component::FocusContainerType::keyboardFocusContainer);
     setWantsKeyboardFocus(true);
 
+    unstreamFavorites();
+
     setSize(baseWidth, baseHeight);
 
     auto fs = awres::get_filesystem();
@@ -1425,6 +1518,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
     accessibleOrderWeakRefs.push_back(menuPicker.get());
     accessibleOrderWeakRefs.push_back(menuPicker->hamburger.get());
+    accessibleOrderWeakRefs.push_back(menuPicker->heartButton.get());
     accessibleOrderWeakRefs.push_back(menuPicker->up.get());
     accessibleOrderWeakRefs.push_back(menuPicker->down.get());
     for (auto &k : knobs)
@@ -1659,7 +1753,30 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     else
         postRebuildFocus = JOG_UP;
 
-    if (coll == allCollection ||
+    if (coll == favoritesCollection && !favoritesList.empty())
+    {
+        int sidx = processor.curentProcessorIndex;
+        auto &rg = AirwinRegistry::registry[sidx];
+        // Theres lots of ways to do this but for now lets do it the crude way
+        std::vector<std::string> v(favoritesList.begin(), favoritesList.end());
+        int idx{-1}, c{0};
+        for (auto &vn : v)
+        {
+            if (vn == rg.name)
+            {
+                idx = c;
+            }
+            c++;
+        }
+        auto nidx = idx + dir;
+        if (nidx < 0)
+            nidx = v.size()-1;
+        if (nidx >= (int)v.size())
+            nidx = 0;
+        auto nfidx = AirwinRegistry::nameToIndex[v[nidx]];
+        processor.pushResetTypeFromUI(nfidx);
+    }
+    else if (coll == allCollection ||
         AirwinRegistry::namesByCollection.find(coll) == AirwinRegistry::namesByCollection.end())
     {
         auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
@@ -1694,6 +1811,33 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
     else
         p.addSectionHeader("Airwindows Consolidated");
     p.addSeparator();
+
+    auto coll = getCurrentCollection();
+
+    if (!favoritesList.empty() && coll != favoritesCollection)
+    {
+        auto sm = juce::PopupMenu();
+        sm.addSectionHeader("Favorites");
+        sm.addSeparator();
+        for (auto f : favoritesList)
+        {
+            auto n2i = AirwinRegistry::nameToIndex.find(f);
+            if (n2i != AirwinRegistry::nameToIndex.end())
+            {
+                auto ig = AirwinRegistry::registry[n2i->second];
+
+                sm.addItem(f + " (" + ig.category + ")", true, f == ent.name, [f, w = juce::Component::SafePointer(this)]() {
+                    if (w)
+                    {
+                        w->postRebuildFocus = PICKER_MENU;
+                        w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(f));
+                    }
+                });
+            }
+        }
+        p.addSubMenu("Favorites", sm);
+        p.addSeparator();
+    }
     auto collMenu = juce::PopupMenu();
     auto ccoll = getCurrentCollection();
     for (const auto &[c, _] : AirwinRegistry::namesByCollection)
@@ -1705,6 +1849,16 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
         });
     }
     collMenu.addSeparator();
+    if (!favoritesList.empty())
+    {
+        collMenu.addItem("Favorites", true, ccoll == favoritesCollection,
+                         [w = juce::Component::SafePointer(this)]() {
+                             if (!w)
+                                 return;
+                             w->setCurrentCollection(w->favoritesCollection);
+                         });
+
+    }
     collMenu.addItem("All Plugins", true, ccoll == allCollection,
                      [w = juce::Component::SafePointer(this)]() {
                          if (!w)
@@ -1719,8 +1873,6 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
     bool isChrisOrder = processor.properties->getValue("ordering") == "chris";
     if (isChrisOrder)
         order = &AirwinRegistry::fxByCategoryChrisOrder;
-
-    auto coll = getCurrentCollection();
 
     std::unordered_set<std::string> inCol;
     if (AirwinRegistry::namesByCollection.find(coll) != AirwinRegistry::namesByCollection.end())
@@ -1738,7 +1890,14 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
         for (const auto &nm : set)
         {
             bool include{false};
-            if (coll == allCollection || inCol.empty())
+            if (coll == favoritesCollection && !favoritesList.empty())
+            {
+                if (favoritesList.find(nm) != favoritesList.end())
+                {
+                    include = true;
+                }
+            }
+            else if (coll == allCollection || inCol.empty())
             {
                 include = true;
             }
@@ -1771,12 +1930,6 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             .launchInDefaultBrowser();
     });
 
-    /*
-    auto settingsMenu = makeSettingsMenu(false);
-
-    p.addSeparator();
-    p.addSubMenu("Settings", settingsMenu);
-    */
 
     const auto mousePos = juce::Desktop::getInstance().getMousePosition();
     const auto targetArea = juce::Rectangle<int>{}.withPosition(mousePos);
@@ -2121,4 +2274,86 @@ void AWConsolidatedAudioProcessorEditor::sizeBasedOnDocAreaDisplay()
         setSize(baseWidth - 270, baseHeight);
     }
     repaint();
+}
+
+void AWConsolidatedAudioProcessorEditor::addCurrentAsFavorite()
+{
+    int idx = processor.curentProcessorIndex;
+    auto &rg = AirwinRegistry::registry[idx];
+    favoritesList.insert(rg.name);
+
+    streamFavorites();
+}
+
+
+void AWConsolidatedAudioProcessorEditor::removeCurrentAsFavorite()
+{
+    int idx = processor.curentProcessorIndex;
+    auto &rg = AirwinRegistry::registry[idx];
+    favoritesList.erase(rg.name);
+
+    streamFavorites();
+}
+
+void AWConsolidatedAudioProcessorEditor::streamFavorites()
+{
+    auto ff = getFavoritesFile(true);
+
+    auto favx = juce::XmlElement("awfavorites");
+
+    for (const auto & f : favoritesList)
+    {
+        auto el = new juce::XmlElement("favorite");
+        el->setAttribute("fx", f);
+        favx.addChildElement(el);
+    }
+
+    if (!favx.writeTo(ff))
+    {
+        // FIXME : Handle Error
+    }
+}
+
+void AWConsolidatedAudioProcessorEditor::unstreamFavorites()
+{
+    auto ff = getFavoritesFile(false);
+    favoritesList.clear();
+    if (ff.exists())
+    {
+        auto xd = juce::XmlDocument(ff);
+        auto re = xd.getDocumentElement();
+        for (auto *e : re->getChildIterator())
+        {
+            auto fn = e->getStringAttribute("fx");
+            favoritesList.insert(fn.toStdString());
+        }
+    }
+}
+
+juce::File AWConsolidatedAudioProcessorEditor::getFavoritesFile(bool makeDir) const
+{
+    juce::File res;
+
+#if JUCE_LINUX
+    res = juce::File::getSpecialLocation(juce::File::userHomeDirectory);
+    res = res.getChildFile(".Airwindows");
+#else
+    res = juce::File::getSpecialLocation(juce::File::userDocumentsDirectory);
+    res = res.getChildFile("Airwindows");
+#endif
+
+    if (makeDir)
+    {
+        res.createDirectory();
+    }
+
+    res = res.getChildFile("consolidatedFavorites.xml");
+
+    return res;
+}
+
+void AWConsolidatedAudioProcessorEditor::setCurrentCollection(const std::string &s)
+{
+    processor.properties->setValue("collection", juce::String(s));
+    menuPicker->rebuild();
 }
