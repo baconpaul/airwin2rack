@@ -176,8 +176,27 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
 
     if (bypassParam->get())
     {
-        for (int ch = getMainBusNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch)
-            buffer.clear(ch, 0, buffer.getNumSamples());
+        if (getMainBusNumInputChannels() == 1 && getTotalNumOutputChannels() == 2)
+        {
+            // special case - bypassed mono to stereo. Copy input one to output 2
+            auto inp = buffer.getReadPointer(0);
+            auto o0 = buffer.getWritePointer(0);
+            auto o1 = buffer.getWritePointer(1);
+
+            if (inp)
+            {
+                if (o0)
+                    juce::FloatVectorOperations::copy(o0, inp, buffer.getNumSamples());
+                if (o1)
+                    juce::FloatVectorOperations::copy(o1, inp, buffer.getNumSamples());
+            }
+        }
+        else
+        {
+            // this is the default implementation of default from juce
+            for (int ch = getMainBusNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch)
+                buffer.clear(ch, 0, buffer.getNumSamples());
+        }
         return;
     }
 
