@@ -98,7 +98,7 @@ AWConsolidatedAudioProcessor::~AWConsolidatedAudioProcessor() {}
 //==============================================================================
 const juce::String AWConsolidatedAudioProcessor::getName() const { return JucePlugin_Name; }
 
-bool AWConsolidatedAudioProcessor::acceptsMidi() const { return false; }
+bool AWConsolidatedAudioProcessor::acceptsMidi() const { return true; }
 
 bool AWConsolidatedAudioProcessor::producesMidi() const { return false; }
 
@@ -293,15 +293,37 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     }
 }
 
+void AWConsolidatedAudioProcessor::handleMidiMessages(juce::MidiBuffer &midiBuffer)
+{
+    // only switch based on latest program change received
+    int regidx = -1;
+    for (const auto &mm : midiBuffer)
+    {
+        const auto msg = mm.getMessage();
+        if (msg.isProgramChange())
+        {
+            int ch = msg.getChannel() - 1;
+            int pgnum = msg.getProgramChangeNumber();
+            regidx = ch * 128 + pgnum;
+        }
+    }
+    if (regidx >= 0 && regidx < AirwinRegistry::registry.size())
+    {
+        setAWProcessorTo(regidx, true);
+    }
+}
+
 void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                                                 juce::MidiBuffer &midiMessages)
 {
+    handleMidiMessages(midiMessages);
     processBlockT(buffer);
 }
 
 void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<double> &buffer,
-                                                juce::MidiBuffer &)
+                                                juce::MidiBuffer &midiMessages)
 {
+    handleMidiMessages(midiMessages);
     processBlockT(buffer);
 }
 

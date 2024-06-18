@@ -206,7 +206,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     struct CubicDBParam : public APFPublicDefault
     {
         static constexpr float maxDb{18.0};
-        static constexpr double maxLev{7.943282347242815}; // pow(10, maxDb/20)
+        static constexpr double maxLev{7.943282347242815};      // pow(10, maxDb/20)
         static constexpr double defaultVal{0.5011872336272724}; // 1.0 / cbrt(maxLeb)
         CubicDBParam(const juce::ParameterID &id, const juce::String &parameterName)
             : APFPublicDefault(id, parameterName, juce::NormalisableRange<float>(0.0, 1.0),
@@ -252,19 +252,14 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
         float getDefaultValue() const override { return defaultVal; }
 
-        template<typename T>
-        T getAmplitude() const {
+        template <typename T> T getAmplitude() const
+        {
             T lev = (T)get();
             lev = lev * lev * lev * maxLev;
             return lev;
         }
 
-        bool isAmplifiyingOrAttenuating() const
-        {
-            return std::fabs(get() - defaultVal) > 5e-6;
-        }
-
-
+        bool isAmplifiyingOrAttenuating() const { return std::fabs(get() - defaultVal) > 5e-6; }
     };
 
     //==============================================================================
@@ -277,7 +272,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     juce::AudioParameterBool *bypassParam{nullptr};
     juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
-
+    void handleMidiMessages(juce::MidiBuffer &midiBuffer);
     void setAWProcessorTo(int registryIndex, bool initDisplay);
 
     std::unique_ptr<AirwinConsolidatedBase> awProcessor, awDisplayProcessor;
