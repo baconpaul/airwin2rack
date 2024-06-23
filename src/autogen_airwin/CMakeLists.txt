@@ -217,6 +217,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ConsoleXChannelProc.cpp
    src/autogen_airwin/ContentHideD.cpp
    src/autogen_airwin/ContentHideDProc.cpp
+   src/autogen_airwin/CreamCoat.cpp
+   src/autogen_airwin/CreamCoatProc.cpp
    src/autogen_airwin/Creature.cpp
    src/autogen_airwin/CreatureProc.cpp
    src/autogen_airwin/CrickBass.cpp
@@ -243,6 +245,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DeRezProc.cpp
    src/autogen_airwin/DeRez2.cpp
    src/autogen_airwin/DeRez2Proc.cpp
+   src/autogen_airwin/DeRez3.cpp
+   src/autogen_airwin/DeRez3Proc.cpp
    src/autogen_airwin/Deckwrecka.cpp
    src/autogen_airwin/DeckwreckaProc.cpp
    src/autogen_airwin/Density.cpp
@@ -797,8 +801,16 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kCathedralProc.cpp
    src/autogen_airwin/kCathedral2.cpp
    src/autogen_airwin/kCathedral2Proc.cpp
+   src/autogen_airwin/kCathedral3.cpp
+   src/autogen_airwin/kCathedral3Proc.cpp
    src/autogen_airwin/kChamberAR.cpp
    src/autogen_airwin/kChamberARProc.cpp
+   src/autogen_airwin/kGuitarHall.cpp
+   src/autogen_airwin/kGuitarHallProc.cpp
+   src/autogen_airwin/kPlate140.cpp
+   src/autogen_airwin/kPlate140Proc.cpp
+   src/autogen_airwin/kPlate240.cpp
+   src/autogen_airwin/kPlate240Proc.cpp
    src/autogen_airwin/kPlateA.cpp
    src/autogen_airwin/kPlateAProc.cpp
    src/autogen_airwin/kPlateB.cpp
