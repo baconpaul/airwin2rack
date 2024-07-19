@@ -14,6 +14,18 @@ float AirwinConsolidatedBase::defaultSampleRate{0.f};
 
 bool string2float(const char *txt, float &f)
 {
+#if defined(__EXCEPTIONS) || defined(__cpp_exceptions) || defined(_CPPUNWIND)
+    try
+    {
+        float v = std::stof(txt);
+        f = v;
+        return true;
+    }
+    catch (const std::exception &e)
+    {
+        return false;
+    }
+#else
     char *pEnd = nullptr;
     float v = std::strtof(txt, &pEnd);
     if (pEnd == txt)
@@ -29,6 +41,7 @@ bool string2float(const char *txt, float &f)
         f = v;
         return true;
     }
+#endif
 }
 
 bool string2dBNorm(const char *txt, float &f)
@@ -40,10 +53,27 @@ bool string2dBNorm(const char *txt, float &f)
         return true;
     }
 
+#if defined(__EXCEPTIONS) || defined(__cpp_exceptions) || defined(_CPPUNWIND)
+    try
+    {
+        float v = std::stof(txt);
+        // float2string ((float)(20.0 * log10 (value)), t, num);
+        // so db = 20 log10(v)
+        // v = 10^(db/20);
+        f = std::pow(10, v / 20);
+        return true;
+    }
+    catch (const std::exception &e)
+    {
+
+        return false;
+    }
+#else
     if (auto ok = string2float(txt, f))
     {
         f = std::pow(10, f / 20);
         return true;
     }
+#endif
     return false;
 }
