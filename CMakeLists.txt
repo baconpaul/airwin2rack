@@ -4,12 +4,6 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment ver
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-option(METAMODULE "Build static library for MetaModule plugin" OFF)
-
-if(METAMODULE)
-    set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_LIST_DIR}/cmake/arm-none-eabi-gcc.cmake)
-endif()
-
 string(TIMESTAMP DAY_OF_YEAR "%j")
 string(TIMESTAMP YEAR "%Y")
 math(EXPR PART0 "${YEAR}")
@@ -54,12 +48,6 @@ add_library(airwin-registry STATIC
 
 target_compile_definitions(airwin-registry PRIVATE _USE_MATH_DEFINES)
 target_link_libraries(airwin-registry awdoc_resources)
-
-if(METAMODULE)
-    include(cmake/arch_mp15xa7.cmake)
-    target_link_libraries(airwin-registry arch_mp15x_a7)
-    target_compile_options(airwin-registry PRIVATE "-Wno-misleading-indentation;-Wno-unused-variable")
-endif()
 
 if (NOT MSVC)
     # consistent even in warnings that chris is
