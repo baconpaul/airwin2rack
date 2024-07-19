@@ -9,22 +9,27 @@
 
 #include "airwin_consolidated_base.h"
 #include <string>
-#include <iostream>
 
 float AirwinConsolidatedBase::defaultSampleRate{0.f};
 
 bool string2float(const char *txt, float &f)
 {
-    try {
-        float v = std::stof(txt);
+    char *pEnd = nullptr;
+    float v = std::strtof(txt, &pEnd);
+    if (pEnd == txt)
+    {
+        return false;
+
+    } else if (v != INFINITY && v != -INFINITY && (v == HUGE_VALF || v == -HUGE_VALF))
+    {
+        return false;
+
+    } else {
         f = v;
         return true;
     }
-    catch (const std::exception &e)
-    {
-        return false;
-    }
 }
+
 
 bool string2dBNorm(const char *txt, float &f)
 {
@@ -35,18 +40,10 @@ bool string2dBNorm(const char *txt, float &f)
         return true;
     }
 
-    try {
-        float v = std::stof(txt);
-        // float2string ((float)(20.0 * log10 (value)), t, num);
-        // so db = 20 log10(v)
-        // v = 10^(db/20);
-        f = std::pow(10, v/20);
-        return true;
-    }
-    catch (const std::exception &e)
+    if (auto ok = string2float(txt, f))
     {
-
-        return false;
+        f = std::pow(10, f/20);
+        return true;
     }
     return false;
 }
