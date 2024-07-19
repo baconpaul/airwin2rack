@@ -27,17 +27,21 @@ std::string AirwinRegistry::documentationStringFor(int index)
     auto fs = cmrc::awdoc_resources::get_filesystem();
     auto doc =  std::string("res/awpdoc/") + nm + ".txt";
 
+#ifndef CMRC_NO_EXCEPTIONS
     try
     {
+#endif
         if (fs.is_file(doc))
         {
             auto fn = fs.open(doc);
             return std::string(fn.begin(), fn.end());
         }
+#ifndef CMRC_NO_EXCEPTIONS
     }
     catch (std::exception &e)
     {
     }
+#endif
     return "";
 }
 
