@@ -1,3 +1,5 @@
+if(NOT TARGET arch_mp15x_a7)
+
 add_library(arch_mp15x_a7 INTERFACE)
 
 set(ARCH_MP15x_A7_FLAGS
@@ -51,3 +53,4 @@ target_compile_options(arch_mp15x_a7 INTERFACE
 	"$<$<COMPILE_LANGUAGE:CXX>:-fno-threadsafe-statics>"
 )
 
+endif()
