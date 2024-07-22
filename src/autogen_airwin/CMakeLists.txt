@@ -337,6 +337,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/FloorProc.cpp
    src/autogen_airwin/Flutter.cpp
    src/autogen_airwin/FlutterProc.cpp
+   src/autogen_airwin/Flutter2.cpp
+   src/autogen_airwin/Flutter2Proc.cpp
    src/autogen_airwin/Focus.cpp
    src/autogen_airwin/FocusProc.cpp
    src/autogen_airwin/Fracture.cpp
