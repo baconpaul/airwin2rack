@@ -43,14 +43,7 @@ jobs:
       - uses: apple-actions/import-codesign-certs@v3
         if: runner.os == 'macOS' && github.event_name != 'pull_request'
         with:
-          p12-file-base64: ${{ secrets.MAC_SIGNING_CERT }}
-          p12-password: ${{ secrets.CERT_PWD }}
-
-
-      - uses: apple-actions/import-codesign-certs@v3
-        if: runner.os == 'macOS' && github.event_name != 'pull_request'
-        with:
-          p12-file-base64: ${{ secrets.MAC_INSTALLING_CERT }}
+          p12-file-base64: ${{ secrets.MAC_CERTS_P12 }}
           p12-password: ${{ secrets.CERT_PWD }}
 
       - name: Install Linux Deps; pick GCC9
