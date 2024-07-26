@@ -7,7 +7,7 @@ It's all the [airwindows](https://www.airwindows.com) presented in three lovely 
 <img src="doc/daw.png" height=300 alt="The Airwindows CLAP in Bitwig Studio">
 
 1. As a static library with a uniform registry and access pattern for you to use
-   as a submodule to expose the airwindows
+   as a submodule to expose the airwindows,
 2. As module for [VCV Rack](https://www.vcvrack.com/) in the [Rack library](https://library.vcvrack.com/Airwin2Rack/Airwin2Rack) or as a [Rack nightly build](https://github.com/baconpaul/airwin2rack/releases/tag/Nightly). 
 [Read the manual here.](doc/manual.md)
 3. As a [CLAP/VST3/AU/LV2/Standalone](https://github.com/baconpaul/airwin2rack/releases/tag/DAWPlugin) plugin for your DAW. [Read the manual here.](doc/manualdaw.md)
