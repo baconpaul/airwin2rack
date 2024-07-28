@@ -293,6 +293,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DubSubProc.cpp
    src/autogen_airwin/Dubly.cpp
    src/autogen_airwin/DublyProc.cpp
+   src/autogen_airwin/Dubly2.cpp
+   src/autogen_airwin/Dubly2Proc.cpp
    src/autogen_airwin/DustBunny.cpp
    src/autogen_airwin/DustBunnyProc.cpp
    src/autogen_airwin/Dynamics.cpp
@@ -679,6 +681,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/TPDFWideProc.cpp
    src/autogen_airwin/Tape.cpp
    src/autogen_airwin/TapeProc.cpp
+   src/autogen_airwin/TapeBias.cpp
+   src/autogen_airwin/TapeBiasProc.cpp
    src/autogen_airwin/TapeDelay.cpp
    src/autogen_airwin/TapeDelayProc.cpp
    src/autogen_airwin/TapeDelay2.cpp
