@@ -291,6 +291,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DubCenterProc.cpp
    src/autogen_airwin/DubSub.cpp
    src/autogen_airwin/DubSubProc.cpp
+   src/autogen_airwin/DubSub2.cpp
+   src/autogen_airwin/DubSub2Proc.cpp
    src/autogen_airwin/Dubly.cpp
    src/autogen_airwin/DublyProc.cpp
    src/autogen_airwin/Dubly2.cpp
