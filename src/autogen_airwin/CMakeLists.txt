@@ -705,6 +705,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ToTape5Proc.cpp
    src/autogen_airwin/ToTape6.cpp
    src/autogen_airwin/ToTape6Proc.cpp
+   src/autogen_airwin/ToTape7.cpp
+   src/autogen_airwin/ToTape7Proc.cpp
    src/autogen_airwin/ToVinyl4.cpp
    src/autogen_airwin/ToVinyl4Proc.cpp
    src/autogen_airwin/ToneSlant.cpp
