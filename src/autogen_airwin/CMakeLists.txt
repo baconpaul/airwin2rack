@@ -103,6 +103,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/CabsProc.cpp
    src/autogen_airwin/Calibre.cpp
    src/autogen_airwin/CalibreProc.cpp
+   src/autogen_airwin/Cans.cpp
+   src/autogen_airwin/CansProc.cpp
    src/autogen_airwin/Capacitor.cpp
    src/autogen_airwin/CapacitorProc.cpp
    src/autogen_airwin/Capacitor2.cpp
@@ -425,6 +427,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/IsolatorProc.cpp
    src/autogen_airwin/Isolator2.cpp
    src/autogen_airwin/Isolator2Proc.cpp
+   src/autogen_airwin/Isolator3.cpp
+   src/autogen_airwin/Isolator3Proc.cpp
    src/autogen_airwin/Kalman.cpp
    src/autogen_airwin/KalmanProc.cpp
    src/autogen_airwin/LRFlipTimer.cpp
