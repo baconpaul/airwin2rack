@@ -76,7 +76,7 @@ endif ()
 message(STATUS "Compiling with git hash ${BUILD_HASH}")
 
 if (${USE_JUCE_PROGRAMS})
-  add_compile_definitions(
+  target_compile_definitions(${PROJECT_NAME} PUBLIC
     USE_JUCE_PROGRAMS=1
   )
 endif ()
