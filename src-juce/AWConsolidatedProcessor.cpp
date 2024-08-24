@@ -108,12 +108,15 @@ double AWConsolidatedAudioProcessor::getTailLengthSeconds() const { return 2.0; 
 
 int AWConsolidatedAudioProcessor::getNumPrograms()
 {
+#if USE_JUCE_PROGRAMS
+    return AirwinRegistry::registry.size();
+#else
     return 1;
-} // AirwinRegistry::registry.size(); }
+#endif
+}
 
 int AWConsolidatedAudioProcessor::getCurrentProgram()
 {
-    return 0;
 #if USE_JUCE_PROGRAMS
     // not super efficient obvs
     int idx{0};
@@ -125,6 +128,8 @@ int AWConsolidatedAudioProcessor::getCurrentProgram()
         }
         idx++;
     }
+    return 0;
+#else
     return 0;
 #endif
 }
@@ -139,11 +144,12 @@ void AWConsolidatedAudioProcessor::setCurrentProgram(int index)
 
 const juce::String AWConsolidatedAudioProcessor::getProgramName(int index)
 {
-    return "Airwindows Consolidated";
 #if USE_JUCE_PROGRAMS
     auto rs = AirwinRegistry::fxAlphaOrdering[index];
     auto &rg = AirwinRegistry::registry[rs];
     return rg.category + "/" + rg.name;
+#else
+    return "Airwindows Consolidated";
 #endif
 }
 

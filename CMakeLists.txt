@@ -17,6 +17,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 option(BUILD_JUCE_PLUGIN "Build a JUCE plugin" OFF)
+option(USE_JUCE_PROGRAMS "Add effects as presets when building juce plugin" OFF)
 option(BUILD_RACK_PLUGIN "Build a VCV Rack plugin" OFF)
 option(COPY_PLUGIN_AFTER_BUILD "Copy plugin after build" OFF)
 
