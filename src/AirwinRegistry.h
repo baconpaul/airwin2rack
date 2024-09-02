@@ -1,11 +1,11 @@
 /*
-* AirwinConsolidated - an adaptation of the airwindows effect suite
-* for various open source clients
-*
-* This source released under the MIT License, found in ~/LICENSE.md.
-*
-* Copyright 2023 by the authors as described in the github transaction log
-*/
+ * AirwinConsolidated - an adaptation of the airwindows effect suite
+ * for various open source clients
+ *
+ * This source released under the MIT License, found in ~/LICENSE.md.
+ *
+ * Copyright 2023 by the authors as described in the github transaction log
+ */
 
 #ifndef AIRWINCONSOLIDATED_AIRWINREGISTRY_H
 #define AIRWINCONSOLIDATED_AIRWINREGISTRY_H
@@ -34,7 +34,8 @@ struct AirwinRegistry
         std::string whatText;
         int nParams{0};
         std::string firstCommitDate;
-        std::function<std::unique_ptr<AirwinConsolidatedBase>()> generator{[]() { return nullptr; }};
+        std::function<std::unique_ptr<AirwinConsolidatedBase>()> generator{
+            []() { return nullptr; }};
         int ordering{-1};
         std::vector<std::string> collections{};
     };
@@ -42,7 +43,7 @@ struct AirwinRegistry
     static std::set<std::string> categories;
     static std::map<std::string, std::vector<std::string>> fxByCategory;
     static std::map<std::string, std::vector<std::string>> fxByCategoryChrisOrder;
-    static std::vector<int> fxAlphaOrdering;
+    static std::vector<int> fxAlphaOrdering, fxChrisOrdering;
     static std::unordered_map<std::string, int> nameToIndex;
 
     static std::map<std::string, std::unordered_set<std::string>> namesByCollection;
@@ -85,8 +86,18 @@ struct AirwinRegistry
 
         for (auto &[cat, dat] : fxByCategory)
         {
-            std::sort(dat.begin(), dat.end(), [](const auto &a,
-                                                 const auto &b) { return a < b; });
+            std::sort(dat.begin(), dat.end(), [](const auto &a, const auto &b) { return a < b; });
+        }
+
+        for (auto &[cat, dat] : fxByCategoryChrisOrder)
+        {
+            std::sort(dat.begin(), dat.end(), [](const auto &a, const auto &b) {
+                // this double lookup is a bit of a bummer
+                auto ai = AirwinRegistry::nameToIndex[a];
+                auto bi = AirwinRegistry::nameToIndex[b];
+                return AirwinRegistry::registry[ai].catChrisOrdering <
+                       AirwinRegistry::registry[bi].catChrisOrdering;
+            });
         }
 
         idx = 0;
@@ -100,16 +111,14 @@ struct AirwinRegistry
             }
         }
 
-
-        for (auto &[cat, dat] : fxByCategoryChrisOrder)
+        idx = 0;
+        for (const auto &[cat, fxs] : fxByCategoryChrisOrder)
         {
-            std::sort(dat.begin(), dat.end(), [](const auto &a,
-                                                 const auto &b) {
-                // this double lookup is a bit of a bummer
-                auto ai = AirwinRegistry::nameToIndex[a];
-                auto bi = AirwinRegistry::nameToIndex[b];
-                return AirwinRegistry::registry[ai].catChrisOrdering < AirwinRegistry::registry[bi].catChrisOrdering;
-            });
+            for (const auto &fx : fxs)
+            {
+                fxChrisOrdering.push_back(nameToIndex[fx]);
+                idx++;
+            }
         }
 
         for (const auto &r : registry)
@@ -121,6 +130,30 @@ struct AirwinRegistry
         }
 
         return 0;
+    }
+
+    static int neighborChrisIndexFor(int t, int dir)
+    {
+        int chrisIndex{-1};
+        for (size_t i = 0; i < fxChrisOrdering.size(); ++i)
+        {
+            if (fxChrisOrdering[i] == t)
+            {
+                chrisIndex = (int)i;
+                break;
+            }
+        }
+        if (chrisIndex < 0)
+        {
+            return neighborIndexFor(t, dir);
+        }
+        auto pos = chrisIndex;
+        pos += dir;
+        if (pos < 0)
+            pos = fxChrisOrdering.size() - 1;
+        if (pos >= (int)fxChrisOrdering.size())
+            pos = 0;
+        return fxChrisOrdering[pos];
     }
 
     static int neighborIndexFor(int t, int dir)
