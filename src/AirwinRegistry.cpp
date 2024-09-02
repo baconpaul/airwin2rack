@@ -1,11 +1,11 @@
 /*
-* AirwinConsolidated - an adaptation of the airwindows effect suite
-* for various open source clients
-*
-* This source released under the MIT License, found in ~/LICENSE.md.
-*
-* Copyright 2023 by the authors as described in the github transaction log
-*/
+ * AirwinConsolidated - an adaptation of the airwindows effect suite
+ * for various open source clients
+ *
+ * This source released under the MIT License, found in ~/LICENSE.md.
+ *
+ * Copyright 2023 by the authors as described in the github transaction log
+ */
 
 #include "AirwinRegistry.h"
 
@@ -16,6 +16,7 @@ CMRC_DECLARE(awdoc_resources);
 std::vector<AirwinRegistry::awReg> AirwinRegistry::registry;
 std::set<std::string> AirwinRegistry::categories;
 std::vector<int> AirwinRegistry::fxAlphaOrdering;
+std::vector<int> AirwinRegistry::fxChrisOrdering;
 std::map<std::string, std::vector<std::string>> AirwinRegistry::fxByCategory;
 std::map<std::string, std::vector<std::string>> AirwinRegistry::fxByCategoryChrisOrder;
 std::unordered_map<std::string, int> AirwinRegistry::nameToIndex;
@@ -25,7 +26,7 @@ std::string AirwinRegistry::documentationStringFor(int index)
 {
     auto nm = registry[index].name;
     auto fs = cmrc::awdoc_resources::get_filesystem();
-    auto doc =  std::string("res/awpdoc/") + nm + ".txt";
+    auto doc = std::string("res/awpdoc/") + nm + ".txt";
 
 #ifndef CMRC_NO_EXCEPTIONS
     try
@@ -56,7 +57,7 @@ void AirwinRegistry::dumpStatsToStdout()
     for (const auto &r : registry)
     {
         auto fx = r.generator();
-        for (int i=0; i<r.nParams; ++i)
+        for (int i = 0; i < r.nParams; ++i)
         {
             char txt[256];
             fx->getParameterName(i, txt);
@@ -82,7 +83,7 @@ void AirwinRegistry::dumpStatsToStdout()
         const auto &r = registry[ord];
         auto fx = r.generator();
         std::cout << r.name << " (" << r.category << ")\n";
-        for (int i=0; i<r.nParams; ++i)
+        for (int i = 0; i < r.nParams; ++i)
         {
             char txt[256];
             fx->getParameterName(i, txt);
