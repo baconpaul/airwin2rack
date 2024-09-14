@@ -1652,7 +1652,6 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
 
     // Load custom manual
     juce::String customDocumentationContent;
-    // juce::String processorName = AirwinRegistry::registry[processor.curentProcessorIndex].name;
     if (loadCustomDocumentation(AirwinRegistry::registry[processor.curentProcessorIndex].name, customDocumentationContent))
     {
         if (!customDocumentationContent.isEmpty())
