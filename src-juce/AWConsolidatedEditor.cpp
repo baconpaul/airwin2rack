@@ -2345,7 +2345,7 @@ void AWConsolidatedAudioProcessorEditor::unstreamFavorites()
 juce::File AWConsolidatedAudioProcessorEditor::getSettingsDirectory(bool makeDir) const
 {
     juce::File res;
-    
+
 #if JUCE_LINUX
     res = juce::File::getSpecialLocation(juce::File::userHomeDirectory);
     res = res.getChildFile(".Airwindows");
