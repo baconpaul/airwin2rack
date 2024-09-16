@@ -193,7 +193,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     void unstreamFavorites();
     juce::File getSettingsDirectory(bool makeDir) const;
     juce::File getFavoritesFile(bool makeDir) const;
-    bool AWConsolidatedAudioProcessorEditor::loadCustomDocumentation(const juce::String& fileName, juce::String& outContent) const;
+    bool loadCustomDocumentation(const juce::String& fileName, juce::String& outContent) const;
     std::set<std::string> favoritesList{};
 
   private:
