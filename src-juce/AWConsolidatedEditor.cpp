@@ -1650,6 +1650,17 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
         docString = docString.fromFirstOccurrenceOf("\n", false, false).trim();
     }
 
+    // Load custom manual
+    juce::String customDocumentationContent;
+    if (loadCustomDocumentation(AirwinRegistry::registry[processor.curentProcessorIndex].name, customDocumentationContent))
+    {
+        if (!customDocumentationContent.isEmpty())
+        {
+            docString = customDocumentationContent + "\n\n# --------------------\n\n" + docString;
+        }
+    }
+
+
     auto r = docAreaRect;
     auto tFont = lnf->lookupFont(documentationLabel);
     juce::GlyphArrangement gaTitle;
@@ -2330,7 +2341,7 @@ void AWConsolidatedAudioProcessorEditor::unstreamFavorites()
     }
 }
 
-juce::File AWConsolidatedAudioProcessorEditor::getFavoritesFile(bool makeDir) const
+juce::File AWConsolidatedAudioProcessorEditor::getSettingsDirectory(bool makeDir) const
 {
     juce::File res;
 
@@ -2347,9 +2358,50 @@ juce::File AWConsolidatedAudioProcessorEditor::getFavoritesFile(bool makeDir) co
         res.createDirectory();
     }
 
+    return res;
+}
+
+juce::File AWConsolidatedAudioProcessorEditor::getFavoritesFile(bool makeDir) const
+{
+    juce::File res = getSettingsDirectory(makeDir);
+
     res = res.getChildFile("consolidatedFavorites.xml");
 
     return res;
+}
+
+bool AWConsolidatedAudioProcessorEditor::loadCustomDocumentation(const juce::String& fileName, juce::String& outContent) const
+{
+    static juce::String lastFileName;
+    static juce::String cachedContent;
+
+    if (fileName == lastFileName)
+    {
+        // Return the cached content
+        outContent = cachedContent;
+        return true;
+    }
+
+    juce::File customDocumentationDir = getSettingsDirectory(false).getChildFile("customDocs");
+    juce::File documentationFile = customDocumentationDir.getChildFile(fileName + ".txt");
+
+    if (!documentationFile.existsAsFile())
+    {
+        return false; // The file doesn't exist
+    }
+
+    juce::FileInputStream fileStream(documentationFile);
+
+    if (!fileStream.openedOk())
+    {
+        return false; // The file can't be opened
+    }
+
+    cachedContent = fileStream.readEntireStreamAsString();
+    lastFileName = fileName;
+    outContent = cachedContent;
+
+    return true;
 }
 
 void AWConsolidatedAudioProcessorEditor::setCurrentCollection(const std::string &s)
