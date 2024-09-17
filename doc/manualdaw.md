@@ -67,13 +67,16 @@ effect. The default collection ("Recommended") contains Chris's greatest hits.
 To select a collection other than "Recommended", choose the "Filter by Collections"
 menu and select a collection you want. "All plugins" choice removes any filtering.
 
-## Custom documentation
+## Custom Documentation
 
-The existing effect documentation can be augmented with user defined notes, by adding 
-.txt files to the 'customDocs' directory. When changing effect in the UI, the plugin will load customDocs/<effect-name>.txt if present and prepend it, with a little seperator line, before the original documentation. For example, if you wish to add your notes to ToTape7
-- create the text file: customDocs/ToTape7.txt
-- Write your text. Eg. "This is my own text".
-- Change effect in the plugin to trigger reload, and you should see:
+You can add user-defined documentation to the existing effect documentation by placing .txt files in the 'customDocs' directory. When switching effects in the UI, the plugin loads `customDocs/<effect-name>.txt` (if present) and prepends it with a separator before the original text. For example, to add documentation to the effect `ToTape7`:
+
+- Choose "Show Config Dir" from the menu to navigate to the config directory.
+- Create the file `customDocs/ToTape7.txt`.
+- Add "This is my own text" to the file and save.
+- In the plugin UI, switch away from the ToTape7 effect, then switch back. This forces the text to reload.
+
+You'll now see:
 
 ```
 This is my own text
@@ -83,9 +86,10 @@ This is my own text
 This is the original text...
 ```
 
+Note:
 
-Notes:
-- Casing is important on Linux and sometimes on Mac. Use `ToTape7.txt`, not `totape7.TXT`.
+- Filename casing is important on Linux (and sometimes on Mac). Use `ToTape7.txt`, not `totape7.TXT`.
+
 
 
 ## Using a Screen Reader
