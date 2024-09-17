@@ -67,6 +67,27 @@ effect. The default collection ("Recommended") contains Chris's greatest hits.
 To select a collection other than "Recommended", choose the "Filter by Collections"
 menu and select a collection you want. "All plugins" choice removes any filtering.
 
+## Custom documentation
+
+The existing effect documentation can be augmented with user defined notes, by adding 
+.txt files to the 'customDocs' directory. When changing effect in the UI, the plugin will load customDocs/<effect-name>.txt if present and prepend it, with a little seperator line, before the original documentation. For example, if you wish to add your notes to ToTape7
+- create the text file: customDocs/ToTape7.txt
+- Write your text. Eg. "This is my own text".
+- Change effect in the plugin to trigger reload, and you should see:
+
+```
+This is my own text
+
+#----------------------
+
+This is the original text...
+```
+
+
+Notes:
+- Casing is important on Linux and sometimes on Mac. Use `ToTape7.txt`, not `totape7.TXT`.
+
+
 ## Using a Screen Reader
 
 The User Interface is exposed via a Screen Reader on macOS and Windows.
