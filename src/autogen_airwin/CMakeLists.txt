@@ -217,6 +217,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ConsoleXBussProc.cpp
    src/autogen_airwin/ConsoleXChannel.cpp
    src/autogen_airwin/ConsoleXChannelProc.cpp
+   src/autogen_airwin/ConsoleXPre.cpp
+   src/autogen_airwin/ConsoleXPreProc.cpp
    src/autogen_airwin/ContentHideD.cpp
    src/autogen_airwin/ContentHideDProc.cpp
    src/autogen_airwin/CreamCoat.cpp
@@ -299,6 +301,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DublyProc.cpp
    src/autogen_airwin/Dubly2.cpp
    src/autogen_airwin/Dubly2Proc.cpp
+   src/autogen_airwin/Dubly3.cpp
+   src/autogen_airwin/Dubly3Proc.cpp
    src/autogen_airwin/DustBunny.cpp
    src/autogen_airwin/DustBunnyProc.cpp
    src/autogen_airwin/Dynamics.cpp
@@ -711,6 +715,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ToTape6Proc.cpp
    src/autogen_airwin/ToTape7.cpp
    src/autogen_airwin/ToTape7Proc.cpp
+   src/autogen_airwin/ToTape8.cpp
+   src/autogen_airwin/ToTape8Proc.cpp
    src/autogen_airwin/ToVinyl4.cpp
    src/autogen_airwin/ToVinyl4Proc.cpp
    src/autogen_airwin/ToneSlant.cpp
