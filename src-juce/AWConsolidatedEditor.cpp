@@ -1940,14 +1940,6 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
         juce::URL("https://github.com/baconpaul/airwin2rack/blob/main/doc/manualdaw.md")
             .launchInDefaultBrowser();
     });
-    
-    p.addItem("Show Config Dir", [this]() {
-        // We cannot show a dir that doesnt exist, so we force create if needed
-        getSettingsDirectory(true);
-        // revealToUser() doesnt actually enter the directory given (at least on windows), 
-        // so we point it to Airwindows/customDocs/, to make it enter Airwindows/
-        getSettingsDirectory(false).getChildFile("customDocs").revealToUser();
-    });
 
     const auto mousePos = juce::Desktop::getInstance().getMousePosition();
     const auto targetArea = juce::Rectangle<int>{}.withPosition(mousePos);
@@ -2049,9 +2041,20 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
                          });
 
     settingsMenu.addSeparator();
+
     settingsMenu.addItem("Open Plugin Manual...", []() {
         juce::URL("https://github.com/baconpaul/airwin2rack/blob/main/doc/manualdaw.md")
             .launchInDefaultBrowser();
+    });
+
+    settingsMenu.addSeparator();
+
+    settingsMenu.addItem("Show Config Dir...", [this]() {
+        // We cannot show a dir that doesnt exist, so we force create if needed
+        getSettingsDirectory(true);
+        // revealToUser() doesnt actually enter the directory given (at least on windows), 
+        // so we point it to Airwindows/customDocs/, to make it enter Airwindows/
+        getSettingsDirectory(false).getChildFile("customDocs").revealToUser();
     });
 
     if (withHeader)
