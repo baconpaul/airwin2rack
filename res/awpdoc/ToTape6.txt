@@ -15,4 +15,3 @@ The dry/wet control has a trick in store: it only works in the normal way if you
 Oh, one more thing: ToTape6 has the guts of ADClip built into it as a safety clipper. So you can use it as a final loudenator, at which it ought to be about as good as they get: if the tape slam isn’t getting you there, you can push the output volume past 0 dB to intentionally clip harder, or pull it back to make sure ToTape is the only distortion stage. If you’re seeing extended periods of -0.09 dB you’re seeing ADClip working.
 
 
-
