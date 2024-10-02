@@ -290,11 +290,11 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
     };
     std::unique_ptr<Jog> up, down;
 
-
     struct Heart : juce::ToggleButton, juce::ToggleButton::Listener
     {
         Picker *picker;
-        Heart(Picker *p) : juce::ToggleButton("Favorite"), picker(p) {
+        Heart(Picker *p) : juce::ToggleButton("Favorite"), picker(p)
+        {
             setAccessible(true);
             addListener(this); // i know its a bit sloppy to self listen
         }
@@ -309,11 +309,11 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             auto p = juce::Path();
 
             auto afac{1.25};
-            p.addCentredArc(w/4, h/3, w/4, h/4, 0, -afac * M_PI / 2, -M_PI/2, true);
-            p.addCentredArc(w/4, h/3, w/4, h/3, 0, -M_PI / 2, M_PI/2, false);
-            p.addCentredArc(3*w/4, h/3, w/4, h/3, 0, -M_PI / 2,M_PI/2, false);
-            p.addCentredArc(3*w/4, h/3, w/4, h/4, 0, M_PI / 2, afac * M_PI/2, false);
-            p.lineTo(w/2, h);
+            p.addCentredArc(w / 4, h / 3, w / 4, h / 4, 0, -afac * M_PI / 2, -M_PI / 2, true);
+            p.addCentredArc(w / 4, h / 3, w / 4, h / 3, 0, -M_PI / 2, M_PI / 2, false);
+            p.addCentredArc(3 * w / 4, h / 3, w / 4, h / 3, 0, -M_PI / 2, M_PI / 2, false);
+            p.addCentredArc(3 * w / 4, h / 3, w / 4, h / 4, 0, M_PI / 2, afac * M_PI / 2, false);
+            p.lineTo(w / 2, h);
             p.closeSubPath();
 
             if (getToggleState())
@@ -498,7 +498,10 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         jogDown = jogUp.translated(0, hh);
 
         auto hbSize{22};
-        auto heartPos = jogUp.translated(-hbSize - 1, hh/2).withWidth(hh).withHeight(hh).expanded((hbSize-hh)/2);
+        auto heartPos = jogUp.translated(-hbSize - 1, hh / 2)
+                            .withWidth(hh)
+                            .withHeight(hh)
+                            .expanded((hbSize - hh) / 2);
 
         up->setBounds(jogUp);
         down->setBounds(jogDown);
@@ -622,7 +625,8 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             down->getAccessibilityHandler()->notifyAccessibilityEvent(
                 juce::AccessibilityEvent::titleChanged);
 
-        heartButton->setToggleState(isCurrentEffectFavorite(), juce::NotificationType::dontSendNotification);
+        heartButton->setToggleState(isCurrentEffectFavorite(),
+                                    juce::NotificationType::dontSendNotification);
         auto coll = editor->getCurrentCollection();
         if (coll == editor->favoritesCollection)
         {
@@ -1652,14 +1656,14 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
 
     // Load custom manual
     juce::String customDocumentationContent;
-    if (loadCustomDocumentation(AirwinRegistry::registry[processor.curentProcessorIndex].name, customDocumentationContent))
+    if (loadCustomDocumentation(AirwinRegistry::registry[processor.curentProcessorIndex].name,
+                                customDocumentationContent))
     {
         if (!customDocumentationContent.isEmpty())
         {
             docString = customDocumentationContent + "\n\n# --------------------\n\n" + docString;
         }
     }
-
 
     auto r = docAreaRect;
     auto tFont = lnf->lookupFont(documentationLabel);
@@ -1759,6 +1763,18 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
 {
     auto coll = getCurrentCollection();
 
+    bool isChrisOrder = processor.properties->getValue("ordering") == "chris";
+    auto neighbor = [isChrisOrder](int idx, int dir) {
+        if (isChrisOrder)
+        {
+            return AirwinRegistry::neighborChrisIndexFor(idx, dir);
+        }
+        else
+        {
+            return AirwinRegistry::neighborIndexFor(idx, dir);
+        }
+    };
+
     if (dir == 1)
         postRebuildFocus = JOG_DOWN;
     else
@@ -1781,23 +1797,23 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
         }
         auto nidx = idx + dir;
         if (nidx < 0)
-            nidx = v.size()-1;
+            nidx = v.size() - 1;
         if (nidx >= (int)v.size())
             nidx = 0;
         auto nfidx = AirwinRegistry::nameToIndex[v[nidx]];
         processor.pushResetTypeFromUI(nfidx);
     }
-    else if (coll == allCollection ||
-        AirwinRegistry::namesByCollection.find(coll) == AirwinRegistry::namesByCollection.end())
+    else if (coll == allCollection || AirwinRegistry::namesByCollection.find(coll) ==
+                                          AirwinRegistry::namesByCollection.end())
     {
-        auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
+        auto nx = neighbor(processor.curentProcessorIndex, dir);
         processor.pushResetTypeFromUI(nx);
     }
     else
     {
         int sidx = processor.curentProcessorIndex;
         auto &collFX = AirwinRegistry::namesByCollection.at(coll);
-        auto nx = AirwinRegistry::neighborIndexFor(processor.curentProcessorIndex, dir);
+        auto nx = neighbor(processor.curentProcessorIndex, dir);
         while (nx != sidx)
         {
             auto rg = AirwinRegistry::registry[nx];
@@ -1807,7 +1823,7 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
                 return;
             }
 
-            nx = AirwinRegistry::neighborIndexFor(nx, dir);
+            nx = neighbor(nx, dir);
         }
     }
 }
@@ -1837,13 +1853,15 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             {
                 auto ig = AirwinRegistry::registry[n2i->second];
 
-                sm.addItem(f + " (" + ig.category + ")", true, f == ent.name, [f, w = juce::Component::SafePointer(this)]() {
-                    if (w)
-                    {
-                        w->postRebuildFocus = PICKER_MENU;
-                        w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(f));
-                    }
-                });
+                sm.addItem(f + " (" + ig.category + ")", true, f == ent.name,
+                           [f, w = juce::Component::SafePointer(this)]() {
+                               if (w)
+                               {
+                                   w->postRebuildFocus = PICKER_MENU;
+                                   w->processor.pushResetTypeFromUI(
+                                       AirwinRegistry::nameToIndex.at(f));
+                               }
+                           });
             }
         }
         p.addSubMenu("Favorites", sm);
@@ -1868,7 +1886,6 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                                  return;
                              w->setCurrentCollection(w->favoritesCollection);
                          });
-
     }
     collMenu.addItem("All Plugins", true, ccoll == allCollection,
                      [w = juce::Component::SafePointer(this)]() {
@@ -2052,7 +2069,7 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
     settingsMenu.addItem("Show Config Dir...", [this]() {
         // We cannot show a dir that doesnt exist, so we force create if needed
         getSettingsDirectory(true);
-        // revealToUser() doesnt actually enter the directory given (at least on windows), 
+        // revealToUser() doesnt actually enter the directory given (at least on windows),
         // so we point it to Airwindows/customDocs/, to make it enter Airwindows/
         getSettingsDirectory(false).getChildFile("customDocs").revealToUser();
     });
@@ -2096,10 +2113,7 @@ struct FxFocusTrav : public juce::ComponentTraverser
             return nullptr;
         }
 
-        auto isAccessibleAndVisible = [](auto *r)
-        {
-            return r->isAccessible() && r->isVisible();
-        };
+        auto isAccessibleAndVisible = [](auto *r) { return r->isAccessible() && r->isVisible(); };
 
         switch (dir)
         {
@@ -2306,7 +2320,6 @@ void AWConsolidatedAudioProcessorEditor::addCurrentAsFavorite()
     streamFavorites();
 }
 
-
 void AWConsolidatedAudioProcessorEditor::removeCurrentAsFavorite()
 {
     int idx = processor.curentProcessorIndex;
@@ -2322,7 +2335,7 @@ void AWConsolidatedAudioProcessorEditor::streamFavorites()
 
     auto favx = juce::XmlElement("awfavorites");
 
-    for (const auto & f : favoritesList)
+    for (const auto &f : favoritesList)
     {
         auto el = new juce::XmlElement("favorite");
         el->setAttribute("fx", f);
@@ -2381,7 +2394,8 @@ juce::File AWConsolidatedAudioProcessorEditor::getFavoritesFile(bool makeDir) co
     return res;
 }
 
-bool AWConsolidatedAudioProcessorEditor::loadCustomDocumentation(const juce::String& fileName, juce::String& outContent) const
+bool AWConsolidatedAudioProcessorEditor::loadCustomDocumentation(const juce::String &fileName,
+                                                                 juce::String &outContent) const
 {
     static juce::String lastFileName;
     static juce::String cachedContent;
