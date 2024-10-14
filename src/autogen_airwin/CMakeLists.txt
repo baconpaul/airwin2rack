@@ -361,6 +361,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/GalacticProc.cpp
    src/autogen_airwin/Galactic2.cpp
    src/autogen_airwin/Galactic2Proc.cpp
+   src/autogen_airwin/Galactic3.cpp
+   src/autogen_airwin/Galactic3Proc.cpp
    src/autogen_airwin/GalacticVibe.cpp
    src/autogen_airwin/GalacticVibeProc.cpp
    src/autogen_airwin/Gatelope.cpp
@@ -463,6 +465,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/MackEQProc.cpp
    src/autogen_airwin/Mackity.cpp
    src/autogen_airwin/MackityProc.cpp
+   src/autogen_airwin/Mastering.cpp
+   src/autogen_airwin/MasteringProc.cpp
    src/autogen_airwin/MatrixVerb.cpp
    src/autogen_airwin/MatrixVerbProc.cpp
    src/autogen_airwin/Melt.cpp
@@ -815,6 +819,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ZRegionProc.cpp
    src/autogen_airwin/ZRegion2.cpp
    src/autogen_airwin/ZRegion2Proc.cpp
+   src/autogen_airwin/Zoom.cpp
+   src/autogen_airwin/ZoomProc.cpp
    src/autogen_airwin/curve.cpp
    src/autogen_airwin/curveProc.cpp
    src/autogen_airwin/kCathedral.cpp
