@@ -80,13 +80,21 @@ jobs:
           cmake -S . -B ./build ${{ matrix.cmake_args }} -DCMAKE_BUILD_TYPE=Release -DBUILD_JUCE_PLUGIN=TRUE
           cmake --build ./build --config Release --target awcons-installer --parallel 3
 
-      - name: Build pull request version
+      - name: Configure pull request version
         if: github.event_name == 'pull_request'
         run: |
           cmake -S . -B ./build ${{ matrix.cmake_args }} -DCMAKE_BUILD_TYPE=Debug -DBUILD_JUCE_PLUGIN=TRUE
+
+      - name: Build pull request version
+        if: github.event_name == 'pull_request'
+        run: |
           cmake --build ./build --config Debug --target awcons-installer --parallel 3
+
+      - name: Show pull request version
+        if: github.event_name == 'pull_request'
+        run: |
           find ./build/src-juce/airwin-consolidated_artefacts -print
-          find ./build/installer -print
+          find ./build/installerduleinfo -print
 
       - name: Show Build Directory
         run: |
@@ -105,10 +113,9 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
-        if: github.event_name != 'pull_request'
         with:
           path: build/installer
-          name: dawplugin-${{ matrix.os }}
+          name: dawplugin-${{ matrix.name }}
 
   publish-dawplugin-nightly:
     name: Publish DAWPlugin
