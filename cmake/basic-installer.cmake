@@ -76,7 +76,12 @@ else ()
 endif ()
 
 string(TIMESTAMP AWCONS_DATE "%Y-%m-%d")
-set(AWCONS_ZIP AirwindowsConsolidated-${AWCONS_DATE}-${VERSION_CHUNK}-${CMAKE_SYSTEM_NAME}.zip)
+if (DEFINED AWCO_ARM64EC)
+    set(AWXTRANAME "-arm64ec")
+else()
+    set(AWXTRANAME "")
+endif()
+set(AWCONS_ZIP AirwindowsConsolidated-${AWCONS_DATE}-${VERSION_CHUNK}-${CMAKE_SYSTEM_NAME}${AWXTRANAME}.zip)
 
 
 if (APPLE)
@@ -99,7 +104,7 @@ elseif (WIN32)
             COMMAND 7z a -r ${CMAKE_BINARY_DIR}/installer/${AWCONS_ZIP} .
             COMMAND ${CMAKE_COMMAND} -E echo "ZIP Installer in: ${CMAKE_BINARY_DIR}/installer/${AWCONS_ZIP}")
     find_program(AWCONS_NUGET_EXE nuget.exe PATHS ENV "PATH")
-    if(AWCONS_NUGET_EXE)
+    if(AWCONS_NUGET_EXE AND NOT DEFINED AWCO_ARM64EC)
        message(STATUS "NuGet found at ${AWCONS_NUGET_EXE}")
        add_custom_command(
            TARGET awcons-installer
