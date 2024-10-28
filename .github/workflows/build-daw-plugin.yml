@@ -84,8 +84,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           cmake -S . -B ./build ${{ matrix.cmake_args }} -DCMAKE_BUILD_TYPE=Debug -DBUILD_JUCE_PLUGIN=TRUE
-          cmake --build ./build --config Debug --target airwin-consolidated_Standalone --parallel 3
-          cmake --build ./build --config Debug --target airwin-consolidated_VST3 --parallel 3
+          cmake --build ./build --config Debug --target airwin-consolidated_CLAP --parallel 3
           find ./build/src-juce/airwin-consolidated_artefacts -print
 
       - name: Show Build Directory
