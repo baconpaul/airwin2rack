@@ -94,7 +94,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           find ./build/src-juce/airwin-consolidated_artefacts -print
-          find ./build/installerduleinfo -print
+          find ./build/installer -print
 
       - name: Show Build Directory
         run: |
