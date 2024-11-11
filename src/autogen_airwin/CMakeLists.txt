@@ -17,6 +17,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Air2Proc.cpp
    src/autogen_airwin/Air3.cpp
    src/autogen_airwin/Air3Proc.cpp
+   src/autogen_airwin/Air4.cpp
+   src/autogen_airwin/Air4Proc.cpp
    src/autogen_airwin/Apicolypse.cpp
    src/autogen_airwin/ApicolypseProc.cpp
    src/autogen_airwin/AtmosphereBuss.cpp
