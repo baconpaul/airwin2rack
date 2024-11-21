@@ -7,7 +7,7 @@ include ("../cmake/CPM.cmake")
 CPMAddPackage(
         NAME JUCE
         GITHUB_REPOSITORY juce-framework/JUCE
-        GIT_TAG 7.0.12 # specify the tag to a version of your choice
+        GIT_TAG 8.0.4 # specify the tag to a version of your choice
 )
 
 CPMAddPackage(
