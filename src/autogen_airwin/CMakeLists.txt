@@ -411,6 +411,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Hull2Proc.cpp
    src/autogen_airwin/Hype.cpp
    src/autogen_airwin/HypeProc.cpp
+   src/autogen_airwin/Hypersoft.cpp
+   src/autogen_airwin/HypersoftProc.cpp
    src/autogen_airwin/HypersonX.cpp
    src/autogen_airwin/HypersonXProc.cpp
    src/autogen_airwin/Hypersonic.cpp
