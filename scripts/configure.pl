@@ -93,6 +93,9 @@ foreach my $fx (@plugins) {
                     for my $cl (split(/,/, $val))
                     {
                         $coll .= $pre;
+                        # remove leading and trailing spaces from categories
+                        $cl =~ s/^\s*//;
+                        $cl =~ s/\s*$//;
                         $coll .= "\"$cl\"";
                         $pre = ", ";
                     }
