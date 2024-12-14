@@ -297,7 +297,7 @@ int DubCenter_unused = AirwinRegistry::registerAirwindow({"DubCenter", "Bass", 4
 #include "autogen_airwin/DubSub.h"
 int DubSub_unused = AirwinRegistry::registerAirwindow({"DubSub", "Bass", 41, "DubSub is a fully featured bass doctor.", airwinconsolidated::DubSub::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DubSub::DubSub>(0); }, -1, { }});
 #include "autogen_airwin/DubSub2.h"
-int DubSub2_unused = AirwinRegistry::registerAirwindow({"DubSub2", "Bass", 36, "DubSub2 is the essence of the Airwindows head bump.", airwinconsolidated::DubSub2::kNumParameters, "2024-08-04", []() { return std::make_unique<airwinconsolidated::DubSub2::DubSub2>(0); }, -1, { "Recommended", " Latest" }});
+int DubSub2_unused = AirwinRegistry::registerAirwindow({"DubSub2", "Bass", 36, "DubSub2 is the essence of the Airwindows head bump.", airwinconsolidated::DubSub2::kNumParameters, "2024-08-04", []() { return std::make_unique<airwinconsolidated::DubSub2::DubSub2>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Dubly.h"
 int Dubly_unused = AirwinRegistry::registerAirwindow({"Dubly", "Effects", 202, "Dubly is a retro vibe and atmosphere maker.", airwinconsolidated::Dubly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Dubly::Dubly>(0); }, -1, { }});
 #include "autogen_airwin/Dubly2.h"
