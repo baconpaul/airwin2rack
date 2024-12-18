@@ -4,10 +4,17 @@ project(airwin-consolidated VERSION ${CMAKE_PROJECT_VERSION})
 include ("../cmake/CPM.cmake")
 
 
+if (DEFINED AWCO_ONJUCE7)
+  set(AWCO_JUCETAG 7.0.12)
+else()
+  set(AWCO_JUCETAG 8.0.4)
+endif()
+
+message(STATUS "Getting JUCE TAG ${AWCO_JUCETAG}")
 CPMAddPackage(
         NAME JUCE
         GITHUB_REPOSITORY juce-framework/JUCE
-        GIT_TAG 8.0.4 # specify the tag to a version of your choice
+        GIT_TAG ${AWCO_JUCETAG} # specify the tag to a version of your choice
 )
 
 CPMAddPackage(

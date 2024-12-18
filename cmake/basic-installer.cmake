@@ -78,11 +78,13 @@ endif ()
 string(TIMESTAMP AWCONS_DATE "%Y-%m-%d")
 if (DEFINED AWCO_ARM64EC)
     set(AWXTRANAME "-arm64ec")
+elseif (DEFINED AWCO_ONJUCE7)
+    set(AWXTRANAME "-windows7")
 else()
     set(AWXTRANAME "")
 endif()
 set(AWCONS_ZIP AirwindowsConsolidated-${AWCONS_DATE}-${VERSION_CHUNK}-${CMAKE_SYSTEM_NAME}${AWXTRANAME}.zip)
-
+message(STATUS "Will create zip file '${AWCONS_ZIP}'")
 
 if (APPLE)
     message(STATUS "Configuring for Mac installer.")
@@ -111,7 +113,7 @@ elseif (WIN32)
            POST_BUILD
            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
            COMMAND ${AWCONS_NUGET_EXE} install Tools.InnoSetup -version 6.2.2
-           COMMAND Tools.InnoSetup.6.2.2/tools/iscc.exe /O"installer" /DAWCONS_SRC="${CMAKE_SOURCE_DIR}" /DAWCONS_BIN="${CMAKE_BINARY_DIR}" /DMyAppVersion="${AWCONS_DATE}-${VERSION_CHUNK}" "${CMAKE_SOURCE_DIR}/scripts/installer_win/awcons.iss")
+           COMMAND Tools.InnoSetup.6.2.2/tools/iscc.exe /O"installer" /DAWCONS_SRC="${CMAKE_SOURCE_DIR}" /DAWCONS_BIN="${CMAKE_BINARY_DIR}" /DMyAppVersion="${AWCONS_DATE}-${VERSION_CHUNK}${AWXTRANAME}" "${CMAKE_SOURCE_DIR}/scripts/installer_win/awcons.iss")
     else()
        message(STATUS "NuGet not found!")
     endif()
