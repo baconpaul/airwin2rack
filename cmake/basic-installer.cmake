@@ -113,7 +113,7 @@ elseif (WIN32)
            POST_BUILD
            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
            COMMAND ${AWCONS_NUGET_EXE} install Tools.InnoSetup -version 6.2.2
-           COMMAND Tools.InnoSetup.6.2.2/tools/iscc.exe /O"installer" /DAWCONS_SRC="${CMAKE_SOURCE_DIR}" /DAWCONS_BIN="${CMAKE_BINARY_DIR}" /DMyAppVersion="${AWCONS_DATE}-${VERSION_CHUNK}" "${CMAKE_SOURCE_DIR}/scripts/installer_win/awcons.iss")
+           COMMAND Tools.InnoSetup.6.2.2/tools/iscc.exe /O"installer" /DAWCONS_SRC="${CMAKE_SOURCE_DIR}" /DAWCONS_BIN="${CMAKE_BINARY_DIR}" /DMyAppVersion="${AWCONS_DATE}-${VERSION_CHUNK}${AWXTRANAME}" "${CMAKE_SOURCE_DIR}/scripts/installer_win/awcons.iss")
     else()
        message(STATUS "NuGet not found!")
     endif()
