@@ -32,7 +32,7 @@ jobs:
             cmake_args: -G"Visual Studio 17 2022" -A x64
 
           - os: windows-latest
-            name: windows-juce8
+            name: windows-juce7
             downgrade_juce: true
             cmake_args: -G"Visual Studio 17 2022" -A x64 -DAWCO_ONJUCE7=TRUE
 
