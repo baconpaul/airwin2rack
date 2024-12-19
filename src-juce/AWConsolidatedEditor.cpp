@@ -2356,6 +2356,13 @@ void AWConsolidatedAudioProcessorEditor::unstreamFavorites()
     {
         auto xd = juce::XmlDocument(ff);
         auto re = xd.getDocumentElement();
+
+        if (!re)
+        {
+            std::cerr << "Favorites file is corrupted: " << xd.getLastParseError() << std::endl;
+            return;
+        }
+
         for (auto *e : re->getChildIterator())
         {
             auto fn = e->getStringAttribute("fx");
