@@ -23,11 +23,7 @@ enum {
 	kParamD =3,
 	kParamE =4,
 	kParamF =5,
-	kParamG =6,
-	kParamH =7,
-	kParamI =8,
-	kParamJ =9,
-  kNumParameters = 10
+  kNumParameters = 6
 }; //
 
 const int kNumPrograms = 0;
@@ -69,10 +65,6 @@ private:
     float D;
     float E;
     float F;
-    float G;
-    float H;
-    float I;
-    float J;
 
 	enum {
 		pvAL1,
