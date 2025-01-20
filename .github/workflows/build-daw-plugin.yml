@@ -132,7 +132,7 @@ jobs:
           image: ghcr.io/surge-synthesizer/sst-dockerimages/ubuntu20_gcc11:main
           username: ${{ github.actor }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          cmakeArgs: -DCMAKE_BUILD_TYPE=Release -GNinja
+          cmakeArgs: -DCMAKE_BUILD_TYPE=Release -GNinja -DBUILD_JUCE_PLUGIN=TRUE
           target: awcons-installer
 
 
@@ -161,3 +161,11 @@ jobs:
           reuse_tag: true
           create_tag: false
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post to Discord
+        uses: surge-synthesizer/sst-githubactions/discord-release-notify@main
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          tag: DAWPlugin
+          title: "A New AirWindows Conslidated Version is Available"
+
