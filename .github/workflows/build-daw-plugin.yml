@@ -53,23 +53,16 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Select Xcode Version
-        if: runner.os == 'macOS'
-        run: sudo xcode-select -switch /Applications/Xcode_15.1.app
+      - name: Prepare for JUCE
+        uses: surge-synthesizer/sst-githubactions/prepare-for-juce@main
+        with:
+          os: ${{ runner.os }}
 
       - uses: apple-actions/import-codesign-certs@v3
         if: runner.os == 'macOS' && github.event_name != 'pull_request'
         with:
           p12-file-base64: ${{ secrets.MAC_CERTS_P12 }}
           p12-password: ${{ secrets.CERT_PWD }}
-
-      - name: Install Linux Deps; pick GCC9
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt install libasound2-dev libfontconfig1-dev libx11-dev libxcomposite-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev libfreetype6-dev libglu1-mesa-dev libjack-jackd2-dev
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 
       - name: Build release version
         if: github.event_name != 'pull_request'
@@ -118,9 +111,41 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
+        if: runner.os != 'Linux' # since that gets docker built below
         with:
           path: build/installer
           name: dawplugin-${{ matrix.name }}
+
+
+  build_plugin_docker:
+    name: Docker Build Ubuntu20 ${{ matrix.name }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build in Docker
+        uses: surge-synthesizer/sst-githubactions/cmake-in-docker@main
+        with:
+          image: ghcr.io/surge-synthesizer/sst-dockerimages/ubuntu20_gcc11:main
+          username: ${{ github.actor }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          cmakeArgs: -DCMAKE_BUILD_TYPE=Release -GNinja -DBUILD_JUCE_PLUGIN=TRUE
+          target: awcons-installer
+
+
+      - name: Show Installer Directory
+        run: |
+          ls -l ./build/installer
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: build/installer
+          name: build-docker-linux
 
   publish-dawplugin-nightly:
     name: Publish DAWPlugin
@@ -128,30 +153,20 @@ jobs:
     # see also https://vcvrack.com/manual/Manifest#version
     if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'baconpaul' }}
     runs-on: ubuntu-latest
-    needs: [build_plugin]
+    needs: [build_plugin, build_plugin_docker]
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Upload to Nightly
+        uses: surge-synthesizer/sst-githubactions/upload-to-release@main
         with:
-          path: artifacts
-      - name: Show Installer Directory
-        run: |
-          ls -R artifacts
-      - name: Delete old release assets
-        uses: mknejp/delete-release-assets@v1
-        with:
-          token: ${{ github.token }}
-          tag: DAWPlugin # This may also be of the form 'refs/tags/staging'
-          assets: '*'
-      - name: Upload release assets
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: artifacts/**/**/**
           tag: DAWPlugin
-          file_glob: true
-      - name: Tag Repo
-        uses: richardsimko/update-tag@v1.0.7
+          reuse_tag: true
+          create_tag: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post to Discord
+        uses: surge-synthesizer/sst-githubactions/discord-release-notify@main
         with:
-          tag_name: DAWPlugin
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          tag: DAWPlugin
+          title: "A New AirWindows Conslidated Version is Available"
+
