@@ -64,14 +64,6 @@ jobs:
           p12-file-base64: ${{ secrets.MAC_CERTS_P12 }}
           p12-password: ${{ secrets.CERT_PWD }}
 
-      - name: Install Linux Deps; pick GCC9
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt install libasound2-dev libfontconfig1-dev libx11-dev libxcomposite-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev libfreetype6-dev libglu1-mesa-dev libjack-jackd2-dev
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
-
       - name: Build release version
         if: github.event_name != 'pull_request'
         run: |
@@ -162,28 +154,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_plugin]
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Upload to Nightly
+        uses: surge-synthesizer/sst-githubactions/upload-to-release@main
         with:
-          path: artifacts
-      - name: Show Installer Directory
-        run: |
-          ls -R artifacts
-      - name: Delete old release assets
-        uses: mknejp/delete-release-assets@v1
-        with:
-          token: ${{ github.token }}
-          tag: DAWPlugin # This may also be of the form 'refs/tags/staging'
-          assets: '*'
-      - name: Upload release assets
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: artifacts/**/**/**
           tag: DAWPlugin
-          file_glob: true
-      - name: Tag Repo
-        uses: richardsimko/update-tag@v1.0.7
-        with:
-          tag_name: DAWPlugin
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          reuse_tag: true
+          create_tag: false
+          token: ${{ secrets.GITHUB_TOKEN }}
