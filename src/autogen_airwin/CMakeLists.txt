@@ -269,6 +269,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DirtProc.cpp
    src/autogen_airwin/Discontinuity.cpp
    src/autogen_airwin/DiscontinuityProc.cpp
+   src/autogen_airwin/Disintegrate.cpp
+   src/autogen_airwin/DisintegrateProc.cpp
    src/autogen_airwin/Distance.cpp
    src/autogen_airwin/DistanceProc.cpp
    src/autogen_airwin/Distance2.cpp
@@ -441,6 +443,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Isolator3Proc.cpp
    src/autogen_airwin/Kalman.cpp
    src/autogen_airwin/KalmanProc.cpp
+   src/autogen_airwin/LRConvolve.cpp
+   src/autogen_airwin/LRConvolveProc.cpp
    src/autogen_airwin/LRFlipTimer.cpp
    src/autogen_airwin/LRFlipTimerProc.cpp
    src/autogen_airwin/LeadAmp.cpp
