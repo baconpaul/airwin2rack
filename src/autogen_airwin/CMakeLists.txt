@@ -47,6 +47,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Baxandall2Proc.cpp
    src/autogen_airwin/Beam.cpp
    src/autogen_airwin/BeamProc.cpp
+   src/autogen_airwin/BezEQ.cpp
+   src/autogen_airwin/BezEQProc.cpp
    src/autogen_airwin/BigAmp.cpp
    src/autogen_airwin/BigAmpProc.cpp
    src/autogen_airwin/Biquad.cpp
@@ -445,6 +447,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/KalmanProc.cpp
    src/autogen_airwin/LRConvolve.cpp
    src/autogen_airwin/LRConvolveProc.cpp
+   src/autogen_airwin/LRConvolve2.cpp
+   src/autogen_airwin/LRConvolve2Proc.cpp
    src/autogen_airwin/LRFlipTimer.cpp
    src/autogen_airwin/LRFlipTimerProc.cpp
    src/autogen_airwin/LeadAmp.cpp
@@ -693,6 +697,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SurgeProc.cpp
    src/autogen_airwin/SurgeTide.cpp
    src/autogen_airwin/SurgeTideProc.cpp
+   src/autogen_airwin/SweetWide.cpp
+   src/autogen_airwin/SweetWideProc.cpp
    src/autogen_airwin/Sweeten.cpp
    src/autogen_airwin/SweetenProc.cpp
    src/autogen_airwin/Swell.cpp
