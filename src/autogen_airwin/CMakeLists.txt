@@ -109,6 +109,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/CalibreProc.cpp
    src/autogen_airwin/Cans.cpp
    src/autogen_airwin/CansProc.cpp
+   src/autogen_airwin/CansAW.cpp
+   src/autogen_airwin/CansAWProc.cpp
    src/autogen_airwin/Capacitor.cpp
    src/autogen_airwin/CapacitorProc.cpp
    src/autogen_airwin/Capacitor2.cpp
@@ -629,6 +631,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Righteous4Proc.cpp
    src/autogen_airwin/RightoMono.cpp
    src/autogen_airwin/RightoMonoProc.cpp
+   src/autogen_airwin/RingModulator.cpp
+   src/autogen_airwin/RingModulatorProc.cpp
    src/autogen_airwin/SampleDelay.cpp
    src/autogen_airwin/SampleDelayProc.cpp
    src/autogen_airwin/Shape.cpp
