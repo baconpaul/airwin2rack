@@ -1,21 +1,32 @@
 /* ========================================
- *  LRConvolve2 - LRConvolve2.h
+ *  Elliptical - Elliptical.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __LRConvolve2_H
-#include "LRConvolve2.h"
+#ifndef __Elliptical_H
+#include "Elliptical.h"
 #endif
 #include <cmath>
 #include <algorithm>
-namespace airwinconsolidated::LRConvolve2 {
+namespace airwinconsolidated::Elliptical {
 
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new LRConvolve2(audioMaster);}
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Elliptical(audioMaster);}
 
-LRConvolve2::LRConvolve2(audioMasterCallback audioMaster) :
+Elliptical::Elliptical(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
-	A = 0.0;
+	A = 0.5;
+	B = 0.5;
+	
+	iirA = 0.0;
+	iirB = 0.0;
+	iirC = 0.0;
+	iirD = 0.0;
+	iirE = 0.0;
+	iirF = 0.0;
+	iirG = 0.0;
+	iirH = 0.0;
+	fpFlip = true;
 	
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
@@ -33,10 +44,10 @@ LRConvolve2::LRConvolve2(audioMasterCallback audioMaster) :
     vst_strncpy (_programName, "Default", kVstMaxProgNameLen); // default program name
 }
 
-LRConvolve2::~LRConvolve2() {}
-VstInt32 LRConvolve2::getVendorVersion () {return 1000;}
-void LRConvolve2::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
-void LRConvolve2::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
+Elliptical::~Elliptical() {}
+VstInt32 Elliptical::getVendorVersion () {return 1000;}
+void Elliptical::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
+void Elliptical::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
@@ -47,67 +58,74 @@ static float pinParameter(float data)
 	return data;
 }
 
-void LRConvolve2::setParameter(VstInt32 index, float value) {
+void Elliptical::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
+        case kParamB: B = value; break;
         default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-float LRConvolve2::getParameter(VstInt32 index) {
+float Elliptical::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
+        case kParamB: return B; break;
         default: break; // unknown parameter, shouldn't happen!
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
-void LRConvolve2::getParameterName(VstInt32 index, char *text) {
+void Elliptical::getParameterName(VstInt32 index, char *text) {
     switch (index) {
-        case kParamA: vst_strncpy (text, "Soar", kVstMaxParamStrLen); break;
+        case kParamA: vst_strncpy (text, "Cutoff", kVstMaxParamStrLen); break;
+		case kParamB: vst_strncpy (text, "Slope", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
 
-void LRConvolve2::getParameterDisplay(VstInt32 index, char *text) {
+void Elliptical::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
+        case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
 
-void LRConvolve2::getParameterLabel(VstInt32 index, char *text) {
+void Elliptical::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
+        case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
 		default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-VstInt32 LRConvolve2::canDo(char *text) 
+VstInt32 Elliptical::canDo(char *text) 
 { return (_canDo.find(text) == _canDo.end()) ? -1: 1; } // 1 = yes, -1 = no, 0 = don't know
 
-bool LRConvolve2::getEffectName(char* name) {
-    vst_strncpy(name, "LRConvolve2", kVstMaxProductStrLen); return true;
+bool Elliptical::getEffectName(char* name) {
+    vst_strncpy(name, "Elliptical", kVstMaxProductStrLen); return true;
 }
 
-VstPlugCategory LRConvolve2::getPlugCategory() {return kPlugCategEffect;}
+VstPlugCategory Elliptical::getPlugCategory() {return kPlugCategEffect;}
 
-bool LRConvolve2::getProductString(char* text) {
-  	vst_strncpy (text, "airwindows LRConvolve2", kVstMaxProductStrLen); return true;
+bool Elliptical::getProductString(char* text) {
+  	vst_strncpy (text, "airwindows Elliptical", kVstMaxProductStrLen); return true;
 }
 
-bool LRConvolve2::getVendorString(char* text) {
+bool Elliptical::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
-bool LRConvolve2::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+bool Elliptical::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
 }
-bool LRConvolve2::canConvertParameterTextToValue(VstInt32 index) {
+bool Elliptical::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
+        case kParamB: return true;
 
     }
     return false;

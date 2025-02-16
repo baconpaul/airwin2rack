@@ -327,6 +327,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ElationProc.cpp
    src/autogen_airwin/ElectroHat.cpp
    src/autogen_airwin/ElectroHatProc.cpp
+   src/autogen_airwin/Elliptical.cpp
+   src/autogen_airwin/EllipticalProc.cpp
    src/autogen_airwin/Energy.cpp
    src/autogen_airwin/EnergyProc.cpp
    src/autogen_airwin/Energy2.cpp
@@ -451,6 +453,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/LRConvolveProc.cpp
    src/autogen_airwin/LRConvolve2.cpp
    src/autogen_airwin/LRConvolve2Proc.cpp
+   src/autogen_airwin/LRConvolve3.cpp
+   src/autogen_airwin/LRConvolve3Proc.cpp
    src/autogen_airwin/LRFlipTimer.cpp
    src/autogen_airwin/LRFlipTimerProc.cpp
    src/autogen_airwin/LeadAmp.cpp
@@ -669,6 +673,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SpiralProc.cpp
    src/autogen_airwin/Spiral2.cpp
    src/autogen_airwin/Spiral2Proc.cpp
+   src/autogen_airwin/SquareRoot.cpp
+   src/autogen_airwin/SquareRootProc.cpp
    src/autogen_airwin/Srsly.cpp
    src/autogen_airwin/SrslyProc.cpp
    src/autogen_airwin/Srsly2.cpp

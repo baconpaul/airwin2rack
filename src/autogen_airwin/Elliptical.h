@@ -1,11 +1,11 @@
 /* ========================================
- *  RingModulator - RingModulator.h
+ *  Elliptical - Elliptical.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __RingModulator_RingModulator_H
-#define __RingModulator_RingModulator_H
+#ifndef __Elliptical_Elliptical_H
+#define __Elliptical_Elliptical_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,26 +15,24 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::RingModulator {
+namespace airwinconsolidated::Elliptical {
 enum {
 	kParamA =0,
 	kParamB =1,
-	kParamC =2,
-	kParamD =3,
-  kNumParameters = 4
+  kNumParameters = 2
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'rmod';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'elli';    //Change this to what the AU identity is!
 
-class RingModulator : 
+class Elliptical : 
     public AudioEffectX 
 {
 public:
-    RingModulator(audioMasterCallback audioMaster);
-    ~RingModulator();
+    Elliptical(audioMasterCallback audioMaster);
+    ~Elliptical();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -59,16 +57,17 @@ private:
     
     float A;
     float B;
-    float C;
-    float D;
-	
-	double sinePosL;
-	double sinePosR;
-	double incLA;
-	double incLB;
-	double incRA;
-	double incRB;	
 
+	double iirA;
+	double iirB; //first stage is the flipping one, for lowest slope. It is always engaged, and is the highest one
+	double iirC; //we introduce the second pole at the same frequency, to become a pseudo-Capacitor behavior
+	double iirD;
+	double iirE;
+	double iirF; //our slope control will have a pow() on it so that the high orders are way to the right side
+	double iirG;
+	double iirH; //seven poles max, and the final pole is always at 20hz directly.
+	bool fpFlip;
+	
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff

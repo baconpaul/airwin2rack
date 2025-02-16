@@ -1,11 +1,11 @@
 /* ========================================
- *  RingModulator - RingModulator.h
+ *  SquareRoot - SquareRoot.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __RingModulator_RingModulator_H
-#define __RingModulator_RingModulator_H
+#ifndef __SquareRoot_SquareRoot_H
+#define __SquareRoot_SquareRoot_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,7 +15,7 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::RingModulator {
+namespace airwinconsolidated::SquareRoot {
 enum {
 	kParamA =0,
 	kParamB =1,
@@ -27,14 +27,14 @@ enum {
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'rmod';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'sqrt';    //Change this to what the AU identity is!
 
-class RingModulator : 
+class SquareRoot : 
     public AudioEffectX 
 {
 public:
-    RingModulator(audioMasterCallback audioMaster);
-    ~RingModulator();
+    SquareRoot(audioMasterCallback audioMaster);
+    ~SquareRoot();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -61,13 +61,6 @@ private:
     float B;
     float C;
     float D;
-	
-	double sinePosL;
-	double sinePosR;
-	double incLA;
-	double incLB;
-	double incRA;
-	double incRB;	
 
 	uint32_t fpdL;
 	uint32_t fpdR;

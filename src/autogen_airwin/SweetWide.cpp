@@ -15,7 +15,8 @@ AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new S
 SweetWide::SweetWide(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
-	A = 0.5;
+	A = 0.0;
+	B = 0.5;
 
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
@@ -50,6 +51,7 @@ static float pinParameter(float data)
 void SweetWide::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
+        case kParamB: B = value; break;
         default: break; // unknown parameter, shouldn't happen!
     }
 }
@@ -57,13 +59,15 @@ void SweetWide::setParameter(VstInt32 index, float value) {
 float SweetWide::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
+        case kParamB: return B; break;
         default: break; // unknown parameter, shouldn't happen!
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
 void SweetWide::getParameterName(VstInt32 index, char *text) {
     switch (index) {
-        case kParamA: vst_strncpy (text, "Un/Wide", kVstMaxParamStrLen); break;
+        case kParamA: vst_strncpy (text, "Soar", kVstMaxParamStrLen); break;
+        case kParamB: vst_strncpy (text, "Un/Wide", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
@@ -71,6 +75,7 @@ void SweetWide::getParameterName(VstInt32 index, char *text) {
 void SweetWide::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
+        case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
@@ -78,6 +83,7 @@ void SweetWide::getParameterDisplay(VstInt32 index, char *text) {
 void SweetWide::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
+        case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
 		default: break; // unknown parameter, shouldn't happen!
     }
 }
@@ -101,6 +107,7 @@ bool SweetWide::getVendorString(char* text) {
 bool SweetWide::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
@@ -108,6 +115,7 @@ bool SweetWide::parameterTextToValue(VstInt32 index, const char *text, float &va
 bool SweetWide::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
+        case kParamB: return true;
 
     }
     return false;
