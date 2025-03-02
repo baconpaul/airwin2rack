@@ -1,0 +1,15 @@
+# LRConvolve2 multiplies each channel by the other, plus Soar!
+
+We've had this (along with its strange demonstration audio) and you've already seen this 'Soar' control on the recent 'SquareRoot' plugin, which is going to be a lot more generally useful.
+
+But have you heard the essence of the Soar control turned into a plugin, to most drastically demonstrate what it does?
+
+Nope, because SquareRoot typically sounds fine however you set it. But now you can!
+
+I don't remove plugins that work, so this doesn't replace LRConvolve (I'm not sure who would care if it did, but it's the principle of the thing). But you can get the LRConvolve sound out of it easily enough by turning Soar up ALL the way. So there's a start: the 'crazy' can be dialed back through turning down the Soar control. Both channels still completely convolve and phase-flip each other, and it still results in an intense mess of audio.
+
+But when you run more typical sounds against each other (rather than using something predictable like a full-amplitude sine), suddenly a whole new behavior emerges. Turns out, if you reduce Soar on this algorithm and have two sounds convolving each other, there's a full range of behavior between 'mostly choked out' and 'hypercompressed and exaggerated'! This will also apply to some extent to SquareRoot, except that LRConvolve2 highlights the behavior because more sounds will be forced into the 'quiet' zone where Soar operates.
+
+For that reason, it might come in handy just sussing out how the algorithm works as it's used in SquareRoot: or, using it like the original LRConvolve but with additional tonal control that's unique to what that plugin is. I'm working on other plugins such as the Bezier-curve compressor for ConsoleH, plus a wild project (sort of an art project) around making literal buotique stompboxes, so if this isn't the plugin for you, wait a week and I'll make another :)
+
+
