@@ -1,0 +1,15 @@
+# RingModulator repitches sounds mathematically, not harmonically.
+
+Here's an effect not for every day or the master buss! (pause, for fans to immediately insist that they use it on their master buss and it changed their life)
+
+So, this is probably the major offshoot from SquareRoot apart from its use as an overdrive. RingModulator is like LRConvolve, except you always have the most polite possible convolver (a sine) and you get to control it to do whatever you like, from subsonic LFO throbs to very high pitches. In fact, when you're in stereo you get two independent sines to play with!
+
+The rest is simply a ring modulator, the device that makes voices into Daleks or electric pianos into oddly clangy discordant inharmonic sounds. Ring modulators can produce mathematically, not harmonically, related sounds. That means it 'tracks' quickly to whatever your raw sound is, but the notes it adds are out of tune: going off, or even going in the reverse of your original note's direction.
+
+That's because if you take a note, and convolve it by a nearby note, you'll produce a higher note but also a strong subharmonic. Since the ring modulator is flipping phase at musical frequencies, it can produce an apparent note way lower than itself or the source note, through that interference. It'll also tend to cut the lows in the source audio if it's at a high frequency, because if you're constantly flipping the phase of a bass note it kinda goes away on you.
+
+Then to top it off, RingModulator has the Soar control… so you can wildly alter the texture of the additional notes (including stereo added notes when you've got the Freq controls set to different settings) by either reducing Soar for a gatey, thin sound, or boosting it for a dense and lively sound! The reason Soar's important here is because convolving stuff is multiplying, and if you square something (multiply it by itself) and then take a square root you get the original thing back. So Soar is my way of restoring the density of the original sound coming in, except that it opens up a new way to alter the tone of things.
+
+Hope you like it!
+
+
