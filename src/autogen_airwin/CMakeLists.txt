@@ -301,6 +301,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DrumSlamProc.cpp
    src/autogen_airwin/DubCenter.cpp
    src/autogen_airwin/DubCenterProc.cpp
+   src/autogen_airwin/DubPlate.cpp
+   src/autogen_airwin/DubPlateProc.cpp
    src/autogen_airwin/DubSub.cpp
    src/autogen_airwin/DubSubProc.cpp
    src/autogen_airwin/DubSub2.cpp
