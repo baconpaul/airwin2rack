@@ -49,6 +49,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/BeamProc.cpp
    src/autogen_airwin/BezEQ.cpp
    src/autogen_airwin/BezEQProc.cpp
+   src/autogen_airwin/BeziComp.cpp
+   src/autogen_airwin/BeziCompProc.cpp
    src/autogen_airwin/BigAmp.cpp
    src/autogen_airwin/BigAmpProc.cpp
    src/autogen_airwin/Biquad.cpp
@@ -487,6 +489,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/MackityProc.cpp
    src/autogen_airwin/Mastering.cpp
    src/autogen_airwin/MasteringProc.cpp
+   src/autogen_airwin/Mastering2.cpp
+   src/autogen_airwin/Mastering2Proc.cpp
    src/autogen_airwin/MatrixVerb.cpp
    src/autogen_airwin/MatrixVerbProc.cpp
    src/autogen_airwin/Melt.cpp
@@ -667,6 +671,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SlewSonicProc.cpp
    src/autogen_airwin/Smooth.cpp
    src/autogen_airwin/SmoothProc.cpp
+   src/autogen_airwin/SoftClock.cpp
+   src/autogen_airwin/SoftClockProc.cpp
    src/autogen_airwin/SoftGate.cpp
    src/autogen_airwin/SoftGateProc.cpp
    src/autogen_airwin/SpatializeDither.cpp
