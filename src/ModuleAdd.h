@@ -18,6 +18,10 @@ int Air2_unused = AirwinRegistry::registerAirwindow({"Air2", "Brightness", 69, "
 int Air3_unused = AirwinRegistry::registerAirwindow({"Air3", "Brightness", 56, "Air3 creates a new form of air-band EQ based on Kalman filtering.", airwinconsolidated::Air3::kNumParameters, "2024-03-10", []() { return std::make_unique<airwinconsolidated::Air3::Air3>(0); }, -1, { }});
 #include "autogen_airwin/Air4.h"
 int Air4_unused = AirwinRegistry::registerAirwindow({"Air4", "Brightness", 55, "Air4 extends Air3 with controllable high frequency limiting.", airwinconsolidated::Air4::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::Air4::Air4>(0); }, -1, { "Recommended", "Latest" }});
+#include "autogen_airwin/AngleEQ.h"
+int AngleEQ_unused = AirwinRegistry::registerAirwindow({"AngleEQ", "Unclassified", -1, "", airwinconsolidated::AngleEQ::kNumParameters, "2025-03-30", []() { return std::make_unique<airwinconsolidated::AngleEQ::AngleEQ>(0); }, -1, { }});
+#include "autogen_airwin/AngleFilter.h"
+int AngleFilter_unused = AirwinRegistry::registerAirwindow({"AngleFilter", "Unclassified", -1, "", airwinconsolidated::AngleFilter::kNumParameters, "2025-03-30", []() { return std::make_unique<airwinconsolidated::AngleFilter::AngleFilter>(0); }, -1, { }});
 #include "autogen_airwin/Apicolypse.h"
 int Apicolypse_unused = AirwinRegistry::registerAirwindow({"Apicolypse", "Tone Color", 366, "Apicolypse is a re-release of my old API-style color adder, exacly as it was.", airwinconsolidated::Apicolypse::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Apicolypse::Apicolypse>(0); }, -1, { }});
 #include "autogen_airwin/AtmosphereBuss.h"
@@ -44,6 +48,8 @@ int BassKit_unused = AirwinRegistry::registerAirwindow({"BassKit", "Bass", 40, "
 int Baxandall_unused = AirwinRegistry::registerAirwindow({"Baxandall", "Filter", 248, "Baxandall is a killer general-purpose EQ.", airwinconsolidated::Baxandall::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Baxandall::Baxandall>(0); }, -1, { }});
 #include "autogen_airwin/Baxandall2.h"
 int Baxandall2_unused = AirwinRegistry::registerAirwindow({"Baxandall2", "Filter", 230, "Baxandall2 is Baxandall, extended and made more powerful.", airwinconsolidated::Baxandall2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Baxandall2::Baxandall2>(0); }, -1, { "Latest" }});
+#include "autogen_airwin/Baxandall3.h"
+int Baxandall3_unused = AirwinRegistry::registerAirwindow({"Baxandall3", "Unclassified", -1, "", airwinconsolidated::Baxandall3::kNumParameters, "2025-03-30", []() { return std::make_unique<airwinconsolidated::Baxandall3::Baxandall3>(0); }, -1, { }});
 #include "autogen_airwin/Beam.h"
 int Beam_unused = AirwinRegistry::registerAirwindow({"Beam", "Dithers", 153, "Beam is a wordlength reducer that tries to heighten sonority.", airwinconsolidated::Beam::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Beam::Beam>(0); }, -1, { }});
 #include "autogen_airwin/BezEQ.h"
@@ -248,6 +254,8 @@ int Dark_unused = AirwinRegistry::registerAirwindow({"Dark", "Dithers", 146, "Da
 int DarkNoise_unused = AirwinRegistry::registerAirwindow({"DarkNoise", "Noise", 282, "DarkNoise is an alternative method for producing bassier noise directly. Sound design stuff.", airwinconsolidated::DarkNoise::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DarkNoise::DarkNoise>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/DeBess.h"
 int DeBess_unused = AirwinRegistry::registerAirwindow({"DeBess", "Brightness", 58, "DeBess is an improved DeEss, with perfect rejection of non-ess audio.", airwinconsolidated::DeBess::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DeBess::DeBess>(0); }, -1, { "Recommended", "Latest" }});
+#include "autogen_airwin/DeCrackle.h"
+int DeCrackle_unused = AirwinRegistry::registerAirwindow({"DeCrackle", "Unclassified", -1, "", airwinconsolidated::DeCrackle::kNumParameters, "2025-03-30", []() { return std::make_unique<airwinconsolidated::DeCrackle::DeCrackle>(0); }, -1, { }});
 #include "autogen_airwin/DeEss.h"
 int DeEss_unused = AirwinRegistry::registerAirwindow({"DeEss", "Brightness", 63, "DeEss is the best de-essing solution there is. A go-to utility plugin.", airwinconsolidated::DeEss::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DeEss::DeEss>(0); }, -1, { }});
 #include "autogen_airwin/DeHiss.h"
@@ -303,7 +311,9 @@ int DrumSlam_unused = AirwinRegistry::registerAirwindow({"DrumSlam", "Dynamics",
 #include "autogen_airwin/DubCenter.h"
 int DubCenter_unused = AirwinRegistry::registerAirwindow({"DubCenter", "Bass", 41, "DubCenter is a version of DubSub where the bass reinforcement is purely mono.", airwinconsolidated::DubCenter::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DubCenter::DubCenter>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/DubPlate.h"
-int DubPlate_unused = AirwinRegistry::registerAirwindow({"DubPlate", "Utility", 379, "DubPlate is like a busy mastering house for electronic music.", airwinconsolidated::DubPlate::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::DubPlate::DubPlate>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int DubPlate_unused = AirwinRegistry::registerAirwindow({"DubPlate", "Utility", 379, "DubPlate is ruthless dubplate mastering for electronic music.", airwinconsolidated::DubPlate::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::DubPlate::DubPlate>(0); }, -1, { "Basic" }});
+#include "autogen_airwin/DubPlate2.h"
+int DubPlate2_unused = AirwinRegistry::registerAirwindow({"DubPlate2", "Unclassified", -1, "DubPlate2 is like an ITB mastering house for electronic music.", airwinconsolidated::DubPlate2::kNumParameters, "2025-03-30", []() { return std::make_unique<airwinconsolidated::DubPlate2::DubPlate2>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/DubSub.h"
 int DubSub_unused = AirwinRegistry::registerAirwindow({"DubSub", "Bass", 42, "DubSub is a fully featured bass doctor.", airwinconsolidated::DubSub::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DubSub::DubSub>(0); }, -1, { }});
 #include "autogen_airwin/DubSub2.h"

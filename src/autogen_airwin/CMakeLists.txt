@@ -19,6 +19,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Air3Proc.cpp
    src/autogen_airwin/Air4.cpp
    src/autogen_airwin/Air4Proc.cpp
+   src/autogen_airwin/AngleEQ.cpp
+   src/autogen_airwin/AngleEQProc.cpp
+   src/autogen_airwin/AngleFilter.cpp
+   src/autogen_airwin/AngleFilterProc.cpp
    src/autogen_airwin/Apicolypse.cpp
    src/autogen_airwin/ApicolypseProc.cpp
    src/autogen_airwin/AtmosphereBuss.cpp
@@ -45,6 +49,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/BaxandallProc.cpp
    src/autogen_airwin/Baxandall2.cpp
    src/autogen_airwin/Baxandall2Proc.cpp
+   src/autogen_airwin/Baxandall3.cpp
+   src/autogen_airwin/Baxandall3Proc.cpp
    src/autogen_airwin/Beam.cpp
    src/autogen_airwin/BeamProc.cpp
    src/autogen_airwin/BezEQ.cpp
@@ -249,6 +255,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DarkNoiseProc.cpp
    src/autogen_airwin/DeBess.cpp
    src/autogen_airwin/DeBessProc.cpp
+   src/autogen_airwin/DeCrackle.cpp
+   src/autogen_airwin/DeCrackleProc.cpp
    src/autogen_airwin/DeEss.cpp
    src/autogen_airwin/DeEssProc.cpp
    src/autogen_airwin/DeHiss.cpp
@@ -305,6 +313,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DubCenterProc.cpp
    src/autogen_airwin/DubPlate.cpp
    src/autogen_airwin/DubPlateProc.cpp
+   src/autogen_airwin/DubPlate2.cpp
+   src/autogen_airwin/DubPlate2Proc.cpp
    src/autogen_airwin/DubSub.cpp
    src/autogen_airwin/DubSubProc.cpp
    src/autogen_airwin/DubSub2.cpp
