@@ -603,6 +603,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Pressure4Proc.cpp
    src/autogen_airwin/Pressure5.cpp
    src/autogen_airwin/Pressure5Proc.cpp
+   src/autogen_airwin/PrimeFIR.cpp
+   src/autogen_airwin/PrimeFIRProc.cpp
    src/autogen_airwin/PurestAir.cpp
    src/autogen_airwin/PurestAirProc.cpp
    src/autogen_airwin/PurestConsole2Buss.cpp
@@ -681,6 +683,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SlewSonicProc.cpp
    src/autogen_airwin/Smooth.cpp
    src/autogen_airwin/SmoothProc.cpp
+   src/autogen_airwin/SmoothEQ.cpp
+   src/autogen_airwin/SmoothEQProc.cpp
    src/autogen_airwin/SoftClock.cpp
    src/autogen_airwin/SoftClockProc.cpp
    src/autogen_airwin/SoftGate.cpp
