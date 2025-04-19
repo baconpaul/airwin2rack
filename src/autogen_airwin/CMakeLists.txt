@@ -585,6 +585,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PodcastDeluxeProc.cpp
    src/autogen_airwin/Point.cpp
    src/autogen_airwin/PointProc.cpp
+   src/autogen_airwin/PointyGuitar.cpp
+   src/autogen_airwin/PointyGuitarProc.cpp
    src/autogen_airwin/Pop.cpp
    src/autogen_airwin/PopProc.cpp
    src/autogen_airwin/Pop2.cpp
