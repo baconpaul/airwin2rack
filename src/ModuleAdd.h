@@ -37,7 +37,7 @@ int AverMatrix_unused = AirwinRegistry::registerAirwindow({"AverMatrix", "Filter
 #include "autogen_airwin/Average.h"
 int Average_unused = AirwinRegistry::registerAirwindow({"Average", "Filter", 248, "Average is a distinctive sort of lowpass filter.", airwinconsolidated::Average::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Average::Average>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Balanced.h"
-int Balanced_unused = AirwinRegistry::registerAirwindow({"Balanced", "Utility", 408, "Balanced lets you run an XLR input into a stereo input, sum it to mono, and use it.", airwinconsolidated::Balanced::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Balanced::Balanced>(0); }, -1, { "Latest" }});
+int Balanced_unused = AirwinRegistry::registerAirwindow({"Balanced", "Utility", 409, "Balanced lets you run an XLR input into a stereo input, sum it to mono, and use it.", airwinconsolidated::Balanced::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Balanced::Balanced>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/BassAmp.h"
 int BassAmp_unused = AirwinRegistry::registerAirwindow({"BassAmp", "Amp Sims", 36, "BassAmp is an old plugin with new tweaks, that gives some bass guitar tones.", airwinconsolidated::BassAmp::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::BassAmp::BassAmp>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/BassDrive.h"
@@ -79,9 +79,9 @@ int BiquadTriple_unused = AirwinRegistry::registerAirwindow({"BiquadTriple", "Bi
 #include "autogen_airwin/BitGlitter.h"
 int BitGlitter_unused = AirwinRegistry::registerAirwindow({"BitGlitter", "Lo-Fi", 272, "BitGlitter is an old-sampler style digital lo-fi plugin.", airwinconsolidated::BitGlitter::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::BitGlitter::BitGlitter>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/BitShiftGain.h"
-int BitShiftGain_unused = AirwinRegistry::registerAirwindow({"BitShiftGain", "Utility", 390, "BitShiftGain is the ‘One Weird Trick’ perfect boost/pad, but in 6db increments ONLY.", airwinconsolidated::BitShiftGain::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::BitShiftGain::BitShiftGain>(0); }, -1, { "Basic", "Latest" }});
+int BitShiftGain_unused = AirwinRegistry::registerAirwindow({"BitShiftGain", "Utility", 391, "BitShiftGain is the ‘One Weird Trick’ perfect boost/pad, but in 6db increments ONLY.", airwinconsolidated::BitShiftGain::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::BitShiftGain::BitShiftGain>(0); }, -1, { "Basic", "Latest" }});
 #include "autogen_airwin/BitShiftPan.h"
-int BitShiftPan_unused = AirwinRegistry::registerAirwindow({"BitShiftPan", "Utility", 389, "BitShiftPan gives you a gain and a pan control that are ONLY done using bit shifts.", airwinconsolidated::BitShiftPan::kNumParameters, "2023-05-13", []() { return std::make_unique<airwinconsolidated::BitShiftPan::BitShiftPan>(0); }, -1, { "Recommended", "Latest" }});
+int BitShiftPan_unused = AirwinRegistry::registerAirwindow({"BitShiftPan", "Utility", 390, "BitShiftPan gives you a gain and a pan control that are ONLY done using bit shifts.", airwinconsolidated::BitShiftPan::kNumParameters, "2023-05-13", []() { return std::make_unique<airwinconsolidated::BitShiftPan::BitShiftPan>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Bite.h"
 int Bite_unused = AirwinRegistry::registerAirwindow({"Bite", "Lo-Fi", 278, "Bite is an unusual edge-maker.", airwinconsolidated::Bite::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Bite::Bite>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/BlockParty.h"
@@ -115,9 +115,9 @@ int Cabs_unused = AirwinRegistry::registerAirwindow({"Cabs", "Amp Sims", 34, "Ca
 #include "autogen_airwin/Calibre.h"
 int Calibre_unused = AirwinRegistry::registerAirwindow({"Calibre", "Tone Color", 372, "Calibre is a re-release of another old Character plugin.", airwinconsolidated::Calibre::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Calibre::Calibre>(0); }, -1, { }});
 #include "autogen_airwin/Cans.h"
-int Cans_unused = AirwinRegistry::registerAirwindow({"Cans", "Utility", 385, "Cans is a room simulator for headphone mixers.", airwinconsolidated::Cans::kNumParameters, "2024-08-18", []() { return std::make_unique<airwinconsolidated::Cans::Cans>(0); }, -1, { "Recommended", "Latest" }});
+int Cans_unused = AirwinRegistry::registerAirwindow({"Cans", "Utility", 386, "Cans is a room simulator for headphone mixers.", airwinconsolidated::Cans::kNumParameters, "2024-08-18", []() { return std::make_unique<airwinconsolidated::Cans::Cans>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/CansAW.h"
-int CansAW_unused = AirwinRegistry::registerAirwindow({"CansAW", "Utility", 384, "CansAW is Chris's Airwindows room, in a plugin, for headphone mixers.", airwinconsolidated::CansAW::kNumParameters, "2025-02-09", []() { return std::make_unique<airwinconsolidated::CansAW::CansAW>(0); }, -1, { "Recommended", "Latest" }});
+int CansAW_unused = AirwinRegistry::registerAirwindow({"CansAW", "Utility", 385, "CansAW is Chris's Airwindows room, in a plugin, for headphone mixers.", airwinconsolidated::CansAW::kNumParameters, "2025-02-09", []() { return std::make_unique<airwinconsolidated::CansAW::CansAW>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Capacitor.h"
 int Capacitor_unused = AirwinRegistry::registerAirwindow({"Capacitor", "Filter", 254, "Capacitor is a lowpass/highpass filter of a new type.", airwinconsolidated::Capacitor::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Capacitor::Capacitor>(0); }, -1, { }});
 #include "autogen_airwin/Capacitor2.h"
@@ -233,7 +233,7 @@ int ConsoleXChannel_unused = AirwinRegistry::registerAirwindow({"ConsoleXChannel
 #include "autogen_airwin/ConsoleXPre.h"
 int ConsoleXPre_unused = AirwinRegistry::registerAirwindow({"ConsoleXPre", "Unclassified", -1, "", airwinconsolidated::ConsoleXPre::kNumParameters, "2024-09-22", []() { return std::make_unique<airwinconsolidated::ConsoleXPre::ConsoleXPre>(0); }, -1, { }});
 #include "autogen_airwin/ContentHideD.h"
-int ContentHideD_unused = AirwinRegistry::registerAirwindow({"ContentHideD", "Utility", 412, "ContentHideD mutes audio except for brief glimpses.", airwinconsolidated::ContentHideD::kNumParameters, "2024-03-30", []() { return std::make_unique<airwinconsolidated::ContentHideD::ContentHideD>(0); }, -1, { "Latest" }});
+int ContentHideD_unused = AirwinRegistry::registerAirwindow({"ContentHideD", "Utility", 413, "ContentHideD mutes audio except for brief glimpses.", airwinconsolidated::ContentHideD::kNumParameters, "2024-03-30", []() { return std::make_unique<airwinconsolidated::ContentHideD::ContentHideD>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/CreamCoat.h"
 int CreamCoat_unused = AirwinRegistry::registerAirwindow({"CreamCoat", "Reverb", 293, "CreamCoat is a swiss army knife reverb with soft undersampling.", airwinconsolidated::CreamCoat::kNumParameters, "2024-06-23", []() { return std::make_unique<airwinconsolidated::CreamCoat::CreamCoat>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/Creature.h"
@@ -247,7 +247,7 @@ int CrunchyGrooveWear_unused = AirwinRegistry::registerAirwindow({"CrunchyGroove
 #include "autogen_airwin/Crystal.h"
 int Crystal_unused = AirwinRegistry::registerAirwindow({"Crystal", "Tone Color", 374, "Crystal is a tone shaper and buss soft-clipper.", airwinconsolidated::Crystal::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Crystal::Crystal>(0); }, -1, { }});
 #include "autogen_airwin/DCVoltage.h"
-int DCVoltage_unused = AirwinRegistry::registerAirwindow({"DCVoltage", "Utility", 399, "DCVoltage is literally a DC control voltage, in a plugin.", airwinconsolidated::DCVoltage::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DCVoltage::DCVoltage>(0); }, -1, { "Latest" }});
+int DCVoltage_unused = AirwinRegistry::registerAirwindow({"DCVoltage", "Utility", 400, "DCVoltage is literally a DC control voltage, in a plugin.", airwinconsolidated::DCVoltage::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DCVoltage::DCVoltage>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Dark.h"
 int Dark_unused = AirwinRegistry::registerAirwindow({"Dark", "Dithers", 147, "Dark is a wordlength reducer that gives your music a blacker backdrop.", airwinconsolidated::Dark::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Dark::Dark>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/DarkNoise.h"
@@ -311,9 +311,9 @@ int DrumSlam_unused = AirwinRegistry::registerAirwindow({"DrumSlam", "Dynamics",
 #include "autogen_airwin/DubCenter.h"
 int DubCenter_unused = AirwinRegistry::registerAirwindow({"DubCenter", "Bass", 42, "DubCenter is a version of DubSub where the bass reinforcement is purely mono.", airwinconsolidated::DubCenter::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DubCenter::DubCenter>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/DubPlate.h"
-int DubPlate_unused = AirwinRegistry::registerAirwindow({"DubPlate", "Utility", 383, "DubPlate is ruthless dubplate mastering for electronic music.", airwinconsolidated::DubPlate::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::DubPlate::DubPlate>(0); }, -1, { "Basic" }});
+int DubPlate_unused = AirwinRegistry::registerAirwindow({"DubPlate", "Utility", 384, "DubPlate is ruthless dubplate mastering for electronic music.", airwinconsolidated::DubPlate::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::DubPlate::DubPlate>(0); }, -1, { "Basic" }});
 #include "autogen_airwin/DubPlate2.h"
-int DubPlate2_unused = AirwinRegistry::registerAirwindow({"DubPlate2", "Utility", 382, "DubPlate2 is like an ITB mastering house for electronic music.", airwinconsolidated::DubPlate2::kNumParameters, "2025-03-30", []() { return std::make_unique<airwinconsolidated::DubPlate2::DubPlate2>(0); }, -1, { "Recommended", "Latest" }});
+int DubPlate2_unused = AirwinRegistry::registerAirwindow({"DubPlate2", "Utility", 383, "DubPlate2 is like an ITB mastering house for electronic music.", airwinconsolidated::DubPlate2::kNumParameters, "2025-03-30", []() { return std::make_unique<airwinconsolidated::DubPlate2::DubPlate2>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/DubSub.h"
 int DubSub_unused = AirwinRegistry::registerAirwindow({"DubSub", "Bass", 43, "DubSub is a fully featured bass doctor.", airwinconsolidated::DubSub::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DubSub::DubSub>(0); }, -1, { }});
 #include "autogen_airwin/DubSub2.h"
@@ -333,7 +333,7 @@ int Dyno_unused = AirwinRegistry::registerAirwindow({"Dyno", "Saturation", 325, 
 #include "autogen_airwin/EQ.h"
 int EQ_unused = AirwinRegistry::registerAirwindow({"EQ", "Filter", 253, "EQ is just the EQ parts of CStrip.", airwinconsolidated::EQ::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::EQ::EQ>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/EdIsDim.h"
-int EdIsDim_unused = AirwinRegistry::registerAirwindow({"EdIsDim", "Utility", 402, "EdIsDim is mid/side conversion utility plugins.", airwinconsolidated::EdIsDim::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::EdIsDim::EdIsDim>(0); }, -1, { "Latest" }});
+int EdIsDim_unused = AirwinRegistry::registerAirwindow({"EdIsDim", "Utility", 403, "EdIsDim is mid/side conversion utility plugins.", airwinconsolidated::EdIsDim::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::EdIsDim::EdIsDim>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Edge.h"
 int Edge_unused = AirwinRegistry::registerAirwindow({"Edge", "Distortion", 135, "Edge is a seven-stage distortion with Hypersonic filtering and tone shaping controls.", airwinconsolidated::Edge::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Edge::Edge>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Elation.h"
@@ -353,7 +353,7 @@ int EveryConsole_unused = AirwinRegistry::registerAirwindow({"EveryConsole", "Co
 #include "autogen_airwin/EverySlew.h"
 int EverySlew_unused = AirwinRegistry::registerAirwindow({"EverySlew", "Brightness", 66, "EverySlew is a wide variety of unique sound processing tools.", airwinconsolidated::EverySlew::kNumParameters, "2023-07-22", []() { return std::make_unique<airwinconsolidated::EverySlew::EverySlew>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/EveryTrim.h"
-int EveryTrim_unused = AirwinRegistry::registerAirwindow({"EveryTrim", "Utility", 393, "EveryTrim is Left/Right, Mid/Side, and Master in one plugin.", airwinconsolidated::EveryTrim::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::EveryTrim::EveryTrim>(0); }, -1, { "Latest" }});
+int EveryTrim_unused = AirwinRegistry::registerAirwindow({"EveryTrim", "Utility", 394, "EveryTrim is Left/Right, Mid/Side, and Master in one plugin.", airwinconsolidated::EveryTrim::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::EveryTrim::EveryTrim>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Exciter.h"
 int Exciter_unused = AirwinRegistry::registerAirwindow({"Exciter", "Effects", 218, "Exciter is an Aural Exciter plugin that can be both subtle and extreme.", airwinconsolidated::Exciter::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Exciter::Exciter>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Facet.h"
@@ -365,7 +365,7 @@ int FinalClip_unused = AirwinRegistry::registerAirwindow({"FinalClip", "Clipping
 #include "autogen_airwin/FireAmp.h"
 int FireAmp_unused = AirwinRegistry::registerAirwindow({"FireAmp", "Amp Sims", 27, "FireAmp is a bright, loud, tubey amp sim for leads and dirt guitar.", airwinconsolidated::FireAmp::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::FireAmp::FireAmp>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Flipity.h"
-int Flipity_unused = AirwinRegistry::registerAirwindow({"Flipity", "Utility", 409, "Flipity is a channel phase flipper/swapper utility.", airwinconsolidated::Flipity::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Flipity::Flipity>(0); }, -1, { "Latest" }});
+int Flipity_unused = AirwinRegistry::registerAirwindow({"Flipity", "Utility", 410, "Flipity is a channel phase flipper/swapper utility.", airwinconsolidated::Flipity::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Flipity::Flipity>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Floor.h"
 int Floor_unused = AirwinRegistry::registerAirwindow({"Floor", "Bass", 44, "Floor is fake bottom octave for fun and profit!", airwinconsolidated::Floor::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Floor::Floor>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Flutter.h"
@@ -395,7 +395,7 @@ int GlitchShifter_unused = AirwinRegistry::registerAirwindow({"GlitchShifter", "
 #include "autogen_airwin/GoldenSlew.h"
 int GoldenSlew_unused = AirwinRegistry::registerAirwindow({"GoldenSlew", "Brightness", 60, "GoldenSlew is a multistage slew clipper based on the Golden Ratio.", airwinconsolidated::GoldenSlew::kNumParameters, "2023-07-02", []() { return std::make_unique<airwinconsolidated::GoldenSlew::GoldenSlew>(0); }, -1, { }});
 #include "autogen_airwin/Golem.h"
-int Golem_unused = AirwinRegistry::registerAirwindow({"Golem", "Utility", 398, "Golem lets you blend a stereo track of two mics on an amp.", airwinconsolidated::Golem::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Golem::Golem>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int Golem_unused = AirwinRegistry::registerAirwindow({"Golem", "Utility", 399, "Golem lets you blend a stereo track of two mics on an amp.", airwinconsolidated::Golem::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Golem::Golem>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/GrindAmp.h"
 int GrindAmp_unused = AirwinRegistry::registerAirwindow({"GrindAmp", "Amp Sims", 26, "GrindAmp is a heavier amp sim for many purposes.", airwinconsolidated::GrindAmp::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::GrindAmp::GrindAmp>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Gringer.h"
@@ -407,7 +407,7 @@ int GuitarConditioner_unused = AirwinRegistry::registerAirwindow({"GuitarConditi
 #include "autogen_airwin/HardVacuum.h"
 int HardVacuum_unused = AirwinRegistry::registerAirwindow({"HardVacuum", "Distortion", 144, "HardVacuum is tube style saturation effects.", airwinconsolidated::HardVacuum::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::HardVacuum::HardVacuum>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/HermeTrim.h"
-int HermeTrim_unused = AirwinRegistry::registerAirwindow({"HermeTrim", "Utility", 394, "HermeTrim is Very Fine Adjustments, otherwise just like EveryTrim.", airwinconsolidated::HermeTrim::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::HermeTrim::HermeTrim>(0); }, -1, { "Latest" }});
+int HermeTrim_unused = AirwinRegistry::registerAirwindow({"HermeTrim", "Utility", 395, "HermeTrim is Very Fine Adjustments, otherwise just like EveryTrim.", airwinconsolidated::HermeTrim::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::HermeTrim::HermeTrim>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Hermepass.h"
 int Hermepass_unused = AirwinRegistry::registerAirwindow({"Hermepass", "Bass", 40, "Hermepass is a mastering highpass to set by ear only.", airwinconsolidated::Hermepass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Hermepass::Hermepass>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/HighGlossDither.h"
@@ -463,9 +463,9 @@ int Isolator3_unused = AirwinRegistry::registerAirwindow({"Isolator3", "Filter",
 #include "autogen_airwin/Kalman.h"
 int Kalman_unused = AirwinRegistry::registerAirwindow({"Kalman", "Filter", 243, "Kalman is not a real filter!", airwinconsolidated::Kalman::kNumParameters, "2024-03-10", []() { return std::make_unique<airwinconsolidated::Kalman::Kalman>(0); }, -1, { }});
 #include "autogen_airwin/LRConvolve.h"
-int LRConvolve_unused = AirwinRegistry::registerAirwindow({"LRConvolve", "Utility", 401, "LRConvolve multiplies each channel by the other!", airwinconsolidated::LRConvolve::kNumParameters, "2025-01-26", []() { return std::make_unique<airwinconsolidated::LRConvolve::LRConvolve>(0); }, -1, { }});
+int LRConvolve_unused = AirwinRegistry::registerAirwindow({"LRConvolve", "Utility", 402, "LRConvolve multiplies each channel by the other!", airwinconsolidated::LRConvolve::kNumParameters, "2025-01-26", []() { return std::make_unique<airwinconsolidated::LRConvolve::LRConvolve>(0); }, -1, { }});
 #include "autogen_airwin/LRConvolve2.h"
-int LRConvolve2_unused = AirwinRegistry::registerAirwindow({"LRConvolve2", "Utility", 400, "LRConvolve2 multiplies each channel by the other, plus Soar!", airwinconsolidated::LRConvolve2::kNumParameters, "2025-02-16", []() { return std::make_unique<airwinconsolidated::LRConvolve2::LRConvolve2>(0); }, -1, { "Latest" }});
+int LRConvolve2_unused = AirwinRegistry::registerAirwindow({"LRConvolve2", "Utility", 401, "LRConvolve2 multiplies each channel by the other, plus Soar!", airwinconsolidated::LRConvolve2::kNumParameters, "2025-02-16", []() { return std::make_unique<airwinconsolidated::LRConvolve2::LRConvolve2>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/LRConvolve3.h"
 int LRConvolve3_unused = AirwinRegistry::registerAirwindow({"LRConvolve3", "Unclassified", -1, "", airwinconsolidated::LRConvolve3::kNumParameters, "2025-02-16", []() { return std::make_unique<airwinconsolidated::LRConvolve3::LRConvolve3>(0); }, -1, { }});
 #include "autogen_airwin/LRFlipTimer.h"
@@ -473,7 +473,7 @@ int LRFlipTimer_unused = AirwinRegistry::registerAirwindow({"LRFlipTimer", "Ster
 #include "autogen_airwin/LeadAmp.h"
 int LeadAmp_unused = AirwinRegistry::registerAirwindow({"LeadAmp", "Amp Sims", 28, "LeadAmp is an amp sim with a clear, penetrating, vocal tone.", airwinconsolidated::LeadAmp::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::LeadAmp::LeadAmp>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/LeftoMono.h"
-int LeftoMono_unused = AirwinRegistry::registerAirwindow({"LeftoMono", "Utility", 407, "LeftoMono copies one channel to both, losslessly.", airwinconsolidated::LeftoMono::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::LeftoMono::LeftoMono>(0); }, -1, { "Latest" }});
+int LeftoMono_unused = AirwinRegistry::registerAirwindow({"LeftoMono", "Utility", 408, "LeftoMono copies one channel to both, losslessly.", airwinconsolidated::LeftoMono::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::LeftoMono::LeftoMono>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/LilAmp.h"
 int LilAmp_unused = AirwinRegistry::registerAirwindow({"LilAmp", "Amp Sims", 31, "LilAmp is a tiny amp sim, like a little bitty practice amp without that much gain.", airwinconsolidated::LilAmp::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::LilAmp::LilAmp>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Logical4.h"
@@ -507,17 +507,17 @@ int Melt_unused = AirwinRegistry::registerAirwindow({"Melt", "Ambience", 7, "Mel
 #include "autogen_airwin/MidAmp.h"
 int MidAmp_unused = AirwinRegistry::registerAirwindow({"MidAmp", "Amp Sims", 32, "MidAmp is a clean amp sim meant to work like a loud Twin or something of that nature.", airwinconsolidated::MidAmp::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::MidAmp::MidAmp>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/MidSide.h"
-int MidSide_unused = AirwinRegistry::registerAirwindow({"MidSide", "Utility", 403, "MidSide is the other side of the EdIsDim mid/side conversion utility plugin.", airwinconsolidated::MidSide::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::MidSide::MidSide>(0); }, -1, { "Latest" }});
+int MidSide_unused = AirwinRegistry::registerAirwindow({"MidSide", "Utility", 404, "MidSide is the other side of the EdIsDim mid/side conversion utility plugin.", airwinconsolidated::MidSide::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::MidSide::MidSide>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/MoNoam.h"
-int MoNoam_unused = AirwinRegistry::registerAirwindow({"MoNoam", "Utility", 410, "MoNoam gives you variations on mono, mid, and side in different channels.", airwinconsolidated::MoNoam::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::MoNoam::MoNoam>(0); }, -1, { "Latest" }});
+int MoNoam_unused = AirwinRegistry::registerAirwindow({"MoNoam", "Utility", 411, "MoNoam gives you variations on mono, mid, and side in different channels.", airwinconsolidated::MoNoam::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::MoNoam::MoNoam>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Mojo.h"
 int Mojo_unused = AirwinRegistry::registerAirwindow({"Mojo", "Saturation", 324, "Mojo is a biggenator that also works as a loudenator.", airwinconsolidated::Mojo::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Mojo::Mojo>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Monitoring.h"
-int Monitoring_unused = AirwinRegistry::registerAirwindow({"Monitoring", "Utility", 388, "Monitoring is your one-stop shop for final 2-buss work!", airwinconsolidated::Monitoring::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Monitoring::Monitoring>(0); }, -1, { }});
+int Monitoring_unused = AirwinRegistry::registerAirwindow({"Monitoring", "Utility", 389, "Monitoring is your one-stop shop for final 2-buss work!", airwinconsolidated::Monitoring::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Monitoring::Monitoring>(0); }, -1, { }});
 #include "autogen_airwin/Monitoring2.h"
-int Monitoring2_unused = AirwinRegistry::registerAirwindow({"Monitoring2", "Utility", 387, "Monitoring2 is Monitoring, but with Dark as the wordlength reducer.", airwinconsolidated::Monitoring2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Monitoring2::Monitoring2>(0); }, -1, { }});
+int Monitoring2_unused = AirwinRegistry::registerAirwindow({"Monitoring2", "Utility", 388, "Monitoring2 is Monitoring, but with Dark as the wordlength reducer.", airwinconsolidated::Monitoring2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Monitoring2::Monitoring2>(0); }, -1, { }});
 #include "autogen_airwin/Monitoring3.h"
-int Monitoring3_unused = AirwinRegistry::registerAirwindow({"Monitoring3", "Utility", 386, "Monitoring3 is Monitoring, but with Ten Nines into Dark as the wordlength reducer.", airwinconsolidated::Monitoring3::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Monitoring3::Monitoring3>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int Monitoring3_unused = AirwinRegistry::registerAirwindow({"Monitoring3", "Utility", 387, "Monitoring3 is Monitoring, but with Ten Nines into Dark as the wordlength reducer.", airwinconsolidated::Monitoring3::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Monitoring3::Monitoring3>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/MultiBandDistortion.h"
 int MultiBandDistortion_unused = AirwinRegistry::registerAirwindow({"MultiBandDistortion", "Distortion", 146, "MultiBandDistortion is an old weird gnarly sound wrecker :)", airwinconsolidated::MultiBandDistortion::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::MultiBandDistortion::MultiBandDistortion>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/NCSeventeen.h"
@@ -559,7 +559,7 @@ int PaulDither_unused = AirwinRegistry::registerAirwindow({"PaulDither", "Dither
 #include "autogen_airwin/PaulWide.h"
 int PaulWide_unused = AirwinRegistry::registerAirwindow({"PaulWide", "Dithers", 148, "PaulWide is a highpassed TPDF wide dither. (quieter, airier AND wider)", airwinconsolidated::PaulWide::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PaulWide::PaulWide>(0); }, -1, { "Recommended" }});
 #include "autogen_airwin/PeaksOnly.h"
-int PeaksOnly_unused = AirwinRegistry::registerAirwindow({"PeaksOnly", "Utility", 397, "PeaksOnly is a transformative mix check tool.", airwinconsolidated::PeaksOnly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PeaksOnly::PeaksOnly>(0); }, -1, { }});
+int PeaksOnly_unused = AirwinRegistry::registerAirwindow({"PeaksOnly", "Utility", 398, "PeaksOnly is a transformative mix check tool.", airwinconsolidated::PeaksOnly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PeaksOnly::PeaksOnly>(0); }, -1, { }});
 #include "autogen_airwin/Pear.h"
 int Pear_unused = AirwinRegistry::registerAirwindow({"Pear", "Filter", 237, "Pear is the testbed for a new filter, implemented as a highpass/lowpass shelf.", airwinconsolidated::Pear::kNumParameters, "2023-06-25", []() { return std::make_unique<airwinconsolidated::Pear::Pear>(0); }, -1, { }});
 #include "autogen_airwin/Pear2.h"
@@ -625,9 +625,9 @@ int PurestDrive_unused = AirwinRegistry::registerAirwindow({"PurestDrive", "Satu
 #include "autogen_airwin/PurestEcho.h"
 int PurestEcho_unused = AirwinRegistry::registerAirwindow({"PurestEcho", "Ambience", 13, "PurestEcho is optimized Airwindows echo with exactly four evenly spaced taps on tap.", airwinconsolidated::PurestEcho::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PurestEcho::PurestEcho>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/PurestFade.h"
-int PurestFade_unused = AirwinRegistry::registerAirwindow({"PurestFade", "Utility", 392, "PurestFade is just like PurestGain, but for LONG fades.", airwinconsolidated::PurestFade::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PurestFade::PurestFade>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int PurestFade_unused = AirwinRegistry::registerAirwindow({"PurestFade", "Utility", 393, "PurestFade is just like PurestGain, but for LONG fades.", airwinconsolidated::PurestFade::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PurestFade::PurestFade>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/PurestGain.h"
-int PurestGain_unused = AirwinRegistry::registerAirwindow({"PurestGain", "Utility", 391, "PurestGain is a high-res noise shaped gain, with smoothed fader.", airwinconsolidated::PurestGain::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PurestGain::PurestGain>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int PurestGain_unused = AirwinRegistry::registerAirwindow({"PurestGain", "Utility", 392, "PurestGain is a high-res noise shaped gain, with smoothed fader.", airwinconsolidated::PurestGain::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PurestGain::PurestGain>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/PurestSquish.h"
 int PurestSquish_unused = AirwinRegistry::registerAirwindow({"PurestSquish", "Dynamics", 196, "PurestSquish is an open-sounding compressor with bass bloom.", airwinconsolidated::PurestSquish::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PurestSquish::PurestSquish>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/PurestWarm.h"
@@ -653,7 +653,7 @@ int Reverb_unused = AirwinRegistry::registerAirwindow({"Reverb", "Reverb", 313, 
 #include "autogen_airwin/Righteous4.h"
 int Righteous4_unused = AirwinRegistry::registerAirwindow({"Righteous4", "Saturation", 329, "Righteous4 is a final output stage for targeting dynamic range.", airwinconsolidated::Righteous4::kNumParameters, "2023-04-12", []() { return std::make_unique<airwinconsolidated::Righteous4::Righteous4>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/RightoMono.h"
-int RightoMono_unused = AirwinRegistry::registerAirwindow({"RightoMono", "Utility", 406, "RightoMono copies one channel to both, losslessly.", airwinconsolidated::RightoMono::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::RightoMono::RightoMono>(0); }, -1, { "Latest" }});
+int RightoMono_unused = AirwinRegistry::registerAirwindow({"RightoMono", "Utility", 407, "RightoMono copies one channel to both, losslessly.", airwinconsolidated::RightoMono::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::RightoMono::RightoMono>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/RingModulator.h"
 int RingModulator_unused = AirwinRegistry::registerAirwindow({"RingModulator", "Effects", 200, "RingModulator repitches sounds mathematically, not harmonically.", airwinconsolidated::RingModulator::kNumParameters, "2025-02-16", []() { return std::make_unique<airwinconsolidated::RingModulator::RingModulator>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/SampleDelay.h"
@@ -679,7 +679,7 @@ int Slew2_unused = AirwinRegistry::registerAirwindow({"Slew2", "Brightness", 68,
 #include "autogen_airwin/Slew3.h"
 int Slew3_unused = AirwinRegistry::registerAirwindow({"Slew3", "Brightness", 67, "Slew3 is a new approach to slew clipping meant for a more analog-like darkening effect.", airwinconsolidated::Slew3::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Slew3::Slew3>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/SlewOnly.h"
-int SlewOnly_unused = AirwinRegistry::registerAirwindow({"SlewOnly", "Utility", 395, "SlewOnly is a mix check plugin that shows you only the extreme highs.", airwinconsolidated::SlewOnly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::SlewOnly::SlewOnly>(0); }, -1, { }});
+int SlewOnly_unused = AirwinRegistry::registerAirwindow({"SlewOnly", "Utility", 396, "SlewOnly is a mix check plugin that shows you only the extreme highs.", airwinconsolidated::SlewOnly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::SlewOnly::SlewOnly>(0); }, -1, { }});
 #include "autogen_airwin/SlewSonic.h"
 int SlewSonic_unused = AirwinRegistry::registerAirwindow({"SlewSonic", "Brightness", 62, "SlewSonic combines SlewOnly with ultrasonic filtering to solo brightness.", airwinconsolidated::SlewSonic::kNumParameters, "2023-02-27", []() { return std::make_unique<airwinconsolidated::SlewSonic::SlewSonic>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Smooth.h"
@@ -687,7 +687,7 @@ int Smooth_unused = AirwinRegistry::registerAirwindow({"Smooth", "Brightness", 6
 #include "autogen_airwin/SmoothEQ.h"
 int SmoothEQ_unused = AirwinRegistry::registerAirwindow({"SmoothEQ", "Filter", 227, "SmoothEQ is a sharp, accurate, transparent three-band filter.", airwinconsolidated::SmoothEQ::kNumParameters, "2025-04-12", []() { return std::make_unique<airwinconsolidated::SmoothEQ::SmoothEQ>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/SoftClock.h"
-int SoftClock_unused = AirwinRegistry::registerAirwindow({"SoftClock", "Unclassified", -1, "", airwinconsolidated::SoftClock::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::SoftClock::SoftClock>(0); }, -1, { }});
+int SoftClock_unused = AirwinRegistry::registerAirwindow({"SoftClock", "Utility", 382, "SoftClock is a groove-oriented time reference.", airwinconsolidated::SoftClock::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::SoftClock::SoftClock>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/SoftGate.h"
 int SoftGate_unused = AirwinRegistry::registerAirwindow({"SoftGate", "Dynamics", 185, "SoftGate is a gate that can mute hiss and smooth sample tails.", airwinconsolidated::SoftGate::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::SoftGate::SoftGate>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/SpatializeDither.h"
@@ -725,7 +725,7 @@ int StudioTan_unused = AirwinRegistry::registerAirwindow({"StudioTan", "Dithers"
 #include "autogen_airwin/SubTight.h"
 int SubTight_unused = AirwinRegistry::registerAirwindow({"SubTight", "Filter", 239, "SubTight uses a variation on the Creature algorithm to tighten sub-lows.", airwinconsolidated::SubTight::kNumParameters, "2023-11-26", []() { return std::make_unique<airwinconsolidated::SubTight::SubTight>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/SubsOnly.h"
-int SubsOnly_unused = AirwinRegistry::registerAirwindow({"SubsOnly", "Utility", 396, "SubsOnly is a mix check plugin that shows you only the extreme lows.", airwinconsolidated::SubsOnly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::SubsOnly::SubsOnly>(0); }, -1, { }});
+int SubsOnly_unused = AirwinRegistry::registerAirwindow({"SubsOnly", "Utility", 397, "SubsOnly is a mix check plugin that shows you only the extreme lows.", airwinconsolidated::SubsOnly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::SubsOnly::SubsOnly>(0); }, -1, { }});
 #include "autogen_airwin/Surge.h"
 int Surge_unused = AirwinRegistry::registerAirwindow({"Surge", "Dynamics", 198, "Surge is a compressor for accentuating beats and pulses.", airwinconsolidated::Surge::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Surge::Surge>(0); }, -1, { }});
 #include "autogen_airwin/SurgeTide.h"
@@ -811,7 +811,7 @@ int VinylDither_unused = AirwinRegistry::registerAirwindow({"VinylDither", "Dith
 #include "autogen_airwin/VoiceOfTheStarship.h"
 int VoiceOfTheStarship_unused = AirwinRegistry::registerAirwindow({"VoiceOfTheStarship", "Noise", 284, "VoiceOfTheStarship is a deep noise tone source.", airwinconsolidated::VoiceOfTheStarship::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::VoiceOfTheStarship::VoiceOfTheStarship>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/VoiceTrick.h"
-int VoiceTrick_unused = AirwinRegistry::registerAirwindow({"VoiceTrick", "Utility", 411, "VoiceTrick lets you record vocals while monitoring over speakers.", airwinconsolidated::VoiceTrick::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::VoiceTrick::VoiceTrick>(0); }, -1, { }});
+int VoiceTrick_unused = AirwinRegistry::registerAirwindow({"VoiceTrick", "Utility", 412, "VoiceTrick lets you record vocals while monitoring over speakers.", airwinconsolidated::VoiceTrick::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::VoiceTrick::VoiceTrick>(0); }, -1, { }});
 #include "autogen_airwin/Weight.h"
 int Weight_unused = AirwinRegistry::registerAirwindow({"Weight", "Filter", 241, "Weight is a very accurate sub-bass boost based on Holt.", airwinconsolidated::Weight::kNumParameters, "2023-02-10", []() { return std::make_unique<airwinconsolidated::Weight::Weight>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Wider.h"
@@ -819,53 +819,53 @@ int Wider_unused = AirwinRegistry::registerAirwindow({"Wider", "Stereo", 333, "W
 #include "autogen_airwin/Wolfbot.h"
 int Wolfbot_unused = AirwinRegistry::registerAirwindow({"Wolfbot", "Amp Sims", 30, "Wolfbot is an aggressive Kalman bandpass with evil in its heart.", airwinconsolidated::Wolfbot::kNumParameters, "2024-05-25", []() { return std::make_unique<airwinconsolidated::Wolfbot::Wolfbot>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/XBandpass.h"
-int XBandpass_unused = AirwinRegistry::registerAirwindow({"XBandpass", "XYZ Filters", 431, "XBandpass is a distorted digital EQ, inspired by retro sampler DSP.", airwinconsolidated::XBandpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XBandpass::XBandpass>(0); }, -1, { "Recommended", "Latest" }});
+int XBandpass_unused = AirwinRegistry::registerAirwindow({"XBandpass", "XYZ Filters", 432, "XBandpass is a distorted digital EQ, inspired by retro sampler DSP.", airwinconsolidated::XBandpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XBandpass::XBandpass>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/XHighpass.h"
-int XHighpass_unused = AirwinRegistry::registerAirwindow({"XHighpass", "XYZ Filters", 432, "XHighpass is a distorted digital EQ, inspired by retro sampler DSP.", airwinconsolidated::XHighpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XHighpass::XHighpass>(0); }, -1, { "Recommended", "Latest" }});
+int XHighpass_unused = AirwinRegistry::registerAirwindow({"XHighpass", "XYZ Filters", 433, "XHighpass is a distorted digital EQ, inspired by retro sampler DSP.", airwinconsolidated::XHighpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XHighpass::XHighpass>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/XLowpass.h"
-int XLowpass_unused = AirwinRegistry::registerAirwindow({"XLowpass", "XYZ Filters", 433, "XLowpass is a distorted digital EQ, inspired by retro sampler DSP.", airwinconsolidated::XLowpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XLowpass::XLowpass>(0); }, -1, { "Recommended", "Latest" }});
+int XLowpass_unused = AirwinRegistry::registerAirwindow({"XLowpass", "XYZ Filters", 434, "XLowpass is a distorted digital EQ, inspired by retro sampler DSP.", airwinconsolidated::XLowpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XLowpass::XLowpass>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/XNotch.h"
-int XNotch_unused = AirwinRegistry::registerAirwindow({"XNotch", "XYZ Filters", 434, "XNotch is a distorted digital EQ, not as glitchy as the others.", airwinconsolidated::XNotch::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XNotch::XNotch>(0); }, -1, { "Recommended", "Latest" }});
+int XNotch_unused = AirwinRegistry::registerAirwindow({"XNotch", "XYZ Filters", 435, "XNotch is a distorted digital EQ, not as glitchy as the others.", airwinconsolidated::XNotch::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XNotch::XNotch>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/XRegion.h"
-int XRegion_unused = AirwinRegistry::registerAirwindow({"XRegion", "XYZ Filters", 435, "XRegion is distorted staggered bandpasses, for extreme soundmangling.", airwinconsolidated::XRegion::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XRegion::XRegion>(0); }, -1, { "Recommended", "Latest" }});
+int XRegion_unused = AirwinRegistry::registerAirwindow({"XRegion", "XYZ Filters", 436, "XRegion is distorted staggered bandpasses, for extreme soundmangling.", airwinconsolidated::XRegion::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::XRegion::XRegion>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/YBandpass.h"
-int YBandpass_unused = AirwinRegistry::registerAirwindow({"YBandpass", "XYZ Filters", 423, "YBandpass is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YBandpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YBandpass::YBandpass>(0); }, -1, { "Recommended", "Latest" }});
+int YBandpass_unused = AirwinRegistry::registerAirwindow({"YBandpass", "XYZ Filters", 424, "YBandpass is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YBandpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YBandpass::YBandpass>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/YHighpass.h"
-int YHighpass_unused = AirwinRegistry::registerAirwindow({"YHighpass", "XYZ Filters", 425, "YHighpass is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YHighpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YHighpass::YHighpass>(0); }, -1, { "Recommended", "Latest" }});
+int YHighpass_unused = AirwinRegistry::registerAirwindow({"YHighpass", "XYZ Filters", 426, "YHighpass is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YHighpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YHighpass::YHighpass>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/YLowpass.h"
-int YLowpass_unused = AirwinRegistry::registerAirwindow({"YLowpass", "XYZ Filters", 427, "YLowpass is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YLowpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YLowpass::YLowpass>(0); }, -1, { "Recommended", "Latest" }});
+int YLowpass_unused = AirwinRegistry::registerAirwindow({"YLowpass", "XYZ Filters", 428, "YLowpass is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YLowpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YLowpass::YLowpass>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/YNotBandpass.h"
-int YNotBandpass_unused = AirwinRegistry::registerAirwindow({"YNotBandpass", "XYZ Filters", 424, "YNotBandpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotBandpass::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotBandpass::YNotBandpass>(0); }, -1, { }});
+int YNotBandpass_unused = AirwinRegistry::registerAirwindow({"YNotBandpass", "XYZ Filters", 425, "YNotBandpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotBandpass::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotBandpass::YNotBandpass>(0); }, -1, { }});
 #include "autogen_airwin/YNotHighpass.h"
-int YNotHighpass_unused = AirwinRegistry::registerAirwindow({"YNotHighpass", "XYZ Filters", 426, "YNotHighpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotHighpass::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotHighpass::YNotHighpass>(0); }, -1, { }});
+int YNotHighpass_unused = AirwinRegistry::registerAirwindow({"YNotHighpass", "XYZ Filters", 427, "YNotHighpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotHighpass::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotHighpass::YNotHighpass>(0); }, -1, { }});
 #include "autogen_airwin/YNotLowpass.h"
-int YNotLowpass_unused = AirwinRegistry::registerAirwindow({"YNotLowpass", "XYZ Filters", 428, "YNotLowpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotLowpass::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotLowpass::YNotLowpass>(0); }, -1, { }});
+int YNotLowpass_unused = AirwinRegistry::registerAirwindow({"YNotLowpass", "XYZ Filters", 429, "YNotLowpass is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotLowpass::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotLowpass::YNotLowpass>(0); }, -1, { }});
 #include "autogen_airwin/YNotNotch.h"
-int YNotNotch_unused = AirwinRegistry::registerAirwindow({"YNotNotch", "XYZ Filters", 430, "YNotNotch is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotNotch::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotNotch::YNotNotch>(0); }, -1, { }});
+int YNotNotch_unused = AirwinRegistry::registerAirwindow({"YNotNotch", "XYZ Filters", 431, "YNotNotch is soft and smooth to nasty, edgy texture-varying filtering, no control smoothing.", airwinconsolidated::YNotNotch::kNumParameters, "2023-10-01", []() { return std::make_unique<airwinconsolidated::YNotNotch::YNotNotch>(0); }, -1, { }});
 #include "autogen_airwin/YNotch.h"
-int YNotch_unused = AirwinRegistry::registerAirwindow({"YNotch", "XYZ Filters", 429, "YNotch is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YNotch::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YNotch::YNotch>(0); }, -1, { "Recommended", "Latest" }});
+int YNotch_unused = AirwinRegistry::registerAirwindow({"YNotch", "XYZ Filters", 430, "YNotch is soft and smooth to nasty, edgy texture-varying filtering.", airwinconsolidated::YNotch::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::YNotch::YNotch>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/ZBandpass.h"
-int ZBandpass_unused = AirwinRegistry::registerAirwindow({"ZBandpass", "XYZ Filters", 418, "ZBandpass is a bandpass made to sound and act like the Emu e6400 Ultra bandpass.", airwinconsolidated::ZBandpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZBandpass::ZBandpass>(0); }, -1, { }});
+int ZBandpass_unused = AirwinRegistry::registerAirwindow({"ZBandpass", "XYZ Filters", 419, "ZBandpass is a bandpass made to sound and act like the Emu e6400 Ultra bandpass.", airwinconsolidated::ZBandpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZBandpass::ZBandpass>(0); }, -1, { }});
 #include "autogen_airwin/ZBandpass2.h"
-int ZBandpass2_unused = AirwinRegistry::registerAirwindow({"ZBandpass2", "XYZ Filters", 413, "ZBandpass2 acts more like the Emu e6400 Ultra bandpass in motion, with control smoothing.", airwinconsolidated::ZBandpass2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZBandpass2::ZBandpass2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int ZBandpass2_unused = AirwinRegistry::registerAirwindow({"ZBandpass2", "XYZ Filters", 414, "ZBandpass2 acts more like the Emu e6400 Ultra bandpass in motion, with control smoothing.", airwinconsolidated::ZBandpass2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZBandpass2::ZBandpass2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/ZHighpass.h"
-int ZHighpass_unused = AirwinRegistry::registerAirwindow({"ZHighpass", "XYZ Filters", 419, "ZHighpass is a highpass made to sound and act like the Emu e6400 Ultra highpass.", airwinconsolidated::ZHighpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZHighpass::ZHighpass>(0); }, -1, { }});
+int ZHighpass_unused = AirwinRegistry::registerAirwindow({"ZHighpass", "XYZ Filters", 420, "ZHighpass is a highpass made to sound and act like the Emu e6400 Ultra highpass.", airwinconsolidated::ZHighpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZHighpass::ZHighpass>(0); }, -1, { }});
 #include "autogen_airwin/ZHighpass2.h"
-int ZHighpass2_unused = AirwinRegistry::registerAirwindow({"ZHighpass2", "XYZ Filters", 414, "ZHighpass2 acts more like the Emu e6400 Ultra highpass in motion, with control smoothing.", airwinconsolidated::ZHighpass2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZHighpass2::ZHighpass2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int ZHighpass2_unused = AirwinRegistry::registerAirwindow({"ZHighpass2", "XYZ Filters", 415, "ZHighpass2 acts more like the Emu e6400 Ultra highpass in motion, with control smoothing.", airwinconsolidated::ZHighpass2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZHighpass2::ZHighpass2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/ZLowpass.h"
-int ZLowpass_unused = AirwinRegistry::registerAirwindow({"ZLowpass", "XYZ Filters", 420, "ZLowpass is a lowpass made to sound and act like the Emu e6400 Ultra lowpass.", airwinconsolidated::ZLowpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZLowpass::ZLowpass>(0); }, -1, { }});
+int ZLowpass_unused = AirwinRegistry::registerAirwindow({"ZLowpass", "XYZ Filters", 421, "ZLowpass is a lowpass made to sound and act like the Emu e6400 Ultra lowpass.", airwinconsolidated::ZLowpass::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZLowpass::ZLowpass>(0); }, -1, { }});
 #include "autogen_airwin/ZLowpass2.h"
-int ZLowpass2_unused = AirwinRegistry::registerAirwindow({"ZLowpass2", "XYZ Filters", 415, "ZLowpass2 acts more like the Emu e6400 Ultra lowpass in motion, with control smoothing.", airwinconsolidated::ZLowpass2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZLowpass2::ZLowpass2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int ZLowpass2_unused = AirwinRegistry::registerAirwindow({"ZLowpass2", "XYZ Filters", 416, "ZLowpass2 acts more like the Emu e6400 Ultra lowpass in motion, with control smoothing.", airwinconsolidated::ZLowpass2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZLowpass2::ZLowpass2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/ZNotch.h"
-int ZNotch_unused = AirwinRegistry::registerAirwindow({"ZNotch", "XYZ Filters", 421, "ZNotch is a notch filter made to sound and act like the Emu e6400 Phaser.", airwinconsolidated::ZNotch::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZNotch::ZNotch>(0); }, -1, { }});
+int ZNotch_unused = AirwinRegistry::registerAirwindow({"ZNotch", "XYZ Filters", 422, "ZNotch is a notch filter made to sound and act like the Emu e6400 Phaser.", airwinconsolidated::ZNotch::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZNotch::ZNotch>(0); }, -1, { }});
 #include "autogen_airwin/ZNotch2.h"
-int ZNotch2_unused = AirwinRegistry::registerAirwindow({"ZNotch2", "XYZ Filters", 416, "ZNotch2 acts more like the Emu e6400 Ultra phaser in motion, with control smoothing.", airwinconsolidated::ZNotch2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZNotch2::ZNotch2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int ZNotch2_unused = AirwinRegistry::registerAirwindow({"ZNotch2", "XYZ Filters", 417, "ZNotch2 acts more like the Emu e6400 Ultra phaser in motion, with control smoothing.", airwinconsolidated::ZNotch2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZNotch2::ZNotch2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/ZOutputStage.h"
 int ZOutputStage_unused = AirwinRegistry::registerAirwindow({"ZOutputStage", "Distortion", 138, "ZOutputStage is the output clipping from the Emu e6400 style Z filters.", airwinconsolidated::ZOutputStage::kNumParameters, "2023-12-21", []() { return std::make_unique<airwinconsolidated::ZOutputStage::ZOutputStage>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/ZRegion.h"
-int ZRegion_unused = AirwinRegistry::registerAirwindow({"ZRegion", "XYZ Filters", 422, "ZRegion is an Emu e6400 style Airwindows Region filter.", airwinconsolidated::ZRegion::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZRegion::ZRegion>(0); }, -1, { }});
+int ZRegion_unused = AirwinRegistry::registerAirwindow({"ZRegion", "XYZ Filters", 423, "ZRegion is an Emu e6400 style Airwindows Region filter.", airwinconsolidated::ZRegion::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZRegion::ZRegion>(0); }, -1, { }});
 #include "autogen_airwin/ZRegion2.h"
-int ZRegion2_unused = AirwinRegistry::registerAirwindow({"ZRegion2", "XYZ Filters", 417, "ZRegion2 is an Emu e6400 style Airwindows Region filter, with control smoothing.", airwinconsolidated::ZRegion2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZRegion2::ZRegion2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int ZRegion2_unused = AirwinRegistry::registerAirwindow({"ZRegion2", "XYZ Filters", 418, "ZRegion2 is an Emu e6400 style Airwindows Region filter, with control smoothing.", airwinconsolidated::ZRegion2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ZRegion2::ZRegion2>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/Zoom.h"
 int Zoom_unused = AirwinRegistry::registerAirwindow({"Zoom", "Distortion", 140, "Zoom is a bank of Density-like waveshapers for subtly modulating peak energy.", airwinconsolidated::Zoom::kNumParameters, "2024-10-13", []() { return std::make_unique<airwinconsolidated::Zoom::Zoom>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/curve.h"
@@ -893,7 +893,7 @@ int kPlateC_unused = AirwinRegistry::registerAirwindow({"kPlateC", "Reverb", 298
 #include "autogen_airwin/kPlateD.h"
 int kPlateD_unused = AirwinRegistry::registerAirwindow({"kPlateD", "Reverb", 295, "kPlateD is a plate reverb, not unlike its namesake atop Abbey Road.", airwinconsolidated::kPlateD::kNumParameters, "2023-04-09", []() { return std::make_unique<airwinconsolidated::kPlateD::kPlateD>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/uLawDecode.h"
-int uLawDecode_unused = AirwinRegistry::registerAirwindow({"uLawDecode", "Utility", 405, "uLawDecode is a Console-like encode/decode pair, but much more extreme.", airwinconsolidated::uLawDecode::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::uLawDecode::uLawDecode>(0); }, -1, { "Latest" }});
+int uLawDecode_unused = AirwinRegistry::registerAirwindow({"uLawDecode", "Utility", 406, "uLawDecode is a Console-like encode/decode pair, but much more extreme.", airwinconsolidated::uLawDecode::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::uLawDecode::uLawDecode>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/uLawEncode.h"
-int uLawEncode_unused = AirwinRegistry::registerAirwindow({"uLawEncode", "Utility", 404, "uLawEncode is a Console-like encode/decode pair, but much more extreme.", airwinconsolidated::uLawEncode::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::uLawEncode::uLawEncode>(0); }, -1, { "Latest" }});
+int uLawEncode_unused = AirwinRegistry::registerAirwindow({"uLawEncode", "Utility", 405, "uLawEncode is a Console-like encode/decode pair, but much more extreme.", airwinconsolidated::uLawEncode::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::uLawEncode::uLawEncode>(0); }, -1, { "Latest" }});
 int unusedComplete = AirwinRegistry::completeRegistry();
