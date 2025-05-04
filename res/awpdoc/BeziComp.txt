@@ -1,0 +1,27 @@
+# BeziComp is a radical compressor that eliminates aliasing!
+
+Funny how many of my Bezier curve experiments make plugins with powerful weird colorations… and then, this one is the opposite.
+
+Or at least, appears to be the opposite… until you dig a little deeper, and unleash the madness.
+
+So this is an experiment. The full range of the experiment is available, meaning 'good' settings might occupy small and fussy settings on the controls. It's Bezier curves as the result of literal sound density, so it's a compressor without attack or release, just a curve that goes wild based on what's under it, audio-wise. There are three controls that can either harness this, or just turn it loose to be weird and unexpected.
+
+Comp drives the Bezier curve: it acts like your threshold. Everything you do ends up interacting not so much with 'compressed level', as if you can set the threshold and it'll be smoothly compressed below it… no, BeziComp works largely with HOW you hit this threshold and interact with it, because if you crank Comp way up it will wrap around not to a flat amplitude, but silence. That's intentional, because the output is meant to work with what you might call a 'live' curve rather than flatten things into a featureless dynamic line. So there's a start: Comp is how much BeziComp reacts, but it flattens out to silence, not audio, so you keep Comp in check (unless you are specifically just isolating attacks in Wet using this behavior).
+
+Speed is basically DeRez, except the range goes way deeper into subsonic frequencies than usual. It still goes way up into the audio band if you like. The key here is, this sets the energy level of the Bezier curve based on a loudness window that's directly related to the Bezier curve itself. So in theory, it would smooth things out completely, except we often don't use compressors for that, do we? We slow attacks and speed releases to get sonic effects. Turns out that's what happens here, because as BeziComp reacts, the reaction is slowed by having to analyse the audio, and so as you slow it more you get a broader and broader attack on the sound. If Speed is high, it's real twitchy and will jump on transients quickly, but if Speed is real slow, you have a slower 'swing' that can be timed to a beat and used to accentuate the groove. So far, basically normal (ish).
+
+Dry/Wet is basically your ratio control, but extra. Since BeziComp wraps around to dynamically invert, Dry/Wet is the only way you can get continued sound if you're pushing Comp real hard. Anything over about halfway gets you into territories that act like vari-mu tones: the 'squish' abilities here are very extreme. Even when keeping Comp and Speed in check, when using BeziComp on something like mix buss, it will probably still be almost all Dry, because that's the only way you can force it to have a relatively low ratio. Expect to not use full Wet in many cases, treat it like full wet is sort of 'isolated delta of the effect', a more exaggerated version of what you want.
+
+Now, here's where things start to go off the rails a bit.
+
+BeziComp is modulating a Bezier curve, not following an attack and release. Speed does profoundly affect this, but not in the sense of setting a maximum speed for the behavior, instead it fixes a tightest corner with which the curve can TURN… and it's constantly willing to use that sharpest corner, and it will apply that corner to anything.
+
+That means if you have full silence followed by full density, BeziComp will attack harder and compress more than if you have just as hot a peak, but less audio behind it. It is NOT a limiter, or even a normal compressor, If you have loud audio and then sudden silence, it will begin swooping up in loudness not instantly, but on the same curve (and minimum curve radius) and then it's gonna put another curve radius on there as it hits silence, rather than simply 'switching' to full volume.
+
+This means BeziComp is more free from aliasing than any other compressor, period, even at high Speed settings. Nothing you do can make it suddenly hit the threshold and start to turn down. The amplitude modulation IS the Bezier curve, meaning it can only contain harmonics below what you set, meaning no matter what you do it can't produce an artifact over its own curve radius. And at low Speed settings, that radius is VERY wide.
+
+So, BeziComp is both able to make unexpected moves (since its maximum gain-change speed is not an Attack or Release, but whatever its Bezier curve allows it to do) and also hard to hear (because you can't go by artifacts, there are none). It's disgustingly transparent but also capable of being quirky and throwing odd bursts of loudness or silence in there. No matter how extreme you make it act, it hides the extremeness through using the Bezier curve on dynamic modulation… and no matter how well it hides its moves, it's still capable of unexpected quirks, because of that fact that the attack and release speeds aren't really just 'speeds' but curve radiuses.
+
+We're not used to using compressors that do that. Time we learned, because I think it'll be good :)
+
+
