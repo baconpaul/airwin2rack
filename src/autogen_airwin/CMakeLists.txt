@@ -139,6 +139,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Channel8Proc.cpp
    src/autogen_airwin/Channel9.cpp
    src/autogen_airwin/Channel9Proc.cpp
+   src/autogen_airwin/ChimeyGuitar.cpp
+   src/autogen_airwin/ChimeyGuitarProc.cpp
    src/autogen_airwin/Chorus.cpp
    src/autogen_airwin/ChorusProc.cpp
    src/autogen_airwin/ChorusEnsemble.cpp
@@ -879,6 +881,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kCathedral3Proc.cpp
    src/autogen_airwin/kChamberAR.cpp
    src/autogen_airwin/kChamberARProc.cpp
+   src/autogen_airwin/kCosmos.cpp
+   src/autogen_airwin/kCosmosProc.cpp
    src/autogen_airwin/kGuitarHall.cpp
    src/autogen_airwin/kGuitarHallProc.cpp
    src/autogen_airwin/kPlate140.cpp
