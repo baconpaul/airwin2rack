@@ -609,6 +609,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Pressure5Proc.cpp
    src/autogen_airwin/PrimeFIR.cpp
    src/autogen_airwin/PrimeFIRProc.cpp
+   src/autogen_airwin/PunchyGuitar.cpp
+   src/autogen_airwin/PunchyGuitarProc.cpp
    src/autogen_airwin/PurestAir.cpp
    src/autogen_airwin/PurestAirProc.cpp
    src/autogen_airwin/PurestConsole2Buss.cpp

@@ -1,0 +1,11 @@
+# AngleFilter is the synth-style extension of AngleEQ.
+
+So while I do stuff like make new forms of reverb (going from 5x5 matrices to 6x6!) and try to invent genres of music, there's this funny little filter…
+
+AngleFilter is an offshoot of AngleEQ, which was too strange by itself but ended up turning into the EQs used in PointyGuitar and ChimeyGuitar. This is probably why those can get weird when you set the controls too strangely, and AngleFilter gets even weirder. It was meant to be a nonresonant filter, just a very steep brickwall type thing, but instead it does crazy things with phase around the cutoff, and grows steeper and more intense the more you lower that cutoff.
+
+Since it was so untameable I just put a full-on waveshaper on the output, so its excesses won't blow up to huge dB spikes. There's a Hard control, and what it does is it makes life hard for you in setting the other controls. Mostly it goes insane over lower bassy settings, but it can be set to produce a dull roar at higher frequencies too, and the whole design of the plugin is for letting you modulate the cutoff hyper-aggressively without problems.
+
+I'm working on things like very serious reverb upgrades, but sometimes you just gotta have fun too :)
+
+
