@@ -1,0 +1,13 @@
+# Mastering2 is Airwindows style, and can do elliptical EQ now!
+
+This update to Mastering adds the control at the top, which is elliptical EQ, and defaults to zero like Glue does. Not hard to explain: it cuts bass in the side channel, as if you were mastering a vinyl record, though this has uses in nearly any stereo environment. Below a sufficiently low frequency, stereo bass becomes meaningless if it's stereo enough. Purely out of phase stuff will cancel out.
+
+High time I put it out: been working on the reverbs so much that I have to dig into the backlog for a proper plugin. It's also funny that the addition of Sidepass makes yet another control where it's quite hard to hear what it's doing. Mastering in general is a plugin all about doing little subtle hard-to-hear corrections, or dialing things in using Airwindows Meter. For instance, if you see red spikes on the slew section of Meter, Glue on this will let you control those without damaging apparent high-end. Scope lets you boost or ease back on detail again without apparently changing 'treble', and Girth enhances or eases back sub hugeness without apparently changing 'bass' that much.
+
+Then there's Drive which really doesn't act much like a saturation because it is really Airwindows Zoom, except in a multi-band version that applies to the 'EQ bands', except they're actually Kalman filters. And of course there's dither, but it's for modern formats so it is all to 24 bit. To the extent you can even register that, it goes in rough order of 'how much excitement and brightness and focus there is', up to Bypass which lets full floating point audio pass.
+
+You should probably run this in conjunction with Airwindows Meter, because it's all about massaging peak energy and 'invisible transients' to shape them exactly the way you want. My idea there was to be able to maximize that type of 'invisible' audio for the greatest possible effect, and I use Meter to observe what's happening rather than just trying to vibe it. The hope is, tuning that stuff just right, produces audio that immediately sounds correct, whether the obvious parts are loud or soft, bright or dark. It's not a replacement for remixing: I don't consider mastering to be doing the same things as mixing but differently. Mastering should be tailoring the spell cast by the mixer, and that's what Mastering2 is all about.
+
+Won't work for everybody, but for those who appreciate this plugin, having an invisible elliptical filter in there is probably a great upgrade. It all runs on the 64-bit dithered-to-32 floating point buss, so that's one more area you can dial in to be just right, within the plugin's processing. It ought to interact with Girth very nicely.
+
+
