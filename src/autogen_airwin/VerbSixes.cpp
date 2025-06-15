@@ -31,9 +31,6 @@ VerbSixes::VerbSixes(audioMasterCallback audioMaster) :
 	f3CR = f3FR = f3IR = 0.0;
 	avg3L = avg3R = 0.0;
 #endif
-#include <cmath>
-#include <algorithm>
-namespace airwinconsolidated::VerbSixes {
 #ifdef FOURBYFOUR
 	for(int x = 0; x < d4A+2; x++) {a4AL[x] = 0.0; a4AR[x] = 0.0;}
 	for(int x = 0; x < d4B+2; x++) {a4BL[x] = 0.0; a4BR[x] = 0.0;}
@@ -59,9 +56,6 @@ namespace airwinconsolidated::VerbSixes {
 	f4DR = f4HR = f4LR = f4PR = 0.0;
 	avg4L = avg4R = 0.0;
 #endif
-#include <cmath>
-#include <algorithm>
-namespace airwinconsolidated::VerbSixes {
 #ifdef FIVEBYFIVE
 	for(int x = 0; x < d5A+2; x++) {a5AL[x] = 0.0; a5AR[x] = 0.0;}
 	for(int x = 0; x < d5B+2; x++) {a5BL[x] = 0.0; a5BR[x] = 0.0;}
@@ -98,9 +92,6 @@ namespace airwinconsolidated::VerbSixes {
 	f5ER = f5JR = f5OR = f5TR = f5YR = 0.0;
 	avg5L = avg5R = 0.0;
 #endif
-#include <cmath>
-#include <algorithm>
-namespace airwinconsolidated::VerbSixes {
 #ifdef SIXBYSIX
 	for(int x = 0; x < d6A+2; x++) {a6AL[x] = 0.0; a6AR[x] = 0.0;}
 	for(int x = 0; x < d6B+2; x++) {a6BL[x] = 0.0; a6BR[x] = 0.0;}
@@ -150,9 +141,6 @@ namespace airwinconsolidated::VerbSixes {
 	f6FR = f6LR = f6RR = f6XR = f6ZER = f6ZKR = 0.0;
 	avg6L = avg6R = 0.0;
 #endif
-#include <cmath>
-#include <algorithm>
-namespace airwinconsolidated::VerbSixes {
 	
 	for (int x = 0; x < bez_total; x++) bez[x] = 0.0;
 	bez[bez_cycle] = 1.0;

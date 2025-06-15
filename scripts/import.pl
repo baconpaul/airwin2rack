@@ -93,6 +93,7 @@ while (<IFH>)
         print OFH "#include <cmath>\n";
         print OFH "#include <algorithm>\n";
         print OFH "namespace airwinconsolidated::$f {\n";
+        $namespaced = 1;
     }
 
 
@@ -306,6 +307,7 @@ while (<IFH>)
     if (m/#endif/ && !$namespaced)
     {
         print OFH "namespace airwinconsolidated::$f {\n";
+        $namespaced = 1;
     }
 }
 

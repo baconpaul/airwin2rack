@@ -24,25 +24,21 @@ void VerbSixes::processReplacing(float **inputs, float **outputs, VstInt32 sampl
 	double ga3n = (reg3n+reg3n+0.0625)*0.45;
 	reg3n = (reg3n+reg3n+0.0625)*0.38;
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FOURBYFOUR
 	double reg4n = 0.0625;
 	double ga4n = (reg4n+reg4n+0.03125)*0.22;
 	reg4n = (reg4n+reg4n+0.03125)*0.345;
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FIVEBYFIVE
 	double reg5n = 0.000244140625;
 	double ga5n = (reg5n+reg5n+0.00048828125)*0.39;
 	reg5n = (reg5n+reg5n+0.00048828125)*0.28;
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef SIXBYSIX
 	double reg6n = 0.0009765625;
 	double ga6n = (reg6n+reg6n+0.001953125)*0.29;
 	reg6n = (reg6n+reg6n+0.001953125)*0.277;
 #endif
-namespace airwinconsolidated::VerbSixes {
 	//adding more digits to that fraction gets closer to infinite f6. 0.333 is already long
 	double derez = 1.0/overallscale;
 	derez = 1.0 / ((int)(1.0/derez));
@@ -146,7 +142,6 @@ namespace airwinconsolidated::VerbSixes {
 			//manipulating deep reverb tail for realism			
 			
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FOURBYFOUR
 			a4AL[c4AL] = inputSampleL + (f4AL * reg4n);
 			a4BL[c4BL] = inputSampleL + (f4BL * reg4n);
@@ -294,7 +289,6 @@ namespace airwinconsolidated::VerbSixes {
 			//manipulating deep reverb tail for realism			
 			
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FIVEBYFIVE
 			a5AL[c5AL] = inputSampleL + (f5AL * reg5n);
 			a5BL[c5BL] = inputSampleL + (f5BL * reg5n);
@@ -505,7 +499,6 @@ namespace airwinconsolidated::VerbSixes {
 			f5ER = (f5ER+f5ER+f5ER+fabs(avg5R))*0.25; avg5R = f5ER;
 			//manipulating deep reverb tail for realism
 #endif			
-namespace airwinconsolidated::VerbSixes {
 #ifdef SIXBYSIX
 			a6AL[c6AL] = inputSampleL + (f6BL * reg6n);
 			a6BL[c6BL] = inputSampleL + (f6CL * reg6n);
@@ -792,7 +785,6 @@ namespace airwinconsolidated::VerbSixes {
 			f6FR = (f6FR+f6FR+f6FR+fabs(avg6R))*0.25; avg6R = f6FR;
 			//manipulating deep reverb tail for realism
 #endif
-namespace airwinconsolidated::VerbSixes {
 			
 			bez[bez_CL] = bez[bez_BL];
 			bez[bez_BL] = bez[bez_AL];
@@ -848,25 +840,21 @@ void VerbSixes::processDoubleReplacing(double **inputs, double **outputs, VstInt
 	double ga3n = (reg3n+reg3n+0.0625)*0.45;
 	reg3n = (reg3n+reg3n+0.0625)*0.38;
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FOURBYFOUR
 	double reg4n = 0.0625;
 	double ga4n = (reg4n+reg4n+0.03125)*0.22;
 	reg4n = (reg4n+reg4n+0.03125)*0.345;
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FIVEBYFIVE
 	double reg5n = 0.000244140625;
 	double ga5n = (reg5n+reg5n+0.00048828125)*0.39;
 	reg5n = (reg5n+reg5n+0.00048828125)*0.28;
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef SIXBYSIX
 	double reg6n = 0.0009765625;
 	double ga6n = (reg6n+reg6n+0.001953125)*0.29;
 	reg6n = (reg6n+reg6n+0.001953125)*0.277;
 #endif
-namespace airwinconsolidated::VerbSixes {
 	//adding more digits to that fraction gets closer to infinite f6. 0.333 is already long
 	double derez = 1.0/overallscale;
 	derez = 1.0 / ((int)(1.0/derez));
@@ -970,7 +958,6 @@ namespace airwinconsolidated::VerbSixes {
 			//manipulating deep reverb tail for realism			
 			
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FOURBYFOUR
 			a4AL[c4AL] = inputSampleL + (f4AL * reg4n);
 			a4BL[c4BL] = inputSampleL + (f4BL * reg4n);
@@ -1118,7 +1105,6 @@ namespace airwinconsolidated::VerbSixes {
 			//manipulating deep reverb tail for realism			
 			
 #endif
-namespace airwinconsolidated::VerbSixes {
 #ifdef FIVEBYFIVE
 			a5AL[c5AL] = inputSampleL + (f5AL * reg5n);
 			a5BL[c5BL] = inputSampleL + (f5BL * reg5n);
@@ -1329,7 +1315,6 @@ namespace airwinconsolidated::VerbSixes {
 			f5ER = (f5ER+f5ER+f5ER+fabs(avg5R))*0.25; avg5R = f5ER;
 			//manipulating deep reverb tail for realism
 #endif			
-namespace airwinconsolidated::VerbSixes {
 #ifdef SIXBYSIX
 			a6AL[c6AL] = inputSampleL + (f6BL * reg6n);
 			a6BL[c6BL] = inputSampleL + (f6CL * reg6n);
@@ -1616,7 +1601,6 @@ namespace airwinconsolidated::VerbSixes {
 			f6FR = (f6FR+f6FR+f6FR+fabs(avg6R))*0.25; avg6R = f6FR;
 			//manipulating deep reverb tail for realism
 #endif
-namespace airwinconsolidated::VerbSixes {
 			
 			bez[bez_CL] = bez[bez_BL];
 			bez[bez_BL] = bez[bez_AL];
