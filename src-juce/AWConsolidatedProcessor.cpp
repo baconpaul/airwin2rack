@@ -252,50 +252,24 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         awProcessor->setParameter(i, fxParams[i]->get());
     }
 
-    auto inScale = inLev->getAmplitude<T>();
-    auto inScaleActive = inLev->isAmplifiyingOrAttenuating();
-    auto outScale = outLev->getAmplitude<T>();
-    auto outScaleActrive = outLev->isAmplifiyingOrAttenuating();
-
+    if (inLev->isAmplifiyingOrAttenuating())
+    {
+        buffer.applyGain(inLev->getAmplitude<T>());
+    }
+  
     if constexpr (std::is_same_v<T, float>)
     {
-        // FIXME - deal with very large block case by not skipping level
-        if (inScaleActive && buffer.getNumSamples() < maxInBlock)
-        {
-            for (int i = 0; i < buffer.getNumSamples(); ++i)
-            {
-                inputTempBufferF[0][i] = inputs[0][i] * inScale;
-                inputTempBufferF[1][i] = inputs[1][i] * inScale;
-            }
-            inputs[0] = (const float *)&(inputTempBufferF[0][0]);
-            inputs[1] = (const float *)&(inputTempBufferF[1][0]);
-        }
         awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
     }
     else
     {
-        if (inScaleActive && buffer.getNumSamples() < maxInBlock)
-        {
-            for (int i = 0; i < buffer.getNumSamples(); ++i)
-            {
-                inputTempBufferD[0][i] = inputs[0][i] * inScale;
-                inputTempBufferD[1][i] = inputs[1][i] * inScale;
-            }
-            inputs[0] = (const double *)&(inputTempBufferD[0][0]);
-            inputs[1] = (const double *)&(inputTempBufferD[1][0]);
-        }
-
         awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs,
                                             buffer.getNumSamples());
     }
 
-    if (outScaleActrive)
+    if (outLev->isAmplifiyingOrAttenuating())
     {
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            outputs[0][i] *= outScale;
-            outputs[1][i] *= outScale;
-        }
+        buffer.applyGain(outLev->getAmplitude<T>());
     }
 }
 
