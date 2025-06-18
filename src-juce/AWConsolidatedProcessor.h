@@ -285,11 +285,6 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     int nProcessorParams{0};
     std::atomic<int> curentProcessorIndex{0};
 
-    // We need a place to write the scaled input
-    static constexpr int maxInBlock{1024 * 128}; // that's about 2 seconds at 48k
-    float inputTempBufferF[2][maxInBlock];
-    double inputTempBufferD[2][maxInBlock];
-
     std::unique_ptr<juce::PropertiesFile> properties;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
