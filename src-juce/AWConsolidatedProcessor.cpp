@@ -171,9 +171,12 @@ bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &lay
     bool inputValid = (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo() ||
                        layouts.getMainInputChannelSet() == juce::AudioChannelSet::mono());
 
-    bool outputValid = layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
+    bool outputValid = (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo() ||
+                        layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono());
 
-    return inputValid && outputValid;
+    bool testValid = layouts.getMainInputChannelSet().size() <= layouts.getMainOutputChannelSet().size();
+
+    return inputValid && outputValid && testValid;
 }
 
 template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::AudioBuffer<T> &buffer)
@@ -224,8 +227,8 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     auto inBus = getBus(true, 0);
     auto outBus = getBus(false, 0);
 
-    if (inBus->getNumberOfChannels() == 0 || outBus->getNumberOfChannels() != 2 ||
-        buffer.getNumChannels() < 2)
+    if (inBus->getNumberOfChannels() == 0 || outBus->getNumberOfChannels() == 0 ||
+        buffer.getNumChannels() < std::max(inBus->getNumberOfChannels(), outBus->getNumberOfChannels()) )
     {
         isPlaying = false;
         return;
@@ -237,8 +240,10 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     inputs[1] =
         inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : buffer.getReadPointer(0);
     outputs[0] = buffer.getWritePointer(0);
-    outputs[1] = buffer.getWritePointer(1);
-
+    outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : buffer.getWritePointer(0);
+    // FIXME: For Mono->Mono plugins, this only uses the L channel from the AW plugin and simply discards the R.
+    //        Consider allocating a separate buffer and doing L+R / 2 instead.
+    
     if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
     {
         isPlaying = false;
