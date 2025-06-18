@@ -213,7 +213,7 @@ void AWLookAndFeel::setLightTheme()
 
 juce::Font AWLookAndFeel::getPopupMenuFont()
 {
-    return juce::Font(jakartaSansMedium).withHeight(16);
+    return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(16);
 }
 
 void AWLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
@@ -2240,46 +2240,46 @@ juce::Font AWLookAndFeel::lookupFont(FontIDs fid) const
     switch (fid)
     {
     case pluginName:
-        return juce::Font(jakartaSansSemi).withHeight(28);
+        return juce::Font(juce::FontOptions(jakartaSansSemi)).withHeight(28);
     case pluginCategory:
-        return juce::Font(jakartaSansMedium).withHeight(18);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(18);
     case pluginTypeaheadName:
-        return juce::Font(jakartaSansSemi).withHeight(20);
+        return juce::Font(juce::FontOptions(jakartaSansSemi)).withHeight(20);
     case pluginTypeaheadCategory:
-        return juce::Font(jakartaSansMedium).withHeight(14);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(14);
     case pluginTypeaheadWhat:
-        return juce::Font(jakartaSansMedium).withHeight(14);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(14);
 
     case paramValue:
-        return juce::Font(firaMono).withHeight(18);
+        return juce::Font(juce::FontOptions(firaMono)).withHeight(18);
     case paramTitle:
-        return juce::Font(jakartaSansMedium).withHeight(14);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(14);
     case paramNoParamas:
-        return juce::Font(jakartaSansSemi).withHeight(20);
+        return juce::Font(juce::FontOptions(jakartaSansSemi)).withHeight(20);
 
     case documentationLabel:
-        return juce::Font(jakartaSansMedium).withHeight(19 + fontOffset);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(19 + fontOffset);
     case documentationBody:
-        return juce::Font(jakartaSansMedium).withHeight(16 + fontOffset);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(16 + fontOffset);
 
     case airwindowsFooter:
-        return juce::Font(jakartaSansSemi).withHeight(28);
+        return juce::Font(juce::FontOptions(jakartaSansSemi)).withHeight(28);
     case dateFooter:
-        return juce::Font(firaMono).withHeight(12);
+        return juce::Font(juce::FontOptions(firaMono)).withHeight(12);
 
     case settingsHeader:
-        return juce::Font(jakartaSansSemi).withHeight(22);
+        return juce::Font(juce::FontOptions(jakartaSansSemi)).withHeight(22);
 
     case settingsSubHeader:
-        return juce::Font(jakartaSansSemi).withHeight(18);
+        return juce::Font(juce::FontOptions(jakartaSansSemi)).withHeight(18);
     case settinsLabel:
-        return juce::Font(jakartaSansMedium).withHeight(15);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(15);
 
     case hideDoc:
-        return juce::Font(jakartaSansMedium).withHeight(16);
+        return juce::Font(juce::FontOptions(jakartaSansMedium)).withHeight(16);
     default:
         jassertfalse;
-        return juce::Font("Comic Sans MS", 24, juce::Font::bold);
+        return juce::Font(juce::FontOptions("Comic Sans MS", 24, juce::Font::bold));
     }
 }
 
