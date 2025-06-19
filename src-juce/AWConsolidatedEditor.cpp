@@ -657,8 +657,13 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         if (AirwinRegistry::namesByCollection.find(coll) != AirwinRegistry::namesByCollection.end())
             inCol = AirwinRegistry::namesByCollection.at(coll);
 
+       const auto processorIsMono{ editor->processor.getTotalNumInputChannels()== 1 && editor->processor.getTotalNumOutputChannels() == 1 };
         for (auto r : AirwinRegistry::fxAlphaOrdering)
         {
+            if (processorIsMono && !AirwinRegistry::registry[r].isMono) {
+                continue;
+            }
+
             auto n = AirwinRegistry::registry[r].name;
             std::transform(n.begin(), n.end(), n.begin(),
                            [](unsigned char c) { return std::tolower(c); });
@@ -1832,6 +1837,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
 {
     auto p = juce::PopupMenu();
     const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
+    const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
 
     if (justCurrentCategory)
         p.addSectionHeader("Airwindows - " + ent.category);
@@ -1853,19 +1859,25 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             {
                 auto ig = AirwinRegistry::registry[n2i->second];
 
-                sm.addItem(f + " (" + ig.category + ")", true, f == ent.name,
-                           [f, w = juce::Component::SafePointer(this)]() {
-                               if (w)
-                               {
-                                   w->postRebuildFocus = PICKER_MENU;
-                                   w->processor.pushResetTypeFromUI(
-                                       AirwinRegistry::nameToIndex.at(f));
-                               }
-                           });
+                // Only show mono plugins when running in M->M mode
+                if (!processorIsMono || ig.isMono) {
+                    sm.addItem(f + " (" + ig.category + ")", true, f == ent.name,
+                        [f, w = juce::Component::SafePointer(this)]() {
+                            if (w)
+                            {
+                                w->postRebuildFocus = PICKER_MENU;
+                                w->processor.pushResetTypeFromUI(
+                                    AirwinRegistry::nameToIndex.at(f));
+                                }
+                            });
+                }
             }
         }
-        p.addSubMenu("Favorites", sm);
-        p.addSeparator();
+
+        if (sm.getNumItems() > 1) {
+            p.addSubMenu("Favorites", sm);
+            p.addSeparator();
+        }
     }
     auto collMenu = juce::PopupMenu();
     auto ccoll = getCurrentCollection();
@@ -1918,6 +1930,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
         for (const auto &nm : set)
         {
             bool include{false};
+            auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex.at(nm)];
             if (coll == favoritesCollection && !favoritesList.empty())
             {
                 if (favoritesList.find(nm) != favoritesList.end())
@@ -1931,12 +1944,17 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             }
             else
             {
-                auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex.at(nm)];
                 if (inCol.find(rg.name) != inCol.end())
                 {
                     include = true;
                 }
             }
+
+            // Only show mono plugins when running in M->M mode
+            if (processorIsMono && !rg.isMono) {
+                include = false;
+            }
+
             if (include)
                 target->addItem(
                     nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
