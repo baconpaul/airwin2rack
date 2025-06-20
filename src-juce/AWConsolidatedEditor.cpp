@@ -1785,44 +1785,68 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     else
         postRebuildFocus = JOG_UP;
 
+    const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
+    const int sidx = processor.curentProcessorIndex;
+
     if (coll == favoritesCollection && !favoritesList.empty())
     {
-        int sidx = processor.curentProcessorIndex;
-        auto &rg = AirwinRegistry::registry[sidx];
+        const auto currentProcessorName = AirwinRegistry::registry[sidx].name;
         // Theres lots of ways to do this but for now lets do it the crude way
         std::vector<std::string> v(favoritesList.begin(), favoritesList.end());
-        int idx{-1}, c{0};
-        for (auto &vn : v)
+
+        // Remove favorites that is not currently supported
+        auto end = std::remove_if(v.begin(), v.end(),[processorIsMono](const auto& name) {
+            const auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex[name]];
+            return (processorIsMono && !rg.isMono);
+        });
+        v.erase(end, v.end());
+
+        if (!v.empty())
         {
-            if (vn == rg.name)
+            int idx{-1}, c{0};
+            for (auto &vn : v)
             {
-                idx = c;
+                if (vn == currentProcessorName)
+                {
+                    idx = c;
+                }
+                c++;
             }
-            c++;
+            auto nidx = idx + dir;
+            if (nidx < 0)
+                nidx = v.size() - 1;
+            if (nidx >= (int)v.size())
+                nidx = 0;
+            auto nfidx = AirwinRegistry::nameToIndex[v[nidx]];
+            processor.pushResetTypeFromUI(nfidx);
+            return;
         }
-        auto nidx = idx + dir;
-        if (nidx < 0)
-            nidx = v.size() - 1;
-        if (nidx >= (int)v.size())
-            nidx = 0;
-        auto nfidx = AirwinRegistry::nameToIndex[v[nidx]];
-        processor.pushResetTypeFromUI(nfidx);
     }
-    else if (coll == allCollection || AirwinRegistry::namesByCollection.find(coll) ==
+
+    if (coll == allCollection || AirwinRegistry::namesByCollection.find(coll) ==
                                           AirwinRegistry::namesByCollection.end())
     {
         auto nx = neighbor(processor.curentProcessorIndex, dir);
-        processor.pushResetTypeFromUI(nx);
+        while (nx != sidx)
+        {
+            auto rg = AirwinRegistry::registry[nx];
+            if (!processorIsMono || rg.isMono)
+            {
+                processor.pushResetTypeFromUI(nx);
+                return;
+            }
+
+            nx = neighbor(nx, dir);
+        }
     }
     else
     {
-        int sidx = processor.curentProcessorIndex;
         auto &collFX = AirwinRegistry::namesByCollection.at(coll);
         auto nx = neighbor(processor.curentProcessorIndex, dir);
         while (nx != sidx)
         {
             auto rg = AirwinRegistry::registry[nx];
-            if (collFX.find(rg.name) != collFX.end())
+            if (collFX.find(rg.name) != collFX.end() && (!processorIsMono || rg.isMono))
             {
                 processor.pushResetTypeFromUI(nx);
                 return;
