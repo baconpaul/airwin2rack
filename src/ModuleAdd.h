@@ -777,7 +777,7 @@ int ToTape6_unused = AirwinRegistry::registerAirwindow({"ToTape6", "Tape", 369, 
 #include "autogen_airwin/ToTape7.h"
 int ToTape7_unused = AirwinRegistry::registerAirwindow({"ToTape7", "Tape", 368, false, "ToTape7 is Airwindows tape emulation with bias and Dubly.", airwinconsolidated::ToTape7::kNumParameters, "2024-08-18", []() { return std::make_unique<airwinconsolidated::ToTape7::ToTape7>(0); }, -1, { }});
 #include "autogen_airwin/ToTape8.h"
-int ToTape8_unused = AirwinRegistry::registerAirwindow({"ToTape8", "Tape", 367, false, "ToTape8 is Airwindows tape emulation with gain staging, bias and optimized Dubly!", airwinconsolidated::ToTape8::kNumParameters, "2024-09-22", []() { return std::make_unique<airwinconsolidated::ToTape8::ToTape8>(0); }, -1, { "Basic", "Recommended", "Latest" }});
+int ToTape8_unused = AirwinRegistry::registerAirwindow({"ToTape8", "Tape", 367, true, "ToTape8 is Airwindows tape emulation with gain staging, bias and optimized Dubly!", airwinconsolidated::ToTape8::kNumParameters, "2024-09-22", []() { return std::make_unique<airwinconsolidated::ToTape8::ToTape8>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/ToVinyl4.h"
 int ToVinyl4_unused = AirwinRegistry::registerAirwindow({"ToVinyl4", "Stereo", 343, false, "ToVinyl4 is a vinyl-mastering simulator bringing several vinyl-type colors.", airwinconsolidated::ToVinyl4::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::ToVinyl4::ToVinyl4>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/ToneSlant.h"
