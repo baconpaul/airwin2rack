@@ -67,14 +67,17 @@ while( <WH>)
 }
 
 # Step 3: Deduce isMono from MacAU plugin version
+my @forceIsMonoForPlugins = ('ToTape8'); # These are plugins that, even though they are stereo, work great in mono also...
 my %isMonos;
 foreach my $fx (@plugins) {
     $isMonos{$fx} = 1;
-    my $fn = $fx;
-    $fn =~ s/Point$/Poynt/; # Fix for "weird" naming in MacAU/Point plugin
-    open (AU, "< libs/airwindows/plugins/MacAU/$fx/$fn.h") || die "Can't open what: $!";
-    while (<AU>) {
-        $isMonos{$fx} = 0 if (m/SupportedNumChannels/);
+    if (!grep(/$fx/, @forceIsMonoForPlugins)) {
+        my $fn = $fx;
+        $fn =~ s/Point$/Poynt/; # Fix for "weird" naming in MacAU/Point plugin
+        open (AU, "< libs/airwindows/plugins/MacAU/$fx/$fn.h") || die "Can't open what: $!";
+        while (<AU>) {
+            $isMonos{$fx} = 0 if (m/SupportedNumChannels/);
+        }
     }
 }
 
