@@ -158,6 +158,13 @@ void AWConsolidatedAudioProcessor::changeProgramName(int index, const juce::Stri
 //==============================================================================
 void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
 {
+    // Check for current AWProcessor it it supports mono. Otherwise chose something else...
+    const auto isMono{ getTotalNumInputChannels()== 1 && getTotalNumOutputChannels() == 1 };
+    if (isMono && !AirwinRegistry::registry[curentProcessorIndex].isMono) {
+        const auto defaultName = "Chamber"; // Mono reverb from the recommended list
+        setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
+    }
+
     AirwinConsolidatedBase::defaultSampleRate = sr;
     if (awProcessor)
         awProcessor->setSampleRate(sr);
