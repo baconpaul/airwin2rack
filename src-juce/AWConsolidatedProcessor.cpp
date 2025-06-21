@@ -176,10 +176,12 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
     // is always reported, even if later processBlock<double> is called.
     // So as a workaround we prepare both single and double precision...
     // See https://github.com/baconpaul/airwin2rack/issues/199
+    const auto numCh = std::max(getTotalNumOutputChannels(), getTotalNumInputChannels());
+    juce::dsp::ProcessSpec spec{ sr, static_cast<juce::uint32>(samplesPerBlock), static_cast<juce::uint32>(numCh)};
     if (isUsingDoublePrecision() || is_clap)
-        getPrecisionDependantProcessing<double>().prepare(samplesPerBlock);
+        getPrecisionDependantProcessing<double>().prepare(spec);
     if (!isUsingDoublePrecision() || is_clap)
-        getPrecisionDependantProcessing<float>().prepare(samplesPerBlock);
+        getPrecisionDependantProcessing<float>().prepare(spec);
 
     AirwinConsolidatedBase::defaultSampleRate = sr;
     if (awProcessor)
@@ -211,30 +213,23 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
 {
     juce::ScopedNoDenormals noDenormals;
 
-    if (bypassParam->get())
+    if (getMainBusNumInputChannels() == 1 && getTotalNumOutputChannels() == 2)
     {
-        if (getMainBusNumInputChannels() == 1 && getTotalNumOutputChannels() == 2)
-        {
-            // special case - bypassed mono to stereo. Copy input one to output 2
-            auto inp = buffer.getReadPointer(0);
-            auto o0 = buffer.getWritePointer(0);
-            auto o1 = buffer.getWritePointer(1);
+        // special case - mono to stereo. Copy buffer 1 to buffer 2 to emulated stereo to stereo
+        buffer.copyFrom(1, 0, buffer, 0, 0, buffer.getNumSamples());
+    }
 
-            if (inp)
-            {
-                if (o0)
-                    juce::FloatVectorOperations::copy(o0, inp, buffer.getNumSamples());
-                if (o1)
-                    juce::FloatVectorOperations::copy(o1, inp, buffer.getNumSamples());
-            }
-        }
-        else
-        {
-            // this is the default implementation of default from juce
-            for (int ch = getMainBusNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch)
-                buffer.clear(ch, 0, buffer.getNumSamples());
-        }
+    auto& precisionProcessing{ getPrecisionDependantProcessing<T>()};
+    if (!precisionProcessing.isValid()) {
+        isPlaying = false;
         return;
+    }
+
+    // TODO: Should we use resetType to communicate this change instead of storing member?
+    if (currentBypass != bypassParam->get())
+    {
+        currentBypass = bypassParam->get();
+        precisionProcessing.bypassMixer->setWetMixProportion(currentBypass ? 0.0 : 1.0);
     }
 
     ResetTypeMsg item;
@@ -252,12 +247,6 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
-    auto& precisionProcessing{ getPrecisionDependantProcessing<T>()};
-    if (!precisionProcessing.isValid()) {
-        isPlaying = false;
-        return;
-    }
-
     auto inBus = getBus(true, 0);
     auto outBus = getBus(false, 0);
 
@@ -268,15 +257,11 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
-    for (int i = 0; i < nProcessorParams; ++i)
-    {
-        awProcessor->setParameter(i, fxParams[i]->get());
-    }
+    juce::dsp::AudioBlock<T> block(buffer);
+    precisionProcessing.bypassMixer->pushDrySamples(block);
 
-    if (inLev->isAmplifiyingOrAttenuating())
-    {
-        buffer.applyGain(inLev->getAmplitude<T>());
-    }
+    precisionProcessing.inputGain->setGainLinear(inLev->getAmplitude<T>());
+    precisionProcessing.inputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
 
     // NOTE: Most Airwindows plugins take a copy of the L/R input sample before writing the output sample.
     // But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes some issues,
@@ -315,10 +300,10 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     }
     // In LeftOnly mode, we don't need to do anything as the right monoBuffer is automatically discarded
 
-    if (outLev->isAmplifiyingOrAttenuating())
-    {
-        buffer.applyGain(outLev->getAmplitude<T>());
-    }
+    precisionProcessing.outputGain->setGainLinear(outLev->getAmplitude<T>());
+    precisionProcessing.outputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
+
+    precisionProcessing.bypassMixer->mixWetSamples(block);
 }
 
 void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
@@ -507,21 +492,34 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
 }
 
 template<typename T>
-void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(int samplesPerBlock)
+void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(const juce::dsp::ProcessSpec& spec)
 {
-    monoBuffer.reset(new juce::AudioBuffer<T>(1, samplesPerBlock));
+    monoBuffer.reset(new juce::AudioBuffer<T>(1, spec.maximumBlockSize));
+    bypassMixer.reset(new juce::dsp::DryWetMixer<T>());
+    bypassMixer->prepare(spec);
+    inputGain.reset(new juce::dsp::Gain<T>());
+    inputGain->prepare(spec);
+    inputGain->setGainDecibels(0.0);
+    inputGain->setRampDurationSeconds(0.01);
+    outputGain.reset(new juce::dsp::Gain<T>());
+    outputGain->prepare(spec);
+    outputGain->setGainDecibels(0.0);
+    outputGain->setRampDurationSeconds(0.01);
 }
 
 template<typename T>
 void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
 {
     monoBuffer.reset();
+    bypassMixer.reset();
+    inputGain.reset();
+    outputGain.reset();
 }
 
 template<typename T>
 bool AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::isValid() const
 {
-    return static_cast<bool>(monoBuffer);
+    return static_cast<bool>(monoBuffer) && static_cast<bool>(bypassMixer) && static_cast<bool>(inputGain) && static_cast<bool>(outputGain);
 }
 
 //==============================================================================

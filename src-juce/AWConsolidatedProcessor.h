@@ -4,6 +4,7 @@
 
 #include "AirwinRegistry.h"
 #include "juce_audio_processors/juce_audio_processors.h"
+#include "juce_dsp/juce_dsp.h"
 #include "clap-juce-extensions/clap-juce-extensions.h"
 
 #if MAC
@@ -299,6 +300,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     juce::AudioParameterBool *bypassParam{nullptr};
     juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
+    std::atomic<bool> currentBypass{false};
 
     MonoBehaviourParameter *monoBehaviourParameter{nullptr};
 
@@ -316,8 +318,11 @@ private:
     struct PrecisionDependantProcessing
     {
         std::unique_ptr<juce::AudioBuffer<T>> monoBuffer;
+        std::unique_ptr<juce::dsp::DryWetMixer<T>> bypassMixer;
+        std::unique_ptr<juce::dsp::Gain<T>> inputGain;
+        std::unique_ptr<juce::dsp::Gain<T>> outputGain;
 
-        void prepare(int samplesPerBlock);
+        void prepare(const juce::dsp::ProcessSpec&);
         void reset();
         bool isValid() const;
     };

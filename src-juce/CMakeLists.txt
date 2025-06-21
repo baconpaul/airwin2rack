@@ -130,7 +130,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     awconsolidated_resources
     juce::juce_audio_utils
     juce::juce_audio_processors
-
+    juce::juce_dsp
 )
 
 clap_juce_extensions_plugin(TARGET ${PROJECT_NAME}
