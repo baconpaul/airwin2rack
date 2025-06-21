@@ -168,10 +168,23 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
     AirwinConsolidatedBase::defaultSampleRate = sr;
     if (awProcessor)
         awProcessor->setSampleRate(sr);
+
+    const auto numCh = std::max(getTotalNumOutputChannels(), getTotalNumInputChannels());
+    juce::dsp::ProcessSpec spec{ sr, static_cast<juce::uint32>(samplesPerBlock), static_cast<juce::uint32>(numCh)};
+    if (isUsingDoublePrecision()) {
+        getPrecisionDependantProcessing<double>().prepare(spec);
+    } else {
+        getPrecisionDependantProcessing<float>().prepare(spec);
+    }
     isPlaying = true;
 }
 
-void AWConsolidatedAudioProcessor::releaseResources() { isPlaying = false; }
+void AWConsolidatedAudioProcessor::releaseResources() 
+{ 
+    getPrecisionDependantProcessing<float>().reset();
+    getPrecisionDependantProcessing<double>().reset();
+    isPlaying = false;
+}
 
 bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
@@ -190,30 +203,23 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
 {
     juce::ScopedNoDenormals noDenormals;
 
-    if (bypassParam->get())
+    if (getMainBusNumInputChannels() == 1 && getTotalNumOutputChannels() == 2)
     {
-        if (getMainBusNumInputChannels() == 1 && getTotalNumOutputChannels() == 2)
-        {
-            // special case - bypassed mono to stereo. Copy input one to output 2
-            auto inp = buffer.getReadPointer(0);
-            auto o0 = buffer.getWritePointer(0);
-            auto o1 = buffer.getWritePointer(1);
+        // special case - mono to stereo. Copy buffer 1 to buffer 2 to emulated stereo to stereo
+        buffer.copyFrom(1, 0, buffer, 0, 0, buffer.getNumSamples());
+    }
 
-            if (inp)
-            {
-                if (o0)
-                    juce::FloatVectorOperations::copy(o0, inp, buffer.getNumSamples());
-                if (o1)
-                    juce::FloatVectorOperations::copy(o1, inp, buffer.getNumSamples());
-            }
-        }
-        else
-        {
-            // this is the default implementation of default from juce
-            for (int ch = getMainBusNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch)
-                buffer.clear(ch, 0, buffer.getNumSamples());
-        }
+    auto& precisionProcessing{ getPrecisionDependantProcessing<T>()};
+    if (!precisionProcessing.isValid()) {
+        isPlaying = false;
         return;
+    }
+
+    // TODO: Should we use resetType to communicate this change instead of storing member?
+    if (currentBypass != bypassParam->get())
+    {
+        currentBypass = bypassParam->get();
+        precisionProcessing.bypassMixer->setWetMixProportion(currentBypass ? 0.0 : 1.0);
     }
 
     ResetTypeMsg item;
@@ -264,10 +270,11 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         awProcessor->setParameter(i, fxParams[i]->get());
     }
 
-    if (inLev->isAmplifiyingOrAttenuating())
-    {
-        buffer.applyGain(inLev->getAmplitude<T>());
-    }
+    juce::dsp::AudioBlock<T> block(buffer);
+    precisionProcessing.bypassMixer->pushDrySamples(block);
+
+    precisionProcessing.inputGain->setGainLinear(inLev->getAmplitude<T>());
+    precisionProcessing.inputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
   
     if constexpr (std::is_same_v<T, float>)
     {
@@ -279,10 +286,10 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
                                             buffer.getNumSamples());
     }
 
-    if (outLev->isAmplifiyingOrAttenuating())
-    {
-        buffer.applyGain(outLev->getAmplitude<T>());
-    }
+    precisionProcessing.outputGain->setGainLinear(outLev->getAmplitude<T>());
+    precisionProcessing.outputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
+
+    precisionProcessing.bypassMixer->mixWetSamples(block);
 }
 
 void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
@@ -463,6 +470,35 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
             });
         }
     }
+}
+
+template<typename T>
+void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(const juce::dsp::ProcessSpec& spec)
+{
+    bypassMixer.reset(new juce::dsp::DryWetMixer<T>());
+    bypassMixer->prepare(spec);
+    inputGain.reset(new juce::dsp::Gain<T>());
+    inputGain->prepare(spec);
+    inputGain->setGainDecibels(0.0);
+    inputGain->setRampDurationSeconds(0.01);
+    outputGain.reset(new juce::dsp::Gain<T>());
+    outputGain->prepare(spec);
+    outputGain->setGainDecibels(0.0);
+    outputGain->setRampDurationSeconds(0.01);
+}
+
+template<typename T>
+void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
+{
+    bypassMixer.reset();
+    inputGain.reset();
+    outputGain.reset();
+}
+
+template<typename T>
+bool AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::isValid() const
+{
+    return static_cast<bool>(bypassMixer) && static_cast<bool>(inputGain) && static_cast<bool>(outputGain);
 }
 
 //==============================================================================

@@ -4,6 +4,7 @@
 
 #include "AirwinRegistry.h"
 #include "juce_audio_processors/juce_audio_processors.h"
+#include "juce_dsp/juce_dsp.h"
 
 #if MAC
 #include <execinfo.h>
@@ -277,6 +278,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     juce::AudioParameterBool *bypassParam{nullptr};
     juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
+    std::atomic<bool> currentBypass{false};
 
     void setAWProcessorTo(int registryIndex, bool initDisplay);
 
@@ -287,7 +289,32 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     std::unique_ptr<juce::PropertiesFile> properties;
 
+private:
+    template<typename T>
+    struct PrecisionDependantProcessing
+    {
+        std::unique_ptr<juce::dsp::DryWetMixer<T>> bypassMixer;
+        std::unique_ptr<juce::dsp::Gain<T>> inputGain;
+        std::unique_ptr<juce::dsp::Gain<T>> outputGain;
+
+        void prepare(const juce::dsp::ProcessSpec&);
+        void reset();
+        bool isValid() const;
+    };
+    PrecisionDependantProcessing<float> precisionProcessingFloat;
+    PrecisionDependantProcessing<double> precisionProcessingDouble;
+
+    template<class T>
+    PrecisionDependantProcessing<T>& getPrecisionDependantProcessing();
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
 };
+
+template <> inline
+AWConsolidatedAudioProcessor::PrecisionDependantProcessing<float>& AWConsolidatedAudioProcessor::getPrecisionDependantProcessing() { return precisionProcessingFloat; }
+
+template <> inline
+AWConsolidatedAudioProcessor::PrecisionDependantProcessing<double>& AWConsolidatedAudioProcessor::getPrecisionDependantProcessing() { return precisionProcessingDouble; }
+
 
 #endif // SURGE_SRC_SURGE_FX_SURGEFXPROCESSOR_H
