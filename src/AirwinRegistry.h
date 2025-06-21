@@ -31,6 +31,7 @@ struct AirwinRegistry
         std::string name;
         std::string category;
         int catChrisOrdering;
+        bool isMono;
         std::string whatText;
         int nParams{0};
         std::string firstCommitDate;
