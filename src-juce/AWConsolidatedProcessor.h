@@ -133,28 +133,30 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     // Call this from the UI thread only
     void pushResetTypeFromUI(int32_t index)
     {
-        auto &rg = AirwinRegistry::registry[index];
-        {
-            LOCK(displayProcessorMutex);
-            awDisplayProcessor = rg.generator();
-            awDisplayProcessor->setSampleRate(getSampleRate());
-        }
-        setupParamDisplaysFromDisplayProcessor(index);
+        if (curentProcessorIndex != index) {
+            auto &rg = AirwinRegistry::registry[index];
+            {
+                LOCK(displayProcessorMutex);
+                awDisplayProcessor = rg.generator();
+                awDisplayProcessor->setSampleRate(getSampleRate());
+            }
+            setupParamDisplaysFromDisplayProcessor(index);
 
-        if (isPlaying)
-        {
-            curentProcessorIndex = index;
-            resetType.push({-1, index, 0.f});
-        }
-        else
-        {
-            setAWProcessorTo(index, false);
-        }
+            if (isPlaying)
+            {
+                curentProcessorIndex = index;
+                resetType.push({-1, index, 0.f});
+            }
+            else
+            {
+                setAWProcessorTo(index, false);
+            }
 
-        refreshUI = true;
+            refreshUI = true;
 #if USE_JUCE_PROGRAMS
-        updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
+            updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
 #endif
+        }
     }
     void setupParamDisplaysFromDisplayProcessor(int index);
 
