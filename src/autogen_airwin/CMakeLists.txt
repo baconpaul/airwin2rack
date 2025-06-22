@@ -587,6 +587,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PodcastDeluxeProc.cpp
    src/autogen_airwin/Point.cpp
    src/autogen_airwin/PointProc.cpp
+   src/autogen_airwin/PointyDeluxe.cpp
+   src/autogen_airwin/PointyDeluxeProc.cpp
    src/autogen_airwin/PointyGuitar.cpp
    src/autogen_airwin/PointyGuitarProc.cpp
    src/autogen_airwin/Pop.cpp
@@ -609,6 +611,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Pressure5Proc.cpp
    src/autogen_airwin/PrimeFIR.cpp
    src/autogen_airwin/PrimeFIRProc.cpp
+   src/autogen_airwin/PunchyDeluxe.cpp
+   src/autogen_airwin/PunchyDeluxeProc.cpp
    src/autogen_airwin/PunchyGuitar.cpp
    src/autogen_airwin/PunchyGuitarProc.cpp
    src/autogen_airwin/PurestAir.cpp
@@ -877,6 +881,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ZoomProc.cpp
    src/autogen_airwin/curve.cpp
    src/autogen_airwin/curveProc.cpp
+   src/autogen_airwin/kBeyond.cpp
+   src/autogen_airwin/kBeyondProc.cpp
    src/autogen_airwin/kCathedral.cpp
    src/autogen_airwin/kCathedralProc.cpp
    src/autogen_airwin/kCathedral2.cpp
