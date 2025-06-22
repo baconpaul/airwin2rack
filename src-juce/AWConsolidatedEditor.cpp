@@ -410,10 +410,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
     bool isCurrentEffectFavorite()
     {
-        int idx = editor->processor.curentProcessorIndex;
-        auto &rg = AirwinRegistry::registry[idx];
-        auto nm = rg.name;
-
+        auto nm = editor->processor.processorParam->getCurrentChoiceName().toStdString();
         return editor->favoritesList.find(nm) != editor->favoritesList.end();
     }
 
@@ -465,7 +462,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
     void paint(juce::Graphics &g) override
     {
-        int idx = editor->processor.curentProcessorIndex;
+        int idx = AirwinRegistry::nameToIndex.at(editor->processor.processorParam->getCurrentChoiceName().toStdString());
         auto &rg = AirwinRegistry::registry[idx];
 
         auto bounds = getLocalBounds().toFloat().reduced(2.f, 2.f);
@@ -541,7 +538,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
     {
         if (titleBox.toFloat().contains(e.position))
         {
-            int idx = editor->processor.curentProcessorIndex;
+            int idx = AirwinRegistry::nameToIndex.at(editor->processor.processorParam->getCurrentChoiceName().toStdString());
             auto &rg = AirwinRegistry::registry[idx];
 
             typeinEd->setVisible(true);
@@ -614,7 +611,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
     void rebuild()
     {
-        int idx = editor->processor.curentProcessorIndex;
+        int idx = AirwinRegistry::nameToIndex.at(editor->processor.processorParam->getCurrentChoiceName().toStdString());
         auto &rg = AirwinRegistry::registry[idx];
 
         setTitle(rg.name + " (" + rg.category + ")");
@@ -705,7 +702,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
 
     void selectTE(int which)
     {
-        editor->processor.pushResetTypeFromUI(which);
+        *editor->processor.processorParam = which;
         dismissTE();
     }
 
@@ -1653,10 +1650,11 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
         docBodyLabel->setVisible(true);
         docBodyEd->setVisible(true);
     }
-    docString = AirwinRegistry::documentationStringFor(processor.curentProcessorIndex);
+    const auto processorIdx{AirwinRegistry::nameToIndex.at(processor.processorParam->getCurrentChoiceName().toStdString())};
+    docString = AirwinRegistry::documentationStringFor(processorIdx);
     if (docString.isEmpty())
     {
-        docHeader = "# " + AirwinRegistry::registry[processor.curentProcessorIndex].whatText;
+        docHeader = "# " + AirwinRegistry::registry[processorIdx].whatText;
         docString = "No documentation available.";
     }
     else
@@ -1667,7 +1665,7 @@ void AWConsolidatedAudioProcessorEditor::resizeDocArea()
 
     // Load custom manual
     juce::String customDocumentationContent;
-    if (loadCustomDocumentation(AirwinRegistry::registry[processor.curentProcessorIndex].name,
+    if (loadCustomDocumentation(AirwinRegistry::registry[processorIdx].name,
                                 customDocumentationContent))
     {
         if (!customDocumentationContent.isEmpty())
@@ -1792,7 +1790,7 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
         postRebuildFocus = JOG_UP;
 
     const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
-    const int sidx = processor.curentProcessorIndex;
+    const int sidx = AirwinRegistry::nameToIndex.at(processor.processorParam->getCurrentChoiceName().toStdString());
 
     if (coll == favoritesCollection && !favoritesList.empty())
     {
@@ -1824,7 +1822,7 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
             if (nidx >= (int)v.size())
                 nidx = 0;
             auto nfidx = AirwinRegistry::nameToIndex[v[nidx]];
-            processor.pushResetTypeFromUI(nfidx);
+            *processor.processorParam = nfidx;
             return;
         }
     }
@@ -1832,13 +1830,13 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     if (coll == allCollection || AirwinRegistry::namesByCollection.find(coll) ==
                                           AirwinRegistry::namesByCollection.end())
     {
-        auto nx = neighbor(processor.curentProcessorIndex, dir);
+        auto nx = neighbor(sidx, dir);
         while (nx != sidx)
         {
             auto rg = AirwinRegistry::registry[nx];
             if (!processorIsMono || rg.isMono)
             {
-                processor.pushResetTypeFromUI(nx);
+                *processor.processorParam = nx;
                 return;
             }
 
@@ -1848,13 +1846,13 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     else
     {
         auto &collFX = AirwinRegistry::namesByCollection.at(coll);
-        auto nx = neighbor(processor.curentProcessorIndex, dir);
+        auto nx = neighbor(sidx, dir);
         while (nx != sidx)
         {
             auto rg = AirwinRegistry::registry[nx];
             if (collFX.find(rg.name) != collFX.end() && (!processorIsMono || rg.isMono))
             {
-                processor.pushResetTypeFromUI(nx);
+                *processor.processorParam = nx;
                 return;
             }
 
@@ -1866,7 +1864,8 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
 void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategory)
 {
     auto p = juce::PopupMenu();
-    const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
+    const auto processorIdx = AirwinRegistry::nameToIndex.at(processor.processorParam->getCurrentChoiceName().toStdString());
+    const auto &ent = AirwinRegistry::registry[processorIdx];
     const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
 
     if (justCurrentCategory)
@@ -1896,10 +1895,9 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                             if (w)
                             {
                                 w->postRebuildFocus = PICKER_MENU;
-                                w->processor.pushResetTypeFromUI(
-                                    AirwinRegistry::nameToIndex.at(f));
-                                }
-                            });
+                                *w->processor.processorParam = AirwinRegistry::nameToIndex.at(f);
+                            }
+                        });
                 }
             }
         }
@@ -1991,7 +1989,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                         if (w)
                         {
                             w->postRebuildFocus = PICKER_MENU;
-                            w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
+                            *w->processor.processorParam = AirwinRegistry::nameToIndex.at(nm);
                         }
                     });
         }
@@ -2096,8 +2094,7 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
                              }
                          });
     settingsMenu.addSeparator();
-    auto rg = AirwinRegistry::registry[processor.curentProcessorIndex];
-    auto n = juce::String(rg.name);
+    auto n = processor.processorParam->getCurrentChoiceName();
     settingsMenu.addItem("Make " + n + " your default effect",
                          [n, w = juce::Component::SafePointer(this)]() {
                              if (!w)
@@ -2361,18 +2358,14 @@ void AWConsolidatedAudioProcessorEditor::sizeBasedOnDocAreaDisplay()
 
 void AWConsolidatedAudioProcessorEditor::addCurrentAsFavorite()
 {
-    int idx = processor.curentProcessorIndex;
-    auto &rg = AirwinRegistry::registry[idx];
-    favoritesList.insert(rg.name);
+    favoritesList.insert(processor.processorParam->getCurrentChoiceName().toStdString());
 
     streamFavorites();
 }
 
 void AWConsolidatedAudioProcessorEditor::removeCurrentAsFavorite()
 {
-    int idx = processor.curentProcessorIndex;
-    auto &rg = AirwinRegistry::registry[idx];
-    favoritesList.erase(rg.name);
+    favoritesList.erase(processor.processorParam->getCurrentChoiceName().toStdString());
 
     streamFavorites();
 }

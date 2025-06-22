@@ -268,6 +268,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     };
 
     //==============================================================================
+    juce::AudioParameterChoice *processorParam{nullptr};
     typedef AWParam float_param_t;
     float_param_t *fxParams[nAWParams];
     float defaultValues[nAWParams];
@@ -283,9 +284,11 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     std::unique_ptr<AirwinConsolidatedBase> awProcessor, awDisplayProcessor;
     std::mutex displayProcessorMutex;
     int nProcessorParams{0};
-    std::atomic<int> curentProcessorIndex{0};
 
     std::unique_ptr<juce::PropertiesFile> properties;
+
+private:
+    std::atomic<int> curentProcessorIndex{0};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
 };
