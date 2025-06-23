@@ -70,6 +70,10 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
     addParameter(inLev);
     addParameter(outLev);
 
+    monoBehaviourParameter = new MonoBehaviourParameter({"monoBehaviour", 3}, "Mono Behaviour", MonoBehaviourParameter::LeftOnly, juce::AudioParameterIntAttributes().withAutomatable(false));
+    monoBehaviourParameter->addListener(this);
+    addParameter(monoBehaviourParameter);
+
     juce::PropertiesFile::Options options;
     options.applicationName = "AirwindowsConsolidated";
 #if JUCE_LINUX
@@ -160,9 +164,16 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
 {
     // Check for current AWProcessor it it supports mono. Otherwise chose something else...
     const auto isMono{ getTotalNumInputChannels()== 1 && getTotalNumOutputChannels() == 1 };
-    if (isMono && !AirwinRegistry::registry[curentProcessorIndex].isMono) {
+    const auto stereoPluginsInMono{ properties->getBoolValue("stereoPluginsInMono") };
+    if (!stereoPluginsInMono && isMono && !AirwinRegistry::registry[curentProcessorIndex].isMono) {
         const auto defaultName = "Chamber"; // Mono reverb from the recommended list
         setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
+    }
+
+    if (isUsingDoublePrecision()) {
+        getPrecisionDependantProcessing<double>().prepare(samplesPerBlock);
+    } else {
+        getPrecisionDependantProcessing<float>().prepare(samplesPerBlock);
     }
 
     AirwinConsolidatedBase::defaultSampleRate = sr;
@@ -171,7 +182,12 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
     isPlaying = true;
 }
 
-void AWConsolidatedAudioProcessor::releaseResources() { isPlaying = false; }
+void AWConsolidatedAudioProcessor::releaseResources()
+{
+    getPrecisionDependantProcessing<float>().reset();
+    getPrecisionDependantProcessing<double>().reset();
+    isPlaying = false;
+}
 
 bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
@@ -231,6 +247,12 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
+    auto& precisionProcessing{ getPrecisionDependantProcessing<T>()};
+    if (!precisionProcessing.isValid()) {
+        isPlaying = false;
+        return;
+    }
+
     auto inBus = getBus(true, 0);
     auto outBus = getBus(false, 0);
 
@@ -241,16 +263,20 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
+    // NOTE: Most Airwindows plugins take a copy of the L/R input sample before writing the output sample.
+    // But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes some issues,
+    // as the input buffer is overridden before the R channel is typically processed.
+    // In mono input mode, we therefor take a copy of the input and use that.
+    if (inBus->getNumberOfChannels() == 1)
+        precisionProcessing.monoBuffer->copyFrom(0, 0, buffer, 0, 0, precisionProcessing.monoBuffer->getNumSamples());
+
     const T *inputs[2];
     T *outputs[2];
     inputs[0] = buffer.getReadPointer(0);
-    inputs[1] =
-        inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : buffer.getReadPointer(0);
+    inputs[1] = inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : precisionProcessing.monoBuffer->getReadPointer(0);
     outputs[0] = buffer.getWritePointer(0);
-    outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : buffer.getWritePointer(0);
-    // FIXME: For Mono->Mono plugins, this only uses the L channel from the AW plugin and simply discards the R.
-    //        Consider allocating a separate buffer and doing L+R / 2 instead.
-    
+    outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : precisionProcessing.monoBuffer->getWritePointer(0);
+
     if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
     {
         isPlaying = false;
@@ -276,8 +302,15 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     else
     {
         awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs,
-                                            buffer.getNumSamples());
+        buffer.getNumSamples());
     }
+    if (outBus->getNumberOfChannels() == 1 && *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
+    {
+        // Output = L+R / 2
+        buffer.addFrom(0, 0, *precisionProcessing.monoBuffer, 0, 0, buffer.getNumSamples());
+        buffer.applyGain(0.5);
+    }
+    // In LeftOnly mode, we don't need to do anything as the right monoBuffer is automatically discarded
 
     if (outLev->isAmplifiyingOrAttenuating())
     {
@@ -397,6 +430,8 @@ void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destDa
     xml->setAttribute("inlev", inLev->get());
     xml->setAttribute("outlev", outLev->get());
 
+    xml->setAttribute("monoBehaviour", monoBehaviourParameter->get());
+
     copyXmlToBinary(*xml, destData);
 }
 
@@ -427,6 +462,9 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
             inLev->setValueNotifyingHost(il);
             auto ol = xmlState->getDoubleAttribute("outlev", CubicDBParam::defaultVal);
             outLev->setValueNotifyingHost(ol);
+
+            auto mono = xmlState->getIntAttribute("monoBehaviour");
+            *monoBehaviourParameter = static_cast<MonoBehaviourParameter::MonoBehaviour>(mono);
         }
 
 #if USE_JUCE_PROGRAMS
@@ -463,6 +501,24 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
             });
         }
     }
+}
+
+template<typename T>
+void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(int samplesPerBlock)
+{
+    monoBuffer.reset(new juce::AudioBuffer<T>(1, samplesPerBlock));
+}
+
+template<typename T>
+void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
+{
+    monoBuffer.reset();
+}
+
+template<typename T>
+bool AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::isValid() const
+{
+    return static_cast<bool>(monoBuffer);
 }
 
 //==============================================================================

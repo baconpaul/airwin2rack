@@ -159,7 +159,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     void setupParamDisplaysFromDisplayProcessor(int index);
 
     std::atomic<bool> refreshUI{false},
-        rebuildUI{false}; // repaint vs re-setup everything. Value vs type
+    rebuildUI{false}; // repaint vs re-setup everything. Value vs type
 
     struct APFPublicDefault : public juce::AudioParameterFloat
     {
@@ -263,8 +263,34 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
         {
             return std::fabs(get() - defaultVal) > 5e-6;
         }
+    };
 
+    struct MonoBehaviourParameter : public juce::AudioParameterInt
+    {
+        enum MonoBehaviour {
+            LeftOnly,
+            RightOnly,
+            LeftRightSum,
+            NumOfElements
+        };
 
+        MonoBehaviourParameter(const juce::ParameterID& idToUse,
+                               const juce::String& nameToUse,
+                               MonoBehaviour def,
+                              const juce::AudioParameterIntAttributes& attributes)
+            : juce::AudioParameterInt(idToUse, nameToUse, 0, MonoBehaviour::NumOfElements-1, static_cast<int>(def), attributes)
+        {
+        }
+
+        MonoBehaviour get() const noexcept { return static_cast<MonoBehaviour>(juce::AudioParameterInt::get()); }
+        operator MonoBehaviour() const noexcept { return get(); }
+        MonoBehaviourParameter& operator= (MonoBehaviour newValue) { juce::AudioParameterInt::operator=(static_cast<int>(newValue)); return *this; };
+        // std::string toString(MonoBehaviour) const;
+        // MonoBehaviour fromString(std::string&, MonoBehaviour defaultBehaviour = MonoBehaviour::LeftOnly) const;
+        // void setMonoBehaviour(MonoBehaviour);
+        // MonoBehaviour getMonoBehaviour() const;
+        // const juce::ParameterID &id, const juce::String &parameterName
+        // float getDefaultValue() const override { return 0; }
     };
 
     //==============================================================================
@@ -278,6 +304,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     juce::AudioParameterBool *bypassParam{nullptr};
     juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
 
+    MonoBehaviourParameter *monoBehaviourParameter{nullptr};
+
     void setAWProcessorTo(int registryIndex, bool initDisplay);
 
     std::unique_ptr<AirwinConsolidatedBase> awProcessor, awDisplayProcessor;
@@ -287,7 +315,29 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     std::unique_ptr<juce::PropertiesFile> properties;
 
+private:
+    template<typename T>
+    struct PrecisionDependantProcessing
+    {
+        std::unique_ptr<juce::AudioBuffer<T>> monoBuffer;
+
+        void prepare(int samplesPerBlock);
+        void reset();
+        bool isValid() const;
+    };
+    PrecisionDependantProcessing<float> precisionProcessingFloat;
+    PrecisionDependantProcessing<double> precisionProcessingDouble;
+
+    template<class T>
+    PrecisionDependantProcessing<T>& getPrecisionDependantProcessing();
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
 };
+
+template <> inline
+AWConsolidatedAudioProcessor::PrecisionDependantProcessing<float>& AWConsolidatedAudioProcessor::getPrecisionDependantProcessing() { return precisionProcessingFloat; }
+
+template <> inline
+AWConsolidatedAudioProcessor::PrecisionDependantProcessing<double>& AWConsolidatedAudioProcessor::getPrecisionDependantProcessing() { return precisionProcessingDouble; }
 
 #endif // SURGE_SRC_SURGE_FX_SURGEFXPROCESSOR_H
