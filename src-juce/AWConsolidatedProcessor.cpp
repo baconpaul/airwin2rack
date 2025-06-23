@@ -229,7 +229,10 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     if (currentBypass != bypassParam->get())
     {
         currentBypass = bypassParam->get();
-        precisionProcessing.bypassMixer->setWetMixProportion(currentBypass ? 0.0 : 1.0);
+        precisionProcessing.bypassCrossfader->setActiveBuffer(currentBypass ? Crossfader<T>::SecondaryBuffer : Crossfader<T>::PrimaryBuffer);
+        if (!currentBypass) {
+            setAWProcessorTo(curentProcessorIndex, false); // TODO: Very crude way of reseting AWProcessor!!
+        }
     }
 
     ResetTypeMsg item;
@@ -247,6 +250,11 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
+    for (int i = 0; i < nProcessorParams; ++i)
+    {
+        awProcessor->setParameter(i, fxParams[i]->get());
+    }
+
     auto inBus = getBus(true, 0);
     auto outBus = getBus(false, 0);
 
@@ -258,52 +266,57 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     }
 
     juce::dsp::AudioBlock<T> block(buffer);
-    precisionProcessing.bypassMixer->pushDrySamples(block);
+    precisionProcessing.bypassCrossfader->pushSecondaryBuffer(block);
 
-    precisionProcessing.inputGain->setGainLinear(inLev->getAmplitude<T>());
-    precisionProcessing.inputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
-
-    // NOTE: Most Airwindows plugins take a copy of the L/R input sample before writing the output sample.
-    // But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes some issues,
-    // as the input buffer is overridden before the R channel is typically processed.
-    // In mono input mode, we therefor take a copy of the input and use that.
-    if (inBus->getNumberOfChannels() == 1)
-        precisionProcessing.monoBuffer->copyFrom(0, 0, buffer, 0, 0, precisionProcessing.monoBuffer->getNumSamples());
-
-    const T *inputs[2];
-    T *outputs[2];
-    inputs[0] = buffer.getReadPointer(0);
-    inputs[1] = inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : precisionProcessing.monoBuffer->getReadPointer(0);
-    outputs[0] = buffer.getWritePointer(0);
-    outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : precisionProcessing.monoBuffer->getWritePointer(0);
-
-    if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
+    // Save CPU cycles by not running the processing in bypass mode
+    if (precisionProcessing.bypassCrossfader->getActiveBuffer() == Crossfader<T>::PrimaryBuffer
+        || precisionProcessing.bypassCrossfader->fading())
     {
-        isPlaying = false;
-        return;
-    }
-    isPlaying = true;
+        precisionProcessing.inputGain->setGainLinear(inLev->getAmplitude<T>());
+        precisionProcessing.inputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
 
-    if constexpr (std::is_same_v<T, float>)
-    {
-        awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
-    }
-    else
-    {
-        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs, buffer.getNumSamples());
-    }
-    if (outBus->getNumberOfChannels() == 1 && *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
-    {
-        // Output = L+R / 2
-        buffer.addFrom(0, 0, *precisionProcessing.monoBuffer, 0, 0, buffer.getNumSamples());
-        buffer.applyGain(0.5);
-    }
-    // In LeftOnly mode, we don't need to do anything as the right monoBuffer is automatically discarded
+        // NOTE: Most Airwindows plugins take a copy of the L/R input sample before writing the output sample.
+        // But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes some issues,
+        // as the input buffer is overridden before the R channel is typically processed.
+        // In mono input mode, we therefor take a copy of the input and use that.
+        if (inBus->getNumberOfChannels() == 1)
+            precisionProcessing.monoBuffer->copyFrom(0, 0, buffer, 0, 0, precisionProcessing.monoBuffer->getNumSamples());
 
-    precisionProcessing.outputGain->setGainLinear(outLev->getAmplitude<T>());
-    precisionProcessing.outputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
+        const T *inputs[2];
+        T *outputs[2];
+        inputs[0] = buffer.getReadPointer(0);
+        inputs[1] = inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : precisionProcessing.monoBuffer->getReadPointer(0);
+        outputs[0] = buffer.getWritePointer(0);
+        outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : precisionProcessing.monoBuffer->getWritePointer(0);
 
-    precisionProcessing.bypassMixer->mixWetSamples(block);
+        if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
+        {
+            isPlaying = false;
+            return;
+        }
+        isPlaying = true;
+
+        if constexpr (std::is_same_v<T, float>)
+        {
+            awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
+        }
+        else
+        {
+            awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs, buffer.getNumSamples());
+        }
+        if (outBus->getNumberOfChannels() == 1 && *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
+        {
+            // Output = L+R / 2
+            buffer.addFrom(0, 0, *precisionProcessing.monoBuffer, 0, 0, buffer.getNumSamples());
+            buffer.applyGain(0.5);
+        }
+        // In LeftOnly mode, we don't need to do anything as the right monoBuffer is automatically discarded
+
+        precisionProcessing.outputGain->setGainLinear(outLev->getAmplitude<T>());
+        precisionProcessing.outputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
+    }
+
+    precisionProcessing.bypassCrossfader->process(block);
 }
 
 void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
@@ -495,8 +508,8 @@ template<typename T>
 void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(const juce::dsp::ProcessSpec& spec)
 {
     monoBuffer.reset(new juce::AudioBuffer<T>(1, spec.maximumBlockSize));
-    bypassMixer.reset(new juce::dsp::DryWetMixer<T>());
-    bypassMixer->prepare(spec);
+    bypassCrossfader.reset(new Crossfader<T>());
+    bypassCrossfader->prepare(spec);
     inputGain.reset(new juce::dsp::Gain<T>());
     inputGain->prepare(spec);
     inputGain->setGainDecibels(0.0);
@@ -511,7 +524,7 @@ template<typename T>
 void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
 {
     monoBuffer.reset();
-    bypassMixer.reset();
+    bypassCrossfader.reset();
     inputGain.reset();
     outputGain.reset();
 }
@@ -519,7 +532,7 @@ void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
 template<typename T>
 bool AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::isValid() const
 {
-    return static_cast<bool>(monoBuffer) && static_cast<bool>(bypassMixer) && static_cast<bool>(inputGain) && static_cast<bool>(outputGain);
+    return static_cast<bool>(monoBuffer) && static_cast<bool>(bypassCrossfader) && static_cast<bool>(inputGain) && static_cast<bool>(outputGain);
 }
 
 //==============================================================================

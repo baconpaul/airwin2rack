@@ -3,6 +3,7 @@
 #define AWCONSOLIDATED_PROCESSOR_H
 
 #include "AirwinRegistry.h"
+#include "Crossfader/Crossfader.h"
 #include "juce_audio_processors/juce_audio_processors.h"
 #include "juce_dsp/juce_dsp.h"
 #include "clap-juce-extensions/clap-juce-extensions.h"
@@ -318,7 +319,7 @@ private:
     struct PrecisionDependantProcessing
     {
         std::unique_ptr<juce::AudioBuffer<T>> monoBuffer;
-        std::unique_ptr<juce::dsp::DryWetMixer<T>> bypassMixer;
+        std::unique_ptr<Crossfader<T>> bypassCrossfader;
         std::unique_ptr<juce::dsp::Gain<T>> inputGain;
         std::unique_ptr<juce::dsp::Gain<T>> outputGain;
 
