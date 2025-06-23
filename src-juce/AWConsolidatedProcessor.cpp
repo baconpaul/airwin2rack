@@ -219,7 +219,10 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     if (currentBypass != bypassParam->get())
     {
         currentBypass = bypassParam->get();
-        precisionProcessing.bypassMixer->setWetMixProportion(currentBypass ? 0.0 : 1.0);
+        precisionProcessing.bypassCrossfader->setActiveBuffer(currentBypass ? Crossfader<T>::SecondaryBuffer : Crossfader<T>::PrimaryBuffer);
+        if (!currentBypass) {
+            setAWProcessorTo(curentProcessorIndex, false); // TODO: Very crude way of reseting AWProcessor!!
+        }
     }
 
     ResetTypeMsg item;
@@ -271,25 +274,29 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     }
 
     juce::dsp::AudioBlock<T> block(buffer);
-    precisionProcessing.bypassMixer->pushDrySamples(block);
+    precisionProcessing.bypassCrossfader->pushSecondaryBuffer(block);
 
-    precisionProcessing.inputGain->setGainLinear(inLev->getAmplitude<T>());
-    precisionProcessing.inputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
-  
-    if constexpr (std::is_same_v<T, float>)
+    // Save CPU cycles by not running the processing in bypass mode
+    if (precisionProcessing.bypassCrossfader->getActiveBuffer() == Crossfader<T>::PrimaryBuffer
+        || precisionProcessing.bypassCrossfader->fading())
     {
-        awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
-    }
-    else
-    {
-        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs,
-                                            buffer.getNumSamples());
+        precisionProcessing.inputGain->setGainLinear(inLev->getAmplitude<T>());
+        precisionProcessing.inputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
+
+        if constexpr (std::is_same_v<T, float>)
+        {
+            awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
+        }
+        else
+        {
+            awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs, buffer.getNumSamples());
+        }
+
+        precisionProcessing.outputGain->setGainLinear(outLev->getAmplitude<T>());
+        precisionProcessing.outputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
     }
 
-    precisionProcessing.outputGain->setGainLinear(outLev->getAmplitude<T>());
-    precisionProcessing.outputGain->process(juce::dsp::ProcessContextReplacing<T>(block));
-
-    precisionProcessing.bypassMixer->mixWetSamples(block);
+    precisionProcessing.bypassCrossfader->process(block);
 }
 
 void AWConsolidatedAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
@@ -475,8 +482,8 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
 template<typename T>
 void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(const juce::dsp::ProcessSpec& spec)
 {
-    bypassMixer.reset(new juce::dsp::DryWetMixer<T>());
-    bypassMixer->prepare(spec);
+    bypassCrossfader.reset(new Crossfader<T>());
+    bypassCrossfader->prepare(spec);
     inputGain.reset(new juce::dsp::Gain<T>());
     inputGain->prepare(spec);
     inputGain->setGainDecibels(0.0);
@@ -490,7 +497,7 @@ void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(cons
 template<typename T>
 void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
 {
-    bypassMixer.reset();
+    bypassCrossfader.reset();
     inputGain.reset();
     outputGain.reset();
 }
@@ -498,7 +505,7 @@ void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
 template<typename T>
 bool AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::isValid() const
 {
-    return static_cast<bool>(bypassMixer) && static_cast<bool>(inputGain) && static_cast<bool>(outputGain);
+    return static_cast<bool>(bypassCrossfader) && static_cast<bool>(inputGain) && static_cast<bool>(outputGain);
 }
 
 //==============================================================================
