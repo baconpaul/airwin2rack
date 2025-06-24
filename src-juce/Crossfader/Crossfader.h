@@ -51,6 +51,7 @@ public:
 
     void pushSecondaryBuffer(const juce::dsp::AudioBlock<const SampleType> secondaryBuffer)
     {
+        localSecondaryBuffer.setSize(secondaryBuffer.getNumChannels(), secondaryBuffer.getNumSamples(), false, false, true);
         juce::dsp::AudioBlock<SampleType> block(localSecondaryBuffer);
         block.copyFrom(secondaryBuffer);
     }
