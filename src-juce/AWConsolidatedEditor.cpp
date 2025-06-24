@@ -663,10 +663,11 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         if (AirwinRegistry::namesByCollection.find(coll) != AirwinRegistry::namesByCollection.end())
             inCol = AirwinRegistry::namesByCollection.at(coll);
 
-       const auto processorIsMono{ editor->processor.getTotalNumInputChannels()== 1 && editor->processor.getTotalNumOutputChannels() == 1 };
+        const auto processorIsMono{ editor->processor.getTotalNumInputChannels()== 1 && editor->processor.getTotalNumOutputChannels() == 1 };
+        const auto stereoPluginsInMono{ editor->processor.properties->getBoolValue("stereoPluginsInMono") };
         for (auto r : AirwinRegistry::fxAlphaOrdering)
         {
-            if (processorIsMono && !AirwinRegistry::registry[r].isMono) {
+            if (!stereoPluginsInMono && processorIsMono && !AirwinRegistry::registry[r].isMono) {
                 continue;
             }
 
@@ -1868,6 +1869,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
     auto p = juce::PopupMenu();
     const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
     const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
+    const auto stereoPluginsInMono{ processor.properties->getBoolValue("stereoPluginsInMono") };
 
     if (justCurrentCategory)
         p.addSectionHeader("Airwindows - " + ent.category);
@@ -1889,18 +1891,15 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             {
                 auto ig = AirwinRegistry::registry[n2i->second];
 
-                // Only show mono plugins when running in M->M mode
-                if (!processorIsMono || ig.isMono) {
-                    sm.addItem(f + " (" + ig.category + ")", true, f == ent.name,
-                        [f, w = juce::Component::SafePointer(this)]() {
-                            if (w)
-                            {
-                                w->postRebuildFocus = PICKER_MENU;
-                                w->processor.pushResetTypeFromUI(
-                                    AirwinRegistry::nameToIndex.at(f));
-                                }
-                            });
-                }
+                sm.addItem(f + " (" + ig.category + ")", stereoPluginsInMono || !processorIsMono || ig.isMono, f == ent.name,
+                    [f, w = juce::Component::SafePointer(this)]() {
+                        if (w)
+                        {
+                            w->postRebuildFocus = PICKER_MENU;
+                            w->processor.pushResetTypeFromUI(
+                                AirwinRegistry::nameToIndex.at(f));
+                            }
+                        });
             }
         }
 
@@ -1980,20 +1979,17 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                 }
             }
 
-            // Only show mono plugins when running in M->M mode
-            if (processorIsMono && !rg.isMono) {
-                include = false;
-            }
-
-            if (include)
+            if (include) {
                 target->addItem(
-                    nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {
+                    nm, stereoPluginsInMono || !processorIsMono || rg.isMono, nm == ent.name,
+                    [nm, w = juce::Component::SafePointer(this)]() {
                         if (w)
                         {
                             w->postRebuildFocus = PICKER_MENU;
                             w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
                         }
                     });
+            }
         }
         if (!justCurrentCategory && sub.getNumItems() > 0)
             p.addSubMenu(cat, sub, true, nullptr, cat == ent.category);
@@ -2121,6 +2117,45 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
         // so we point it to Airwindows/customDocs/, to make it enter Airwindows/
         getSettingsDirectory(false).getChildFile("customDocs").revealToUser();
     });
+
+    settingsMenu.addSeparator();
+    juce::PopupMenu layout;
+    juce::String busLayout{"Unknown -> "};
+    if ( processor.getTotalNumInputChannels() == 1 )
+        busLayout = "Mono -> ";
+    else if (processor.getTotalNumInputChannels() == 2 )
+        busLayout = "Stereo -> ";
+    if ( processor.getTotalNumOutputChannels() == 1 )
+        busLayout += "Mono";
+    else if (processor.getTotalNumOutputChannels() == 2 )
+        busLayout += "Stereo";
+    else
+        busLayout += "Unknown";
+
+    layout.addSectionHeader("Mono behaviour");
+    layout.addSeparator();
+    layout.addItem("Allow stereo plugins in mono mode (global)", true, processor.properties->getBoolValue("stereoPluginsInMono"),
+        [w = juce::Component::SafePointer(this)]() {
+            if (!w)
+                return;
+            w->processor.properties->setValue("stereoPluginsInMono", !w->processor.properties->getBoolValue("stereoPluginsInMono"));
+        });
+    layout.addSeparator();
+    layout.addItem("Output only L channel", true, *processor.monoBehaviourParameter == AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftOnly,
+        [w = juce::Component::SafePointer(this)]() {
+            if (!w)
+                return;
+            *w->processor.monoBehaviourParameter = AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftOnly;
+        });
+    layout.addItem("Output L+R channel", true, *processor.monoBehaviourParameter == AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftRightSum,
+        [w = juce::Component::SafePointer(this)]() {
+            if (!w)
+                return;
+            *w->processor.monoBehaviourParameter = AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftRightSum;
+        });
+    layout.addSeparator();
+    layout.addItem("Bus layout: " + busLayout, false, false, []() {});
+    settingsMenu.addSubMenu("Layout", layout);
 
     if (withHeader)
     {
