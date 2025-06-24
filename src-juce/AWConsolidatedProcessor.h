@@ -285,12 +285,6 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
         MonoBehaviour get() const noexcept { return static_cast<MonoBehaviour>(juce::AudioParameterInt::get()); }
         operator MonoBehaviour() const noexcept { return get(); }
         MonoBehaviourParameter& operator= (MonoBehaviour newValue) { juce::AudioParameterInt::operator=(static_cast<int>(newValue)); return *this; };
-        // std::string toString(MonoBehaviour) const;
-        // MonoBehaviour fromString(std::string&, MonoBehaviour defaultBehaviour = MonoBehaviour::LeftOnly) const;
-        // void setMonoBehaviour(MonoBehaviour);
-        // MonoBehaviour getMonoBehaviour() const;
-        // const juce::ParameterID &id, const juce::String &parameterName
-        // float getDefaultValue() const override { return 0; }
     };
 
     //==============================================================================
