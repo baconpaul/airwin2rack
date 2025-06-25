@@ -222,6 +222,7 @@ juce::Font AWLookAndFeel::getPopupMenuFont()
     return AWC_JUCE_FONT_CTOR(jakartaSansMedium).withHeight(16);
 }
 
+
 void AWLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
                                                        const juce::PopupMenu::Options &o)
 {
@@ -230,6 +231,102 @@ void AWLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int wi
 
     g.setColour(findColour(juce::PopupMenu::textColourId).withAlpha(0.6f));
     g.drawRect(0, 0, width, height);
+}
+
+void AWEffectPopupLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area,
+                                            const bool isSeparator, const bool isActive,
+                                            const bool isHighlighted, const bool isTicked,
+                                            const bool hasSubMenu, const juce::String& text,
+                                            const juce::String& shortcutKeyText,
+                                            const juce::Drawable* icon, const juce::Colour* const textColourToUse)
+{
+    if (isSeparator)
+    {
+        auto r  = area.reduced (5, 0);
+        r.removeFromTop (juce::roundToInt (((float) r.getHeight() * 0.5f) - 0.5f));
+
+        g.setColour (findColour (juce::PopupMenu::textColourId).withAlpha (0.3f));
+        g.fillRect (r.removeFromTop (1));
+    }
+    else
+    {
+        auto textColour = (textColourToUse == nullptr ? findColour (juce::PopupMenu::textColourId)
+                                                        : *textColourToUse);
+
+        auto r  = area.reduced (1);
+
+        if (isHighlighted && isActive)
+        {
+            g.setColour (findColour (juce::PopupMenu::highlightedBackgroundColourId));
+            g.fillRect (r);
+
+            g.setColour (findColour (juce::PopupMenu::highlightedTextColourId));
+        }
+        else
+        {
+            g.setColour (textColour.withMultipliedAlpha (isActive ? 1.0f : 0.5f));
+        }
+
+        r.reduce (juce::jmin (5, area.getWidth() / 20), 0);
+
+        auto font = getPopupMenuFont();
+
+        auto maxFontHeight = (float) r.getHeight() / 1.3f;
+
+        if (font.getHeight() > maxFontHeight)
+            font.setHeight (maxFontHeight);
+
+        g.setFont (font);
+
+        auto tickedArea = r.removeFromLeft (juce::roundToInt (maxFontHeight)).toFloat();
+        if (isTicked)
+        {
+            auto tick = getTickShape (1.0f);
+            g.fillPath (tick, tick.getTransformToScaleToFit (tickedArea.reduced (tickedArea.getWidth() / 5, 0).toFloat(), true));
+        }
+
+        if (hasSubMenu)
+        {
+            auto arrowH = 0.6f * getPopupMenuFont().getAscent();
+
+            auto x = static_cast<float> (r.removeFromRight ((int) arrowH).getX());
+            auto halfH = static_cast<float> (r.getCentreY());
+
+            juce::Path path;
+            path.startNewSubPath (x, halfH - arrowH * 0.5f);
+            path.lineTo (x + arrowH * 0.6f, halfH);
+            path.lineTo (x, halfH + arrowH * 0.5f);
+
+            g.strokePath (path, juce::PathStrokeType (2.0f));
+        }
+
+        r.removeFromRight (3);
+        g.drawFittedText (text, r, juce::Justification::centredLeft, 1);
+
+        // Custom behaviour. Draw icon to the right of the text. Used for mono/stereo icons!
+        if (icon != nullptr)
+        {
+            const auto stringWidth = juce::GlyphArrangement::getStringWidthInt(font, text);
+            r.removeFromLeft (stringWidth+5).toFloat();
+            auto iconArea{r};
+            // Reduce the icon size compared to the text, so it doesn't draw to much attention
+            const auto reduceHeightBy{iconArea.getHeight() * 0.6};
+            iconArea.setHeight(iconArea.getHeight()-reduceHeightBy);
+            iconArea.setY(iconArea.getY() + (reduceHeightBy/2)); // Make sure the icon is still centered
+            icon->drawWithin (g, iconArea.toFloat(), juce::RectanglePlacement::xLeft | juce::RectanglePlacement::yMid | juce::RectanglePlacement::onlyReduceInSize, isActive ? 0.8f : 0.5f);
+            r.removeFromLeft (juce::roundToInt (maxFontHeight * 0.5f));
+        }
+
+        if (shortcutKeyText.isNotEmpty())
+        {
+            auto f2 = font;
+            f2.setHeight (f2.getHeight() * 0.75f);
+            f2.setHorizontalScale (0.95f);
+            g.setFont (f2);
+
+            g.drawText (shortcutKeyText, r, juce::Justification::centredRight, true);
+        }
+    }
 }
 
 struct Picker : public juce::Component, public juce::TextEditor::Listener
@@ -1433,6 +1530,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 {
     juce::Desktop::getInstance().addDarkModeSettingListener(this);
     lnf = std::make_unique<AWLookAndFeel>();
+    popupLnf = std::make_unique<AWEffectPopupLookAndFeel>();
+
     // juce::LookAndFeel::setDefaultLookAndFeel(lnf.get());
     setLookAndFeel(lnf.get());
     setAccessible(true);
@@ -1450,6 +1549,17 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
         {
             auto f = fs.open("res/clipper.svg");
             clipperIcon = juce::Drawable::createFromImageData(f.begin(), f.size());
+        }
+
+        if (fs.is_file("res/mono.svg"))
+        {
+            auto f = fs.open("res/mono.svg");
+            monoIcon = juce::Drawable::createFromImageData(f.begin(), f.size());
+        }
+        if (fs.is_file("res/stereo.svg"))
+        {
+            auto f = fs.open("res/stereo.svg");
+            stereoIcon = juce::Drawable::createFromImageData(f.begin(), f.size());
         }
     }
     catch (std::exception &e)
@@ -1871,6 +1981,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
     const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
     const auto stereoPluginsInMono{ processor.properties->getBoolValue("stereoPluginsInMono") };
 
+    p.setLookAndFeel(popupLnf.get());
     if (justCurrentCategory)
         p.addSectionHeader("Airwindows - " + ent.category);
     else
@@ -1891,15 +2002,18 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             {
                 auto ig = AirwinRegistry::registry[n2i->second];
 
-                sm.addItem(f + " (" + ig.category + ")", stereoPluginsInMono || !processorIsMono || ig.isMono, f == ent.name,
-                    [f, w = juce::Component::SafePointer(this)]() {
-                        if (w)
-                        {
-                            w->postRebuildFocus = PICKER_MENU;
-                            w->processor.pushResetTypeFromUI(
-                                AirwinRegistry::nameToIndex.at(f));
-                            }
-                        });
+                juce::PopupMenu::Item i(f + " (" + ig.category + ")");
+                i.isEnabled = stereoPluginsInMono || !processorIsMono || ig.isMono;
+                i.isTicked = f == ent.name;
+                i.image = std::move ((ig.isMono ? monoIcon : stereoIcon)->createCopy());
+                i.action = [f, w = juce::Component::SafePointer(this)]() {
+                    if (w)
+                    {
+                        w->postRebuildFocus = PICKER_MENU;
+                        w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(f));
+                    }
+                };
+                sm.addItem (std::move(i));
             }
         }
 
@@ -1980,15 +2094,18 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             }
 
             if (include) {
-                target->addItem(
-                    nm, stereoPluginsInMono || !processorIsMono || rg.isMono, nm == ent.name,
-                    [nm, w = juce::Component::SafePointer(this)]() {
-                        if (w)
-                        {
-                            w->postRebuildFocus = PICKER_MENU;
-                            w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
-                        }
-                    });
+                juce::PopupMenu::Item i(nm);
+                i.isEnabled = stereoPluginsInMono || !processorIsMono || rg.isMono;
+                i.isTicked = nm == ent.name;
+                i.image = std::move ((rg.isMono ? monoIcon : stereoIcon)->createCopy());
+                i.action = [nm, w = juce::Component::SafePointer(this)]() {
+                    if (w)
+                    {
+                        w->postRebuildFocus = PICKER_MENU;
+                        w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
+                    }
+                };
+                target->addItem (std::move(i));
             }
         }
         if (!justCurrentCategory && sub.getNumItems() > 0)
