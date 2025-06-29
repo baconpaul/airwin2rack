@@ -18,6 +18,15 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
 {
     AirwinConsolidatedBase::defaultSampleRate = 48000;
 
+    juce::StringArray processors;
+    for (const auto& entry : AirwinRegistry::registry)
+    {
+        processors.add(entry.name);
+    }
+    processorParam = new juce::AudioParameterChoice({"processor", 4}, "Processor", processors, 0, juce::AudioParameterChoiceAttributes().withMeta(true).withAutomatable(false));
+    processorParam->addListener(this);
+    addParameter(processorParam);
+
     // Multiple calls to addParameter here
     for (int i = 0; i < nAWParams; ++i)
     {
@@ -86,7 +95,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
     if (AirwinRegistry::nameToIndex.find(defaultName) == AirwinRegistry::nameToIndex.end())
         defaultName = "Galactic";
 
-    setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
+    *processorParam = AirwinRegistry::nameToIndex.at(defaultName);
 
 #if USE_JUCE_PROGRAMS
     updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
@@ -162,7 +171,7 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
     const auto isMono{ getTotalNumInputChannels()== 1 && getTotalNumOutputChannels() == 1 };
     if (isMono && !AirwinRegistry::registry[curentProcessorIndex].isMono) {
         const auto defaultName = "Chamber"; // Mono reverb from the recommended list
-        setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
+        *processorParam = AirwinRegistry::nameToIndex.at(defaultName);
     }
 
     AirwinConsolidatedBase::defaultSampleRate = sr;
@@ -312,6 +321,9 @@ juce::AudioProcessorEditor *AWConsolidatedAudioProcessor::createEditor()
 void AWConsolidatedAudioProcessor::parameterValueChanged(int parameterIndex, float newValue)
 {
     refreshUI = true;
+    if (parameterIndex == processorParam->getParameterIndex()) {
+        pushResetTypeFromUI(processorParam->getIndex());
+    }
 }
 
 void AWConsolidatedAudioProcessor::setAWProcessorTo(int registryIndex, bool initDisplay)
@@ -374,7 +386,16 @@ void AWConsolidatedAudioProcessor::setupParamDisplaysFromDisplayProcessor(int in
         fxParams[i]->setValueNotifyingHost(setParamsTo[i]);
     }
 
-    updateHostDisplay(juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
+    if (!juce::PluginHostType().isLogic())
+        updateHostDisplay(juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
+    else {
+        // When running the plugin in Logic Pro as coupled dual or multi mono, changing processor, and thereby
+        // all parameters, seem to "confuse" Logic so that it doesn't always sync the instances.
+        // Delaying the call to updateHostDisplay seems to solve it :-(
+        juce::Timer::callAfterDelay(50, [this]() {
+            updateHostDisplay(juce::AudioProcessor::ChangeDetails().withParameterInfoChanged(true));
+        });
+    }
     rebuildUI = true;
 }
 
@@ -384,7 +405,7 @@ void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destDa
     std::unique_ptr<juce::XmlElement> xml(new juce::XmlElement("awconsolidated"));
     xml->setAttribute("streamingVersion", (int)8524);
 
-    xml->setAttribute("currentProcessorName", AirwinRegistry::registry[curentProcessorIndex].name);
+    xml->setAttribute("currentProcessorName", processorParam->getCurrentChoiceName());
     for (int i = 0; i < nAWParams; ++i)
     {
         juce::String nm = juce::String("awp_") + std::to_string(i);
@@ -413,7 +434,9 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
             if (AirwinRegistry::nameToIndex.find(effectName.toStdString()) !=
                 AirwinRegistry::nameToIndex.end())
             {
-                setAWProcessorTo(AirwinRegistry::nameToIndex.at(effectName.toStdString()), true);
+                auto idx{processorParam->choices.indexOf(effectName)};
+                if (idx != -1)
+                    *processorParam = idx;
             }
 
             for (int i = 0; i < nAWParams; ++i)

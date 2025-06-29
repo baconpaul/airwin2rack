@@ -133,28 +133,30 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     // Call this from the UI thread only
     void pushResetTypeFromUI(int32_t index)
     {
-        auto &rg = AirwinRegistry::registry[index];
-        {
-            LOCK(displayProcessorMutex);
-            awDisplayProcessor = rg.generator();
-            awDisplayProcessor->setSampleRate(getSampleRate());
-        }
-        setupParamDisplaysFromDisplayProcessor(index);
+        if (curentProcessorIndex != index) {
+            auto &rg = AirwinRegistry::registry[index];
+            {
+                LOCK(displayProcessorMutex);
+                awDisplayProcessor = rg.generator();
+                awDisplayProcessor->setSampleRate(getSampleRate());
+            }
+            setupParamDisplaysFromDisplayProcessor(index);
 
-        if (isPlaying)
-        {
-            curentProcessorIndex = index;
-            resetType.push({-1, index, 0.f});
-        }
-        else
-        {
-            setAWProcessorTo(index, false);
-        }
+            if (isPlaying)
+            {
+                curentProcessorIndex = index;
+                resetType.push({-1, index, 0.f});
+            }
+            else
+            {
+                setAWProcessorTo(index, false);
+            }
 
-        refreshUI = true;
+            refreshUI = true;
 #if USE_JUCE_PROGRAMS
-        updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
+            updateHostDisplay(juce::AudioProcessor::ChangeDetails().withProgramChanged(true));
 #endif
+        }
     }
     void setupParamDisplaysFromDisplayProcessor(int index);
 
@@ -268,6 +270,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     };
 
     //==============================================================================
+    juce::AudioParameterChoice *processorParam{nullptr};
     typedef AWParam float_param_t;
     float_param_t *fxParams[nAWParams];
     float defaultValues[nAWParams];
@@ -283,9 +286,11 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     std::unique_ptr<AirwinConsolidatedBase> awProcessor, awDisplayProcessor;
     std::mutex displayProcessorMutex;
     int nProcessorParams{0};
-    std::atomic<int> curentProcessorIndex{0};
 
     std::unique_ptr<juce::PropertiesFile> properties;
+
+private:
+    std::atomic<int> curentProcessorIndex{0};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
 };
