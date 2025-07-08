@@ -663,13 +663,8 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         if (AirwinRegistry::namesByCollection.find(coll) != AirwinRegistry::namesByCollection.end())
             inCol = AirwinRegistry::namesByCollection.at(coll);
 
-       const auto processorIsMono{ editor->processor.getTotalNumInputChannels()== 1 && editor->processor.getTotalNumOutputChannels() == 1 };
         for (auto r : AirwinRegistry::fxAlphaOrdering)
         {
-            if (processorIsMono && !AirwinRegistry::registry[r].isMono) {
-                continue;
-            }
-
             auto n = AirwinRegistry::registry[r].name;
             std::transform(n.begin(), n.end(), n.begin(),
                            [](unsigned char c) { return std::tolower(c); });
@@ -1791,68 +1786,44 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     else
         postRebuildFocus = JOG_UP;
 
-    const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
-    const int sidx = processor.curentProcessorIndex;
-
     if (coll == favoritesCollection && !favoritesList.empty())
     {
-        const auto currentProcessorName = AirwinRegistry::registry[sidx].name;
+        int sidx = processor.curentProcessorIndex;
+        auto &rg = AirwinRegistry::registry[sidx];
         // Theres lots of ways to do this but for now lets do it the crude way
         std::vector<std::string> v(favoritesList.begin(), favoritesList.end());
-
-        // Remove favorites that is not currently supported
-        auto end = std::remove_if(v.begin(), v.end(),[processorIsMono](const auto& name) {
-            const auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex[name]];
-            return (processorIsMono && !rg.isMono);
-        });
-        v.erase(end, v.end());
-
-        if (!v.empty())
+        int idx{-1}, c{0};
+        for (auto &vn : v)
         {
-            int idx{-1}, c{0};
-            for (auto &vn : v)
+            if (vn == rg.name)
             {
-                if (vn == currentProcessorName)
-                {
-                    idx = c;
-                }
-                c++;
+                idx = c;
             }
-            auto nidx = idx + dir;
-            if (nidx < 0)
-                nidx = v.size() - 1;
-            if (nidx >= (int)v.size())
-                nidx = 0;
-            auto nfidx = AirwinRegistry::nameToIndex[v[nidx]];
-            processor.pushResetTypeFromUI(nfidx);
-            return;
+            c++;
         }
+        auto nidx = idx + dir;
+        if (nidx < 0)
+            nidx = v.size() - 1;
+        if (nidx >= (int)v.size())
+            nidx = 0;
+        auto nfidx = AirwinRegistry::nameToIndex[v[nidx]];
+        processor.pushResetTypeFromUI(nfidx);
     }
-
-    if (coll == allCollection || AirwinRegistry::namesByCollection.find(coll) ==
+    else if (coll == allCollection || AirwinRegistry::namesByCollection.find(coll) ==
                                           AirwinRegistry::namesByCollection.end())
     {
         auto nx = neighbor(processor.curentProcessorIndex, dir);
-        while (nx != sidx)
-        {
-            auto rg = AirwinRegistry::registry[nx];
-            if (!processorIsMono || rg.isMono)
-            {
-                processor.pushResetTypeFromUI(nx);
-                return;
-            }
-
-            nx = neighbor(nx, dir);
-        }
+        processor.pushResetTypeFromUI(nx);
     }
     else
     {
+        int sidx = processor.curentProcessorIndex;
         auto &collFX = AirwinRegistry::namesByCollection.at(coll);
         auto nx = neighbor(processor.curentProcessorIndex, dir);
         while (nx != sidx)
         {
             auto rg = AirwinRegistry::registry[nx];
-            if (collFX.find(rg.name) != collFX.end() && (!processorIsMono || rg.isMono))
+            if (collFX.find(rg.name) != collFX.end())
             {
                 processor.pushResetTypeFromUI(nx);
                 return;
@@ -1867,7 +1838,6 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
 {
     auto p = juce::PopupMenu();
     const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
-    const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
 
     if (justCurrentCategory)
         p.addSectionHeader("Airwindows - " + ent.category);
@@ -1889,25 +1859,19 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             {
                 auto ig = AirwinRegistry::registry[n2i->second];
 
-                // Only show mono plugins when running in M->M mode
-                if (!processorIsMono || ig.isMono) {
-                    sm.addItem(f + " (" + ig.category + ")", true, f == ent.name,
-                        [f, w = juce::Component::SafePointer(this)]() {
-                            if (w)
-                            {
-                                w->postRebuildFocus = PICKER_MENU;
-                                w->processor.pushResetTypeFromUI(
-                                    AirwinRegistry::nameToIndex.at(f));
-                                }
-                            });
-                }
+                sm.addItem(f + " (" + ig.category + ")", true, f == ent.name,
+                           [f, w = juce::Component::SafePointer(this)]() {
+                               if (w)
+                               {
+                                   w->postRebuildFocus = PICKER_MENU;
+                                   w->processor.pushResetTypeFromUI(
+                                       AirwinRegistry::nameToIndex.at(f));
+                               }
+                           });
             }
         }
-
-        if (sm.getNumItems() > 1) {
-            p.addSubMenu("Favorites", sm);
-            p.addSeparator();
-        }
+        p.addSubMenu("Favorites", sm);
+        p.addSeparator();
     }
     auto collMenu = juce::PopupMenu();
     auto ccoll = getCurrentCollection();
@@ -1960,7 +1924,6 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
         for (const auto &nm : set)
         {
             bool include{false};
-            auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex.at(nm)];
             if (coll == favoritesCollection && !favoritesList.empty())
             {
                 if (favoritesList.find(nm) != favoritesList.end())
@@ -1974,17 +1937,12 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
             }
             else
             {
+                auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex.at(nm)];
                 if (inCol.find(rg.name) != inCol.end())
                 {
                     include = true;
                 }
             }
-
-            // Only show mono plugins when running in M->M mode
-            if (processorIsMono && !rg.isMono) {
-                include = false;
-            }
-
             if (include)
                 target->addItem(
                     nm, true, nm == ent.name, [nm, w = juce::Component::SafePointer(this)]() {

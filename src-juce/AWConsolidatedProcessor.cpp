@@ -158,13 +158,6 @@ void AWConsolidatedAudioProcessor::changeProgramName(int index, const juce::Stri
 //==============================================================================
 void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
 {
-    // Check for current AWProcessor it it supports mono. Otherwise chose something else...
-    const auto isMono{ getTotalNumInputChannels()== 1 && getTotalNumOutputChannels() == 1 };
-    if (isMono && !AirwinRegistry::registry[curentProcessorIndex].isMono) {
-        const auto defaultName = "Chamber"; // Mono reverb from the recommended list
-        setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
-    }
-
     AirwinConsolidatedBase::defaultSampleRate = sr;
     if (awProcessor)
         awProcessor->setSampleRate(sr);
@@ -178,12 +171,9 @@ bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &lay
     bool inputValid = (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo() ||
                        layouts.getMainInputChannelSet() == juce::AudioChannelSet::mono());
 
-    bool outputValid = (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo() ||
-                        layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono());
+    bool outputValid = layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
 
-    bool testValid = layouts.getMainInputChannelSet().size() <= layouts.getMainOutputChannelSet().size();
-
-    return inputValid && outputValid && testValid;
+    return inputValid && outputValid;
 }
 
 template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::AudioBuffer<T> &buffer)
@@ -234,8 +224,8 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     auto inBus = getBus(true, 0);
     auto outBus = getBus(false, 0);
 
-    if (inBus->getNumberOfChannels() == 0 || outBus->getNumberOfChannels() == 0 ||
-        buffer.getNumChannels() < std::max(inBus->getNumberOfChannels(), outBus->getNumberOfChannels()) )
+    if (inBus->getNumberOfChannels() == 0 || outBus->getNumberOfChannels() != 2 ||
+        buffer.getNumChannels() < 2)
     {
         isPlaying = false;
         return;
@@ -247,10 +237,8 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     inputs[1] =
         inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : buffer.getReadPointer(0);
     outputs[0] = buffer.getWritePointer(0);
-    outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : buffer.getWritePointer(0);
-    // FIXME: For Mono->Mono plugins, this only uses the L channel from the AW plugin and simply discards the R.
-    //        Consider allocating a separate buffer and doing L+R / 2 instead.
-    
+    outputs[1] = buffer.getWritePointer(1);
+
     if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
     {
         isPlaying = false;
