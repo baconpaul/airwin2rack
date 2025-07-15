@@ -761,7 +761,7 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
             inCol = AirwinRegistry::namesByCollection.at(coll);
 
         const auto processorIsMono{ editor->processor.getTotalNumInputChannels()== 1 && editor->processor.getTotalNumOutputChannels() == 1 };
-        const auto stereoPluginsInMono{ editor->processor.properties->getBoolValue("stereoPluginsInMono") };
+        const auto stereoPluginsInMono{ editor->processor.properties->getBoolValue("stereoPluginsInMono", true) };
         for (auto r : AirwinRegistry::fxAlphaOrdering)
         {
             if (!stereoPluginsInMono && processorIsMono && !AirwinRegistry::registry[r].isMono) {
@@ -1979,7 +1979,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
     auto p = juce::PopupMenu();
     const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
     const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
-    const auto stereoPluginsInMono{ processor.properties->getBoolValue("stereoPluginsInMono") };
+    const auto stereoPluginsInMono{ processor.properties->getBoolValue("stereoPluginsInMono", true) };
 
     p.setLookAndFeel(popupLnf.get());
     if (justCurrentCategory)
@@ -2251,11 +2251,11 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
 
     layout.addSectionHeader("Mono behaviour");
     layout.addSeparator();
-    layout.addItem("Allow stereo plugins in mono mode (global)", true, processor.properties->getBoolValue("stereoPluginsInMono"),
+    layout.addItem("Allow stereo plugins in mono mode (global)", true, processor.properties->getBoolValue("stereoPluginsInMono", true),
         [w = juce::Component::SafePointer(this)]() {
             if (!w)
                 return;
-            w->processor.properties->setValue("stereoPluginsInMono", !w->processor.properties->getBoolValue("stereoPluginsInMono"));
+            w->processor.properties->setValue("stereoPluginsInMono", !w->processor.properties->getBoolValue("stereoPluginsInMono", true));
         });
     layout.addSeparator();
     layout.addItem("Output only L channel", true, *processor.monoBehaviourParameter == AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftOnly,
