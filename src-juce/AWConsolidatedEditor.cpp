@@ -1554,6 +1554,9 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
 {
+    // Ensure that no popup menu lingers after editor has been closed... (Seen with AU plugin in both Logic Pro and Reaper)
+    juce::PopupMenu::dismissAllActiveMenus();
+
     // release any references to the look and feel
     setLookAndFeel(&juce::LookAndFeel::getDefaultLookAndFeel());
 
