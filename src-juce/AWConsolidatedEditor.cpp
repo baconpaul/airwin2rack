@@ -2279,7 +2279,7 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
         });
     layout.addSeparator();
     layout.addItem("Bus layout: " + busLayout, false, false, []() {});
-    settingsMenu.addSubMenu("Layout", layout);
+    settingsMenu.addSubMenu("Channel Layout", layout);
 
     if (withHeader)
     {

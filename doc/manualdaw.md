@@ -80,7 +80,7 @@ Three distinct channel layouts are supported:
 - Mono in to Mono out
 
 The chosen layout is entirely up to the plugin host, e.g. Logic Pro, Bitwig etc.
-Which layout is currently active can be seen in the settings menu under "Layout":
+Which layout is currently active can be seen in the settings menu under "Channel Layout":
 
 <img src="dawLayoutSettings.png" alt="Channel layout settings">
 
