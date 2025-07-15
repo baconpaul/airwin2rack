@@ -306,7 +306,11 @@ void AWEffectPopupLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce:
         // Custom behaviour. Draw icon to the right of the text. Used for mono/stereo icons!
         if (icon != nullptr)
         {
+        #if JUCE_VERSION >= 0x080000
             const auto stringWidth = juce::GlyphArrangement::getStringWidthInt(font, text);
+        #else
+            const auto stringWidth = font.getStringWidth(text);
+        #endif
             r.removeFromLeft (stringWidth+5).toFloat();
             auto iconArea{r};
             // Reduce the icon size compared to the text, so it doesn't draw to much attention
