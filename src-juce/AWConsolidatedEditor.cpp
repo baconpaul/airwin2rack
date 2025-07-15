@@ -1980,6 +1980,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
     const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
     const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
     const auto stereoPluginsInMono{ processor.properties->getBoolValue("stereoPluginsInMono", true) };
+    const auto alwaysShowMonoStereoIcon{ processor.properties->getBoolValue("alwaysShowMonoStereoIcon", false) };
 
     p.setLookAndFeel(popupLnf.get());
     if (justCurrentCategory)
@@ -2005,7 +2006,8 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                 juce::PopupMenu::Item i(f + " (" + ig.category + ")");
                 i.isEnabled = stereoPluginsInMono || !processorIsMono || ig.isMono;
                 i.isTicked = f == ent.name;
-                i.image = std::move ((ig.isMono ? monoIcon : stereoIcon)->createCopy());
+                if (processorIsMono || alwaysShowMonoStereoIcon)
+                    i.image = std::move ((ig.isMono ? monoIcon : stereoIcon)->createCopy());
                 i.action = [f, w = juce::Component::SafePointer(this)]() {
                     if (w)
                     {
@@ -2097,7 +2099,8 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                 juce::PopupMenu::Item i(nm);
                 i.isEnabled = stereoPluginsInMono || !processorIsMono || rg.isMono;
                 i.isTicked = nm == ent.name;
-                i.image = std::move ((rg.isMono ? monoIcon : stereoIcon)->createCopy());
+                if (processorIsMono || alwaysShowMonoStereoIcon)
+                    i.image = std::move ((rg.isMono ? monoIcon : stereoIcon)->createCopy());
                 i.action = [nm, w = juce::Component::SafePointer(this)]() {
                     if (w)
                     {
