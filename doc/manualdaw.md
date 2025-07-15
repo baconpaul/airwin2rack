@@ -4,7 +4,7 @@
 
 The Airwindows Consolidated Plugin is a [CLAP](https://cleveraudio.org)/AU/VST3/LV2/Standalone which uses
 [JUCE](https://juce.com) to expose all the Airwindows as a single plugin,
-complete with documentation. It is a standard stereo plugin which works 
+complete with documentation. It is a standard plugin which works
 in your DAW like any other effect.
 
 The Airwindows Consolidated Plugin is open source software. You can [access the complete source code 
@@ -66,6 +66,42 @@ effect. The default collection ("Recommended") contains Chris's greatest hits.
 
 To select a collection other than "Recommended", choose the "Filter by Collections"
 menu and select a collection you want. "All plugins" choice removes any filtering.
+
+## Features
+
+This section describes some of the features made to help you use it in an efficient manner.
+
+### Channel layout
+
+Three distinct channel layouts are supported:
+
+- Stereo in to Stereo out
+- Mono in to Stereo out
+- Mono in to Mono out
+
+The chosen layout is entirely up to the plugin host, e.g. Logic Pro, Bitwig etc.
+Which layout is currently active can be seen in the settings menu under "Channel Layout":
+
+<img src="dawLayoutSettings.png" alt="Channel layout settings">
+
+#### Mono in to Mono out
+
+Here you can also find some settings to control how the plugin functions in the pure mono to mono mode.
+Since many of the Airwindows algorithms are inherently stereo, some decisions has to be made how these are handled in a mono in mono out scenario.
+
+The first decision is whether or not to allow the use of stereo algorithms in mono mode. The default behaviour is to allow all algorithms, but this can be changed in the setting if you want to.
+To clarify which algorithms are mono and which are stereo, an small icon can be seen in the effect list (But only when running in mono->mono mode):
+
+<img src="dawMonoStereoIcon.png" alt="Mono/stereo icon">
+
+If stereo algorithms are not allowed, they will still be shown in the effect menu, but greyed out.
+
+When runnning a stereo algorithm how the two channels are "downmixed" to one can be changed.
+Two options are possible:
+- Output only Left channel (Default)
+- Output L+R channel
+
+The "only left channel" option will suffice for the majority of applications, but it can be experiemented with on a per plugin bases if needed.
 
 ## Custom Documentation
 

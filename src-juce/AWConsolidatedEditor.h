@@ -116,6 +116,16 @@ struct AWLookAndFeel : public juce::LookAndFeel_V4
 
     juce::PropertiesFile *propFileWeak{nullptr};
 };
+
+struct AWEffectPopupLookAndFeel : public juce::LookAndFeel_V4
+{
+    AWEffectPopupLookAndFeel() = default;
+    void drawPopupMenuItem (juce::Graphics&, const juce::Rectangle<int>& area,
+                            bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
+                            const juce::String& text, const juce::String& shortcutKeyText,
+                            const juce::Drawable* icon, const juce::Colour* textColour) override;
+};
+
 class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
                                            juce::AsyncUpdater,
                                            juce::DarkModeSettingListener
@@ -164,6 +174,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     std::atomic<bool> inActive{true}, outActive{true};
     std::unique_ptr<ParamKnob> inLevel, outLevel;
     std::unique_ptr<juce::Drawable> clipperIcon;
+    std::unique_ptr<juce::Drawable> monoIcon, stereoIcon;
 
     juce::Rectangle<int> docAreaRect;
     std::unique_ptr<juce::TextEditor> docBodyEd;
@@ -181,6 +192,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     juce::String docString, docHeader;
 
     std::unique_ptr<AWLookAndFeel> lnf;
+    std::unique_ptr<AWEffectPopupLookAndFeel> popupLnf;
 
     std::vector<juce::Component *> accessibleOrderWeakRefs;
     std::unique_ptr<juce::ComponentTraverser> createKeyboardFocusTraverser() override;

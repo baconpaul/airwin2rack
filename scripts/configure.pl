@@ -66,15 +66,32 @@ while( <WH>)
     }
 }
 
+# Step 3: Deduce isMono from MacAU plugin version
+my @forceIsMonoForPlugins = ('ToTape8'); # These are plugins that, even though they are stereo, work great in mono also...
+my %isMonos;
+foreach my $fx (@plugins) {
+    $isMonos{$fx} = 1;
+    if (!grep(/$fx/, @forceIsMonoForPlugins)) {
+        my $fn = $fx;
+        $fn =~ s/Point$/Poynt/; # Fix for "weird" naming in MacAU/Point plugin
+        open (AU, "< libs/airwindows/plugins/MacAU/$fx/$fn.h") || die "Can't open what: $!";
+        while (<AU>) {
+            $isMonos{$fx} = 0 if (m/SupportedNumChannels/);
+        }
+    }
+}
+
 open(OFH, "> src/ModuleAdd.h");
 
 foreach my $fx (@plugins) {
     my $cat = "Unclassified";
     my $what = "";
     my $catO = -1;
+    my $isMono = "false";
     $cat = $cats{$fx} if (exists $cats{$fx});
     $catO = $catOrder{$fx} if (exists $catOrder{$fx});
     $what = $whats{$fx} if (exists $whats{$fx});
+    $isMono = "true" if (exists $isMonos{$fx} && $isMonos{$fx});
 
     my $coll = "{ }";
     if ($what =~ s/\[(.*)\]\s*$//)
@@ -117,7 +134,7 @@ foreach my $fx (@plugins) {
     my $GHL = `bash scripts/commitDate $fx`;
     chomp $GHL;
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
-    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, \"${what}\", airwinconsolidated::${fx}::kNumParameters, \"${GHL}\", []() { return std::make_unique<airwinconsolidated::${fx}::${fx}>(0); }, -1, $coll});";
+    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, $isMono, \"${what}\", airwinconsolidated::${fx}::kNumParameters, \"${GHL}\", []() { return std::make_unique<airwinconsolidated::${fx}::${fx}>(0); }, -1, $coll});";
     print OFH "\n";
 }
 

@@ -96,6 +96,8 @@ if (${BUILD_JUCE_PLUGIN})
     file(GLOB AWCON_RESOURCES_GLOB
             res/*.ttf
             res/clipper.svg
+            res/mono.svg
+            res/stereo.svg
     )
     cmrc_add_resource_library(awconsolidated_resources ${AWCON_RESOURCES_GLOB})
 
