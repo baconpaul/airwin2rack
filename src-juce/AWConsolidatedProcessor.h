@@ -323,7 +323,7 @@ private:
         std::unique_ptr<juce::dsp::Gain<T>> inputGain;
         std::unique_ptr<juce::dsp::Gain<T>> outputGain;
 
-        void prepare(const juce::dsp::ProcessSpec&);
+        void prepare(const juce::dsp::ProcessSpec&, T inputGainLinear, T outputGainLinear);
         void reset();
         bool isValid() const;
     };

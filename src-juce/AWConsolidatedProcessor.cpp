@@ -179,9 +179,9 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
     const auto numCh = std::max(getTotalNumOutputChannels(), getTotalNumInputChannels());
     juce::dsp::ProcessSpec spec{ sr, static_cast<juce::uint32>(samplesPerBlock), static_cast<juce::uint32>(numCh)};
     if (isUsingDoublePrecision() || is_clap)
-        getPrecisionDependantProcessing<double>().prepare(spec);
+        getPrecisionDependantProcessing<double>().prepare(spec, inLev->getAmplitude<double>(), outLev->getAmplitude<double>());
     if (!isUsingDoublePrecision() || is_clap)
-        getPrecisionDependantProcessing<float>().prepare(spec);
+        getPrecisionDependantProcessing<float>().prepare(spec, inLev->getAmplitude<float>(), outLev->getAmplitude<float>());
 
     AirwinConsolidatedBase::defaultSampleRate = sr;
     if (awProcessor)
@@ -510,19 +510,21 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
 }
 
 template<typename T>
-void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(const juce::dsp::ProcessSpec& spec)
+void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(const juce::dsp::ProcessSpec& spec, T inputGainLinear, T outputGainLinear)
 {
     monoBuffer.reset(new juce::AudioBuffer<T>(1, spec.maximumBlockSize));
     bypassCrossfader.reset(new Crossfader<T>());
     bypassCrossfader->prepare(spec);
     inputGain.reset(new juce::dsp::Gain<T>());
     inputGain->prepare(spec);
-    inputGain->setGainDecibels(0.0);
+    inputGain->setGainLinear(inputGainLinear);
     inputGain->setRampDurationSeconds(0.01);
+    inputGain->reset();
     outputGain.reset(new juce::dsp::Gain<T>());
     outputGain->prepare(spec);
-    outputGain->setGainDecibels(0.0);
+    outputGain->setGainLinear(outputGainLinear);
     outputGain->setRampDurationSeconds(0.01);
+    outputGain->reset();
 }
 
 template<typename T>
