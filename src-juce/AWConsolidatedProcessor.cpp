@@ -263,6 +263,16 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
+    for (int i = 0; i < nProcessorParams; ++i)
+    {
+        awProcessor->setParameter(i, fxParams[i]->get());
+    }
+
+    if (inLev->isAmplifiyingOrAttenuating())
+    {
+        buffer.applyGain(inLev->getAmplitude<T>());
+    }
+
     // NOTE: Most Airwindows plugins take a copy of the L/R input sample before writing the output sample.
     // But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes some issues,
     // as the input buffer is overridden before the R channel is typically processed.
@@ -282,19 +292,8 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         isPlaying = false;
         return;
     }
-
     isPlaying = true;
 
-    for (int i = 0; i < nProcessorParams; ++i)
-    {
-        awProcessor->setParameter(i, fxParams[i]->get());
-    }
-
-    if (inLev->isAmplifiyingOrAttenuating())
-    {
-        buffer.applyGain(inLev->getAmplitude<T>());
-    }
-  
     if constexpr (std::is_same_v<T, float>)
     {
         awProcessor->processReplacing((float **)inputs, (float **)outputs, buffer.getNumSamples());
