@@ -959,6 +959,7 @@ struct BypassButton : public juce::ToggleButton
     {
         setAccessible(true);
         setTitle("Bypass");
+        setToggleState(editor->processor.bypassParam->get(), juce::NotificationType::dontSendNotification);
     }
     void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
                      bool shouldDrawButtonAsDown) override
@@ -1621,7 +1622,6 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     docBodyLabel = std::make_unique<DocHeader>(this);
     docBodyLabel->setTitle("Documentation Header");
     addAndMakeVisible(*docBodyLabel);
-
     docBodyEd = std::make_unique<juce::TextEditor>("Documentation");
     docBodyEd->setMultiLine(true);
     docBodyEd->setFont(lnf->lookupFont(documentationBody));
