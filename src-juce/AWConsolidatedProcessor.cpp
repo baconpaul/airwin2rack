@@ -213,7 +213,19 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
 {
     juce::ScopedNoDenormals noDenormals;
 
-    if (getMainBusNumInputChannels() == 1 && getTotalNumOutputChannels() == 2)
+    auto inBus = getBus(true, 0);
+    auto outBus = getBus(false, 0);
+    const auto numberOfInputChannels = inBus->getNumberOfChannels();
+    const auto numberOfOutputChannels = outBus->getNumberOfChannels();
+
+    if (numberOfInputChannels == 0 || numberOfOutputChannels == 0 ||
+        buffer.getNumChannels() < std::max(numberOfInputChannels, numberOfInputChannels) )
+    {
+        isPlaying = false;
+        return;
+    }
+
+    if (numberOfInputChannels == 1 && numberOfOutputChannels == 2)
     {
         // special case - mono to stereo. Copy buffer 1 to buffer 2 to emulated stereo to stereo
         buffer.copyFrom(1, 0, buffer, 0, 0, buffer.getNumSamples());
@@ -255,16 +267,6 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         awProcessor->setParameter(i, fxParams[i]->get());
     }
 
-    auto inBus = getBus(true, 0);
-    auto outBus = getBus(false, 0);
-
-    if (inBus->getNumberOfChannels() == 0 || outBus->getNumberOfChannels() == 0 ||
-        buffer.getNumChannels() < std::max(inBus->getNumberOfChannels(), outBus->getNumberOfChannels()) )
-    {
-        isPlaying = false;
-        return;
-    }
-
     juce::dsp::AudioBlock<T> block(buffer);
     precisionProcessing.bypassCrossfader->pushSecondaryBuffer(block);
 
@@ -279,15 +281,18 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         // But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes some issues,
         // as the input buffer is overridden before the R channel is typically processed.
         // In mono input mode, we therefor take a copy of the input and use that.
-        if (inBus->getNumberOfChannels() == 1)
+        bool useMonoBuffer = (numberOfInputChannels == 1 && numberOfOutputChannels == 1);
+        if (useMonoBuffer)
+        {
             precisionProcessing.monoBuffer->copyFrom(0, 0, buffer, 0, 0, precisionProcessing.monoBuffer->getNumSamples());
+        }
 
         const T *inputs[2];
         T *outputs[2];
         inputs[0] = buffer.getReadPointer(0);
-        inputs[1] = inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : precisionProcessing.monoBuffer->getReadPointer(0);
+        inputs[1] = !useMonoBuffer ? buffer.getReadPointer(1) : precisionProcessing.monoBuffer->getReadPointer(0);
         outputs[0] = buffer.getWritePointer(0);
-        outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : precisionProcessing.monoBuffer->getWritePointer(0);
+        outputs[1] = !useMonoBuffer ? buffer.getWritePointer(1) : precisionProcessing.monoBuffer->getWritePointer(0);
 
         if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
         {
@@ -304,7 +309,7 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         {
             awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs, buffer.getNumSamples());
         }
-        if (outBus->getNumberOfChannels() == 1 && *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
+        if (numberOfOutputChannels == 1 && *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
         {
             // Output = L+R / 2
             buffer.addFrom(0, 0, *precisionProcessing.monoBuffer, 0, 0, buffer.getNumSamples());
