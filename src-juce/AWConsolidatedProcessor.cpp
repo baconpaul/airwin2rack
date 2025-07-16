@@ -428,7 +428,6 @@ void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destDa
     }
     xml->setAttribute("inlev", inLev->get());
     xml->setAttribute("outlev", outLev->get());
-    xml->setAttribute("bypass", bypassParam->get());
 
     xml->setAttribute("monoBehaviour", monoBehaviourParameter->get());
 
@@ -462,9 +461,6 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
             inLev->setValueNotifyingHost(il);
             auto ol = xmlState->getDoubleAttribute("outlev", CubicDBParam::defaultVal);
             outLev->setValueNotifyingHost(ol);
-
-            auto bypass = xmlState->getBoolAttribute("bypass", false);
-            bypassParam->setValueNotifyingHost(bypass);
 
             auto mono = xmlState->getIntAttribute("monoBehaviour");
             *monoBehaviourParameter = static_cast<MonoBehaviourParameter::MonoBehaviour>(mono);
