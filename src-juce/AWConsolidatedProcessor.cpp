@@ -170,11 +170,16 @@ void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
         setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
     }
 
-    if (isUsingDoublePrecision()) {
+    // Normally we could getProcessingPrecision() or isUsingDoublePrecision() and only
+    // prepare the version we would need.
+    // But clap-juce-extensions seems to have an issue here, where single precision
+    // is always reported, even if later processBlock<double> is called.
+    // So as a workaround we prepare both single and double precision...
+    // See https://github.com/baconpaul/airwin2rack/issues/199
+    if (isUsingDoublePrecision() || is_clap)
         getPrecisionDependantProcessing<double>().prepare(samplesPerBlock);
-    } else {
+    if (!isUsingDoublePrecision() || is_clap)
         getPrecisionDependantProcessing<float>().prepare(samplesPerBlock);
-    }
 
     AirwinConsolidatedBase::defaultSampleRate = sr;
     if (awProcessor)
@@ -301,8 +306,7 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     }
     else
     {
-        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs,
-        buffer.getNumSamples());
+        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs, buffer.getNumSamples());
     }
     if (outBus->getNumberOfChannels() == 1 && *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
     {
