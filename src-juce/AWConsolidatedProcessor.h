@@ -4,6 +4,7 @@
 
 #include "AirwinRegistry.h"
 #include "juce_audio_processors/juce_audio_processors.h"
+#include "clap-juce-extensions/clap-juce-extensions.h"
 
 #if MAC
 #include <execinfo.h>
@@ -74,7 +75,8 @@ template <typename T, int Capacity = 4096> class LockFreeQueue
  */
 class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
                                      public juce::AudioProcessorParameter::Listener,
-                                     public juce::AsyncUpdater
+                                     public juce::AsyncUpdater,
+                                     public clap_juce_extensions::clap_properties
 {
   public:
     static constexpr int nAWParams{10};
