@@ -134,7 +134,7 @@ foreach my $fx (@plugins) {
     my $GHL = `bash scripts/commitDate $fx`;
     chomp $GHL;
     print OFH "#include \"autogen_airwin/${fx}.h\"\n";
-    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, $isMono, \"${what}\", airwinconsolidated::${fx}::kNumParameters, \"${GHL}\", []() { return std::make_unique<airwinconsolidated::${fx}::${fx}>(0); }, -1, $coll});";
+    print OFH "int ${fx}_unused = AirwinRegistry::registerAirwindow({\"${fx}\", \"${cat}\", $catO, $isMono, \"${what}\", airwinconsolidated::${fx}::kNumParameters, \"${GHL}\", []() { return std::make_unique<airwinconsolidated::${fx}::${fx}>(0); }, []() {return sizeof(airwinconsolidated::${fx}::${fx});}, [](void* mem) { return new(mem) airwinconsolidated::${fx}::${fx}(0);}, -1, $coll});";
     print OFH "\n";
 }
 
