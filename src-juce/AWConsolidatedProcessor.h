@@ -307,7 +307,9 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     void setAWProcessorTo(int registryIndex, bool initDisplay);
 
-    std::unique_ptr<AirwinConsolidatedBase> awProcessor, awDisplayProcessor;
+    juce::HeapBlock<unsigned char> awProcessorHeap;
+    AirwinConsolidatedBase* awProcessor{nullptr};
+    std::unique_ptr<AirwinConsolidatedBase> awDisplayProcessor;
     std::mutex displayProcessorMutex;
     int nProcessorParams{0};
     std::atomic<int> curentProcessorIndex{0};

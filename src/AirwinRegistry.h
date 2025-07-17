@@ -37,6 +37,8 @@ struct AirwinRegistry
         std::string firstCommitDate;
         std::function<std::unique_ptr<AirwinConsolidatedBase>()> generator{
             []() { return nullptr; }};
+        std::function<size_t()> sizeOfProcessor;
+        std::function<AirwinConsolidatedBase*(void* mem)> placementGenerator;
         int ordering{-1};
         std::vector<std::string> collections{};
     };

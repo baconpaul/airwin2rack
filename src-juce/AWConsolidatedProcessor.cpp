@@ -90,6 +90,13 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
     if (AirwinRegistry::nameToIndex.find(defaultName) == AirwinRegistry::nameToIndex.end())
         defaultName = "Galactic";
 
+    // Preallocate memory for the AWProcessors, by finding the largest one.
+    // This is to avoid having to allocate memory in the audio thread.
+    size_t maxProcessorSize{0};
+    for (const auto reg : AirwinRegistry::registry)
+        maxProcessorSize = std::max(maxProcessorSize, reg.sizeOfProcessor());
+    awProcessorHeap.allocate(maxProcessorSize, false);
+
     setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
 
 #if USE_JUCE_PROGRAMS
@@ -97,7 +104,15 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
 #endif
 }
 
-AWConsolidatedAudioProcessor::~AWConsolidatedAudioProcessor() {}
+AWConsolidatedAudioProcessor::~AWConsolidatedAudioProcessor()
+{
+    if (awProcessor)
+    {
+        // Because we use the placement new to construct the awProcessor we need to manually call the destructor
+        awProcessor->~AirwinConsolidatedBase();
+        awProcessor = nullptr;
+    }
+}
 
 //==============================================================================
 const juce::String AWConsolidatedAudioProcessor::getName() const { return JucePlugin_Name; }
@@ -237,13 +252,12 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
-    // TODO: Should we use resetType to communicate this change instead of storing member?
     if (currentBypass != bypassParam->get())
     {
         currentBypass = bypassParam->get();
         precisionProcessing.bypassCrossfader->setActiveBuffer(currentBypass ? Crossfader<T>::SecondaryBuffer : Crossfader<T>::PrimaryBuffer);
         if (!currentBypass) {
-            setAWProcessorTo(curentProcessorIndex, false); // TODO: Very crude way of reseting AWProcessor!!
+            setAWProcessorTo(curentProcessorIndex, false);
         }
     }
 
@@ -358,7 +372,15 @@ void AWConsolidatedAudioProcessor::setAWProcessorTo(int registryIndex, bool init
     curentProcessorIndex = registryIndex;
     auto rg = AirwinRegistry::registry[registryIndex];
 
-    awProcessor = rg.generator();
+    if (awProcessor)
+    {
+        // Because we use the placement new to construct the awProcessor we need to manually call the destructor
+        awProcessor->~AirwinConsolidatedBase();
+        awProcessor = nullptr;
+    }
+
+    // Use the placement new way of constructing to avoid doing memory allocations from the audio thread.
+    awProcessor = rg.placementGenerator(awProcessorHeap);
     if (awProcessor)
     {
         awProcessor->setSampleRate(getSampleRate());
