@@ -883,6 +883,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ZoomProc.cpp
    src/autogen_airwin/curve.cpp
    src/autogen_airwin/curveProc.cpp
+   src/autogen_airwin/kAlienSpaceship.cpp
+   src/autogen_airwin/kAlienSpaceshipProc.cpp
    src/autogen_airwin/kBeyond.cpp
    src/autogen_airwin/kBeyondProc.cpp
    src/autogen_airwin/kCathedral.cpp
@@ -891,12 +893,16 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kCathedral2Proc.cpp
    src/autogen_airwin/kCathedral3.cpp
    src/autogen_airwin/kCathedral3Proc.cpp
+   src/autogen_airwin/kCathedral4.cpp
+   src/autogen_airwin/kCathedral4Proc.cpp
    src/autogen_airwin/kChamberAR.cpp
    src/autogen_airwin/kChamberARProc.cpp
    src/autogen_airwin/kCosmos.cpp
    src/autogen_airwin/kCosmosProc.cpp
    src/autogen_airwin/kGuitarHall.cpp
    src/autogen_airwin/kGuitarHallProc.cpp
+   src/autogen_airwin/kGuitarHall2.cpp
+   src/autogen_airwin/kGuitarHall2Proc.cpp
    src/autogen_airwin/kPlate140.cpp
    src/autogen_airwin/kPlate140Proc.cpp
    src/autogen_airwin/kPlate240.cpp
