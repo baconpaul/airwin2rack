@@ -3,7 +3,9 @@
 #define AWCONSOLIDATED_PROCESSOR_H
 
 #include "AirwinRegistry.h"
+#include "Crossfader/Crossfader.h"
 #include "juce_audio_processors/juce_audio_processors.h"
+#include "juce_dsp/juce_dsp.h"
 #include "clap-juce-extensions/clap-juce-extensions.h"
 
 #if MAC
@@ -299,12 +301,15 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     juce::AudioParameterBool *bypassParam{nullptr};
     juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
+    std::atomic<bool> currentBypass{false};
 
     MonoBehaviourParameter *monoBehaviourParameter{nullptr};
 
     void setAWProcessorTo(int registryIndex, bool initDisplay);
 
-    std::unique_ptr<AirwinConsolidatedBase> awProcessor, awDisplayProcessor;
+    juce::HeapBlock<unsigned char> awProcessorHeap;
+    AirwinConsolidatedBase* awProcessor{nullptr};
+    std::unique_ptr<AirwinConsolidatedBase> awDisplayProcessor;
     std::mutex displayProcessorMutex;
     int nProcessorParams{0};
     std::atomic<int> curentProcessorIndex{0};
@@ -316,8 +321,11 @@ private:
     struct PrecisionDependantProcessing
     {
         std::unique_ptr<juce::AudioBuffer<T>> monoBuffer;
+        std::unique_ptr<Crossfader<T>> bypassCrossfader;
+        std::unique_ptr<juce::dsp::Gain<T>> inputGain;
+        std::unique_ptr<juce::dsp::Gain<T>> outputGain;
 
-        void prepare(int samplesPerBlock);
+        void prepare(const juce::dsp::ProcessSpec&, T inputGainLinear, T outputGainLinear);
         void reset();
         bool isValid() const;
     };
