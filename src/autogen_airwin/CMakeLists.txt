@@ -139,8 +139,12 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Channel8Proc.cpp
    src/autogen_airwin/Channel9.cpp
    src/autogen_airwin/Channel9Proc.cpp
+   src/autogen_airwin/ChimeyDeluxe.cpp
+   src/autogen_airwin/ChimeyDeluxeProc.cpp
    src/autogen_airwin/ChimeyGuitar.cpp
    src/autogen_airwin/ChimeyGuitarProc.cpp
+   src/autogen_airwin/ChimeyGuitar2.cpp
+   src/autogen_airwin/ChimeyGuitar2Proc.cpp
    src/autogen_airwin/Chorus.cpp
    src/autogen_airwin/ChorusProc.cpp
    src/autogen_airwin/ChorusEnsemble.cpp
