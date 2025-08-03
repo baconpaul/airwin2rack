@@ -683,6 +683,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SidepassProc.cpp
    src/autogen_airwin/Silhouette.cpp
    src/autogen_airwin/SilhouetteProc.cpp
+   src/autogen_airwin/Silken.cpp
+   src/autogen_airwin/SilkenProc.cpp
    src/autogen_airwin/Sinew.cpp
    src/autogen_airwin/SinewProc.cpp
    src/autogen_airwin/SingleEndedTriode.cpp
