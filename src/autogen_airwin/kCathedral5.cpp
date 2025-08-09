@@ -1,23 +1,23 @@
 /* ========================================
- *  kAlienSpaceship - kAlienSpaceship.h
+ *  kCathedral5 - kCathedral5.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __kAlienSpaceship_H
-#include "kAlienSpaceship.h"
+#ifndef __kCathedral5_H
+#include "kCathedral5.h"
 #endif
 #include <cmath>
 #include <algorithm>
-namespace airwinconsolidated::kAlienSpaceship {
+namespace airwinconsolidated::kCathedral5 {
 
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new kAlienSpaceship(audioMaster);}
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new kCathedral5(audioMaster);}
 
-kAlienSpaceship::kAlienSpaceship(audioMasterCallback audioMaster) :
+kCathedral5::kCathedral5(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
 	A = 0.5;
 	B = 0.5;
-	C = 0.5;
+	C = 0.24;
 	D = 0.5;
 	E = 0.5;
 	F = 0.5;
@@ -81,7 +81,7 @@ kAlienSpaceship::kAlienSpaceship(audioMasterCallback audioMaster) :
 	f6AL = f6BL = f6CL = f6DL = f6EL = f6FL = 0.0;
 	f6FR = f6LR = f6RR = f6XR = f6ZER = f6ZKR = 0.0;
 	avg6L = avg6R = 0.0;	
-		
+	
 	for (int x = 0; x < bez_total; x++) {
 		bez[x] = 0.0;
 		bezF[x] = 0.0;
@@ -105,10 +105,10 @@ kAlienSpaceship::kAlienSpaceship(audioMasterCallback audioMaster) :
     vst_strncpy (_programName, "Default", kVstMaxProgNameLen); // default program name
 }
 
-kAlienSpaceship::~kAlienSpaceship() {}
-VstInt32 kAlienSpaceship::getVendorVersion () {return 1000;}
-void kAlienSpaceship::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
-void kAlienSpaceship::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
+kCathedral5::~kCathedral5() {}
+VstInt32 kCathedral5::getVendorVersion () {return 1000;}
+void kCathedral5::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
+void kCathedral5::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
@@ -119,7 +119,7 @@ static float pinParameter(float data)
 	return data;
 }
 
-void kAlienSpaceship::setParameter(VstInt32 index, float value) {
+void kCathedral5::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
@@ -131,7 +131,7 @@ void kAlienSpaceship::setParameter(VstInt32 index, float value) {
     }
 }
 
-float kAlienSpaceship::getParameter(VstInt32 index) {
+float kCathedral5::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
         case kParamB: return B; break;
@@ -143,7 +143,7 @@ float kAlienSpaceship::getParameter(VstInt32 index) {
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
-void kAlienSpaceship::getParameterName(VstInt32 index, char *text) {
+void kCathedral5::getParameterName(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "Regen", kVstMaxParamStrLen); break;
 		case kParamB: vst_strncpy (text, "Derez", kVstMaxParamStrLen); break;
@@ -155,7 +155,7 @@ void kAlienSpaceship::getParameterName(VstInt32 index, char *text) {
     } //this is our labels for displaying in the VST host
 }
 
-void kAlienSpaceship::getParameterDisplay(VstInt32 index, char *text) {
+void kCathedral5::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
@@ -167,7 +167,7 @@ void kAlienSpaceship::getParameterDisplay(VstInt32 index, char *text) {
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
 
-void kAlienSpaceship::getParameterLabel(VstInt32 index, char *text) {
+void kCathedral5::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
@@ -179,23 +179,23 @@ void kAlienSpaceship::getParameterLabel(VstInt32 index, char *text) {
     }
 }
 
-VstInt32 kAlienSpaceship::canDo(char *text) 
+VstInt32 kCathedral5::canDo(char *text) 
 { return (_canDo.find(text) == _canDo.end()) ? -1: 1; } // 1 = yes, -1 = no, 0 = don't know
 
-bool kAlienSpaceship::getEffectName(char* name) {
-    vst_strncpy(name, "kAlienSpaceship", kVstMaxProductStrLen); return true;
+bool kCathedral5::getEffectName(char* name) {
+    vst_strncpy(name, "kCathedral5", kVstMaxProductStrLen); return true;
 }
 
-VstPlugCategory kAlienSpaceship::getPlugCategory() {return kPlugCategEffect;}
+VstPlugCategory kCathedral5::getPlugCategory() {return kPlugCategEffect;}
 
-bool kAlienSpaceship::getProductString(char* text) {
-  	vst_strncpy (text, "airwindows kAlienSpaceship", kVstMaxProductStrLen); return true;
+bool kCathedral5::getProductString(char* text) {
+  	vst_strncpy (text, "airwindows kCathedral5", kVstMaxProductStrLen); return true;
 }
 
-bool kAlienSpaceship::getVendorString(char* text) {
+bool kCathedral5::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
-bool kAlienSpaceship::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+bool kCathedral5::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
@@ -207,7 +207,7 @@ bool kAlienSpaceship::parameterTextToValue(VstInt32 index, const char *text, flo
     }
     return false;
 }
-bool kAlienSpaceship::canConvertParameterTextToValue(VstInt32 index) {
+bool kCathedral5::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
         case kParamB: return true;

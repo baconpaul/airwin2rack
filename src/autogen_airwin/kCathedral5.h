@@ -1,11 +1,11 @@
 /* ========================================
- *  kGuitarHall2 - kGuitarHall2.h
+ *  kCathedral5 - kCathedral5.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __kGuitarHall2_kGuitarHall2_H
-#define __kGuitarHall2_kGuitarHall2_H
+#ifndef __kCathedral5_kCathedral5_H
+#define __kCathedral5_kCathedral5_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,7 +15,7 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::kGuitarHall2 {
+namespace airwinconsolidated::kCathedral5 {
 enum {
 	kParamA =0,
 	kParamB =1,
@@ -26,25 +26,25 @@ enum {
   kNumParameters = 6
 }; //
 
-const int d3A = 874; const int d3B = 1168; const int d3C = 1315;
-const int d3D = 590; const int d3E = 1060; const int d3F = 1162;
-const int d3G = 545; const int d3H = 574; const int d3I = 1146;
+const int d3A = 1683; const int d3B = 2395; const int d3C = 2432;
+const int d3D = 1552; const int d3E = 1735; const int d3F = 2392;
+const int d3G = 1364; const int d3H = 1468; const int d3I = 1961;
 #define THREEBYTHREE true
-const int d6A = 1315; const int d6B = 32; const int d6C = 459; const int d6D = 97; const int d6E = 358; const int d6F = 65; const int d6G = 47; const int d6H = 67; const int d6I = 1146; const int d6J = 312; const int d6K = 296; const int d6L = 17; const int d6M = 35; const int d6N = 1162; const int d6O = 1060; const int d6P = 355; const int d6Q = 56; const int d6R = 250; const int d6S = 161; const int d6T = 8; const int d6U = 45; const int d6V = 545; const int d6W = 543; const int d6X = 203; const int d6Y = 590; const int d6ZA = 24; const int d6ZB = 121; const int d6ZC = 35; const int d6ZD = 52; const int d6ZE = 874; const int d6ZF = 15; const int d6ZG = 574; const int d6ZH = 343; const int d6ZI = 24; const int d6ZJ = 102; const int d6ZK = 1168; //2 to 140 ms, 612 seat theater  
-#define SIXBYSIX true //612-GGCCGF-JLBX6 kGuitarHall2
-const int early[] = {8, 15, 17, 24, 24, 32, 35, 35, 45, 47, 52, 56, 65, 67, 97, 102, 121, 161, 203, 250, 296, 312, 343, 355, 358, 459, 543, 545, 574, 590, 874, 1060, 1146, 1162, 1168, 1315};
+const int d6A = 2392; const int d6B = 710; const int d6C = 35; const int d6D = 396; const int d6E = 2395; const int d6F = 81; const int d6G = 20; const int d6H = 2432; const int d6I = 1031; const int d6J = 529; const int d6K = 921; const int d6L = 116; const int d6M = 1961; const int d6N = 747; const int d6O = 160; const int d6P = 231; const int d6Q = 820; const int d6R = 493; const int d6S = 188; const int d6T = 412; const int d6U = 1364; const int d6V = 43; const int d6W = 206; const int d6X = 855; const int d6Y = 216; const int d6ZA = 1735; const int d6ZB = 53; const int d6ZC = 1468; const int d6ZD = 1272; const int d6ZE = 1683; const int d6ZF = 1287; const int d6ZG = 8; const int d6ZH = 14; const int d6ZI = 1552; const int d6ZJ = 88; const int d6ZK = 914; //6 to 259 ms, 2094 seat arena  
+#define SIXBYSIX true //2094-GIBCDG-VACX6 kCathedral5
+const int early[] = {8, 14, 20, 35, 43, 53, 81, 88, 116, 160, 188, 206, 216, 231, 396, 412, 493, 529, 710, 747, 820, 855, 914, 921, 1031, 1272, 1287, 1364, 1468, 1552, 1683, 1735, 1961, 2392, 2395, 2432};
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'kgti';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'kct5';    //Change this to what the AU identity is!
 
-class kGuitarHall2 : 
+class kCathedral5 : 
     public AudioEffectX 
 {
 public:
-    kGuitarHall2(audioMasterCallback audioMaster);
-    ~kGuitarHall2();
+    kCathedral5(audioMasterCallback audioMaster);
+    ~kCathedral5();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -73,7 +73,7 @@ private:
     float D;
     float E;
     float F;
-
+	
 	double a3AL[d3A+5];
 	double a3BL[d3B+5];
 	double a3CL[d3C+5];
@@ -178,7 +178,7 @@ private:
 	double f6AL,f6BL,f6CL,f6DL,f6EL,f6FL;
 	double f6FR,f6LR,f6RR,f6XR,f6ZER,f6ZKR;
 	double avg6L,avg6R; 
-		
+	
 	enum {
 		bez_AL,
 		bez_AR,
@@ -201,23 +201,8 @@ private:
 	}; //the new undersampling. bez signifies the bezier curve reconstruction
 	double bez[bez_total];
 	
-	enum {
-		prevSampL1,
-		prevSlewL1,
-		prevSampR1,
-		prevSlewR1,
-		prevSampL2,
-		prevSlewL2,
-		prevSampR2,
-		prevSlewR2,
-		prevSampL3,
-		prevSlewL3,
-		prevSampR3,
-		prevSlewR3,
-		pear_total
-	}; //fixed frequency pear filter for ultrasonics, stereo
-	double pear[pear_total]; //probably worth just using a number here
-		
+	double bezF[bez_total];
+	
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff

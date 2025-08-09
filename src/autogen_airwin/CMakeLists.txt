@@ -261,6 +261,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DarkNoiseProc.cpp
    src/autogen_airwin/DeBess.cpp
    src/autogen_airwin/DeBessProc.cpp
+   src/autogen_airwin/DeBez.cpp
+   src/autogen_airwin/DeBezProc.cpp
    src/autogen_airwin/DeCrackle.cpp
    src/autogen_airwin/DeCrackleProc.cpp
    src/autogen_airwin/DeEss.cpp
@@ -757,6 +759,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/TPDFDitherProc.cpp
    src/autogen_airwin/TPDFWide.cpp
    src/autogen_airwin/TPDFWideProc.cpp
+   src/autogen_airwin/TakeCare.cpp
+   src/autogen_airwin/TakeCareProc.cpp
    src/autogen_airwin/Tape.cpp
    src/autogen_airwin/TapeProc.cpp
    src/autogen_airwin/TapeBias.cpp
@@ -901,6 +905,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kCathedral3Proc.cpp
    src/autogen_airwin/kCathedral4.cpp
    src/autogen_airwin/kCathedral4Proc.cpp
+   src/autogen_airwin/kCathedral5.cpp
+   src/autogen_airwin/kCathedral5Proc.cpp
    src/autogen_airwin/kChamberAR.cpp
    src/autogen_airwin/kChamberARProc.cpp
    src/autogen_airwin/kCosmos.cpp

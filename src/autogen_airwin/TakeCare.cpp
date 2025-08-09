@@ -1,44 +1,66 @@
 /* ========================================
- *  ChimeyDeluxe - ChimeyDeluxe.h
+ *  TakeCare - TakeCare.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ChimeyDeluxe_H
-#include "ChimeyDeluxe.h"
+#ifndef __TakeCare_H
+#include "TakeCare.h"
 #endif
 #include <cmath>
 #include <algorithm>
-namespace airwinconsolidated::ChimeyDeluxe {
+namespace airwinconsolidated::TakeCare {
 
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ChimeyDeluxe(audioMaster);}
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new TakeCare(audioMaster);}
 
-ChimeyDeluxe::ChimeyDeluxe(audioMasterCallback audioMaster) :
+TakeCare::TakeCare(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
-	A = 0.5;
+	A = 0.15;
 	B = 0.5;
 	C = 0.5;
 	D = 0.5;
 	E = 0.5;
 	F = 0.5;
-	G = 0.5;
-	H = 0.5;
-	I = 0.5;
-	J = 0.5;
+	G = 1.0;
+	H = 1.0;
 	
-	for(int x=0; x<17; x++) {
-		for(int y=0; y<14; y++) {
-			angSL[x][y] = 0.0;angAL[x][y] = 0.0;
-			angSR[x][y] = 0.0;angAR[x][y] = 0.0;
-		}
-	}
-	for(int y=0; y<14; y++) angG[y] = 0.0;
+	for(int x = 0; x < 32767+2; x++) {a3AL[x] = 0.0; a3AR[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3BL[x] = 0.0; a3BR[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3CL[x] = 0.0; a3CR[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3DL[x] = 0.0; a3DR[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3EL[x] = 0.0; a3ER[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3FL[x] = 0.0; a3FR[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3GL[x] = 0.0; a3GR[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3HL[x] = 0.0; a3HR[x] = 0.0;}
+	for(int x = 0; x < 32767+2; x++) {a3IL[x] = 0.0; a3IR[x] = 0.0;}
+	c3AL = c3BL = c3CL = c3DL = c3EL = c3FL = c3GL = c3HL = c3IL = 1;
+	c3AR = c3BR = c3CR = c3DR = c3ER = c3FR = c3GR = c3HR = c3IR = 1;
+	f3AL = f3BL = f3CL = 0.0;
+	f3CR = f3FR = f3IR = 0.0;
+	avg3L = avg3R = 0.0;
+	
+	for (int x = 0; x < bez_total; x++) bez[x] = 0.0;
+	bez[bez_cycle] = 1.0;
+	
+	rotate = 0.0;
+	oldfpd = 0.4294967295;
+	
+	buf = 8192;
+	vibDepth = 0.0;
+	outA = 1.0;
+	outB = 1.0;
+	wetA = 1.0;
+	wetB = 1.0;
+	derezA = 0.5;
+	derezB = 0.5;
+	
+	lastSampleL = 0.0;
+	wasPosClipL = false;
+	wasNegClipL = false;
+	lastSampleR = 0.0;
+	wasPosClipR = false;
+	wasNegClipR = false;
 
-	muCompL = 1.0;
-	muSpdL = 100.0;
-	muCompR = 1.0;
-	muSpdR = 100.0;
-	
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
 	//this is reset: values being initialized only once. Startup values, whatever they are.
@@ -55,10 +77,10 @@ ChimeyDeluxe::ChimeyDeluxe(audioMasterCallback audioMaster) :
     vst_strncpy (_programName, "Default", kVstMaxProgNameLen); // default program name
 }
 
-ChimeyDeluxe::~ChimeyDeluxe() {}
-VstInt32 ChimeyDeluxe::getVendorVersion () {return 1000;}
-void ChimeyDeluxe::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
-void ChimeyDeluxe::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
+TakeCare::~TakeCare() {}
+VstInt32 TakeCare::getVendorVersion () {return 1000;}
+void TakeCare::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
+void TakeCare::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
@@ -69,7 +91,7 @@ static float pinParameter(float data)
 	return data;
 }
 
-void ChimeyDeluxe::setParameter(VstInt32 index, float value) {
+void TakeCare::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
@@ -79,13 +101,11 @@ void ChimeyDeluxe::setParameter(VstInt32 index, float value) {
         case kParamF: F = value; break;
         case kParamG: G = value; break;
         case kParamH: H = value; break;
-        case kParamI: I = value; break;
-        case kParamJ: J = value; break;
         default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-float ChimeyDeluxe::getParameter(VstInt32 index) {
+float TakeCare::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
         case kParamB: return B; break;
@@ -95,29 +115,25 @@ float ChimeyDeluxe::getParameter(VstInt32 index) {
         case kParamF: return F; break;
         case kParamG: return G; break;
         case kParamH: return H; break;
-        case kParamI: return I; break;
-        case kParamJ: return J; break;
         default: break; // unknown parameter, shouldn't happen!
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
-void ChimeyDeluxe::getParameterName(VstInt32 index, char *text) {
+void TakeCare::getParameterName(VstInt32 index, char *text) {
     switch (index) {
-        case kParamA: vst_strncpy (text, "Hell", kVstMaxParamStrLen); break;
-		case kParamB: vst_strncpy (text, "Fizz", kVstMaxParamStrLen); break;
-		case kParamC: vst_strncpy (text, "Pick", kVstMaxParamStrLen); break;
-		case kParamD: vst_strncpy (text, "Satan", kVstMaxParamStrLen); break;
-		case kParamE: vst_strncpy (text, "Danger", kVstMaxParamStrLen); break;
-		case kParamF: vst_strncpy (text, "Crtical", kVstMaxParamStrLen); break;
-		case kParamG: vst_strncpy (text, "H Meat", kVstMaxParamStrLen); break;
-		case kParamH: vst_strncpy (text, "L Meat", kVstMaxParamStrLen); break;
-		case kParamI: vst_strncpy (text, "Swing", kVstMaxParamStrLen); break;
-		case kParamJ: vst_strncpy (text, "Rarely", kVstMaxParamStrLen); break;
+        case kParamA: vst_strncpy (text, "Speed", kVstMaxParamStrLen); break;
+		case kParamB: vst_strncpy (text, "Rando", kVstMaxParamStrLen); break;
+		case kParamC: vst_strncpy (text, "Depth", kVstMaxParamStrLen); break;
+		case kParamD: vst_strncpy (text, "Regen", kVstMaxParamStrLen); break;
+		case kParamE: vst_strncpy (text, "Derez", kVstMaxParamStrLen); break;
+		case kParamF: vst_strncpy (text, "Buffer", kVstMaxParamStrLen); break;
+		case kParamG: vst_strncpy (text, "Output", kVstMaxParamStrLen); break;
+		case kParamH: vst_strncpy (text, "Dry/Wet", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
 
-void ChimeyDeluxe::getParameterDisplay(VstInt32 index, char *text) {
+void TakeCare::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
@@ -127,13 +143,11 @@ void ChimeyDeluxe::getParameterDisplay(VstInt32 index, char *text) {
         case kParamF: float2string (F, text, kVstMaxParamStrLen); break;
         case kParamG: float2string (G, text, kVstMaxParamStrLen); break;
         case kParamH: float2string (H, text, kVstMaxParamStrLen); break;
-        case kParamI: float2string (I, text, kVstMaxParamStrLen); break;
-        case kParamJ: float2string (J, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
 
-void ChimeyDeluxe::getParameterLabel(VstInt32 index, char *text) {
+void TakeCare::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
@@ -143,29 +157,27 @@ void ChimeyDeluxe::getParameterLabel(VstInt32 index, char *text) {
         case kParamF: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamG: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamH: vst_strncpy (text, "", kVstMaxParamStrLen); break;
-        case kParamI: vst_strncpy (text, "", kVstMaxParamStrLen); break;
-        case kParamJ: vst_strncpy (text, "", kVstMaxParamStrLen); break;
 		default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-VstInt32 ChimeyDeluxe::canDo(char *text) 
+VstInt32 TakeCare::canDo(char *text) 
 { return (_canDo.find(text) == _canDo.end()) ? -1: 1; } // 1 = yes, -1 = no, 0 = don't know
 
-bool ChimeyDeluxe::getEffectName(char* name) {
-    vst_strncpy(name, "ChimeyDeluxe", kVstMaxProductStrLen); return true;
+bool TakeCare::getEffectName(char* name) {
+    vst_strncpy(name, "TakeCare", kVstMaxProductStrLen); return true;
 }
 
-VstPlugCategory ChimeyDeluxe::getPlugCategory() {return kPlugCategEffect;}
+VstPlugCategory TakeCare::getPlugCategory() {return kPlugCategEffect;}
 
-bool ChimeyDeluxe::getProductString(char* text) {
-  	vst_strncpy (text, "airwindows ChimeyDeluxe", kVstMaxProductStrLen); return true;
+bool TakeCare::getProductString(char* text) {
+  	vst_strncpy (text, "airwindows TakeCare", kVstMaxProductStrLen); return true;
 }
 
-bool ChimeyDeluxe::getVendorString(char* text) {
+bool TakeCare::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
-bool ChimeyDeluxe::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+bool TakeCare::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
@@ -175,13 +187,11 @@ bool ChimeyDeluxe::parameterTextToValue(VstInt32 index, const char *text, float 
     case kParamF: { auto b = string2float(text, value); return b; break; }
     case kParamG: { auto b = string2float(text, value); return b; break; }
     case kParamH: { auto b = string2float(text, value); return b; break; }
-    case kParamI: { auto b = string2float(text, value); return b; break; }
-    case kParamJ: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
 }
-bool ChimeyDeluxe::canConvertParameterTextToValue(VstInt32 index) {
+bool TakeCare::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
         case kParamB: return true;
@@ -191,8 +201,6 @@ bool ChimeyDeluxe::canConvertParameterTextToValue(VstInt32 index) {
         case kParamF: return true;
         case kParamG: return true;
         case kParamH: return true;
-        case kParamI: return true;
-        case kParamJ: return true;
 
     }
     return false;

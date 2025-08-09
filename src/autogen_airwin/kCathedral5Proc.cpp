@@ -1,14 +1,14 @@
 /* ========================================
- *  kGuitarHall2 - kGuitarHall2.h
+ *  kCathedral5 - kCathedral5.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __kGuitarHall2_H
-#include "kGuitarHall2.h"
+#ifndef __kCathedral5_H
+#include "kCathedral5.h"
 #endif
-namespace airwinconsolidated::kGuitarHall2 {
+namespace airwinconsolidated::kCathedral5 {
 
-void kGuitarHall2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
+void kCathedral5::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {
     float* in1  =  inputs[0];
     float* in2  =  inputs[1];
@@ -21,6 +21,7 @@ void kGuitarHall2::processReplacing(float **inputs, float **outputs, VstInt32 sa
 	
 	double fdb6ck = (0.0009765625+0.0009765625+0.001953125)*0.3333333;
 	double reg6n = (1.0-pow(1.0-A,3.0))*fdb6ck;
+	//start this but pad it in the loop by volume of output?
 	
 	double derez = B*2.0;
 	bool stepped = true; // Revised Bezier Undersampling
@@ -39,7 +40,22 @@ void kGuitarHall2::processReplacing(float **inputs, float **outputs, VstInt32 sa
 		bezTrim = 1.0-pow(derez*0.5,1.0/(derez*0.5));
 	} //the revision more accurately connects the bezier curves
 	
-	double freq = C+0.02;
+	double derezFreq = C*2.0;
+	bool steppedFreq = true; // Revised Bezier Undersampling
+	if (derezFreq > 1.0) {  // has full rez at center, stepped
+		steppedFreq = false; // to left, continuous to right
+		derezFreq = 1.0-(derezFreq-1.0);
+	} //if it's set up like that it's the revised algorithm
+	derezFreq = fmin(fmax(derezFreq,0.0005),1.0); //note: no overallscale, already inside undersampling
+	int bezFreqFraction = (int)(1.0/derezFreq);
+	double bezFreqTrim = (double)bezFreqFraction/(bezFreqFraction+1.0);
+	if (steppedFreq) { //this hard-locks derez to exact subdivisions of 1.0
+		derezFreq = 1.0 / bezFreqFraction;
+		bezFreqTrim = 1.0-(derezFreq*bezFreqTrim);
+	} else { //this makes it match the 1.0 case using stepped
+		bezFreqTrim = 1.0-pow(derezFreq*0.5,1.0/(derezFreq*0.5));
+	} //the revision more accurately connects the bezier curves
+	
 	double earlyLoudness = D;
 	int start = (int)(E * 27.0);
 	int ld3G = early[start]; 
@@ -145,33 +161,33 @@ void kGuitarHall2::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			double earlyReflectionL = inputSampleL;
 			double earlyReflectionR = inputSampleR;
 			
-			if (freq < 1.0) {
-				double di = fabs(freq*(1.0+(inputSampleL*0.125))); if (di > 1.0) di = 1.0;
-				double slew = ((inputSampleL - pear[prevSampL1]) + pear[prevSlewL1])*di*0.5;
-				pear[prevSampL1] = inputSampleL = (di * inputSampleL) + ((1.0-di) * (pear[prevSampL1] + pear[prevSlewL1]));
-				pear[prevSlewL1] = slew;
-				di = fabs(freq*(1.0+(inputSampleL))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleL - pear[prevSampL2]) + pear[prevSlewL2])*di*0.5;
-				pear[prevSampL2] = inputSampleL = (di * inputSampleL) + ((1.0-di) * (pear[prevSampL2] + pear[prevSlewL2]));
-				pear[prevSlewL2] = slew;
-				di = fabs(freq*(1.0+(inputSampleL))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleL - pear[prevSampL3]) + pear[prevSlewL3])*di*0.5;
-				pear[prevSampL3] = inputSampleL = (di * inputSampleL) + ((1.0-di) * (pear[prevSampL3] + pear[prevSlewL3]));
-				pear[prevSlewL3] = slew;
-				
-				di = fabs(freq*(1.0+(inputSampleR*0.125))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleR - pear[prevSampR1]) + pear[prevSlewR1])*di*0.5;
-				pear[prevSampR1] = inputSampleR = (di * inputSampleR) + ((1.0-di) * (pear[prevSampR1] + pear[prevSlewR1]));
-				pear[prevSlewR1] = slew;
-				di = fabs(freq*(1.0+(inputSampleR))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleR - pear[prevSampR2]) + pear[prevSlewR2])*di*0.5;
-				pear[prevSampR2] = inputSampleR = (di * inputSampleR) + ((1.0-di) * (pear[prevSampR2] + pear[prevSlewR2]));
-				pear[prevSlewR2] = slew;
-				di = fabs(freq*(1.0+(inputSampleR))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleR - pear[prevSampR3]) + pear[prevSlewR3])*di*0.5;
-				pear[prevSampR3] = inputSampleR = (di * inputSampleR) + ((1.0-di) * (pear[prevSampR3] + pear[prevSlewR3]));
-				pear[prevSlewR3] = slew;
+			bezF[bez_cycle] += derezFreq;
+			bezF[bez_SampL] += ((inputSampleL+bezF[bez_InL]) * derezFreq);
+			bezF[bez_SampR] += ((inputSampleL+bezF[bez_InR]) * derezFreq);
+			bezF[bez_InL] = inputSampleL; bezF[bez_InR] = inputSampleR;
+			if (bezF[bez_cycle] > 1.0) { //hit the end point and we do a filter sample
+				if (steppedFreq) bezF[bez_cycle] = 0.0;
+				else bezF[bez_cycle] -= 1.0;
+				bezF[bez_CL] = bezF[bez_BL];
+				bezF[bez_BL] = bezF[bez_AL];
+				bezF[bez_AL] = (bezF[bez_SampL]+bezF[bez_AvgInSampL])*0.5;
+				bezF[bez_AvgInSampL] = bezF[bez_SampL]; bezF[bez_SampL] = 0.0;
+				bezF[bez_CR] = bezF[bez_BR];
+				bezF[bez_BR] = bezF[bez_AR];
+				bezF[bez_AR] = (bezF[bez_SampR]+bezF[bez_AvgInSampR])*0.5;
+				bezF[bez_AvgInSampR] = bezF[bez_SampR]; bezF[bez_SampR] = 0.0;
 			}
+			double X = bezF[bez_cycle]*bezFreqTrim;
+			double CBLfreq = (bezF[bez_CL]*(1.0-X))+(bezF[bez_BL]*X);
+			double BALfreq = (bezF[bez_BL]*(1.0-X))+(bezF[bez_AL]*X);
+			double CBALfreq = (bezF[bez_BL]+(CBLfreq*(1.0-X))+(BALfreq*X))*0.0625;
+			double CBRfreq = (bezF[bez_CR]*(1.0-X))+(bezF[bez_BR]*X);
+			double BARfreq = (bezF[bez_BR]*(1.0-X))+(bezF[bez_AR]*X);
+			double CBARfreq = (bezF[bez_BR]+(CBRfreq*(1.0-X))+(BARfreq*X))*0.0625;
+			inputSampleL = CBALfreq+bezF[bez_AvgOutSampL];
+			bezF[bez_AvgOutSampL] = CBALfreq;
+			inputSampleR = CBARfreq+bezF[bez_AvgOutSampR];
+			bezF[bez_AvgOutSampR] = CBARfreq;
 			
 			a6AL[c6AL] = inputSampleL + (f6BL * reg6n);
 			a6BL[c6BL] = inputSampleL + (f6CL * reg6n);
@@ -503,7 +519,7 @@ void kGuitarHall2::processReplacing(float **inputs, float **outputs, VstInt32 sa
     }
 }
 
-void kGuitarHall2::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
+void kCathedral5::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
 {
     double* in1  =  inputs[0];
     double* in2  =  inputs[1];
@@ -515,7 +531,9 @@ void kGuitarHall2::processDoubleReplacing(double **inputs, double **outputs, Vst
 	overallscale *= getSampleRate();
 	
 	double fdb6ck = (0.0009765625+0.0009765625+0.001953125)*0.3333333;
-	double reg6n = (1.0-pow(1.0-A,3.0))*fdb6ck;	
+	double reg6n = (1.0-pow(1.0-A,3.0))*fdb6ck;
+	//start this but pad it in the loop by volume of output?
+	
 	double derez = B*2.0;
 	bool stepped = true; // Revised Bezier Undersampling
 	if (derez > 1.0) {  // has full rez at center, stepped
@@ -532,7 +550,23 @@ void kGuitarHall2::processDoubleReplacing(double **inputs, double **outputs, Vst
 		derez /= (2.0/pow(overallscale,0.5-((overallscale-1.0)*0.0375)));
 		bezTrim = 1.0-pow(derez*0.5,1.0/(derez*0.5));
 	} //the revision more accurately connects the bezier curves
-	double freq = C+0.02;
+	
+	double derezFreq = C*2.0;
+	bool steppedFreq = true; // Revised Bezier Undersampling
+	if (derezFreq > 1.0) {  // has full rez at center, stepped
+		steppedFreq = false; // to left, continuous to right
+		derezFreq = 1.0-(derezFreq-1.0);
+	} //if it's set up like that it's the revised algorithm
+	derezFreq = fmin(fmax(derezFreq,0.0005),1.0); //note: no overallscale, already inside undersampling
+	int bezFreqFraction = (int)(1.0/derezFreq);
+	double bezFreqTrim = (double)bezFreqFraction/(bezFreqFraction+1.0);
+	if (steppedFreq) { //this hard-locks derez to exact subdivisions of 1.0
+		derezFreq = 1.0 / bezFreqFraction;
+		bezFreqTrim = 1.0-(derezFreq*bezFreqTrim);
+	} else { //this makes it match the 1.0 case using stepped
+		bezFreqTrim = 1.0-pow(derezFreq*0.5,1.0/(derezFreq*0.5));
+	} //the revision more accurately connects the bezier curves
+	
 	double earlyLoudness = D;
 	int start = (int)(E * 27.0);
 	int ld3G = early[start]; 
@@ -638,33 +672,33 @@ void kGuitarHall2::processDoubleReplacing(double **inputs, double **outputs, Vst
 			double earlyReflectionL = inputSampleL;
 			double earlyReflectionR = inputSampleR;
 			
-			if (freq < 1.0) {
-				double di = fabs(freq*(1.0+(inputSampleL*0.125))); if (di > 1.0) di = 1.0;
-				double slew = ((inputSampleL - pear[prevSampL1]) + pear[prevSlewL1])*di*0.5;
-				pear[prevSampL1] = inputSampleL = (di * inputSampleL) + ((1.0-di) * (pear[prevSampL1] + pear[prevSlewL1]));
-				pear[prevSlewL1] = slew;
-				di = fabs(freq*(1.0+(inputSampleL))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleL - pear[prevSampL2]) + pear[prevSlewL2])*di*0.5;
-				pear[prevSampL2] = inputSampleL = (di * inputSampleL) + ((1.0-di) * (pear[prevSampL2] + pear[prevSlewL2]));
-				pear[prevSlewL2] = slew;
-				di = fabs(freq*(1.0+(inputSampleL))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleL - pear[prevSampL3]) + pear[prevSlewL3])*di*0.5;
-				pear[prevSampL3] = inputSampleL = (di * inputSampleL) + ((1.0-di) * (pear[prevSampL3] + pear[prevSlewL3]));
-				pear[prevSlewL3] = slew;
-				
-				di = fabs(freq*(1.0+(inputSampleR*0.125))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleR - pear[prevSampR1]) + pear[prevSlewR1])*di*0.5;
-				pear[prevSampR1] = inputSampleR = (di * inputSampleR) + ((1.0-di) * (pear[prevSampR1] + pear[prevSlewR1]));
-				pear[prevSlewR1] = slew;
-				di = fabs(freq*(1.0+(inputSampleR))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleR - pear[prevSampR2]) + pear[prevSlewR2])*di*0.5;
-				pear[prevSampR2] = inputSampleR = (di * inputSampleR) + ((1.0-di) * (pear[prevSampR2] + pear[prevSlewR2]));
-				pear[prevSlewR2] = slew;
-				di = fabs(freq*(1.0+(inputSampleR))); if (di > 1.0) di = 1.0;
-				slew = ((inputSampleR - pear[prevSampR3]) + pear[prevSlewR3])*di*0.5;
-				pear[prevSampR3] = inputSampleR = (di * inputSampleR) + ((1.0-di) * (pear[prevSampR3] + pear[prevSlewR3]));
-				pear[prevSlewR3] = slew;
+			bezF[bez_cycle] += derezFreq;
+			bezF[bez_SampL] += ((inputSampleL+bezF[bez_InL]) * derezFreq);
+			bezF[bez_SampR] += ((inputSampleL+bezF[bez_InR]) * derezFreq);
+			bezF[bez_InL] = inputSampleL; bezF[bez_InR] = inputSampleR;
+			if (bezF[bez_cycle] > 1.0) { //hit the end point and we do a filter sample
+				if (steppedFreq) bezF[bez_cycle] = 0.0;
+				else bezF[bez_cycle] -= 1.0;
+				bezF[bez_CL] = bezF[bez_BL];
+				bezF[bez_BL] = bezF[bez_AL];
+				bezF[bez_AL] = (bezF[bez_SampL]+bezF[bez_AvgInSampL])*0.5;
+				bezF[bez_AvgInSampL] = bezF[bez_SampL]; bezF[bez_SampL] = 0.0;
+				bezF[bez_CR] = bezF[bez_BR];
+				bezF[bez_BR] = bezF[bez_AR];
+				bezF[bez_AR] = (bezF[bez_SampR]+bezF[bez_AvgInSampR])*0.5;
+				bezF[bez_AvgInSampR] = bezF[bez_SampR]; bezF[bez_SampR] = 0.0;
 			}
+			double X = bezF[bez_cycle]*bezFreqTrim;
+			double CBLfreq = (bezF[bez_CL]*(1.0-X))+(bezF[bez_BL]*X);
+			double BALfreq = (bezF[bez_BL]*(1.0-X))+(bezF[bez_AL]*X);
+			double CBALfreq = (bezF[bez_BL]+(CBLfreq*(1.0-X))+(BALfreq*X))*0.0625;
+			double CBRfreq = (bezF[bez_CR]*(1.0-X))+(bezF[bez_BR]*X);
+			double BARfreq = (bezF[bez_BR]*(1.0-X))+(bezF[bez_AR]*X);
+			double CBARfreq = (bezF[bez_BR]+(CBRfreq*(1.0-X))+(BARfreq*X))*0.0625;
+			inputSampleL = CBALfreq+bezF[bez_AvgOutSampL];
+			bezF[bez_AvgOutSampL] = CBALfreq;
+			inputSampleR = CBARfreq+bezF[bez_AvgOutSampR];
+			bezF[bez_AvgOutSampR] = CBARfreq;
 			
 			a6AL[c6AL] = inputSampleL + (f6BL * reg6n);
 			a6BL[c6BL] = inputSampleL + (f6CL * reg6n);
