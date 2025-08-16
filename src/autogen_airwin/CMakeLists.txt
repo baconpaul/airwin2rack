@@ -775,6 +775,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/TapeDustProc.cpp
    src/autogen_airwin/TapeFat.cpp
    src/autogen_airwin/TapeFatProc.cpp
+   src/autogen_airwin/TapeHack.cpp
+   src/autogen_airwin/TapeHackProc.cpp
    src/autogen_airwin/Texturize.cpp
    src/autogen_airwin/TexturizeProc.cpp
    src/autogen_airwin/TexturizeMS.cpp
