@@ -705,6 +705,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SmoothProc.cpp
    src/autogen_airwin/SmoothEQ.cpp
    src/autogen_airwin/SmoothEQProc.cpp
+   src/autogen_airwin/SmoothEQ2.cpp
+   src/autogen_airwin/SmoothEQ2Proc.cpp
+   src/autogen_airwin/SmoothEQ3.cpp
+   src/autogen_airwin/SmoothEQ3Proc.cpp
    src/autogen_airwin/SoftClock.cpp
    src/autogen_airwin/SoftClockProc.cpp
    src/autogen_airwin/SoftGate.cpp
