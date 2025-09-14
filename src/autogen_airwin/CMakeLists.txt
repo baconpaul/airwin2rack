@@ -289,6 +289,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DigitalBlackProc.cpp
    src/autogen_airwin/Dirt.cpp
    src/autogen_airwin/DirtProc.cpp
+   src/autogen_airwin/Discontapeity.cpp
+   src/autogen_airwin/DiscontapeityProc.cpp
    src/autogen_airwin/Discontinuity.cpp
    src/autogen_airwin/DiscontinuityProc.cpp
    src/autogen_airwin/Disintegrate.cpp
