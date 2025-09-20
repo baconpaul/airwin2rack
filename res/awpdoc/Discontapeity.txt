@@ -1,0 +1,23 @@
+# Discontapeity combines air modeling with tape-style overdrive.
+
+TapeHack came out, and boom! Everyone immediately wanted an update to ToTape that incorporated it.
+
+I mean, fair. But have you considered taking it and making it LESS like tape?
+
+I did. Discontapeity might be a cumbersome name, but when it finds its way into new models of Airwindows Console you'll know it by the label I put on it, which is simply 'More'.
+
+No form of tape, real or modeled, does the type of air nonlinearity characteristic of loud sound over distance. That's not even a thing. It's strictly left to my plugins Discontinuity and Disintegrate for the bolder audio-wreckers, and as a permanent part of the sound of ConsoleX. It's built into both channel and buss on that, for the purpose of delivering more convincingly loud-sounding mixes, as needed.
+
+Add TapeHack to it, or to be more accurate, change both things to lean closer to each other in behavior, and an interesting effect emerges.
+
+TapeHack allows for intense overdrive, a gain boost of 10x much like my Z series filters. Discontinuity layers three instances of the effect so it can go up to extremely high SPLs and emulate unusual sounds for sound design purposes (Disintegrate can go even farther).
+
+Discontapeity pulls all that back. Less gain. Only one stage of Discontinuity, expanded slightly to compensate. It's cleaner, simpler, and though there's still a little bit of gain on tap, it doesn't try to take that very far.
+
+Instead, if you leave it at 0.0, you have a very clean subdued 'more' that is still a touch bigger and fuller than bypass. And if you bring it up to the middle of 0.5 or so, the sound blooms like it might in a real studio in the golden age of tape and giant mixing desks. If you push it to 1.0, as far as you can crank, that's where you get a touch of distortion and overload, still in a relatively polite way. For smashing drums and such, try layering it after regular TapeHack, or perhaps SquareRoot or some other unusual intensifier: Sinew, maybe?
+
+No, I didn't update the flagship tape emulator ToTape. Every day I'm learning more about what I'll do, when I do. But maybe, what you need is not me including every possible real-tape coloration and behavior… instead, try taking some of those qualities and boiling them down to ever-simpler forms so you can have some of the stuff you want while letting maximum tone and sonority through your music.
+
+Think of it as sonic bloom, or scale and bigness, or simply 'more'. You can still use TapeHack, or indeed ToTape8 or 7. Not every worthy exploration is in the direction everybody else is going. This one's designed to show up on both Console channel plugins and buss plugins, and still be good enough to permanently include in both places. I hope you like it :)
+
+

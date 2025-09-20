@@ -113,6 +113,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/CStrip2Proc.cpp
    src/autogen_airwin/Cabs.cpp
    src/autogen_airwin/CabsProc.cpp
+   src/autogen_airwin/Cabs2.cpp
+   src/autogen_airwin/Cabs2Proc.cpp
    src/autogen_airwin/Calibre.cpp
    src/autogen_airwin/CalibreProc.cpp
    src/autogen_airwin/Cans.cpp
@@ -935,6 +937,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kPlateCProc.cpp
    src/autogen_airwin/kPlateD.cpp
    src/autogen_airwin/kPlateDProc.cpp
+   src/autogen_airwin/kStation.cpp
+   src/autogen_airwin/kStationProc.cpp
    src/autogen_airwin/uLawDecode.cpp
    src/autogen_airwin/uLawDecodeProc.cpp
    src/autogen_airwin/uLawEncode.cpp
