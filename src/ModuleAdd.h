@@ -340,6 +340,8 @@ int Dubly3_unused = AirwinRegistry::registerAirwindow({"Dubly3", "Effects", 206,
 int DustBunny_unused = AirwinRegistry::registerAirwindow({"DustBunny", "Lo-Fi", 289, true, "DustBunny is unpredictable distorty noise, like dust wedged under your turntable needle.", airwinconsolidated::DustBunny::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::DustBunny::DustBunny>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Dynamics.h"
 int Dynamics_unused = AirwinRegistry::registerAirwindow({"Dynamics", "Dynamics", 178, false, "Dynamics is a combination compressor gate.", airwinconsolidated::Dynamics::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Dynamics::Dynamics>(0); }, -1, { "Latest" }});
+#include "autogen_airwin/Dynamics2.h"
+int Dynamics2_unused = AirwinRegistry::registerAirwindow({"Dynamics2", "Unclassified", -1, false, "", airwinconsolidated::Dynamics2::kNumParameters, "2025-10-04", []() { return std::make_unique<airwinconsolidated::Dynamics2::Dynamics2>(0); }, -1, { }});
 #include "autogen_airwin/Dyno.h"
 int Dyno_unused = AirwinRegistry::registerAirwindow({"Dyno", "Saturation", 341, true, "Dyno is a lot like Mojo, but for intensity instead of loudness.", airwinconsolidated::Dyno::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Dyno::Dyno>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/EQ.h"
@@ -576,6 +578,10 @@ int PeaksOnly_unused = AirwinRegistry::registerAirwindow({"PeaksOnly", "Utility"
 int Pear_unused = AirwinRegistry::registerAirwindow({"Pear", "Filter", 245, false, "Pear is the testbed for a new filter, implemented as a highpass/lowpass shelf.", airwinconsolidated::Pear::kNumParameters, "2023-06-25", []() { return std::make_unique<airwinconsolidated::Pear::Pear>(0); }, -1, { }});
 #include "autogen_airwin/Pear2.h"
 int Pear2_unused = AirwinRegistry::registerAirwindow({"Pear2", "Filter", 242, false, "Pear2 is my Pear filter plus nonlinearity.", airwinconsolidated::Pear2::kNumParameters, "2024-03-10", []() { return std::make_unique<airwinconsolidated::Pear2::Pear2>(0); }, -1, { "Latest" }});
+#include "autogen_airwin/PearEQ.h"
+int PearEQ_unused = AirwinRegistry::registerAirwindow({"PearEQ", "Unclassified", -1, true, "PearEQ is a six-band Pear-based graphic EQ.", airwinconsolidated::PearEQ::kNumParameters, "2025-10-04", []() { return std::make_unique<airwinconsolidated::PearEQ::PearEQ>(0); }, -1, { "Recommended", "Latest" }});
+#include "autogen_airwin/PearLiteEQ.h"
+int PearLiteEQ_unused = AirwinRegistry::registerAirwindow({"PearLiteEQ", "Unclassified", -1, true, "", airwinconsolidated::PearLiteEQ::kNumParameters, "2025-10-04", []() { return std::make_unique<airwinconsolidated::PearLiteEQ::PearLiteEQ>(0); }, -1, { }});
 #include "autogen_airwin/PhaseNudge.h"
 int PhaseNudge_unused = AirwinRegistry::registerAirwindow({"PhaseNudge", "Subtlety", 369, true, "PhaseNudge is a phase rotator/allpass filter.", airwinconsolidated::PhaseNudge::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PhaseNudge::PhaseNudge>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/PitchDelay.h"
@@ -700,6 +706,8 @@ int Slew_unused = AirwinRegistry::registerAirwindow({"Slew", "Brightness", 71, t
 int Slew2_unused = AirwinRegistry::registerAirwindow({"Slew2", "Brightness", 70, true, "Slew2 works like a de-esser or acceleration limiter: controls extreme highs.", airwinconsolidated::Slew2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Slew2::Slew2>(0); }, -1, { "Recommended" }});
 #include "autogen_airwin/Slew3.h"
 int Slew3_unused = AirwinRegistry::registerAirwindow({"Slew3", "Brightness", 69, true, "Slew3 is a new approach to slew clipping meant for a more analog-like darkening effect.", airwinconsolidated::Slew3::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Slew3::Slew3>(0); }, -1, { "Latest" }});
+#include "autogen_airwin/Slew4.h"
+int Slew4_unused = AirwinRegistry::registerAirwindow({"Slew4", "Unclassified", -1, true, "", airwinconsolidated::Slew4::kNumParameters, "2025-10-04", []() { return std::make_unique<airwinconsolidated::Slew4::Slew4>(0); }, -1, { }});
 #include "autogen_airwin/SlewOnly.h"
 int SlewOnly_unused = AirwinRegistry::registerAirwindow({"SlewOnly", "Utility", 415, true, "SlewOnly is a mix check plugin that shows you only the extreme highs.", airwinconsolidated::SlewOnly::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::SlewOnly::SlewOnly>(0); }, -1, { }});
 #include "autogen_airwin/SlewSonic.h"

@@ -341,6 +341,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DustBunnyProc.cpp
    src/autogen_airwin/Dynamics.cpp
    src/autogen_airwin/DynamicsProc.cpp
+   src/autogen_airwin/Dynamics2.cpp
+   src/autogen_airwin/Dynamics2Proc.cpp
    src/autogen_airwin/Dyno.cpp
    src/autogen_airwin/DynoProc.cpp
    src/autogen_airwin/EQ.cpp
@@ -577,6 +579,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PearProc.cpp
    src/autogen_airwin/Pear2.cpp
    src/autogen_airwin/Pear2Proc.cpp
+   src/autogen_airwin/PearEQ.cpp
+   src/autogen_airwin/PearEQProc.cpp
+   src/autogen_airwin/PearLiteEQ.cpp
+   src/autogen_airwin/PearLiteEQProc.cpp
    src/autogen_airwin/PhaseNudge.cpp
    src/autogen_airwin/PhaseNudgeProc.cpp
    src/autogen_airwin/PitchDelay.cpp
@@ -701,6 +707,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Slew2Proc.cpp
    src/autogen_airwin/Slew3.cpp
    src/autogen_airwin/Slew3Proc.cpp
+   src/autogen_airwin/Slew4.cpp
+   src/autogen_airwin/Slew4Proc.cpp
    src/autogen_airwin/SlewOnly.cpp
    src/autogen_airwin/SlewOnlyProc.cpp
    src/autogen_airwin/SlewSonic.cpp
