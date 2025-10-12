@@ -235,6 +235,12 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ConsoleMDBussProc.cpp
    src/autogen_airwin/ConsoleMDChannel.cpp
    src/autogen_airwin/ConsoleMDChannelProc.cpp
+   src/autogen_airwin/ConsoleX2Buss.cpp
+   src/autogen_airwin/ConsoleX2BussProc.cpp
+   src/autogen_airwin/ConsoleX2Channel.cpp
+   src/autogen_airwin/ConsoleX2ChannelProc.cpp
+   src/autogen_airwin/ConsoleX2Pre.cpp
+   src/autogen_airwin/ConsoleX2PreProc.cpp
    src/autogen_airwin/ConsoleXBuss.cpp
    src/autogen_airwin/ConsoleXBussProc.cpp
    src/autogen_airwin/ConsoleXChannel.cpp
@@ -271,6 +277,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DeEssProc.cpp
    src/autogen_airwin/DeHiss.cpp
    src/autogen_airwin/DeHissProc.cpp
+   src/autogen_airwin/DeNoise.cpp
+   src/autogen_airwin/DeNoiseProc.cpp
    src/autogen_airwin/DeRez.cpp
    src/autogen_airwin/DeRezProc.cpp
    src/autogen_airwin/DeRez2.cpp
@@ -373,6 +381,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ExciterProc.cpp
    src/autogen_airwin/Facet.cpp
    src/autogen_airwin/FacetProc.cpp
+   src/autogen_airwin/FatEQ.cpp
+   src/autogen_airwin/FatEQProc.cpp
    src/autogen_airwin/FathomFive.cpp
    src/autogen_airwin/FathomFiveProc.cpp
    src/autogen_airwin/FinalClip.cpp
