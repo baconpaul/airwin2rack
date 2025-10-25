@@ -291,6 +291,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DensityProc.cpp
    src/autogen_airwin/Density2.cpp
    src/autogen_airwin/Density2Proc.cpp
+   src/autogen_airwin/Density3.cpp
+   src/autogen_airwin/Density3Proc.cpp
    src/autogen_airwin/Desk.cpp
    src/autogen_airwin/DeskProc.cpp
    src/autogen_airwin/Desk4.cpp
@@ -443,6 +445,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/HighpassProc.cpp
    src/autogen_airwin/Highpass2.cpp
    src/autogen_airwin/Highpass2Proc.cpp
+   src/autogen_airwin/HipCrush.cpp
+   src/autogen_airwin/HipCrushProc.cpp
    src/autogen_airwin/Holt.cpp
    src/autogen_airwin/HoltProc.cpp
    src/autogen_airwin/Holt2.cpp
@@ -733,6 +737,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SmoothEQ3Proc.cpp
    src/autogen_airwin/SoftClock.cpp
    src/autogen_airwin/SoftClockProc.cpp
+   src/autogen_airwin/SoftClock2.cpp
+   src/autogen_airwin/SoftClock2Proc.cpp
    src/autogen_airwin/SoftGate.cpp
    src/autogen_airwin/SoftGateProc.cpp
    src/autogen_airwin/SpatializeDither.cpp
