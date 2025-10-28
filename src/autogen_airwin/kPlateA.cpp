@@ -7,6 +7,7 @@
 #include "kPlateA.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::kPlateA {
 

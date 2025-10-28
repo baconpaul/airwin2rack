@@ -7,6 +7,7 @@
 #ifndef __Console4Channel_H
 #include "Console4Channel.h"
 #endif
+#include <cstdlib>
 #include <cmath>
 #include <algorithm>
 namespace airwinconsolidated::Console4Channel {

@@ -7,6 +7,7 @@
 #include "BigAmp.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::BigAmp {
 

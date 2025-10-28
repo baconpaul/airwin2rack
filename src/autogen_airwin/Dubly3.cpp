@@ -7,6 +7,7 @@
 #include "Dubly3.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Dubly3 {
 

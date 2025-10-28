@@ -7,6 +7,7 @@
 #include "PurestConsole3Buss.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::PurestConsole3Buss {
 
