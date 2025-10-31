@@ -6,6 +6,7 @@
 #ifndef __VariMu_H
 #include "VariMu.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::VariMu {
 
 void VariMu::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

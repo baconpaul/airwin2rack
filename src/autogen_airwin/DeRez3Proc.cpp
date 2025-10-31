@@ -6,6 +6,7 @@
 #ifndef __DeRez3_H
 #include "DeRez3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DeRez3 {
 
 void DeRez3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

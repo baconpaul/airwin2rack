@@ -6,6 +6,7 @@
 #ifndef __SurgeTide_H
 #include "SurgeTide.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SurgeTide {
 
 void SurgeTide::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

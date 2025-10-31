@@ -6,6 +6,7 @@
 #ifndef __ZLowpass_H
 #include "ZLowpass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ZLowpass {
 
 void ZLowpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

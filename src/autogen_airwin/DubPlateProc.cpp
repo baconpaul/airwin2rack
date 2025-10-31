@@ -6,6 +6,7 @@
 #ifndef __DubPlate_H
 #include "DubPlate.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DubPlate {
 
 void DubPlate::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __kPlate240_H
 #include "kPlate240.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kPlate240 {
 
 void kPlate240::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

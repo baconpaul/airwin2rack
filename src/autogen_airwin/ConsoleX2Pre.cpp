@@ -7,6 +7,7 @@
 #include "ConsoleX2Pre.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::ConsoleX2Pre {
 

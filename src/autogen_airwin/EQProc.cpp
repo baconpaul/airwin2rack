@@ -6,6 +6,7 @@
 #ifndef __EQ_H
 #include "EQ.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::EQ {
 
 void EQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

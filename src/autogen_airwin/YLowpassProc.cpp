@@ -6,6 +6,7 @@
 #ifndef __YLowpass_H
 #include "YLowpass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::YLowpass {
 
 void YLowpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

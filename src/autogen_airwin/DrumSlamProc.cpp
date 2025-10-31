@@ -6,6 +6,7 @@
 #ifndef __DrumSlam_H
 #include "DrumSlam.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DrumSlam {
 
 void DrumSlam::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

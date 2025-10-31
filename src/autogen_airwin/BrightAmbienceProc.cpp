@@ -6,6 +6,7 @@
 #ifndef __BrightAmbience_H
 #include "BrightAmbience.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BrightAmbience {
 
 void BrightAmbience::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

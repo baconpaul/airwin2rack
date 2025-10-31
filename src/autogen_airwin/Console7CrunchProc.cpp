@@ -6,6 +6,7 @@
 #ifndef __Console7Crunch_H
 #include "Console7Crunch.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Console7Crunch {
 
 void Console7Crunch::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

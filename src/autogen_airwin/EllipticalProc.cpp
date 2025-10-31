@@ -6,6 +6,7 @@
 #ifndef __Elliptical_H
 #include "Elliptical.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Elliptical {
 
 void Elliptical::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

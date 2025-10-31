@@ -7,6 +7,7 @@
 #include "Console6Channel.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Console6Channel {
 

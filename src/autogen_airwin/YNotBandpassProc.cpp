@@ -6,6 +6,7 @@
 #ifndef __YNotBandpass_H
 #include "YNotBandpass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::YNotBandpass {
 
 void YNotBandpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

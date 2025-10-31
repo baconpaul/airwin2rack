@@ -6,6 +6,7 @@
 #ifndef __VinylDither_H
 #include "VinylDither.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::VinylDither {
 
 void VinylDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

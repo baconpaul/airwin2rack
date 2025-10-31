@@ -6,6 +6,7 @@
 #ifndef __Facet_H
 #include "Facet.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Facet {
 
 void Facet::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

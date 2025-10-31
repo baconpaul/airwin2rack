@@ -6,6 +6,7 @@
 #ifndef __PointyDeluxe_H
 #include "PointyDeluxe.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PointyDeluxe {
 
 void PointyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

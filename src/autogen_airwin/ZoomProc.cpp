@@ -6,6 +6,7 @@
 #ifndef __Zoom_H
 #include "Zoom.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Zoom {
 
 void Zoom::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

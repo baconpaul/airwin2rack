@@ -6,6 +6,7 @@
 #ifndef __BlockParty_H
 #include "BlockParty.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BlockParty {
 
 void BlockParty::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

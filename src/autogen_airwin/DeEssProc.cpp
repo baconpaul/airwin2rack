@@ -6,6 +6,7 @@
 #ifndef __DeEss_H
 #include "DeEss.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DeEss {
 
 void DeEss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

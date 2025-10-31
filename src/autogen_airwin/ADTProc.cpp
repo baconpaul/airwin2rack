@@ -6,6 +6,7 @@
 #ifndef __ADT_H
 #include "ADT.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ADT {
 
 void ADT::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

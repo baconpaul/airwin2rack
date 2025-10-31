@@ -6,6 +6,7 @@
 #ifndef __Flutter_H
 #include "Flutter.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Flutter {
 
 void Flutter::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

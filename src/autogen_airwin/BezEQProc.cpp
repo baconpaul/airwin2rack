@@ -6,6 +6,7 @@
 #ifndef __BezEQ_H
 #include "BezEQ.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BezEQ {
 
 void BezEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

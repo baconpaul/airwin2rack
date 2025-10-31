@@ -6,6 +6,7 @@
 #ifndef __Ensemble_H
 #include "Ensemble.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Ensemble {
 
 void Ensemble::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

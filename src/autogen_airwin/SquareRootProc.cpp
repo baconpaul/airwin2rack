@@ -6,6 +6,7 @@
 #ifndef __SquareRoot_H
 #include "SquareRoot.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SquareRoot {
 
 void SquareRoot::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

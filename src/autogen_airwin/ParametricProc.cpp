@@ -6,6 +6,7 @@
 #ifndef __Parametric_H
 #include "Parametric.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Parametric {
 
 void Parametric::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __uLawEncode_H
 #include "uLawEncode.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::uLawEncode {
 
 void uLawEncode::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

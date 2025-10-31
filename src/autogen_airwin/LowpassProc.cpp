@@ -6,6 +6,7 @@
 #ifndef __Lowpass_H
 #include "Lowpass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Lowpass {
 
 void Lowpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

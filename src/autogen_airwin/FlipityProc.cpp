@@ -6,6 +6,7 @@
 #ifndef __Flipity_H
 #include "Flipity.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Flipity {
 
 void Flipity::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

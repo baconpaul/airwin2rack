@@ -7,6 +7,7 @@
 #include "SmoothEQ3.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::SmoothEQ3 {
 

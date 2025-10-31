@@ -6,6 +6,7 @@
 #ifndef __ToVinyl4_H
 #include "ToVinyl4.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ToVinyl4 {
 
 void ToVinyl4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

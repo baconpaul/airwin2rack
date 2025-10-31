@@ -6,6 +6,7 @@
 #ifndef __XRegion_H
 #include "XRegion.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::XRegion {
 
 void XRegion::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

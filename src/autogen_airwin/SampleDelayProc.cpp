@@ -6,6 +6,7 @@
 #ifndef __SampleDelay_H
 #include "SampleDelay.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SampleDelay {
 
 void SampleDelay::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

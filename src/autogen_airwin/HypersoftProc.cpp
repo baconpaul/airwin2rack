@@ -6,6 +6,7 @@
 #ifndef __Hypersoft_H
 #include "Hypersoft.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Hypersoft {
 
 void Hypersoft::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

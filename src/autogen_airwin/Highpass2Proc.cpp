@@ -6,6 +6,7 @@
 #ifndef __Highpass2_H
 #include "Highpass2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Highpass2 {
 
 void Highpass2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Hermepass_H
 #include "Hermepass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Hermepass {
 
 void Hermepass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

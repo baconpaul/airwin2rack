@@ -7,6 +7,7 @@
 #include "Channel7.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Channel7 {
 

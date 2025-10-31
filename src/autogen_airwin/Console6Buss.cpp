@@ -7,6 +7,7 @@
 #include "Console6Buss.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Console6Buss {
 

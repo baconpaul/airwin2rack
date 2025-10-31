@@ -6,6 +6,7 @@
 #ifndef __CrickBass_H
 #include "CrickBass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::CrickBass {
 
 void CrickBass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

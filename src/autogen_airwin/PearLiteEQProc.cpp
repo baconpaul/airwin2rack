@@ -6,6 +6,7 @@
 #ifndef __PearLiteEQ_H
 #include "PearLiteEQ.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PearLiteEQ {
 
 void PearLiteEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

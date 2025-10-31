@@ -6,6 +6,7 @@
 #ifndef __HipCrush_H
 #include "HipCrush.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::HipCrush {
 
 void HipCrush::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

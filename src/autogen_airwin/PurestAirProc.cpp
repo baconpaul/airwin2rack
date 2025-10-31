@@ -6,6 +6,7 @@
 #ifndef __PurestAir_H
 #include "PurestAir.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PurestAir {
 
 void PurestAir::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

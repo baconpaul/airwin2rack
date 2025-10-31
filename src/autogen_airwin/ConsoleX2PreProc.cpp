@@ -6,6 +6,7 @@
 #ifndef __ConsoleX2Pre_H
 #include "ConsoleX2Pre.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ConsoleX2Pre {
 
 void ConsoleX2Pre::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -7,6 +7,7 @@
 #include "kCathedral3.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::kCathedral3 {
 

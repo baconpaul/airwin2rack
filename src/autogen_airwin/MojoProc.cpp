@@ -6,6 +6,7 @@
 #ifndef __Mojo_H
 #include "Mojo.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Mojo {
 
 void Mojo::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

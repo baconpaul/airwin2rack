@@ -6,6 +6,7 @@
 #ifndef __EdIsDim_H
 #include "EdIsDim.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::EdIsDim {
 
 void EdIsDim::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Bite_H
 #include "Bite.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Bite {
 
 void Bite::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

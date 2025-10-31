@@ -6,6 +6,7 @@
 #ifndef __Compresaturator_H
 #include "Compresaturator.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Compresaturator {
 
 void Compresaturator::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

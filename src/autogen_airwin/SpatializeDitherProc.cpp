@@ -6,6 +6,7 @@
 #ifndef __SpatializeDither_H
 #include "SpatializeDither.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SpatializeDither {
 
 void SpatializeDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

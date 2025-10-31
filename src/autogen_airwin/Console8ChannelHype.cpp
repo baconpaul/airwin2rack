@@ -7,6 +7,7 @@
 #include "Console8ChannelHype.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Console8ChannelHype {
 

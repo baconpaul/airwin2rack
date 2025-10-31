@@ -6,6 +6,7 @@
 #ifndef __SingleEndedTriode_H
 #include "SingleEndedTriode.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SingleEndedTriode {
 
 void SingleEndedTriode::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

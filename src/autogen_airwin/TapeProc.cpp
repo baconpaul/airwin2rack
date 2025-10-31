@@ -6,6 +6,7 @@
 #ifndef __Tape_H
 #include "Tape.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Tape {
 
 void Tape::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

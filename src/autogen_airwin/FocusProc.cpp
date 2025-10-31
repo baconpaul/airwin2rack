@@ -6,6 +6,7 @@
 #ifndef __Focus_H
 #include "Focus.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Focus {
 
 void Focus::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

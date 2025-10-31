@@ -7,6 +7,7 @@
 #include "Verbity2.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Verbity2 {
 

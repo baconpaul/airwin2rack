@@ -6,6 +6,7 @@
 #ifndef __curve_H
 #include "curve.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::curve {
 
 void curve::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

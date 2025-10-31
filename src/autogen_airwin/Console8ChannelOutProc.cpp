@@ -6,6 +6,7 @@
 #ifndef __Console8ChannelOut_H
 #include "Console8ChannelOut.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Console8ChannelOut {
 
 void Console8ChannelOut::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

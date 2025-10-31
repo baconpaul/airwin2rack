@@ -6,6 +6,7 @@
 #ifndef __Monitoring_H
 #include "Monitoring.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Monitoring {
 
 void Monitoring::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

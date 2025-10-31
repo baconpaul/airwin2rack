@@ -6,6 +6,7 @@
 #ifndef __Beam_H
 #include "Beam.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Beam {
 
 void Beam::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

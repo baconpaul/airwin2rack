@@ -6,6 +6,7 @@
 #ifndef __CreamCoat_H
 #include "CreamCoat.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::CreamCoat {
 
 void CreamCoat::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

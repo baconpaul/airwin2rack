@@ -6,6 +6,7 @@
 #ifndef __Air4_H
 #include "Air4.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Air4 {
 
 void Air4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

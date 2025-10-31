@@ -6,6 +6,7 @@
 #ifndef __UltrasonicMed_H
 #include "UltrasonicMed.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::UltrasonicMed {
 
 void UltrasonicMed::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __GlitchShifter_H
 #include "GlitchShifter.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::GlitchShifter {
 
 void GlitchShifter::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

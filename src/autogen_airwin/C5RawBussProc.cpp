@@ -6,6 +6,7 @@
 #ifndef __C5RawBuss_H
 #include "C5RawBuss.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::C5RawBuss {
 
 void C5RawBuss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

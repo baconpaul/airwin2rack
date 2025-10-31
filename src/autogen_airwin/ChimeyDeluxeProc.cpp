@@ -6,6 +6,7 @@
 #ifndef __ChimeyDeluxe_H
 #include "ChimeyDeluxe.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ChimeyDeluxe {
 
 void ChimeyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

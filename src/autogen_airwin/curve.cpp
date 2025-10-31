@@ -7,6 +7,7 @@
 #include "curve.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::curve {
 

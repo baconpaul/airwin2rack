@@ -6,6 +6,7 @@
 #ifndef __AngleEQ_H
 #include "AngleEQ.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::AngleEQ {
 
 void AngleEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

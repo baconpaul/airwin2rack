@@ -6,6 +6,7 @@
 #ifndef __ConsoleXPre_H
 #include "ConsoleXPre.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ConsoleXPre {
 
 void ConsoleXPre::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

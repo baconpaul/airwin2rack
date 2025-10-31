@@ -6,6 +6,7 @@
 #ifndef __RawGlitters_H
 #include "RawGlitters.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::RawGlitters {
 
 void RawGlitters::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

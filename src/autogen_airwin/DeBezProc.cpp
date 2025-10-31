@@ -6,6 +6,7 @@
 #ifndef __DeBez_H
 #include "DeBez.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DeBez {
 
 void DeBez::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

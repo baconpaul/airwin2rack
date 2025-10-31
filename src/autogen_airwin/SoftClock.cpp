@@ -7,6 +7,7 @@
 #include "SoftClock.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::SoftClock {
 

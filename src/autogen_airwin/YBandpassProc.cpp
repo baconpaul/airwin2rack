@@ -6,6 +6,7 @@
 #ifndef __YBandpass_H
 #include "YBandpass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::YBandpass {
 
 void YBandpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

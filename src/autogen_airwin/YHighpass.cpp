@@ -7,6 +7,7 @@
 #include "YHighpass.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::YHighpass {
 

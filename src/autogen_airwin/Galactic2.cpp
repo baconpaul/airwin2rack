@@ -7,6 +7,7 @@
 #include "Galactic2.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Galactic2 {
 

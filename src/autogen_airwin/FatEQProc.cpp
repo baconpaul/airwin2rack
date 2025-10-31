@@ -6,6 +6,7 @@
 #ifndef __FatEQ_H
 #include "FatEQ.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::FatEQ {
 
 void FatEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

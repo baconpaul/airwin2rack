@@ -6,6 +6,7 @@
 #ifndef __OrbitKick_H
 #include "OrbitKick.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::OrbitKick {
 
 void OrbitKick::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Hype_H
 #include "Hype.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Hype {
 
 void Hype::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

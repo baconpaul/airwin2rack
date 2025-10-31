@@ -6,6 +6,7 @@
 #ifndef __Distance_H
 #include "Distance.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Distance {
 
 void Distance::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

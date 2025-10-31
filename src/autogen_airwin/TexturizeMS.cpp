@@ -7,6 +7,7 @@
 #include "TexturizeMS.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::TexturizeMS {
 

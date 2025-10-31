@@ -6,6 +6,7 @@
 #ifndef __Neverland_H
 #include "Neverland.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Neverland {
 
 void Neverland::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

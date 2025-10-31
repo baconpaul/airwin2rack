@@ -6,6 +6,7 @@
 #ifndef __Thunder_H
 #include "Thunder.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Thunder {
 
 void Thunder::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Srsly3_H
 #include "Srsly3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Srsly3 {
 
 void Srsly3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

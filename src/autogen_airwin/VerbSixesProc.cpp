@@ -6,6 +6,7 @@
 #ifndef __VerbSixes_H
 #include "VerbSixes.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::VerbSixes {
 
 void VerbSixes::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

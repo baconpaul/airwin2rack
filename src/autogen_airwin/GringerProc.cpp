@@ -6,6 +6,7 @@
 #ifndef __Gringer_H
 #include "Gringer.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Gringer {
 
 void Gringer::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

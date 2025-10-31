@@ -6,6 +6,7 @@
 #ifndef __ClearCoat_H
 #include "ClearCoat.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ClearCoat {
 
 void ClearCoat::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

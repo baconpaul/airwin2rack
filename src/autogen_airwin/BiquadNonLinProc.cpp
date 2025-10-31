@@ -6,6 +6,7 @@
 #ifndef __BiquadNonLin_H
 #include "BiquadNonLin.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BiquadNonLin {
 
 void BiquadNonLin::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

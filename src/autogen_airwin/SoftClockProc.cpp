@@ -6,6 +6,7 @@
 #ifndef __SoftClock_H
 #include "SoftClock.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SoftClock {
 
 void SoftClock::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

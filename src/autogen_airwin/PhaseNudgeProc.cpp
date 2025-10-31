@@ -6,6 +6,7 @@
 #ifndef __PhaseNudge_H
 #include "PhaseNudge.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PhaseNudge {
 
 void PhaseNudge::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

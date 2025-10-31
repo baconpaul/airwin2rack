@@ -6,6 +6,7 @@
 #ifndef __Baxandall3_H
 #include "Baxandall3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Baxandall3 {
 
 void Baxandall3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

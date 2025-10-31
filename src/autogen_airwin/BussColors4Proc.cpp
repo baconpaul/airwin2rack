@@ -6,6 +6,7 @@
 #ifndef __BussColors4_H
 #include "BussColors4.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BussColors4 {
 
 void BussColors4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

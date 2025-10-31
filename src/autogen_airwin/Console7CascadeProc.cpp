@@ -6,6 +6,7 @@
 #ifndef __Console7Cascade_H
 #include "Console7Cascade.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Console7Cascade {
 
 void Console7Cascade::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

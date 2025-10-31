@@ -6,6 +6,7 @@
 #ifndef __ConsoleMDBuss_H
 #include "ConsoleMDBuss.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ConsoleMDBuss {
 
 void ConsoleMDBuss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

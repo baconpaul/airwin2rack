@@ -6,6 +6,7 @@
 #ifndef __Drive_H
 #include "Drive.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Drive {
 
 void Drive::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

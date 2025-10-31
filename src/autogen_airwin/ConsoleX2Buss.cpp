@@ -7,6 +7,7 @@
 #include "ConsoleX2Buss.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::ConsoleX2Buss {
 

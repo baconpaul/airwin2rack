@@ -6,6 +6,7 @@
 #ifndef __PunchyDeluxe_H
 #include "PunchyDeluxe.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PunchyDeluxe {
 
 void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

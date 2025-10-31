@@ -6,6 +6,7 @@
 #ifndef __SoftGate_H
 #include "SoftGate.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SoftGate {
 
 void SoftGate::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

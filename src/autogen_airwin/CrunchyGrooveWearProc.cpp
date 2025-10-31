@@ -6,6 +6,7 @@
 #ifndef __CrunchyGrooveWear_H
 #include "CrunchyGrooveWear.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::CrunchyGrooveWear {
 
 void CrunchyGrooveWear::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

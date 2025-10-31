@@ -7,6 +7,7 @@
 #include "TapeBias.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::TapeBias {
 

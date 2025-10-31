@@ -6,6 +6,7 @@
 #ifndef __PitchNasty_H
 #include "PitchNasty.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PitchNasty {
 
 void PitchNasty::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __BeziComp_H
 #include "BeziComp.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BeziComp {
 
 void BeziComp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

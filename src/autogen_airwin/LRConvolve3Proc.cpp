@@ -6,6 +6,7 @@
 #ifndef __LRConvolve3_H
 #include "LRConvolve3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::LRConvolve3 {
 
 void LRConvolve3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

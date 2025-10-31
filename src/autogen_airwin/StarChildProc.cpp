@@ -6,6 +6,7 @@
 #ifndef __StarChild_H
 #include "StarChild.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::StarChild {
 
 void StarChild::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

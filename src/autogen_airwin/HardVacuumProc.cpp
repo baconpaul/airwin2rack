@@ -6,6 +6,7 @@
 #ifndef __HardVacuum_H
 #include "HardVacuum.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::HardVacuum {
 
 void HardVacuum::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

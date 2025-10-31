@@ -6,6 +6,7 @@
 #ifndef __TapeBias_H
 #include "TapeBias.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::TapeBias {
 
 void TapeBias::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

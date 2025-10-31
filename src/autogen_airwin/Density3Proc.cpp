@@ -6,6 +6,7 @@
 #ifndef __Density3_H
 #include "Density3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Density3 {
 
 void Density3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

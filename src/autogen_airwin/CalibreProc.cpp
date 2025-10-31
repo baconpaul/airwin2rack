@@ -6,6 +6,7 @@
 #ifndef __Calibre_H
 #include "Calibre.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Calibre {
 
 void Calibre::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -7,6 +7,7 @@
 #include "Console8SubHype.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Console8SubHype {
 

@@ -6,6 +6,7 @@
 #ifndef __Surge_H
 #include "Surge.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Surge {
 
 void Surge::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

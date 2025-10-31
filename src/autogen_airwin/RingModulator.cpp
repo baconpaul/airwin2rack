@@ -7,6 +7,7 @@
 #include "RingModulator.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::RingModulator {
 

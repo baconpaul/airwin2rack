@@ -6,6 +6,7 @@
 #ifndef __VoiceTrick_H
 #include "VoiceTrick.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::VoiceTrick {
 
 void VoiceTrick::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Preponderant_H
 #include "Preponderant.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Preponderant {
 
 void Preponderant::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

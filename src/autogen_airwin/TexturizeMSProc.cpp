@@ -6,6 +6,7 @@
 #ifndef __TexturizeMS_H
 #include "TexturizeMS.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::TexturizeMS {
 
 void TexturizeMS::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

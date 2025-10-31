@@ -6,6 +6,7 @@
 #ifndef __TapeDelay_H
 #include "TapeDelay.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::TapeDelay {
 
 void TapeDelay::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __StoneFireComp_H
 #include "StoneFireComp.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::StoneFireComp {
 
 void StoneFireComp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

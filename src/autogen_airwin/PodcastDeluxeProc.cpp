@@ -6,6 +6,7 @@
 #ifndef __PodcastDeluxe_H
 #include "PodcastDeluxe.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PodcastDeluxe {
 
 void PodcastDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -7,6 +7,7 @@
 #include "Console7Crunch.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Console7Crunch {
 

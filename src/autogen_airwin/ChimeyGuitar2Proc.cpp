@@ -6,6 +6,7 @@
 #ifndef __ChimeyGuitar2_H
 #include "ChimeyGuitar2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ChimeyGuitar2 {
 
 void ChimeyGuitar2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

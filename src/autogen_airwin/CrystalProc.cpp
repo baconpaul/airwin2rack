@@ -6,6 +6,7 @@
 #ifndef __Crystal_H
 #include "Crystal.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Crystal {
 
 void Crystal::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

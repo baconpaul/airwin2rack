@@ -6,6 +6,7 @@
 #ifndef __TapeHack_H
 #include "TapeHack.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::TapeHack {
 
 void TapeHack::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

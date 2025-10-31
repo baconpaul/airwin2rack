@@ -6,6 +6,7 @@
 #ifndef __kChamberAR_H
 #include "kChamberAR.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kChamberAR {
 
 void kChamberAR::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

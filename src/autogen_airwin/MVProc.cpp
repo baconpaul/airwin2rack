@@ -6,6 +6,7 @@
 #ifndef __MV_H
 #include "MV.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::MV {
 
 void MV::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

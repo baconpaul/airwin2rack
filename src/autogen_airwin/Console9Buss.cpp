@@ -7,6 +7,7 @@
 #include "Console9Buss.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Console9Buss {
 

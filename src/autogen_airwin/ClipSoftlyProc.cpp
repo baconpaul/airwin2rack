@@ -6,6 +6,7 @@
 #ifndef __ClipSoftly_H
 #include "ClipSoftly.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ClipSoftly {
 
 void ClipSoftly::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __StereoFX_H
 #include "StereoFX.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::StereoFX {
 
 void StereoFX::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

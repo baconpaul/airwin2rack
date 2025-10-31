@@ -6,6 +6,7 @@
 #ifndef __kGuitarHall2_H
 #include "kGuitarHall2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kGuitarHall2 {
 
 void kGuitarHall2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

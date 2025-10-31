@@ -6,6 +6,7 @@
 #ifndef __Infinity_H
 #include "Infinity.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Infinity {
 
 void Infinity::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

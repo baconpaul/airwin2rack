@@ -7,6 +7,7 @@
 #include "AngleEQ.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::AngleEQ {
 

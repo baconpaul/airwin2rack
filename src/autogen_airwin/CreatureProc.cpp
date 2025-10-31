@@ -6,6 +6,7 @@
 #ifndef __Creature_H
 #include "Creature.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Creature {
 
 void Creature::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

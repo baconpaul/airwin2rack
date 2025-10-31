@@ -6,6 +6,7 @@
 #ifndef __CansAW_H
 #include "CansAW.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::CansAW {
 
 void CansAW::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

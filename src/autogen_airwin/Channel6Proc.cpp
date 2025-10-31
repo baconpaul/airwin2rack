@@ -6,6 +6,7 @@
 #ifndef __Channel6_H
 #include "Channel6.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Channel6 {
 
 void Channel6::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
