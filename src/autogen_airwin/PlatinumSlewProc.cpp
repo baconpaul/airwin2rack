@@ -6,6 +6,7 @@
 #ifndef __PlatinumSlew_H
 #include "PlatinumSlew.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PlatinumSlew {
 
 void PlatinumSlew::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

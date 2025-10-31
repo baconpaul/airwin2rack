@@ -6,6 +6,7 @@
 #ifndef __Gain_H
 #include "BigAmp.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BigAmp {
 
 void BigAmp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

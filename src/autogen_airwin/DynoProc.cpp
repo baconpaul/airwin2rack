@@ -6,6 +6,7 @@
 #ifndef __Dyno_H
 #include "Dyno.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Dyno {
 
 void Dyno::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

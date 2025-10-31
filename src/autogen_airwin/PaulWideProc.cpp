@@ -6,6 +6,7 @@
 #ifndef __PaulWide_H
 #include "PaulWide.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PaulWide {
 
 void PaulWide::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

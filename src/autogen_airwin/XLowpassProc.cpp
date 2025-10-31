@@ -6,6 +6,7 @@
 #ifndef __XLowpass_H
 #include "XLowpass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::XLowpass {
 
 void XLowpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

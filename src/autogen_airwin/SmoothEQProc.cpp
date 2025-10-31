@@ -6,6 +6,7 @@
 #ifndef __SmoothEQ_H
 #include "SmoothEQ.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SmoothEQ {
 
 void SmoothEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

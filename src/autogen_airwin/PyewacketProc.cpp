@@ -6,6 +6,7 @@
 #ifndef __Pyewacket_H
 #include "Pyewacket.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Pyewacket {
 
 void Pyewacket::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

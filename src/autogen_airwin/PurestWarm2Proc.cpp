@@ -6,6 +6,7 @@
 #ifndef __Gain_H
 #include "PurestWarm2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PurestWarm2 {
 
 void PurestWarm2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

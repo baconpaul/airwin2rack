@@ -6,6 +6,7 @@
 #ifndef __Tube_H
 #include "Tube.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Tube {
 
 void Tube::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

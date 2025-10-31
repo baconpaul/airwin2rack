@@ -6,6 +6,7 @@
 #ifndef __Fracture_H
 #include "Fracture.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Fracture {
 
 void Fracture::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

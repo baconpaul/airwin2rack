@@ -6,9 +6,8 @@
 #ifndef __Coils_H
 #include "Coils.h"
 #endif
-#include <cstdlib>
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Coils {
 

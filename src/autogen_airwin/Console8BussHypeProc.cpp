@@ -6,6 +6,7 @@
 #ifndef __Console8BussHype_H
 #include "Console8BussHype.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Console8BussHype {
 
 void Console8BussHype::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

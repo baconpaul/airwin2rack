@@ -6,6 +6,7 @@
 #ifndef __PointyGuitar_H
 #include "PointyGuitar.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PointyGuitar {
 
 void PointyGuitar::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

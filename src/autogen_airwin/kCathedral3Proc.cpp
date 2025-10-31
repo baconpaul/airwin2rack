@@ -6,6 +6,7 @@
 #ifndef __kCathedral3_H
 #include "kCathedral3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kCathedral3 {
 
 void kCathedral3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

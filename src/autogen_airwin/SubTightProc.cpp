@@ -6,6 +6,7 @@
 #ifndef __SubTight_H
 #include "SubTight.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SubTight {
 
 void SubTight::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

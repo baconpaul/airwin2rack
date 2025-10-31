@@ -6,6 +6,7 @@
 #ifndef __Mastering_H
 #include "Mastering.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Mastering {
 
 void Mastering::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __DubSub2_H
 #include "DubSub2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DubSub2 {
 
 void DubSub2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

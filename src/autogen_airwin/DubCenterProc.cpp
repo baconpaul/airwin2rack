@@ -6,6 +6,7 @@
 #ifndef __DubCenter_H
 #include "DubCenter.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DubCenter {
 
 void DubCenter::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __kStation_H
 #include "kStation.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kStation {
 
 void kStation::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Cabs2_H
 #include "Cabs2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Cabs2 {
 
 void Cabs2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

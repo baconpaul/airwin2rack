@@ -6,6 +6,7 @@
 #ifndef __Cojones_H
 #include "Cojones.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Cojones {
 
 void Cojones::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

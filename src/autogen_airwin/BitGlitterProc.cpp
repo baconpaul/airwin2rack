@@ -6,6 +6,7 @@
 #ifndef __BitGlitter_H
 #include "BitGlitter.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BitGlitter {
 
 void BitGlitter::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

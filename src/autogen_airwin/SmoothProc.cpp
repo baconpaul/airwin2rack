@@ -6,6 +6,7 @@
 #ifndef __Smooth_H
 #include "Smooth.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Smooth {
 
 void Smooth::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

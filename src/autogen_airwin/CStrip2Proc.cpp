@@ -6,6 +6,7 @@
 #ifndef __CStrip2_H
 #include "CStrip2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::CStrip2 {
 
 void CStrip2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

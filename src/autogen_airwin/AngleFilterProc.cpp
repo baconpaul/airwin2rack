@@ -6,6 +6,7 @@
 #ifndef __AngleFilter_H
 #include "AngleFilter.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::AngleFilter {
 
 void AngleFilter::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

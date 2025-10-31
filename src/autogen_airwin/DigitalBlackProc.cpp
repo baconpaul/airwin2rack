@@ -6,6 +6,7 @@
 #ifndef __DigitalBlack_H
 #include "DigitalBlack.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DigitalBlack {
 
 void DigitalBlack::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

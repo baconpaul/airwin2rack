@@ -6,6 +6,7 @@
 #ifndef __Capacitor_H
 #include "Capacitor.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Capacitor {
 
 void Capacitor::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

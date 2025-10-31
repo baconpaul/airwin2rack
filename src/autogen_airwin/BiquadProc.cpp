@@ -6,6 +6,7 @@
 #ifndef __Biquad_H
 #include "Biquad.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Biquad {
 
 void Biquad::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

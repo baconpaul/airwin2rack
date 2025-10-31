@@ -6,6 +6,7 @@
 #ifndef __SideDull_H
 #include "SideDull.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SideDull {
 
 void SideDull::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

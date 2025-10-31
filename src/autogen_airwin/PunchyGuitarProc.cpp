@@ -6,6 +6,7 @@
 #ifndef __PunchyGuitar_H
 #include "PunchyGuitar.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PunchyGuitar {
 
 void PunchyGuitar::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

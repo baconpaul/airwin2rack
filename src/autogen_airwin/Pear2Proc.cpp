@@ -6,6 +6,7 @@
 #ifndef __Pear2_H
 #include "Pear2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Pear2 {
 
 void Pear2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

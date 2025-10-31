@@ -6,6 +6,7 @@
 #ifndef __Cans_H
 #include "Cans.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Cans {
 
 void Cans::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

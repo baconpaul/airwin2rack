@@ -6,6 +6,7 @@
 #ifndef __Golem_H
 #include "Golem.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Golem {
 
 void Golem::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

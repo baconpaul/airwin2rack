@@ -6,6 +6,7 @@
 #ifndef __IronOxideClassic_H
 #include "IronOxideClassic.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::IronOxideClassic {
 
 void IronOxideClassic::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

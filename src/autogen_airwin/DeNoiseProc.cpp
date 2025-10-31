@@ -6,6 +6,7 @@
 #ifndef __DeNoise_H
 #include "DeNoise.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DeNoise {
 
 void DeNoise::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

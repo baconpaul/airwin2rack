@@ -22,6 +22,7 @@ open(OFH, "> $outh") || die "Can't open $outh for writing";
 open(IFH, "< $inh") || die "Can't open $inh for reading";
 
 my $namespaced = 0;
+my $uses_rand = 0;
 while (<IFH>)
 {
     if (m/enum/ && ! $namespaced)
@@ -66,6 +67,17 @@ $outh = "src/autogen_airwin/$f.cpp";
 open(OFH, "> $outh") || die "Can't open $outh for writing";
 open(IFH, "< $inh") || die "Can't open $inh for reading";
 
+# First loop to detect use of rand
+while (<IFH>)
+{
+    if (m/rand/)
+    {
+        $uses_rand = 1;
+    }
+}
+
+# Re-start
+open(IFH, "< $inh") || die "Can't open $inh for reading";
 $namespaced = 0;
 my $inpn = 0;
 my $inChunks = 0;
@@ -91,11 +103,14 @@ while (<IFH>)
     if (m/#endif/ && !$namespaced)
     {
         print OFH "#include <cmath>\n";
+        if ($uses_rand)
+        {
+            print OFH "#include <cstdlib>\n";
+        }
         print OFH "#include <algorithm>\n";
         print OFH "namespace airwinconsolidated::$f {\n";
         $namespaced = 1;
     }
-
 
     if (m/^void/)
     {
@@ -306,6 +321,10 @@ while (<IFH>)
     print OFH;
     if (m/#endif/ && !$namespaced)
     {
+        if ($uses_rand)
+        {
+            print OFH "#include <cstdlib>\n";
+        }
         print OFH "namespace airwinconsolidated::$f {\n";
         $namespaced = 1;
     }

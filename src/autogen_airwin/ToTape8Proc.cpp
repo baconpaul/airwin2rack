@@ -6,6 +6,7 @@
 #ifndef __ToTape8_H
 #include "ToTape8.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ToTape8 {
 
 void ToTape8::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

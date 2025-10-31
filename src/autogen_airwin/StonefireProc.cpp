@@ -6,6 +6,7 @@
 #ifndef __Stonefire_H
 #include "Stonefire.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Stonefire {
 
 void Stonefire::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

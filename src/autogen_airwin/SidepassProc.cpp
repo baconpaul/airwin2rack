@@ -6,6 +6,7 @@
 #ifndef __Sidepass_H
 #include "Sidepass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Sidepass {
 
 void Sidepass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

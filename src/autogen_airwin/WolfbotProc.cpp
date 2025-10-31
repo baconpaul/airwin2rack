@@ -6,6 +6,7 @@
 #ifndef __Wolfbot_H
 #include "Wolfbot.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Wolfbot {
 
 void Wolfbot::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __BiquadStack_H
 #include "BiquadStack.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BiquadStack {
 
 void BiquadStack::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

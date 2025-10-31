@@ -6,6 +6,7 @@
 #ifndef __Cider_H
 #include "Cider.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Cider {
 
 void Cider::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

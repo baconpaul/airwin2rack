@@ -6,6 +6,7 @@
 #ifndef __Dubly3_H
 #include "Dubly3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Dubly3 {
 
 void Dubly3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __FinalClip_H
 #include "FinalClip.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::FinalClip {
 
 void FinalClip::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

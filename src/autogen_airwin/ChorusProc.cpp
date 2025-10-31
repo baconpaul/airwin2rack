@@ -6,6 +6,7 @@
 #ifndef __Chorus_H
 #include "Chorus.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Chorus {
 
 void Chorus::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

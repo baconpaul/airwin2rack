@@ -6,6 +6,7 @@
 #ifndef __TremoSquare_H
 #include "TremoSquare.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::TremoSquare {
 
 void TremoSquare::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

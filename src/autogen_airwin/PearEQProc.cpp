@@ -6,6 +6,7 @@
 #ifndef __PearEQ_H
 #include "PearEQ.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PearEQ {
 
 void PearEQ::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

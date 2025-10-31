@@ -6,6 +6,7 @@
 #ifndef __Sweeten_H
 #include "Sweeten.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Sweeten {
 
 void Sweeten::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

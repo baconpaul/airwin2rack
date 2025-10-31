@@ -6,6 +6,7 @@
 #ifndef __Gain_H
 #include "LilAmp.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::LilAmp {
 
 void LilAmp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

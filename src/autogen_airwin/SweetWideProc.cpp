@@ -6,6 +6,7 @@
 #ifndef __SweetWide_H
 #include "SweetWide.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::SweetWide {
 
 void SweetWide::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

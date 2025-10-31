@@ -6,6 +6,7 @@
 #ifndef __NonlinearSpace_H
 #include "NonlinearSpace.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::NonlinearSpace {
 
 void NonlinearSpace::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

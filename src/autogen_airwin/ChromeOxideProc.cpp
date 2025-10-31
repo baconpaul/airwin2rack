@@ -6,6 +6,7 @@
 #ifndef __ChromeOxide_H
 #include "ChromeOxide.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ChromeOxide {
 
 void ChromeOxide::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

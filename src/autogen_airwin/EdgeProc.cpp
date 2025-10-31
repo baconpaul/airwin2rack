@@ -6,6 +6,7 @@
 #ifndef __Edge_H
 #include "Edge.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Edge {
 
 void Edge::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __BassAmp_H
 #include "BassAmp.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BassAmp {
 
 void BassAmp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

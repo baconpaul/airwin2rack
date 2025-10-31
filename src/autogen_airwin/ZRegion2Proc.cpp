@@ -6,6 +6,7 @@
 #ifndef __ZRegion2_H
 #include "ZRegion2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ZRegion2 {
 
 void ZRegion2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

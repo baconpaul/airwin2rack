@@ -6,6 +6,7 @@
 #ifndef __Pop2_H
 #include "Pop2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Pop2 {
 
 void Pop2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

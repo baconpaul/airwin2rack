@@ -6,6 +6,7 @@
 #ifndef __Acceleration_H
 #include "Acceleration.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Acceleration {
 
 void Acceleration::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

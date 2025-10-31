@@ -6,6 +6,7 @@
 #ifndef __Average_H
 #include "Average.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Average {
 
 void Average::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __TakeCare_H
 #include "TakeCare.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::TakeCare {
 
 void TakeCare::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

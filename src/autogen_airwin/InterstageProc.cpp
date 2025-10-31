@@ -6,6 +6,7 @@
 #ifndef __Interstage_H
 #include "Interstage.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Interstage {
 
 void Interstage::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

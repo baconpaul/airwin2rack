@@ -6,6 +6,7 @@
 #ifndef __Discontapeity_H
 #include "Discontapeity.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Discontapeity {
 
 void Discontapeity::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

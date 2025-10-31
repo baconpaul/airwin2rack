@@ -6,6 +6,7 @@
 #ifndef __MatrixVerb_H
 #include "MatrixVerb.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::MatrixVerb {
 
 void MatrixVerb::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

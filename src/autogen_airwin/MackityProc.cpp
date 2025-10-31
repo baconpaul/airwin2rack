@@ -6,6 +6,7 @@
 #ifndef __Mackity_H
 #include "Mackity.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Mackity {
 
 void Mackity::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

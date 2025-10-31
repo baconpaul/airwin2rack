@@ -6,6 +6,7 @@
 #ifndef __RingModulator_H
 #include "RingModulator.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::RingModulator {
 
 void RingModulator::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
