@@ -875,6 +875,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/WiderProc.cpp
    src/autogen_airwin/Wolfbot.cpp
    src/autogen_airwin/WolfbotProc.cpp
+   src/autogen_airwin/X2Buss.cpp
+   src/autogen_airwin/X2BussProc.cpp
    src/autogen_airwin/XBandpass.cpp
    src/autogen_airwin/XBandpassProc.cpp
    src/autogen_airwin/XHighpass.cpp
@@ -963,6 +965,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kPlateDProc.cpp
    src/autogen_airwin/kStation.cpp
    src/autogen_airwin/kStationProc.cpp
+   src/autogen_airwin/kWoodRoom.cpp
+   src/autogen_airwin/kWoodRoomProc.cpp
    src/autogen_airwin/uLawDecode.cpp
    src/autogen_airwin/uLawDecodeProc.cpp
    src/autogen_airwin/uLawEncode.cpp

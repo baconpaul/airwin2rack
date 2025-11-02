@@ -1,14 +1,14 @@
 /* ========================================
- *  ConsoleX2Buss - ConsoleX2Buss.h
+ *  X2Buss - X2Buss.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ConsoleX2Buss_H
-#include "ConsoleX2Buss.h"
+#ifndef __X2Buss_H
+#include "X2Buss.h"
 #endif
-namespace airwinconsolidated::ConsoleX2Buss {
+namespace airwinconsolidated::X2Buss {
 
-void ConsoleX2Buss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
+void X2Buss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {
     float* in1  =  inputs[0];
     float* in2  =  inputs[1];
@@ -147,8 +147,7 @@ void ConsoleX2Buss::processReplacing(float **inputs, float **outputs, VstInt32 s
 	bezRez = fmin(fmax(bezRez,0.00001),1.0);
 	//Dynamics2
 	
-	panA = panB; panB = J*1.57079633;
-	inTrimA = inTrimB; inTrimB = K*2.0;
+	inTrimA = inTrimB; inTrimB = J*2.0;
 	//Console
 	
     while (--sampleFrames >= 0)
@@ -362,16 +361,13 @@ void ConsoleX2Buss::processReplacing(float **inputs, float **outputs, VstInt32 s
 		//Dynamics2
 		
 		const double temp = (double)sampleFrames/inFramesToProcess;
-		double gainR = (panA*temp)+(panB*(1.0-temp));
-		double gainL = 1.57079633-gainR;
-		gainR = sin(gainR); gainL = sin(gainL);
 		double gain = (inTrimA*temp)+(inTrimB*(1.0-temp));
 		if (gain > 1.0) gain *= gain;
 		if (gain < 1.0) gain = 1.0-pow(1.0-gain,2);
 		gain *= 2.0;
 		
-		inputSampleL = inputSampleL * gainL * gain;
-		inputSampleR = inputSampleR * gainR * gain;
+		inputSampleL = inputSampleL * gain;
+		inputSampleR = inputSampleR * gain;
 		//applies pan section, and smoothed fader gain
 		
 		double darkSampleL = inputSampleL;
@@ -465,7 +461,7 @@ void ConsoleX2Buss::processReplacing(float **inputs, float **outputs, VstInt32 s
     }
 }
 
-void ConsoleX2Buss::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
+void X2Buss::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
 {
     double* in1  =  inputs[0];
     double* in2  =  inputs[1];
@@ -604,8 +600,7 @@ void ConsoleX2Buss::processDoubleReplacing(double **inputs, double **outputs, Vs
 	bezRez = fmin(fmax(bezRez,0.00001),1.0);
 	//Dynamics2
 	
-	panA = panB; panB = J*1.57079633;
-	inTrimA = inTrimB; inTrimB = K*2.0;
+	inTrimA = inTrimB; inTrimB = J*2.0;
 	//Console
 	
     while (--sampleFrames >= 0)
@@ -819,16 +814,13 @@ void ConsoleX2Buss::processDoubleReplacing(double **inputs, double **outputs, Vs
 		//Dynamics2
 		
 		const double temp = (double)sampleFrames/inFramesToProcess;
-		double gainR = (panA*temp)+(panB*(1.0-temp));
-		double gainL = 1.57079633-gainR;
-		gainR = sin(gainR); gainL = sin(gainL);
 		double gain = (inTrimA*temp)+(inTrimB*(1.0-temp));
 		if (gain > 1.0) gain *= gain;
 		if (gain < 1.0) gain = 1.0-pow(1.0-gain,2);
 		gain *= 2.0;
 		
-		inputSampleL = inputSampleL * gainL * gain;
-		inputSampleR = inputSampleR * gainR * gain;
+		inputSampleL = inputSampleL * gain;
+		inputSampleR = inputSampleR * gain;
 		//applies pan section, and smoothed fader gain
 		
 		double darkSampleL = inputSampleL;

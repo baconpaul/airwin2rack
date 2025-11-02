@@ -1,11 +1,11 @@
 /* ========================================
- *  ConsoleX2Pre - ConsoleX2Pre.h
+ *  X2Buss - X2Buss.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ConsoleX2Pre_ConsoleX2Pre_H
-#define __ConsoleX2Pre_ConsoleX2Pre_H
+#ifndef __X2Buss_X2Buss_H
+#define __X2Buss_X2Buss_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,7 +15,7 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::ConsoleX2Pre {
+namespace airwinconsolidated::X2Buss {
 enum {
 	kParamA =0,
 	kParamB =1,
@@ -27,28 +27,20 @@ enum {
 	kParamH =7,
 	kParamI =8,
 	kParamJ =9,
-	kParamK =10,
-	kParamL =11,
-	kParamM =12,
-	kParamN =13,
-	kParamO =14,
-	kParamP =15,
-	kParamQ =16,
-  kNumParameters = 17
+  kNumParameters = 10
 }; //
-const int dscBuf = 256;
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'cx2p';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'x2bs';    //Change this to what the AU identity is!
 
-class ConsoleX2Pre : 
+class X2Buss : 
     public AudioEffectX 
 {
 public:
-    ConsoleX2Pre(audioMasterCallback audioMaster);
-    ~ConsoleX2Pre();
+    X2Buss(audioMasterCallback audioMaster);
+    ~X2Buss();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -81,14 +73,7 @@ private:
     float H;
     float I;
     float J;
-    float K;
-    float L;
-    float M;
-    float N;
-    float O;
-    float P;
-    float Q;
-	
+
 	enum {
 		biq_freq,
 		biq_reso,
@@ -141,32 +126,7 @@ private:
 	double bezCompF[bez_total];
 	double bezMaxF;
 	double bezCompS[bez_total];
-	double bezGate;
 	//Dynamics2
-	
-	double iirHPositionL[23];
-	double iirHAngleL[23];
-	double iirHPositionR[23];
-	double iirHAngleR[23];
-	bool hBypass;
-	double iirLPositionL[15];
-	double iirLAngleL[15];
-	double iirLPositionR[15];
-	double iirLAngleR[15];
-	bool lBypass;
-	double lFreqA;
-	double lFreqB; //the lowpass
-	double hFreqA;
-	double hFreqB; //the highpass
-	//Cabs2
-	
-	double dBaL[dscBuf+5];
-	double dBaPosL;
-	int dBaXL;
-	double dBaR[dscBuf+5];
-	double dBaPosR;
-	int dBaXR;
-	//Discontapeity
 	
 	double avg32L[33];
 	double avg32R[33];
@@ -183,11 +143,11 @@ private:
 	double lastSlewR;
 	double lastSlewpleL;
 	double lastSlewpleR;
-	//preTapeHack		
+	//preTapeHack
 	
 	double inTrimA;
 	double inTrimB;
-	
+
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff

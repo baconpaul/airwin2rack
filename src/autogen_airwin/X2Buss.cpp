@@ -1,18 +1,18 @@
 /* ========================================
- *  ConsoleX2Buss - ConsoleX2Buss.h
+ *  X2Buss - X2Buss.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ConsoleX2Buss_H
-#include "ConsoleX2Buss.h"
+#ifndef __X2Buss_H
+#include "X2Buss.h"
 #endif
 #include <cmath>
 #include <algorithm>
-namespace airwinconsolidated::ConsoleX2Buss {
+namespace airwinconsolidated::X2Buss {
 
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new ConsoleX2Buss(audioMaster);}
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new X2Buss(audioMaster);}
 
-ConsoleX2Buss::ConsoleX2Buss(audioMasterCallback audioMaster) :
+X2Buss::X2Buss(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
 	A = 0.5;
@@ -25,7 +25,6 @@ ConsoleX2Buss::ConsoleX2Buss(audioMasterCallback audioMaster) :
 	H = 0.5;
 	I = 1.0;
 	J = 0.5;
-	K = 0.5;
 	
 	for (int x = 0; x < biq_total; x++) {
 		highA[x] = 0.0;
@@ -61,7 +60,6 @@ ConsoleX2Buss::ConsoleX2Buss(audioMasterCallback audioMaster) :
 	lastSlewpleL = 0.0; lastSlewpleR = 0.0;
 	//preTapeHack
 	
-	panA = 0.5; panB = 0.5;
 	inTrimA = 0.5; inTrimB = 0.5;
 	
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
@@ -80,10 +78,10 @@ ConsoleX2Buss::ConsoleX2Buss(audioMasterCallback audioMaster) :
     vst_strncpy (_programName, "Default", kVstMaxProgNameLen); // default program name
 }
 
-ConsoleX2Buss::~ConsoleX2Buss() {}
-VstInt32 ConsoleX2Buss::getVendorVersion () {return 1000;}
-void ConsoleX2Buss::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
-void ConsoleX2Buss::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
+X2Buss::~X2Buss() {}
+VstInt32 X2Buss::getVendorVersion () {return 1000;}
+void X2Buss::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
+void X2Buss::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
@@ -94,7 +92,7 @@ static float pinParameter(float data)
 	return data;
 }
 
-void ConsoleX2Buss::setParameter(VstInt32 index, float value) {
+void X2Buss::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
@@ -106,12 +104,11 @@ void ConsoleX2Buss::setParameter(VstInt32 index, float value) {
         case kParamH: H = value; break;
         case kParamI: I = value; break;
         case kParamJ: J = value; break;
-        case kParamK: K = value; break;
         default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-float ConsoleX2Buss::getParameter(VstInt32 index) {
+float X2Buss::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
         case kParamB: return B; break;
@@ -123,12 +120,11 @@ float ConsoleX2Buss::getParameter(VstInt32 index) {
         case kParamH: return H; break;
         case kParamI: return I; break;
         case kParamJ: return J; break;
-        case kParamK: return K; break;
         default: break; // unknown parameter, shouldn't happen!
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
-void ConsoleX2Buss::getParameterName(VstInt32 index, char *text) {
+void X2Buss::getParameterName(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "High", kVstMaxParamStrLen); break;
 		case kParamB: vst_strncpy (text, "HMid", kVstMaxParamStrLen); break;
@@ -139,13 +135,12 @@ void ConsoleX2Buss::getParameterName(VstInt32 index, char *text) {
 		case kParamG: vst_strncpy (text, "LMidF", kVstMaxParamStrLen); break;
 		case kParamH: vst_strncpy (text, "BassF", kVstMaxParamStrLen); break;
 		case kParamI: vst_strncpy (text, "Thresh", kVstMaxParamStrLen); break;
-		case kParamJ: vst_strncpy (text, "Pan", kVstMaxParamStrLen); break;
-		case kParamK: vst_strncpy (text, "Fader", kVstMaxParamStrLen); break;
+		case kParamJ: vst_strncpy (text, "Fader", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
 
-void ConsoleX2Buss::getParameterDisplay(VstInt32 index, char *text) {
+void X2Buss::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
@@ -157,12 +152,11 @@ void ConsoleX2Buss::getParameterDisplay(VstInt32 index, char *text) {
         case kParamH: float2string (H, text, kVstMaxParamStrLen); break;
         case kParamI: float2string (I, text, kVstMaxParamStrLen); break;
         case kParamJ: float2string (J, text, kVstMaxParamStrLen); break;
-        case kParamK: float2string (K, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
 
-void ConsoleX2Buss::getParameterLabel(VstInt32 index, char *text) {
+void X2Buss::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "eq", kVstMaxParamStrLen); break;
         case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
@@ -174,28 +168,27 @@ void ConsoleX2Buss::getParameterLabel(VstInt32 index, char *text) {
         case kParamH: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamI: vst_strncpy (text, "dyn", kVstMaxParamStrLen); break;
         case kParamJ: vst_strncpy (text, "", kVstMaxParamStrLen); break;
-        case kParamK: vst_strncpy (text, "", kVstMaxParamStrLen); break;
 		default: break; // unknown parameter, shouldn't happen!
     }
 }
 
-VstInt32 ConsoleX2Buss::canDo(char *text) 
+VstInt32 X2Buss::canDo(char *text) 
 { return (_canDo.find(text) == _canDo.end()) ? -1: 1; } // 1 = yes, -1 = no, 0 = don't know
 
-bool ConsoleX2Buss::getEffectName(char* name) {
-    vst_strncpy(name, "ConsoleX2Buss", kVstMaxProductStrLen); return true;
+bool X2Buss::getEffectName(char* name) {
+    vst_strncpy(name, "X2Buss", kVstMaxProductStrLen); return true;
 }
 
-VstPlugCategory ConsoleX2Buss::getPlugCategory() {return kPlugCategEffect;}
+VstPlugCategory X2Buss::getPlugCategory() {return kPlugCategEffect;}
 
-bool ConsoleX2Buss::getProductString(char* text) {
-  	vst_strncpy (text, "airwindows ConsoleX2Buss", kVstMaxProductStrLen); return true;
+bool X2Buss::getProductString(char* text) {
+  	vst_strncpy (text, "airwindows X2Buss", kVstMaxProductStrLen); return true;
 }
 
-bool ConsoleX2Buss::getVendorString(char* text) {
+bool X2Buss::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
-bool ConsoleX2Buss::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+bool X2Buss::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
@@ -207,12 +200,11 @@ bool ConsoleX2Buss::parameterTextToValue(VstInt32 index, const char *text, float
     case kParamH: { auto b = string2float(text, value); return b; break; }
     case kParamI: { auto b = string2float(text, value); return b; break; }
     case kParamJ: { auto b = string2float(text, value); return b; break; }
-    case kParamK: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
 }
-bool ConsoleX2Buss::canConvertParameterTextToValue(VstInt32 index) {
+bool X2Buss::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
         case kParamB: return true;
@@ -224,7 +216,6 @@ bool ConsoleX2Buss::canConvertParameterTextToValue(VstInt32 index) {
         case kParamH: return true;
         case kParamI: return true;
         case kParamJ: return true;
-        case kParamK: return true;
 
     }
     return false;
