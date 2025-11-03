@@ -6,6 +6,7 @@
 #ifndef __Coils_H
 #include "Coils.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Coils {
 
 void Coils::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Console8BussIn_H
 #include "Console8BussIn.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Console8BussIn {
 
 void Console8BussIn::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

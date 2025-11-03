@@ -6,6 +6,7 @@
 #ifndef __VoiceOfTheStarship_H
 #include "VoiceOfTheStarship.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::VoiceOfTheStarship {
 
 void VoiceOfTheStarship::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

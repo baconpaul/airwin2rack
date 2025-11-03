@@ -6,6 +6,7 @@
 #ifndef __Disintegrate_H
 #include "Disintegrate.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Disintegrate {
 
 void Disintegrate::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

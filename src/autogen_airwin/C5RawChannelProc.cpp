@@ -6,6 +6,7 @@
 #ifndef __C5RawChannel_H
 #include "C5RawChannel.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::C5RawChannel {
 
 void C5RawChannel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

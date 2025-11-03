@@ -6,6 +6,7 @@
 #ifndef __Vibrato_H
 #include "Vibrato.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Vibrato {
 
 void Vibrato::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

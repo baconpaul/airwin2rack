@@ -6,6 +6,7 @@
 #ifndef __Chamber_H
 #include "Chamber.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Chamber {
 
 void Chamber::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Spiral_H
 #include "Spiral.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Spiral {
 
 void Spiral::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

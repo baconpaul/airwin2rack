@@ -6,6 +6,7 @@
 #ifndef __Gain_H
 #include "GrindAmp.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::GrindAmp {
 
 void GrindAmp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

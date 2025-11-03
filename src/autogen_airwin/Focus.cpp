@@ -7,6 +7,7 @@
 #include "Focus.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Focus {
 

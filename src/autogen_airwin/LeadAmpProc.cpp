@@ -6,6 +6,7 @@
 #ifndef __Gain_H
 #include "LeadAmp.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::LeadAmp {
 
 void LeadAmp::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

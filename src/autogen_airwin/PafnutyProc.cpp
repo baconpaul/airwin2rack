@@ -6,6 +6,7 @@
 #ifndef __Pafnuty_H
 #include "Pafnuty.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Pafnuty {
 
 void Pafnuty::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

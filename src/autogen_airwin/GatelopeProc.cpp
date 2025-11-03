@@ -6,6 +6,7 @@
 #ifndef __Gatelope_H
 #include "Gatelope.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Gatelope {
 
 void Gatelope::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

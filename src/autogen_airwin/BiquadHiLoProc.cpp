@@ -6,6 +6,7 @@
 #ifndef __BiquadHiLo_H
 #include "BiquadHiLo.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BiquadHiLo {
 
 void BiquadHiLo::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

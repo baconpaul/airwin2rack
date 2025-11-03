@@ -6,6 +6,7 @@
 #ifndef __DeCrackle_H
 #include "DeCrackle.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DeCrackle {
 
 void DeCrackle::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

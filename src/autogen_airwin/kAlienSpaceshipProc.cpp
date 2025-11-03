@@ -6,6 +6,7 @@
 #ifndef __kAlienSpaceship_H
 #include "kAlienSpaceship.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kAlienSpaceship {
 
 void kAlienSpaceship::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __BrassRider_H
 #include "BrassRider.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::BrassRider {
 
 void BrassRider::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

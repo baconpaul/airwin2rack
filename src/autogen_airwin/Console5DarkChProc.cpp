@@ -6,6 +6,7 @@
 #ifndef __Console5DarkCh_H
 #include "Console5DarkCh.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Console5DarkCh {
 
 void Console5DarkCh::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

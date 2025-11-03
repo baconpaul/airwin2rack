@@ -6,6 +6,7 @@
 #ifndef __UltrasonX_H
 #include "UltrasonX.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::UltrasonX {
 
 void UltrasonX::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

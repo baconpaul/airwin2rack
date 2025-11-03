@@ -6,6 +6,7 @@
 #ifndef __Hypersonic_H
 #include "Hypersonic.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Hypersonic {
 
 void Hypersonic::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

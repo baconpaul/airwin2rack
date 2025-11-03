@@ -6,6 +6,7 @@
 #ifndef __DeBess_H
 #include "DeBess.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DeBess {
 
 void DeBess::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

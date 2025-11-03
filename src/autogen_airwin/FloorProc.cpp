@@ -6,6 +6,7 @@
 #ifndef __Floor_H
 #include "Floor.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Floor {
 
 void Floor::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

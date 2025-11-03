@@ -6,6 +6,7 @@
 #ifndef __Dynamics2_H
 #include "Dynamics2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Dynamics2 {
 
 void Dynamics2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __Pressure4_H
 #include "Pressure4.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Pressure4 {
 
 void Pressure4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

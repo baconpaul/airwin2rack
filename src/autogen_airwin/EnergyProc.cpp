@@ -6,6 +6,7 @@
 #ifndef __Energy_H
 #include "Energy.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Energy {
 
 void Energy::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

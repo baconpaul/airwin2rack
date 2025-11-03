@@ -6,6 +6,7 @@
 #ifndef __HighImpact_H
 #include "HighImpact.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::HighImpact {
 
 void HighImpact::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

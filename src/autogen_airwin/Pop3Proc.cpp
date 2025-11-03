@@ -6,6 +6,7 @@
 #ifndef __Pop3_H
 #include "Pop3.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Pop3 {
 
 void Pop3::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

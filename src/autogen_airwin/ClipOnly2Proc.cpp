@@ -6,6 +6,7 @@
 #ifndef __ClipOnly2_H
 #include "ClipOnly2.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ClipOnly2 {
 
 void ClipOnly2::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

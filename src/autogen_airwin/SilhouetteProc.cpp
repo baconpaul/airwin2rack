@@ -6,6 +6,7 @@
 #ifndef __Gain_H
 #include "Silhouette.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Silhouette {
 
 void Silhouette::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

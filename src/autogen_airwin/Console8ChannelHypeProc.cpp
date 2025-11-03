@@ -6,6 +6,7 @@
 #ifndef __Console8ChannelHype_H
 #include "Console8ChannelHype.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Console8ChannelHype {
 
 void Console8ChannelHype::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

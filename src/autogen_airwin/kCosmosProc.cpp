@@ -6,6 +6,7 @@
 #ifndef __kCosmos_H
 #include "kCosmos.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kCosmos {
 
 void kCosmos::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

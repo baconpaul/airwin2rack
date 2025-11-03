@@ -6,6 +6,7 @@
 #ifndef __EveryTrim_H
 #include "EveryTrim.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::EveryTrim {
 
 void EveryTrim::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

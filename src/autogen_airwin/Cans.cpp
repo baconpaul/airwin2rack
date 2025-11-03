@@ -7,6 +7,7 @@
 #include "Cans.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Cans {
 

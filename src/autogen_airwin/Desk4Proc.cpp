@@ -6,6 +6,7 @@
 #ifndef __Desk4_H
 #include "Desk4.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Desk4 {
 
 void Desk4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

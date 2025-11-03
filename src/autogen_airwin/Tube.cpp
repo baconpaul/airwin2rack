@@ -7,6 +7,7 @@
 #include "Tube.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Tube {
 

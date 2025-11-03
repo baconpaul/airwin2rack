@@ -6,6 +6,7 @@
 #ifndef __ConsoleXBuss_H
 #include "ConsoleXBuss.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ConsoleXBuss {
 
 void ConsoleXBuss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

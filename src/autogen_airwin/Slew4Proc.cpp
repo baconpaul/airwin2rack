@@ -6,6 +6,7 @@
 #ifndef __Slew4_H
 #include "Slew4.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Slew4 {
 
 void Slew4::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

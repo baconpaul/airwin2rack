@@ -6,6 +6,7 @@
 #ifndef __Luxor_H
 #include "Luxor.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Luxor {
 
 void Luxor::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

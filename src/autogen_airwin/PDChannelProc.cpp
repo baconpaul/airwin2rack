@@ -6,6 +6,7 @@
 #ifndef __PDChannel_H
 #include "PDChannel.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PDChannel {
 
 void PDChannel::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

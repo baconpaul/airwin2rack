@@ -6,6 +6,7 @@
 #ifndef __UltrasonicLite_H
 #include "UltrasonicLite.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::UltrasonicLite {
 
 void UltrasonicLite::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

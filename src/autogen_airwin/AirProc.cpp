@@ -6,6 +6,7 @@
 #ifndef __Air_H
 #include "Air.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Air {
 
 void Air::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

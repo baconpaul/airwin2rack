@@ -6,6 +6,7 @@
 #ifndef __CrunchCoat_H
 #include "CrunchCoat.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::CrunchCoat {
 
 void CrunchCoat::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

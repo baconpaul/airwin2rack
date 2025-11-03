@@ -6,6 +6,7 @@
 #ifndef __PurestSquish_H
 #include "PurestSquish.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PurestSquish {
 
 void PurestSquish::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

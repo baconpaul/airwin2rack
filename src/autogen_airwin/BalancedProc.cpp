@@ -6,6 +6,7 @@
 #ifndef __Balanced_H
 #include "Balanced.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Balanced {
 
 void Balanced::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

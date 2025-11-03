@@ -6,6 +6,7 @@
 #ifndef __DarkNoise_H
 #include "DarkNoise.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::DarkNoise {
 
 void DarkNoise::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

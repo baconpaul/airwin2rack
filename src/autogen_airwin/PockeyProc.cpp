@@ -6,6 +6,7 @@
 #ifndef __Pockey_H
 #include "Pockey.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Pockey {
 
 void Pockey::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

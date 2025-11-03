@@ -6,6 +6,7 @@
 #ifndef __PrimeFIR_H
 #include "PrimeFIR.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PrimeFIR {
 
 void PrimeFIR::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

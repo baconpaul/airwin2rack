@@ -7,6 +7,7 @@
 #include "Ultrasonic.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::Ultrasonic {
 

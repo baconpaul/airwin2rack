@@ -6,6 +6,7 @@
 #ifndef __Gain_H
 #include "Shape.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Shape {
 
 void Shape::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

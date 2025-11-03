@@ -6,6 +6,7 @@
 #ifndef __RawTimbers_H
 #include "RawTimbers.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::RawTimbers {
 
 void RawTimbers::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

@@ -6,6 +6,7 @@
 #ifndef __StereoChorus_H
 #include "StereoChorus.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::StereoChorus {
 
 void StereoChorus::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

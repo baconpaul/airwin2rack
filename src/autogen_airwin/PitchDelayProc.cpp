@@ -6,6 +6,7 @@
 #ifndef __PitchDelay_H
 #include "PitchDelay.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::PitchDelay {
 
 void PitchDelay::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

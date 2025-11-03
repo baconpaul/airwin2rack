@@ -6,6 +6,7 @@
 #ifndef __ElectroHat_H
 #include "ElectroHat.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::ElectroHat {
 
 void ElectroHat::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

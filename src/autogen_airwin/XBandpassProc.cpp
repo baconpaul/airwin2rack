@@ -6,6 +6,7 @@
 #ifndef __XBandpass_H
 #include "XBandpass.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::XBandpass {
 
 void XBandpass::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

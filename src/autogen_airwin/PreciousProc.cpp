@@ -6,6 +6,7 @@
 #ifndef __Precious_H
 #include "Precious.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Precious {
 
 void Precious::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

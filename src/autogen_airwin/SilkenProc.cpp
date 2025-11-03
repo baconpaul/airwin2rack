@@ -6,6 +6,7 @@
 #ifndef __Silken_H
 #include "Silken.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Silken {
 
 void Silken::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

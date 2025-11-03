@@ -7,6 +7,7 @@
 #include "C5RawChannel.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::C5RawChannel {
 

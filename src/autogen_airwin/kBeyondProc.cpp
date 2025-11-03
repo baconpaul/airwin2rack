@@ -6,6 +6,7 @@
 #ifndef __kBeyond_H
 #include "kBeyond.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kBeyond {
 
 void kBeyond::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

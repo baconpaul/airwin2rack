@@ -6,6 +6,7 @@
 #ifndef __Isolator_H
 #include "Isolator.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Isolator {
 
 void Isolator::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

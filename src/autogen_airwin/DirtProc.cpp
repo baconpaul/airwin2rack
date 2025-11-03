@@ -6,6 +6,7 @@
 #ifndef __Dirt_H
 #include "Dirt.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Dirt {
 
 void Dirt::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

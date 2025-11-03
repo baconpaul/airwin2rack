@@ -6,6 +6,7 @@
 #ifndef __GrooveWear_H
 #include "GrooveWear.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::GrooveWear {
 
 void GrooveWear::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

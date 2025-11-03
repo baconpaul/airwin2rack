@@ -7,6 +7,7 @@
 #include "VinylDither.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::VinylDither {
 

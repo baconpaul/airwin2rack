@@ -6,6 +6,7 @@
 #ifndef __Discontinuity_H
 #include "Discontinuity.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Discontinuity {
 
 void Discontinuity::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

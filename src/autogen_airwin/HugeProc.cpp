@@ -6,6 +6,7 @@
 #ifndef __Huge_H
 #include "Huge.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::Huge {
 
 void Huge::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

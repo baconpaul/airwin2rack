@@ -6,6 +6,7 @@
 #ifndef __StereoEnsemble_H
 #include "StereoEnsemble.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::StereoEnsemble {
 
 void StereoEnsemble::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

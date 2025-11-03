@@ -6,6 +6,7 @@
 #ifndef __NotJustAnotherDither_H
 #include "NotJustAnotherDither.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::NotJustAnotherDither {
 
 void NotJustAnotherDither::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
