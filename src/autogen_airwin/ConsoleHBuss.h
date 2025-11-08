@@ -1,11 +1,11 @@
 /* ========================================
- *  ChimeyDeluxe - ChimeyDeluxe.h
+ *  ConsoleHBuss - ConsoleHBuss.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ChimeyDeluxe_ChimeyDeluxe_H
-#define __ChimeyDeluxe_ChimeyDeluxe_H
+#ifndef __ConsoleHBuss_ConsoleHBuss_H
+#define __ConsoleHBuss_ConsoleHBuss_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,32 +15,34 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::ChimeyDeluxe {
+namespace airwinconsolidated::ConsoleHBuss {
 enum {
-	kParamA =0,
-	kParamB =1,
-	kParamC =2,
-	kParamD =3,
-	kParamE =4,
-	kParamF =5,
-	kParamG =6,
-	kParamH =7,
-	kParamI =8,
-	kParamJ =9,
-  kNumParameters = 10
-}; //
+	kParam_HIG =0,
+	kParam_MID =1,
+	kParam_LOW =2,
+	
+	kParam_THR =3,
+	
+	kParam_LOP =4,
+	kParam_HIP =5,
+	
+	kParam_PAN =6,
+	kParam_FAD =7,
+	//Add your parameters here...
+	kNumParameters=8
+};
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'cdlx';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'chpb';    //Change this to what the AU identity is!
 
-class ChimeyDeluxe : 
-    public AudioEffectX 
+class ConsoleHBuss : 
+public AudioEffectX 
 {
 public:
-    ChimeyDeluxe(audioMasterCallback audioMaster);
-    ~ChimeyDeluxe();
+    ConsoleHBuss(audioMasterCallback audioMaster);
+    ~ConsoleHBuss();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -63,25 +65,37 @@ private:
     char _programName[kVstMaxProgNameLen + 1];
     std::set< std::string > _canDo;
     
-	float A;
-    float B;
-    float C;
-    float D;
-    float E;
-    float F;
-    float G;
-    float H;
-    float I;
-    float J;
+	float HIG;
+	float MID;
+	float LOW;
+	float THR;
+	float LOP;
+	float HIP;
+	float PAN;
+	float FAD;
 	
-	double angSL[18][15];
-	double angAL[18][15];
-	
-	double angSR[18][15];
-	double angAR[18][15];
-	
-	double angG[15];
-	
+	enum {
+		biq_freq,
+		biq_reso,
+		biq_a0,
+		biq_a1,
+		biq_a2,
+		biq_b1,
+		biq_b2,
+		biq_sL1,
+		biq_sL2,
+		biq_sR1,
+		biq_sR2,
+		biq_total
+	}; //coefficient interpolating filter, stereo
+	double highFast[biq_total];
+	double lowFast[biq_total];
+	double highFastLIIR;
+	double highFastRIIR;
+	double lowFastLIIR;
+	double lowFastRIIR;
+	//SmoothEQ3
+		
 	enum {
 		bez_AL,
 		bez_BL,
@@ -98,8 +112,46 @@ private:
 		bez_cycle,
 		bez_total
 	}; //the new undersampling. bez signifies the bezier curve reconstruction
-	double bezComp[bez_total][18];	
+	double bezCompF[bez_total];
+	double bezMaxF;
+	double bezCompS[bez_total];
+	//Dynamics2
+	
+	enum {
+		hilp_freq, hilp_temp,
+		hilp_a0, hilp_aA0, hilp_aB0, hilp_a1, hilp_aA1, hilp_aB1, hilp_b1, hilp_bA1, hilp_bB1, hilp_b2, hilp_bA2, hilp_bB2,
+		hilp_c0, hilp_cA0, hilp_cB0, hilp_c1, hilp_cA1, hilp_cB1, hilp_d1, hilp_dA1, hilp_dB1, hilp_d2, hilp_dA2, hilp_dB2,
+		hilp_e0, hilp_eA0, hilp_eB0, hilp_e1, hilp_eA1, hilp_eB1, hilp_f1, hilp_fA1, hilp_fB1, hilp_f2, hilp_fA2, hilp_fB2,
+		hilp_aL1, hilp_aL2, hilp_aR1, hilp_aR2,
+		hilp_cL1, hilp_cL2, hilp_cR1, hilp_cR2,
+		hilp_eL1, hilp_eL2, hilp_eR1, hilp_eR2,
+		hilp_total
+	};
+	double highpass[hilp_total];
+	double lowpass[hilp_total];	
 		
+	double panA;
+	double panB;
+	double inTrimA;
+	double inTrimB;
+	
+	double avg32L[33];
+	double avg32R[33];
+	double avg16L[17];
+	double avg16R[17];
+	double avg8L[9];
+	double avg8R[9];
+	double avg4L[5];
+	double avg4R[5];
+	double avg2L[3];
+	double avg2R[3];
+	int avgPos;
+	double lastSlewL;
+	double lastSlewR;
+	double lastSlewpleL;
+	double lastSlewpleR;
+	//preTapeHack	
+	
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff

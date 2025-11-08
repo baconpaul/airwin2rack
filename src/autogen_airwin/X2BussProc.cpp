@@ -6,6 +6,7 @@
 #ifndef __X2Buss_H
 #include "X2Buss.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::X2Buss {
 
 void X2Buss::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

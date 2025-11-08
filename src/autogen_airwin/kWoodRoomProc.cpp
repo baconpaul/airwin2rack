@@ -6,6 +6,7 @@
 #ifndef __kWoodRoom_H
 #include "kWoodRoom.h"
 #endif
+#include <cstdlib>
 namespace airwinconsolidated::kWoodRoom {
 
 void kWoodRoom::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 

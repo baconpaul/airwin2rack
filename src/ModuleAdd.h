@@ -141,7 +141,7 @@ int Channel8_unused = AirwinRegistry::registerAirwindow({"Channel8", "Tone Color
 #include "autogen_airwin/Channel9.h"
 int Channel9_unused = AirwinRegistry::registerAirwindow({"Channel9", "Tone Color", 391, true, "Channel9 is Channel8 with ultrasonic filtering, and new Teac and Mackie 'low end' settings.", airwinconsolidated::Channel9::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Channel9::Channel9>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/ChimeyDeluxe.h"
-int ChimeyDeluxe_unused = AirwinRegistry::registerAirwindow({"ChimeyDeluxe", "Unclassified", -1, true, "", airwinconsolidated::ChimeyDeluxe::kNumParameters, "2025-08-09", []() { return std::make_unique<airwinconsolidated::ChimeyDeluxe::ChimeyDeluxe>(0); }, -1, { }});
+int ChimeyDeluxe_unused = AirwinRegistry::registerAirwindow({"ChimeyDeluxe", "Unclassified", -1, true, "ChimeyDeluxe is a very flexible compressed DI conditioner.", airwinconsolidated::ChimeyDeluxe::kNumParameters, "2025-11-07", []() { return std::make_unique<airwinconsolidated::ChimeyDeluxe::ChimeyDeluxe>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/ChimeyGuitar.h"
 int ChimeyGuitar_unused = AirwinRegistry::registerAirwindow({"ChimeyGuitar", "Amp Sims", 28, true, "ChimeyGuitar is a supremely compressible instrument amp.", airwinconsolidated::ChimeyGuitar::kNumParameters, "2025-05-10", []() { return std::make_unique<airwinconsolidated::ChimeyGuitar::ChimeyGuitar>(0); }, -1, { "Basic", "Recommended", "Latest" }});
 #include "autogen_airwin/ChimeyGuitar2.h"
@@ -222,6 +222,12 @@ int Console8SubOut_unused = AirwinRegistry::registerAirwindow({"Console8SubOut",
 int Console9Buss_unused = AirwinRegistry::registerAirwindow({"Console9Buss", "Consoles", 92, false, "Console9Buss is just the summing from ConsoleX.", airwinconsolidated::Console9Buss::kNumParameters, "2024-03-30", []() { return std::make_unique<airwinconsolidated::Console9Buss::Console9Buss>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Console9Channel.h"
 int Console9Channel_unused = AirwinRegistry::registerAirwindow({"Console9Channel", "Consoles", 93, false, "Console9Channel is just the summing from ConsoleX.", airwinconsolidated::Console9Channel::kNumParameters, "2024-05-19", []() { return std::make_unique<airwinconsolidated::Console9Channel::Console9Channel>(0); }, -1, { "Recommended", "Latest" }});
+#include "autogen_airwin/ConsoleHBuss.h"
+int ConsoleHBuss_unused = AirwinRegistry::registerAirwindow({"ConsoleHBuss", "Unclassified", -1, false, "", airwinconsolidated::ConsoleHBuss::kNumParameters, "2025-11-07", []() { return std::make_unique<airwinconsolidated::ConsoleHBuss::ConsoleHBuss>(0); }, -1, { }});
+#include "autogen_airwin/ConsoleHChannel.h"
+int ConsoleHChannel_unused = AirwinRegistry::registerAirwindow({"ConsoleHChannel", "Unclassified", -1, false, "", airwinconsolidated::ConsoleHChannel::kNumParameters, "2025-11-07", []() { return std::make_unique<airwinconsolidated::ConsoleHChannel::ConsoleHChannel>(0); }, -1, { }});
+#include "autogen_airwin/ConsoleHPre.h"
+int ConsoleHPre_unused = AirwinRegistry::registerAirwindow({"ConsoleHPre", "Unclassified", -1, true, "", airwinconsolidated::ConsoleHPre::kNumParameters, "2025-11-07", []() { return std::make_unique<airwinconsolidated::ConsoleHPre::ConsoleHPre>(0); }, -1, { }});
 #include "autogen_airwin/ConsoleLABuss.h"
 int ConsoleLABuss_unused = AirwinRegistry::registerAirwindow({"ConsoleLABuss", "Consoles", 94, false, "ConsoleLABuss is the Airwindows take on the Quad Eight console.", airwinconsolidated::ConsoleLABuss::kNumParameters, "2025-03-17", []() { return std::make_unique<airwinconsolidated::ConsoleLABuss::ConsoleLABuss>(0); }, -1, { "Recommended" }});
 #include "autogen_airwin/ConsoleLAChannel.h"

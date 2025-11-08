@@ -223,6 +223,12 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Console9BussProc.cpp
    src/autogen_airwin/Console9Channel.cpp
    src/autogen_airwin/Console9ChannelProc.cpp
+   src/autogen_airwin/ConsoleHBuss.cpp
+   src/autogen_airwin/ConsoleHBussProc.cpp
+   src/autogen_airwin/ConsoleHChannel.cpp
+   src/autogen_airwin/ConsoleHChannelProc.cpp
+   src/autogen_airwin/ConsoleHPre.cpp
+   src/autogen_airwin/ConsoleHPreProc.cpp
    src/autogen_airwin/ConsoleLABuss.cpp
    src/autogen_airwin/ConsoleLABussProc.cpp
    src/autogen_airwin/ConsoleLAChannel.cpp

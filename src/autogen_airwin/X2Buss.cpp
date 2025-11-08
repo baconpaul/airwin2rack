@@ -7,6 +7,7 @@
 #include "X2Buss.h"
 #endif
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 namespace airwinconsolidated::X2Buss {
 
