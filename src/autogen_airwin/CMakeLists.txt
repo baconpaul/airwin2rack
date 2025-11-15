@@ -863,6 +863,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/VariMuProc.cpp
    src/autogen_airwin/VerbSixes.cpp
    src/autogen_airwin/VerbSixesProc.cpp
+   src/autogen_airwin/VerbTiny.cpp
+   src/autogen_airwin/VerbTinyProc.cpp
    src/autogen_airwin/Verbity.cpp
    src/autogen_airwin/VerbityProc.cpp
    src/autogen_airwin/Verbity2.cpp
