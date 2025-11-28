@@ -77,6 +77,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/BiquadStackProc.cpp
    src/autogen_airwin/BiquadTriple.cpp
    src/autogen_airwin/BiquadTripleProc.cpp
+   src/autogen_airwin/BitDualPan.cpp
+   src/autogen_airwin/BitDualPanProc.cpp
    src/autogen_airwin/BitGlitter.cpp
    src/autogen_airwin/BitGlitterProc.cpp
    src/autogen_airwin/BitShiftGain.cpp
@@ -669,12 +671,16 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PurestConsoleChannelProc.cpp
    src/autogen_airwin/PurestDrive.cpp
    src/autogen_airwin/PurestDriveProc.cpp
+   src/autogen_airwin/PurestDualPan.cpp
+   src/autogen_airwin/PurestDualPanProc.cpp
    src/autogen_airwin/PurestEcho.cpp
    src/autogen_airwin/PurestEchoProc.cpp
    src/autogen_airwin/PurestFade.cpp
    src/autogen_airwin/PurestFadeProc.cpp
    src/autogen_airwin/PurestGain.cpp
    src/autogen_airwin/PurestGainProc.cpp
+   src/autogen_airwin/PurestSaturation.cpp
+   src/autogen_airwin/PurestSaturationProc.cpp
    src/autogen_airwin/PurestSquish.cpp
    src/autogen_airwin/PurestSquishProc.cpp
    src/autogen_airwin/PurestWarm.cpp
@@ -863,6 +869,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/VariMuProc.cpp
    src/autogen_airwin/VerbSixes.cpp
    src/autogen_airwin/VerbSixesProc.cpp
+   src/autogen_airwin/VerbThic.cpp
+   src/autogen_airwin/VerbThicProc.cpp
    src/autogen_airwin/VerbTiny.cpp
    src/autogen_airwin/VerbTinyProc.cpp
    src/autogen_airwin/Verbity.cpp

@@ -16,7 +16,7 @@ Because I'd had another idea: yes, it was gonna be 'VerbTiny' because it could s
 
 That would mean a wideness control, because it started out seeming kind of narrow (I can't control this, it's part of the algorithm). If there was a dual mono instance, each side would just feed back into the same side, meaning that stereo would stay as VERY wide stereo, at the cost of destroying the normal stereo image the reverb would have. And running two 4x4 reverbs isn't that demanding.
 
-And then, since the 'normal' stereo reverb was so narrow, that means it had a lot of energy in the mid channel even though it's two stereo channels. So, what if the wideness went from 'normal' to the dual mono one at the center (0.5) and then as you went beyond that, you brought in the original revverb again, but with one channel phase flipped? Then it'd all be side channel energy, against the dual mono.
+And then, since the 'normal' stereo reverb was so narrow, that means it had a lot of energy in the mid channel even though it's two stereo channels. So, what if the wideness went from 'normal' to the dual mono one at the center (0.5) and then as you went beyond that, you brought in the original reverb again, but with one channel phase flipped? Then it'd all be side channel energy, against the dual mono.
 
 And so I did.
 

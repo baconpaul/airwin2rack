@@ -1,15 +1,15 @@
 /* ========================================
- *  VerbTiny - VerbTiny.h
+ *  VerbThic - VerbThic.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __VerbTiny_H
-#include "VerbTiny.h"
+#ifndef __VerbThic_H
+#include "VerbThic.h"
 #endif
 #include <cstdlib>
-namespace airwinconsolidated::VerbTiny {
+namespace airwinconsolidated::VerbThic {
 
-void VerbTiny::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
+void VerbThic::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) 
 {
     float* in1  =  inputs[0];
     float* in2  =  inputs[1];
@@ -279,6 +279,28 @@ void VerbTiny::processReplacing(float **inputs, float **outputs, VstInt32 sample
 				inputSampleR = (dualmonoSampleL*(2.0-wider)) + (-mainSampleR*(wider-1.0));
 			}
 			
+			
+			inputSampleL = fmin(fmax(inputSampleL,-2.032610446872596),2.032610446872596);
+			long double X = inputSampleL * inputSampleL;
+			long double temp = inputSampleL * X;
+			inputSampleL -= (temp*0.125); temp *= X;
+			inputSampleL += (temp*0.0078125); temp *= X;
+			inputSampleL -= (temp*0.000244140625); temp *= X;
+			inputSampleL += (temp*0.000003814697265625); temp *= X;
+			inputSampleL -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
+			inputSampleR = fmin(fmax(inputSampleR,-2.032610446872596),2.032610446872596);
+			X = inputSampleR * inputSampleR;
+			temp = inputSampleR * X;
+			inputSampleR -= (temp*0.125); temp *= X;
+			inputSampleR += (temp*0.0078125); temp *= X;
+			inputSampleR -= (temp*0.000244140625); temp *= X;
+			inputSampleR += (temp*0.000003814697265625); temp *= X;
+			inputSampleR -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
+			
 			bez[bez_CL] = bez[bez_BL];
 			bez[bez_BL] = bez[bez_AL];
 			bez[bez_AL] = inputSampleL;
@@ -342,7 +364,7 @@ void VerbTiny::processReplacing(float **inputs, float **outputs, VstInt32 sample
     }
 }
 
-void VerbTiny::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
+void VerbThic::processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) 
 {
     double* in1  =  inputs[0];
     double* in2  =  inputs[1];
@@ -612,6 +634,28 @@ void VerbTiny::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 				inputSampleR = (dualmonoSampleL*(2.0-wider)) + (-mainSampleR*(wider-1.0));
 			}
 			
+			
+			inputSampleL = fmin(fmax(inputSampleL,-2.032610446872596),2.032610446872596);
+			long double X = inputSampleL * inputSampleL;
+			long double temp = inputSampleL * X;
+			inputSampleL -= (temp*0.125); temp *= X;
+			inputSampleL += (temp*0.0078125); temp *= X;
+			inputSampleL -= (temp*0.000244140625); temp *= X;
+			inputSampleL += (temp*0.000003814697265625); temp *= X;
+			inputSampleL -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
+			inputSampleR = fmin(fmax(inputSampleR,-2.032610446872596),2.032610446872596);
+			X = inputSampleR * inputSampleR;
+			temp = inputSampleR * X;
+			inputSampleR -= (temp*0.125); temp *= X;
+			inputSampleR += (temp*0.0078125); temp *= X;
+			inputSampleR -= (temp*0.000244140625); temp *= X;
+			inputSampleR += (temp*0.000003814697265625); temp *= X;
+			inputSampleR -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
+			
 			bez[bez_CL] = bez[bez_BL];
 			bez[bez_BL] = bez[bez_AL];
 			bez[bez_AL] = inputSampleL;
@@ -647,10 +691,10 @@ void VerbTiny::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 		X = bezF[bez_cycle]*bezFreqTrim;
 		double CBLfreq = (bezF[bez_CL]*(1.0-X))+(bezF[bez_BL]*X);
 		double BALfreq = (bezF[bez_BL]*(1.0-X))+(bezF[bez_AL]*X);
-		inputSampleL = (bezF[bez_BL]+(CBLfreq*(1.0-X))+(BALfreq*X))*0.25;
+		inputSampleL = (bezF[bez_BL]+(CBLfreq*(1.0-X))+(BALfreq*X))*0.5;
 		double CBRfreq = (bezF[bez_CR]*(1.0-X))+(bezF[bez_BR]*X);
 		double BARfreq = (bezF[bez_BR]*(1.0-X))+(bezF[bez_AR]*X);
-		inputSampleR = (bezF[bez_BR]+(CBRfreq*(1.0-X))+(BARfreq*X))*0.25;
+		inputSampleR = (bezF[bez_BR]+(CBRfreq*(1.0-X))+(BARfreq*X))*0.5;
 		//filtering the reverb separately, after making it
 		
 		inputSampleL = (inputSampleL * wet)+(drySampleL * (1.0-wet));
