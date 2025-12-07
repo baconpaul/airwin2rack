@@ -1,0 +1,19 @@
+# PurestSaturation is an experiment in softclipping.
+
+Not so long ago, I pushed and pulled the parameters of a sin() function (thing called a Taylor series expansion) to produce TapeHack, which is a softclip that uses the wrong valus for a sin() softclip, to produce another softclip that feels more retro and vintage.
+
+But what if we did something weirder? Specifically, doing this requires that you divide by increasingly huge numbers. For a real sin() these are factorials (very huge indeed). For TapeHack, I doctored these until the shape of the softclip did exactly what I wanted.
+
+Remember how my BitShiftGain works? The ultra-clean gain change I can do (either internal to a plugin, or as the plugin of that name) because if you multiply or divide by exactly powers of 2, in any floating point format, it'll change the game without ever recalculating the 'mantissa' of the number. It only changes the 'exponent'. And if you don't change the mantissa… you never requantize. So you have literal perfect gain change that is totally and perfectly lossless within the entire range of the exponent… as long as you only change by 6.08 dB increments.
+
+A bit like the Monty Python skit where a man inherits miles of string, except due to bad planning it is in six inch lengths…
+
+But hey, if you're doing a Taylor series, the first stage's subtracted at 15.56 dB down. Then, 41.58 dB down. Then, 74.04 dB and so on.
+
+What if instead, -18 and -42 and -72 and -108 and -150 dB? Rather than the correct math, instead using whatever division will make sure the mantissa is exactly the same?
+
+And here we are. 'BitShiftGain' but five times over, inside a saturation algorithm, set up to be intentionally wrong but as if we're passing through the parts of the algorithm, losslessly. Except our notion of 'losslessly' is very much Airwindowsized and requires that we use the wrong dividers… except for that's how we have TapeHack.
+
+What happens? Try it and find out. I've never heard a sophisticated sine approximation algorithm that completely breaks math in order to be able to get as many mantissas unquantized, before. Remember, it's also a distortion of what a sin() would be, so it's guaranteed to be different and have a distinct sound, but this is somewhat arbitrary. I find it to be more dynamic than ordinary softclip, and I'm still working out the variations and what I might get out of it. Today it's this! Hope you like it :)
+
+
