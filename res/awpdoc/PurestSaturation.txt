@@ -1,6 +1,6 @@
 # PurestSaturation is an experiment in softclipping.
 
-Not so long ago, I pushed and pulled the parameters of a sin() function (thing called a Taylor series expansion) to produce TapeHack, which is a softclip that uses the wrong valus for a sin() softclip, to produce another softclip that feels more retro and vintage.
+Not so long ago, I pushed and pulled the parameters of a sin() function (thing called a Taylor series expansion) to produce TapeHack, which is a softclip that uses the wrong values for a sin() softclip, to produce another softclip that feels more retro and vintage.
 
 But what if we did something weirder? Specifically, doing this requires that you divide by increasingly huge numbers. For a real sin() these are factorials (very huge indeed). For TapeHack, I doctored these until the shape of the softclip did exactly what I wanted.
 

@@ -92,7 +92,16 @@ void PunchyGuitar::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			}
 			inputSampleL += (band*angG[9]);
 			inputSampleL *= drive;
-			inputSampleL = sin(fmin(fmax(inputSampleL,-M_PI),M_PI));
+			inputSampleL = fmin(fmax(inputSampleL,-2.032610446872596),2.032610446872596);
+			long double X = inputSampleL * inputSampleL;
+			long double temp = inputSampleL * X;
+			inputSampleL -= (temp*0.125); temp *= X;
+			inputSampleL += (temp*0.0078125); temp *= X;
+			inputSampleL -= (temp*0.000244140625); temp *= X;
+			inputSampleL += (temp*0.000003814697265625); temp *= X;
+			inputSampleL -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
 		}
 		
 		if (gaterollerL < 1.0)
@@ -163,7 +172,16 @@ void PunchyGuitar::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			}
 			inputSampleR += (band*angG[9]);
 			inputSampleR *= drive;
-			inputSampleR = sin(fmin(fmax(inputSampleR,-M_PI),M_PI));
+			inputSampleR = fmin(fmax(inputSampleR,-2.032610446872596),2.032610446872596);
+			long double X = inputSampleR * inputSampleR;
+			long double temp = inputSampleR * X;
+			inputSampleR -= (temp*0.125); temp *= X;
+			inputSampleR += (temp*0.0078125); temp *= X;
+			inputSampleR -= (temp*0.000244140625); temp *= X;
+			inputSampleR += (temp*0.000003814697265625); temp *= X;
+			inputSampleR -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
 		}
 		
 		if (gaterollerR < 1.0)
@@ -293,7 +311,16 @@ void PunchyGuitar::processDoubleReplacing(double **inputs, double **outputs, Vst
 			}
 			inputSampleL += (band*angG[9]);
 			inputSampleL *= drive;
-			inputSampleL = sin(fmin(fmax(inputSampleL,-M_PI),M_PI));
+			inputSampleL = fmin(fmax(inputSampleL,-2.032610446872596),2.032610446872596);
+			long double X = inputSampleL * inputSampleL;
+			long double temp = inputSampleL * X;
+			inputSampleL -= (temp*0.125); temp *= X;
+			inputSampleL += (temp*0.0078125); temp *= X;
+			inputSampleL -= (temp*0.000244140625); temp *= X;
+			inputSampleL += (temp*0.000003814697265625); temp *= X;
+			inputSampleL -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
 		}
 		
 		if (gaterollerL < 1.0)
@@ -364,7 +391,16 @@ void PunchyGuitar::processDoubleReplacing(double **inputs, double **outputs, Vst
 			}
 			inputSampleR += (band*angG[9]);
 			inputSampleR *= drive;
-			inputSampleR = sin(fmin(fmax(inputSampleR,-M_PI),M_PI));
+			inputSampleR = fmin(fmax(inputSampleR,-2.032610446872596),2.032610446872596);
+			long double X = inputSampleR * inputSampleR;
+			long double temp = inputSampleR * X;
+			inputSampleR -= (temp*0.125); temp *= X;
+			inputSampleR += (temp*0.0078125); temp *= X;
+			inputSampleR -= (temp*0.000244140625); temp *= X;
+			inputSampleR += (temp*0.000003814697265625); temp *= X;
+			inputSampleR -= (temp*0.0000000298023223876953125); temp *= X;
+			//purestsaturation: sine, except all the corrections
+			//retain mantissa of a long double increasing power function
 		}
 		
 		if (gaterollerR < 1.0)

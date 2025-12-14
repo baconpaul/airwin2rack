@@ -361,6 +361,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DynamicsProc.cpp
    src/autogen_airwin/Dynamics2.cpp
    src/autogen_airwin/Dynamics2Proc.cpp
+   src/autogen_airwin/Dynamics3.cpp
+   src/autogen_airwin/Dynamics3Proc.cpp
    src/autogen_airwin/Dyno.cpp
    src/autogen_airwin/DynoProc.cpp
    src/autogen_airwin/EQ.cpp

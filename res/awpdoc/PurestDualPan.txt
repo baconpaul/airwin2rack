@@ -1,0 +1,9 @@
+# PurestDualPan is an updated PurestGain but as a dual pan.
+
+This one's by patron request: as in, one specific patron REALLY wanted a PurestDualPan, so now everybody has one :)
+
+It is using dezippering, but instead of the much slower one from PurestGain, it's the quicker and more direct one from out of the Z filter plugins. It's using the pan law I used in Console9 and later, that uses sine functions to come up with a pan law. And it's using a quirky little audio taper in its left and right gain controls, so that 0.5 is unity gain, but full crank is actually 3.069492192001773 because it's 2 to the power of the golden ratio, same for the taper of attenuating anything. This produces a funny sort of taper that I like, and also makes it impossible to reference the actual control's number in any useful way. So, behave as if you can't see numbers, they certainly won't be what you think they are and there's no predicting what they will be in dB terms.
+
+I have a Bit Shift one also, but it doesn't strictly count as that because it requires an add as part of the algorithm. This one counts as a PurestGain, though! If you're a PurestGain fan, this is the same only as a dual pan.
+
+
