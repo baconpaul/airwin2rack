@@ -17,3 +17,4 @@ What does this mean? Try it. Boost or cut stuff, sweep the bands around, see how
 This one I'm building into a Console version just for me :) but here it is, way earlier than that, so you can see what's going into a Console version that comes after the promised ConsoleH. I told you I was going to let you swap out many different Consoles on a track-by-track basis, and I've got ideas for just that. Hope you like the preview that is SmoothEQ2.
 
 
+

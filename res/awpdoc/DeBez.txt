@@ -2,7 +2,7 @@
 
 Here's a way-point along the path of me figuring out how to do things! DeBez is a little bit like previous DeRez plugins I've made, and a little bit like my reverbs, and a little bit like HipCrush. I got there from here, and you can add these sounds to your palette!
 
-It combines three things. First, bitcrush like in HipCrush where moving the control to the right gives you 'compressey' bitcrushes that will bring up noise floors and make them roat, and moving the control to the left gives you 'gated' textures where the bitcrush is offset so it'll cut out. This is more obvious on extreme bitcrushes, but it'll be the case even on subtler, 'texture changing' bitcrushes.
+It combines three things. First, bitcrush like in HipCrush where moving the control to the right gives you 'compressey' bitcrushes that will bring up noise floors and make them roar, and moving the control to the left gives you 'gated' textures where the bitcrush is offset so it'll cut out. This is more obvious on extreme bitcrushes, but it'll be the case even on subtler, 'texture changing' bitcrushes.
 
 The DeBez control is simply Bezier undersampling, just like in my reverbs. It's smoothing the edges of the bitcrushing, happening after the crush. To the right, you're getting a 'continuous' version which generates a weird digital-hell overtone. To the left, you get a 'stepped' version of the same thing, one that snaps to integer numbers to suppress (mostly) the overtone. That one might be what you want if you're going for an 'old sampler' effect, as it'll be less edgy, more solid.
 
