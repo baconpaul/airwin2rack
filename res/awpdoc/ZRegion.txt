@@ -10,6 +10,6 @@ ZRegion is that filter. The original Airwindows Region wasn't written in the con
 
 The reason I might be needing this one is, I can get pretty killer bass tones using it. I'll set the first filter higher for midrange articulation, set the last filter very low for heavy bass mojo, and it's instantly a bass-amp type of sound. And if I intend to leave the setting as a fixed setting, ZRegion will give me that with the same flavor as my other Z filters.
 
-But if I want to automate or move the controls as part of the mix…
+But if I want to automate or move the controls as part of the mix… see ZRegion2.
 
 

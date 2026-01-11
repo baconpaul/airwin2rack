@@ -25,7 +25,7 @@ void ConsoleX2Pre::processReplacing(float **inputs, float **outputs, VstInt32 sa
 	
 	double moreTapeHack = (MOR*2.0)+1.0;
 	bool tapehackOff = (MOR == 0.0);
-	switch ((int)TRM){
+	switch ((int)(TRM*4.0)){
 		case 0: moreTapeHack *= 0.5; break;
 		case 1: break;
 		case 2: moreTapeHack *= 2.0; break;
@@ -461,7 +461,7 @@ void ConsoleX2Pre::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			inputSampleL *= 1.0-(fmin(CBAL*bezThresh,1.0));
 			inputSampleR *= 1.0-(fmin(CBAR*bezThresh,1.0));
 		}
-		//Dynamics3, but with crossfade over EQ or HipCrush
+		//Dynamics3
 		
 		const double temp = (double)sampleFrames/inFramesToProcess;
 		const double hFreq = (hFreqA*temp)+(hFreqB*(1.0-temp));
@@ -557,7 +557,7 @@ void ConsoleX2Pre::processDoubleReplacing(double **inputs, double **outputs, Vst
 	
 	double moreTapeHack = (MOR*2.0)+1.0;
 	bool tapehackOff = (MOR == 0.0);
-	switch ((int)TRM){
+	switch ((int)(TRM*4.0)){
 		case 0: moreTapeHack *= 0.5; break;
 		case 1: break;
 		case 2: moreTapeHack *= 2.0; break;
@@ -993,7 +993,7 @@ void ConsoleX2Pre::processDoubleReplacing(double **inputs, double **outputs, Vst
 			inputSampleL *= 1.0-(fmin(CBAL*bezThresh,1.0));
 			inputSampleR *= 1.0-(fmin(CBAR*bezThresh,1.0));
 		}
-		//Dynamics3, but with crossfade over EQ or HipCrush
+		//Dynamics3
 		
 		const double temp = (double)sampleFrames/inFramesToProcess;
 		const double hFreq = (hFreqA*temp)+(hFreqB*(1.0-temp));
