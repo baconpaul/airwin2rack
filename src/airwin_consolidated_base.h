@@ -48,7 +48,8 @@ struct AirwinConsolidatedBase
     virtual void programsAreChunks(bool) {}
 
     virtual void processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames) = 0;
-    virtual void processDoubleReplacing(double **inputs, double **outputs, VstInt32 sampleFrames) = 0;
+    virtual void processDoubleReplacing(double **inputs, double **outputs,
+                                        VstInt32 sampleFrames) = 0;
 
     virtual float
     getParameter(VstInt32 index) = 0; // get the parameter value at the specified index
