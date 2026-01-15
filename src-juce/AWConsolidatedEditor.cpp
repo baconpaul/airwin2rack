@@ -222,7 +222,6 @@ juce::Font AWLookAndFeel::getPopupMenuFont()
     return AWC_JUCE_FONT_CTOR(jakartaSansMedium).withHeight(16);
 }
 
-
 void AWLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int width, int height,
                                                        const juce::PopupMenu::Options &o)
 {
@@ -233,102 +232,106 @@ void AWLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics &g, int wi
     g.drawRect(0, 0, width, height);
 }
 
-void AWEffectPopupLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area,
-                                            const bool isSeparator, const bool isActive,
-                                            const bool isHighlighted, const bool isTicked,
-                                            const bool hasSubMenu, const juce::String& text,
-                                            const juce::String& shortcutKeyText,
-                                            const juce::Drawable* icon, const juce::Colour* const textColourToUse)
+void AWEffectPopupLookAndFeel::drawPopupMenuItem(
+    juce::Graphics &g, const juce::Rectangle<int> &area, const bool isSeparator,
+    const bool isActive, const bool isHighlighted, const bool isTicked, const bool hasSubMenu,
+    const juce::String &text, const juce::String &shortcutKeyText, const juce::Drawable *icon,
+    const juce::Colour *const textColourToUse)
 {
     if (isSeparator)
     {
-        auto r  = area.reduced (5, 0);
-        r.removeFromTop (juce::roundToInt (((float) r.getHeight() * 0.5f) - 0.5f));
+        auto r = area.reduced(5, 0);
+        r.removeFromTop(juce::roundToInt(((float)r.getHeight() * 0.5f) - 0.5f));
 
-        g.setColour (findColour (juce::PopupMenu::textColourId).withAlpha (0.3f));
-        g.fillRect (r.removeFromTop (1));
+        g.setColour(findColour(juce::PopupMenu::textColourId).withAlpha(0.3f));
+        g.fillRect(r.removeFromTop(1));
     }
     else
     {
-        auto textColour = (textColourToUse == nullptr ? findColour (juce::PopupMenu::textColourId)
-                                                        : *textColourToUse);
+        auto textColour = (textColourToUse == nullptr ? findColour(juce::PopupMenu::textColourId)
+                                                      : *textColourToUse);
 
-        auto r  = area.reduced (1);
+        auto r = area.reduced(1);
 
         if (isHighlighted && isActive)
         {
-            g.setColour (findColour (juce::PopupMenu::highlightedBackgroundColourId));
-            g.fillRect (r);
+            g.setColour(findColour(juce::PopupMenu::highlightedBackgroundColourId));
+            g.fillRect(r);
 
-            g.setColour (findColour (juce::PopupMenu::highlightedTextColourId));
+            g.setColour(findColour(juce::PopupMenu::highlightedTextColourId));
         }
         else
         {
-            g.setColour (textColour.withMultipliedAlpha (isActive ? 1.0f : 0.5f));
+            g.setColour(textColour.withMultipliedAlpha(isActive ? 1.0f : 0.5f));
         }
 
-        r.reduce (juce::jmin (5, area.getWidth() / 20), 0);
+        r.reduce(juce::jmin(5, area.getWidth() / 20), 0);
 
         auto font = getPopupMenuFont();
 
-        auto maxFontHeight = (float) r.getHeight() / 1.3f;
+        auto maxFontHeight = (float)r.getHeight() / 1.3f;
 
         if (font.getHeight() > maxFontHeight)
-            font.setHeight (maxFontHeight);
+            font.setHeight(maxFontHeight);
 
-        g.setFont (font);
+        g.setFont(font);
 
-        auto tickedArea = r.removeFromLeft (juce::roundToInt (maxFontHeight)).toFloat();
+        auto tickedArea = r.removeFromLeft(juce::roundToInt(maxFontHeight)).toFloat();
         if (isTicked)
         {
-            auto tick = getTickShape (1.0f);
-            g.fillPath (tick, tick.getTransformToScaleToFit (tickedArea.reduced (tickedArea.getWidth() / 5, 0).toFloat(), true));
+            auto tick = getTickShape(1.0f);
+            g.fillPath(tick, tick.getTransformToScaleToFit(
+                                 tickedArea.reduced(tickedArea.getWidth() / 5, 0).toFloat(), true));
         }
 
         if (hasSubMenu)
         {
             auto arrowH = 0.6f * getPopupMenuFont().getAscent();
 
-            auto x = static_cast<float> (r.removeFromRight ((int) arrowH).getX());
-            auto halfH = static_cast<float> (r.getCentreY());
+            auto x = static_cast<float>(r.removeFromRight((int)arrowH).getX());
+            auto halfH = static_cast<float>(r.getCentreY());
 
             juce::Path path;
-            path.startNewSubPath (x, halfH - arrowH * 0.5f);
-            path.lineTo (x + arrowH * 0.6f, halfH);
-            path.lineTo (x, halfH + arrowH * 0.5f);
+            path.startNewSubPath(x, halfH - arrowH * 0.5f);
+            path.lineTo(x + arrowH * 0.6f, halfH);
+            path.lineTo(x, halfH + arrowH * 0.5f);
 
-            g.strokePath (path, juce::PathStrokeType (2.0f));
+            g.strokePath(path, juce::PathStrokeType(2.0f));
         }
 
-        r.removeFromRight (3);
-        g.drawFittedText (text, r, juce::Justification::centredLeft, 1);
+        r.removeFromRight(3);
+        g.drawFittedText(text, r, juce::Justification::centredLeft, 1);
 
         // Custom behaviour. Draw icon to the right of the text. Used for mono/stereo icons!
         if (icon != nullptr)
         {
-        #if JUCE_VERSION >= 0x080000
+#if JUCE_VERSION >= 0x080000
             const auto stringWidth = juce::GlyphArrangement::getStringWidthInt(font, text);
-        #else
+#else
             const auto stringWidth = font.getStringWidth(text);
-        #endif
-            r.removeFromLeft (stringWidth+5).toFloat();
+#endif
+            r.removeFromLeft(stringWidth + 5).toFloat();
             auto iconArea{r};
             // Reduce the icon size compared to the text, so it doesn't draw to much attention
             const auto reduceHeightBy{iconArea.getHeight() * 0.6};
-            iconArea.setHeight(iconArea.getHeight()-reduceHeightBy);
-            iconArea.setY(iconArea.getY() + (reduceHeightBy/2)); // Make sure the icon is still centered
-            icon->drawWithin (g, iconArea.toFloat(), juce::RectanglePlacement::xLeft | juce::RectanglePlacement::yMid | juce::RectanglePlacement::onlyReduceInSize, isActive ? 0.8f : 0.5f);
-            r.removeFromLeft (juce::roundToInt (maxFontHeight * 0.5f));
+            iconArea.setHeight(iconArea.getHeight() - reduceHeightBy);
+            iconArea.setY(iconArea.getY() +
+                          (reduceHeightBy / 2)); // Make sure the icon is still centered
+            icon->drawWithin(g, iconArea.toFloat(),
+                             juce::RectanglePlacement::xLeft | juce::RectanglePlacement::yMid |
+                                 juce::RectanglePlacement::onlyReduceInSize,
+                             isActive ? 0.8f : 0.5f);
+            r.removeFromLeft(juce::roundToInt(maxFontHeight * 0.5f));
         }
 
         if (shortcutKeyText.isNotEmpty())
         {
             auto f2 = font;
-            f2.setHeight (f2.getHeight() * 0.75f);
-            f2.setHorizontalScale (0.95f);
-            g.setFont (f2);
+            f2.setHeight(f2.getHeight() * 0.75f);
+            f2.setHorizontalScale(0.95f);
+            g.setFont(f2);
 
-            g.drawText (shortcutKeyText, r, juce::Justification::centredRight, true);
+            g.drawText(shortcutKeyText, r, juce::Justification::centredRight, true);
         }
     }
 }
@@ -764,11 +767,14 @@ struct Picker : public juce::Component, public juce::TextEditor::Listener
         if (AirwinRegistry::namesByCollection.find(coll) != AirwinRegistry::namesByCollection.end())
             inCol = AirwinRegistry::namesByCollection.at(coll);
 
-        const auto processorIsMono{ editor->processor.getTotalNumInputChannels()== 1 && editor->processor.getTotalNumOutputChannels() == 1 };
-        const auto stereoPluginsInMono{ editor->processor.properties->getBoolValue("stereoPluginsInMono", true) };
+        const auto processorIsMono{editor->processor.getTotalNumInputChannels() == 1 &&
+                                   editor->processor.getTotalNumOutputChannels() == 1};
+        const auto stereoPluginsInMono{
+            editor->processor.properties->getBoolValue("stereoPluginsInMono", true)};
         for (auto r : AirwinRegistry::fxAlphaOrdering)
         {
-            if (!stereoPluginsInMono && processorIsMono && !AirwinRegistry::registry[r].isMono) {
+            if (!stereoPluginsInMono && processorIsMono && !AirwinRegistry::registry[r].isMono)
+            {
                 continue;
             }
 
@@ -1674,7 +1680,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
 {
-    // Ensure that no popup menu lingers after editor has been closed... (Seen with AU plugin in both Logic Pro and Reaper)
+    // Ensure that no popup menu lingers after editor has been closed... (Seen with AU plugin in
+    // both Logic Pro and Reaper)
     juce::PopupMenu::dismissAllActiveMenus();
 
     // release any references to the look and feel
@@ -1909,7 +1916,8 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
     else
         postRebuildFocus = JOG_UP;
 
-    const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
+    const auto processorIsMono{processor.getTotalNumInputChannels() == 1 &&
+                               processor.getTotalNumOutputChannels() == 1};
     const int sidx = processor.curentProcessorIndex;
 
     if (coll == favoritesCollection && !favoritesList.empty())
@@ -1919,7 +1927,7 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
         std::vector<std::string> v(favoritesList.begin(), favoritesList.end());
 
         // Remove favorites that is not currently supported
-        auto end = std::remove_if(v.begin(), v.end(),[processorIsMono](const auto& name) {
+        auto end = std::remove_if(v.begin(), v.end(), [processorIsMono](const auto &name) {
             const auto rg = AirwinRegistry::registry[AirwinRegistry::nameToIndex[name]];
             return (processorIsMono && !rg.isMono);
         });
@@ -1947,8 +1955,8 @@ void AWConsolidatedAudioProcessorEditor::jog(int dir)
         }
     }
 
-    if (coll == allCollection || AirwinRegistry::namesByCollection.find(coll) ==
-                                          AirwinRegistry::namesByCollection.end())
+    if (coll == allCollection ||
+        AirwinRegistry::namesByCollection.find(coll) == AirwinRegistry::namesByCollection.end())
     {
         auto nx = neighbor(processor.curentProcessorIndex, dir);
         while (nx != sidx)
@@ -1985,9 +1993,11 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
 {
     auto p = juce::PopupMenu();
     const auto &ent = AirwinRegistry::registry[processor.curentProcessorIndex];
-    const auto processorIsMono{ processor.getTotalNumInputChannels()== 1 && processor.getTotalNumOutputChannels() == 1 };
-    const auto stereoPluginsInMono{ processor.properties->getBoolValue("stereoPluginsInMono", true) };
-    const auto alwaysShowMonoStereoIcon{ processor.properties->getBoolValue("alwaysShowMonoStereoIcon", false) };
+    const auto processorIsMono{processor.getTotalNumInputChannels() == 1 &&
+                               processor.getTotalNumOutputChannels() == 1};
+    const auto stereoPluginsInMono{processor.properties->getBoolValue("stereoPluginsInMono", true)};
+    const auto alwaysShowMonoStereoIcon{
+        processor.properties->getBoolValue("alwaysShowMonoStereoIcon", false)};
 
     p.setLookAndFeel(popupLnf.get());
     if (justCurrentCategory)
@@ -2014,7 +2024,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                 i.isEnabled = stereoPluginsInMono || !processorIsMono || ig.isMono;
                 i.isTicked = f == ent.name;
                 if (processorIsMono || alwaysShowMonoStereoIcon)
-                    i.image = std::move ((ig.isMono ? monoIcon : stereoIcon)->createCopy());
+                    i.image = std::move((ig.isMono ? monoIcon : stereoIcon)->createCopy());
                 i.action = [f, w = juce::Component::SafePointer(this)]() {
                     if (w)
                     {
@@ -2022,11 +2032,12 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                         w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(f));
                     }
                 };
-                sm.addItem (std::move(i));
+                sm.addItem(std::move(i));
             }
         }
 
-        if (sm.getNumItems() > 1) {
+        if (sm.getNumItems() > 1)
+        {
             p.addSubMenu("Favorites", sm);
             p.addSeparator();
         }
@@ -2102,12 +2113,13 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                 }
             }
 
-            if (include) {
+            if (include)
+            {
                 juce::PopupMenu::Item i(nm);
                 i.isEnabled = stereoPluginsInMono || !processorIsMono || rg.isMono;
                 i.isTicked = nm == ent.name;
                 if (processorIsMono || alwaysShowMonoStereoIcon)
-                    i.image = std::move ((rg.isMono ? monoIcon : stereoIcon)->createCopy());
+                    i.image = std::move((rg.isMono ? monoIcon : stereoIcon)->createCopy());
                 i.action = [nm, w = juce::Component::SafePointer(this)]() {
                     if (w)
                     {
@@ -2115,7 +2127,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
                         w->processor.pushResetTypeFromUI(AirwinRegistry::nameToIndex.at(nm));
                     }
                 };
-                target->addItem (std::move(i));
+                target->addItem(std::move(i));
             }
         }
         if (!justCurrentCategory && sub.getNumItems() > 0)
@@ -2248,38 +2260,47 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
     settingsMenu.addSeparator();
     juce::PopupMenu layout;
     juce::String busLayout{"Unknown -> "};
-    if ( processor.getTotalNumInputChannels() == 1 )
+    if (processor.getTotalNumInputChannels() == 1)
         busLayout = "Mono -> ";
-    else if (processor.getTotalNumInputChannels() == 2 )
+    else if (processor.getTotalNumInputChannels() == 2)
         busLayout = "Stereo -> ";
-    if ( processor.getTotalNumOutputChannels() == 1 )
+    if (processor.getTotalNumOutputChannels() == 1)
         busLayout += "Mono";
-    else if (processor.getTotalNumOutputChannels() == 2 )
+    else if (processor.getTotalNumOutputChannels() == 2)
         busLayout += "Stereo";
     else
         busLayout += "Unknown";
 
     layout.addSectionHeader("Mono behaviour");
     layout.addSeparator();
-    layout.addItem("Allow stereo plugins in mono mode (global)", true, processor.properties->getBoolValue("stereoPluginsInMono", true),
-        [w = juce::Component::SafePointer(this)]() {
-            if (!w)
-                return;
-            w->processor.properties->setValue("stereoPluginsInMono", !w->processor.properties->getBoolValue("stereoPluginsInMono", true));
-        });
+    layout.addItem("Allow stereo plugins in mono mode (global)", true,
+                   processor.properties->getBoolValue("stereoPluginsInMono", true),
+                   [w = juce::Component::SafePointer(this)]() {
+                       if (!w)
+                           return;
+                       w->processor.properties->setValue(
+                           "stereoPluginsInMono",
+                           !w->processor.properties->getBoolValue("stereoPluginsInMono", true));
+                   });
     layout.addSeparator();
-    layout.addItem("Output only L channel", true, *processor.monoBehaviourParameter == AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftOnly,
-        [w = juce::Component::SafePointer(this)]() {
-            if (!w)
-                return;
-            *w->processor.monoBehaviourParameter = AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftOnly;
-        });
-    layout.addItem("Output L+R channel", true, *processor.monoBehaviourParameter == AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftRightSum,
-        [w = juce::Component::SafePointer(this)]() {
-            if (!w)
-                return;
-            *w->processor.monoBehaviourParameter = AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftRightSum;
-        });
+    layout.addItem("Output only L channel", true,
+                   *processor.monoBehaviourParameter ==
+                       AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftOnly,
+                   [w = juce::Component::SafePointer(this)]() {
+                       if (!w)
+                           return;
+                       *w->processor.monoBehaviourParameter =
+                           AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftOnly;
+                   });
+    layout.addItem("Output L+R channel", true,
+                   *processor.monoBehaviourParameter ==
+                       AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftRightSum,
+                   [w = juce::Component::SafePointer(this)]() {
+                       if (!w)
+                           return;
+                       *w->processor.monoBehaviourParameter =
+                           AWConsolidatedAudioProcessor::MonoBehaviourParameter::LeftRightSum;
+                   });
     layout.addSeparator();
     layout.addItem("Bus layout: " + busLayout, false, false, []() {});
     settingsMenu.addSubMenu("Channel Layout", layout);

@@ -27,8 +27,6 @@
 
 struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::NeighborConnectable_V1
 {
-    static constexpr int maxParams{10};
-
     std::unique_ptr<AirwinConsolidatedBase> airwin{}, airwin_display{};
     std::array<std::unique_ptr<AirwinConsolidatedBase>, MAX_POLY> poly_airwin;
     std::atomic<int32_t> forceSelect{-1}, resetCount{0}, selectedIdx{-1};
@@ -42,8 +40,8 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             auto awm = dynamic_cast<AW2RModule *>(module);
             if (awm && awm->airwin_display)
             {
-                int idx = paramId - PARAM_0;
-                if (idx < awm->nParams)
+                auto idx = (size_t)(paramId - PARAM_0);
+                if (idx < awm->nParams && idx < nAWRackParams)
                 {
                     char txt[256]{0}, lab[256]{0};
                     awm->airwin_display->setParameter(idx, getValue());
@@ -62,8 +60,8 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             auto awm = dynamic_cast<AW2RModule *>(module);
             if (awm && awm->airwin_display)
             {
-                int idx = paramId - PARAM_0;
-                if (idx < awm->nParams)
+                auto idx = (size_t)(paramId - PARAM_0);
+                if (idx < awm->nParams && idx < nAWRackParams)
                 {
                     float rv = pv;
                     auto res = awm->airwin_display->parameterTextToValue(idx, s.c_str(), rv);
@@ -83,9 +81,9 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
     enum ParamIds
     {
         PARAM_0,
-        MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS = PARAM_0 + maxParams,
+        MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_FOLKS = PARAM_0 + nAWRackParams,
         ATTENUVERTER_0,
-        MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_ATTENS = ATTENUVERTER_0 + maxParams,
+        MAX_PARAMS_USED_TO_BE_11_DONT_BREAK_ATTENS = ATTENUVERTER_0 + nAWRackParams,
         IN_LEVEL,
         OUT_LEVEL,
         NUM_PARAMS
@@ -96,7 +94,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         INPUT_L,
         INPUT_R,
         CV_0,
-        NUM_INPUTS = CV_0 + maxParams
+        NUM_INPUTS = CV_0 + nAWRackParams
     };
 
     enum OutputIds
@@ -111,7 +109,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         NUM_LIGHTS
     };
 
-    int nParams{0};
+    size_t nParams{0};
 
     enum PolyphonyMode
     {
@@ -147,7 +145,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         auto pou = configParam(OUT_LEVEL, 0, 1, 1, "Output Gain", "%", 0, 100);
         pou->randomizeEnabled = false;
 
-        for (int i = 0; i < maxParams; ++i)
+        for (auto i = 0U; i < nAWRackParams; ++i)
         {
             auto pq =
                 configParam<AWParamQuantity>(PARAM_0 + i, 0, 1, 0, "Param " + std::to_string(i));
@@ -215,7 +213,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         }
         nParams = AirwinRegistry::registry[registryIdx].nParams;
 
-        for (int i = 0; i < nParams; ++i)
+        for (auto i = 0U; i < nParams && i < nAWRackParams; ++i)
         {
             char txt[256];
             airwin_display->getParameterName(i, txt);
@@ -227,7 +225,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
                 paramQuantities[PARAM_0 + i]->setValue(paramQuantities[i]->defaultValue);
         }
 
-        for (int i = nParams; i < maxParams; ++i)
+        for (auto i = nParams; i < nAWRackParams; ++i)
         {
             inputInfos[CV_0 + i]->name = "Unused CV";
         }
@@ -302,7 +300,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         resetAirwinByName(selectedFX, false);
         if (polyphonyMode != MONOPHONIC && polyphonyMode != MIXMASTER_TO_MONOPHONIC)
         {
-            for (int i = 0; i < MAX_POLY; ++i)
+            for (auto i = 0U; i < MAX_POLY; ++i)
             {
                 polyIO[i].reset();
             }
@@ -429,9 +427,9 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
         monoIO.inPos++;
         if (monoIO.inPos >= blockSize)
         {
-            for (int i = 0; i < nParams; ++i)
+            for (auto i = 0U; i < nParams && i < nAWRackParams; ++i)
             {
-                auto pv = paramQuantities[PARAM_0 + i]->getSmoothValue();
+                auto pv = paramQuantities[PARAM_0 + i]->getValue();
                 if (inputs[CV_0 + i].isConnected())
                 {
                     auto v =
@@ -461,11 +459,11 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
 
         auto rc = inputs[INPUT_R].isConnected() ? INPUT_R : INPUT_L;
 
-        float sv[maxParams];
-        bool isMod[maxParams];
-        for (int i = 0; i < nParams; ++i)
+        float sv[nAWRackParams];
+        bool isMod[nAWRackParams];
+        for (auto i = 0U; i < nParams && i < nAWRackParams; ++i)
         {
-            sv[i] = paramQuantities[PARAM_0 + i]->getSmoothValue();
+            sv[i] = paramQuantities[PARAM_0 + i]->getValue();
             isMod[i] = inputs[CV_0 + i].isConnected();
         }
 
@@ -495,7 +493,7 @@ struct AW2RModule : virtual rack::Module, sst::rackhelpers::module_connector::Ne
             polyIO[c].inPos++;
             if (polyIO[c].inPos >= blockSize)
             {
-                for (int i = 0; i < nParams; ++i)
+                for (auto i = 0U; i < nParams && i < nAWRackParams; ++i)
                 {
                     auto pv = sv[i];
                     if (isMod[i])
@@ -613,7 +611,8 @@ struct AWSkin
             menuOrdering =
                 (MenuOrdering)sst::rackhelpers::json::jsonSafeGet<int>(rootJ, "defaultMenuOrdering")
                     .value_or(ALPHA);
-            collection = sst::rackhelpers::json::jsonSafeGet<std::string>(rootJ, "collection").value_or("All");
+            collection = sst::rackhelpers::json::jsonSafeGet<std::string>(rootJ, "collection")
+                             .value_or("All");
         }
     }
 
@@ -1048,8 +1047,10 @@ struct AWJog : rack::Widget
             e.button == GLFW_MOUSE_BUTTON_LEFT)
         {
             std::unordered_set<std::string> coll;
-            if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
-                    coll = AirwinRegistry::namesByCollection[awSkin.collection];
+            if (awSkin.collection != "All" &&
+                (AirwinRegistry::namesByCollection.find(awSkin.collection) !=
+                 AirwinRegistry::namesByCollection.end()))
+                coll = AirwinRegistry::namesByCollection[awSkin.collection];
 
             if (coll.empty())
             {
@@ -1375,7 +1376,7 @@ struct AWSelector : rack::Widget
             return;
         // First entries are label separator label search separator
         auto pos = m->children.begin();
-        for (int i = 0; i < 5 && pos != m->children.end(); ++i)
+        for (auto i = 0U; i < 5 && pos != m->children.end(); ++i)
             pos = std::next(pos);
 
         std::vector<rack::Widget *> toDelete;
@@ -1396,7 +1397,9 @@ struct AWSelector : rack::Widget
         else
         {
             std::unordered_set<std::string> coll;
-            if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
+            if (awSkin.collection != "All" &&
+                (AirwinRegistry::namesByCollection.find(awSkin.collection) !=
+                 AirwinRegistry::namesByCollection.end()))
                 coll = AirwinRegistry::namesByCollection[awSkin.collection];
 
             auto st = rack::string::lowercase(msg);
@@ -1441,7 +1444,9 @@ struct AWSelector : rack::Widget
     void buildCategoryMenuOnto(rack::Menu *m)
     {
         std::unordered_set<std::string> coll;
-        if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
+        if (awSkin.collection != "All" &&
+            (AirwinRegistry::namesByCollection.find(awSkin.collection) !=
+             AirwinRegistry::namesByCollection.end()))
             coll = AirwinRegistry::namesByCollection[awSkin.collection];
 
         for (const auto &cat : AirwinRegistry::categories)
@@ -1491,13 +1496,13 @@ struct AWSelector : rack::Widget
         auto coll = awSkin.collection;
         for (const auto &[c, _] : AirwinRegistry::namesByCollection)
         {
-            m->addChild(rack::createMenuItem(c, CHECKMARK(coll == c), [cx = c](){
+            m->addChild(rack::createMenuItem(c, CHECKMARK(coll == c), [cx = c]() {
                 awSkin.collection = cx;
                 awSkin.writeConfig();
             }));
         }
         m->addChild(new rack::MenuSeparator());
-        m->addChild(rack::createMenuItem("All Effects", CHECKMARK(coll == "All"), [](){
+        m->addChild(rack::createMenuItem("All Effects", CHECKMARK(coll == "All"), []() {
             awSkin.collection = "All";
             awSkin.writeConfig();
         }));
@@ -1505,7 +1510,9 @@ struct AWSelector : rack::Widget
     void createCategoryMenu(rack::Menu *m, const std::string &cat)
     {
         std::unordered_set<std::string> coll;
-        if (awSkin.collection != "All" && (AirwinRegistry::namesByCollection.find(awSkin.collection) != AirwinRegistry::namesByCollection.end()))
+        if (awSkin.collection != "All" &&
+            (AirwinRegistry::namesByCollection.find(awSkin.collection) !=
+             AirwinRegistry::namesByCollection.end()))
             coll = AirwinRegistry::namesByCollection[awSkin.collection];
 
         if (awSkin.menuOrdering == AWSkin::CHRIS)
@@ -1635,10 +1642,10 @@ struct AW2RModuleWidget : rack::ModuleWidget
 {
     typedef AW2RModule M;
 
-    std::array<AWLabel *, M::maxParams> parLabels;
-    std::array<PixelKnob<20> *, M::maxParams> parKnobs;
-    std::array<rack::ParamWidget *, M::maxParams> attenKnobs;
-    std::array<AWPort *, M::maxParams> cvPorts;
+    std::array<AWLabel *, nAWRackParams> parLabels;
+    std::array<PixelKnob<20> *, nAWRackParams> parKnobs;
+    std::array<rack::ParamWidget *, nAWRackParams> attenKnobs;
+    std::array<AWPort *, nAWRackParams> cvPorts;
 
     std::shared_ptr<rack::Svg> clipperSvg;
     sst::rackhelpers::ui::BufferedDrawFunctionWidget *bg{nullptr};
@@ -1679,7 +1686,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
 
         auto pPos = headerSize + 1, dPP = 27;
 
-        for (int i = 0; i < M::maxParams; ++i)
+        for (auto i = 0U; i < nAWRackParams; ++i)
         {
             auto tlab = new AWLabel;
             tlab->px = 12;
@@ -2217,8 +2224,8 @@ struct AW2RModuleWidget : rack::ModuleWidget
         if (!awm)
             return; // should never happen but hey
 
-        int np = awm->nParams;
-        for (int i = 0; i < np; ++i)
+        auto np = awm->nParams;
+        for (auto i = 0U; i < np && i < nAWRackParams; ++i)
         {
             parLabels[i]->setVisible(true);
             char txt[256];
@@ -2230,7 +2237,7 @@ struct AW2RModuleWidget : rack::ModuleWidget
             cvPorts[i]->setVisible(true);
             cvPorts[i]->setPortActive(true);
         }
-        for (int i = np; i < M::maxParams; ++i)
+        for (auto i = np; i < nAWRackParams; ++i)
         {
             parLabels[i]->setVisible(false);
             parKnobs[i]->setVisible(false);

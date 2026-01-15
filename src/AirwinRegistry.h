@@ -51,28 +51,28 @@ struct AirwinRegistry
 
     static int registerAirwindow(const awReg &r)
     {
-        if (r.nParams > 10)
+        if (r.whatText.empty())
         {
-            if (r.name == "CStrip" || r.name == "Pafnuty")
-            {
-                // I know about these
-            }
-            else
-            {
-                // std::cout << "PROBLEM : " << r.name << " " << r.nParams << std::endl;
-            }
+            std::cout << r.name << " / " << r.category << " missing what text" << std::endl;
         }
-        else if (r.whatText.empty())
-        {
-            // std::cout << r.name << " / " << r.category << " missing what text" << std::endl;
-        }
-        else
-        {
-            registry.emplace_back(r);
-        }
+        registry.emplace_back(r);
 
         return registry.size();
     }
+
+    static void filterAndRebuildRegistry(std::function<bool(const awReg &)> removePredicate)
+    {
+        nameToIndex.clear();
+        categories.clear();
+        fxByCategory.clear();
+        fxByCategoryChrisOrder.clear();
+        fxAlphaOrdering.clear();
+        fxChrisOrdering.clear();
+        registry.erase(std::remove_if(registry.begin(), registry.end(), removePredicate),
+                       registry.end());
+        completeRegistry();
+    }
+
     static int completeRegistry()
     {
         int idx{0};

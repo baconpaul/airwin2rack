@@ -16,6 +16,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
                          .withInput("Input", juce::AudioChannelSet::stereo(), true)
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true))
 {
+    AirwinRegistry::filterAndRebuildRegistry([](auto &r) { return r.nParams >= nAWParams; });
     AirwinConsolidatedBase::defaultSampleRate = 48000;
 
     // Multiple calls to addParameter here
@@ -27,7 +28,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
             LOCK(this->displayProcessorMutex);
             if (this->awDisplayProcessor && i < this->nProcessorParams)
             {
-                for (int id = 0; id < this->nProcessorParams; ++id)
+                for (int id = 0; id < this->nProcessorParams && id < nAWParams; ++id)
                 {
                     awDisplayProcessor->setParameter(id, fxParams[id]->get());
                 }
@@ -70,7 +71,9 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
     addParameter(inLev);
     addParameter(outLev);
 
-    monoBehaviourParameter = new MonoBehaviourParameter({"monoBehaviour", 3}, "Mono Behaviour", MonoBehaviourParameter::LeftOnly, juce::AudioParameterIntAttributes().withAutomatable(false));
+    monoBehaviourParameter = new MonoBehaviourParameter(
+        {"monoBehaviour", 3}, "Mono Behaviour", MonoBehaviourParameter::LeftOnly,
+        juce::AudioParameterIntAttributes().withAutomatable(false));
     monoBehaviourParameter->addListener(this);
     addParameter(monoBehaviourParameter);
 
@@ -163,9 +166,10 @@ void AWConsolidatedAudioProcessor::changeProgramName(int index, const juce::Stri
 void AWConsolidatedAudioProcessor::prepareToPlay(double sr, int samplesPerBlock)
 {
     // Check for current AWProcessor it it supports mono. Otherwise chose something else...
-    const auto isMono{ getTotalNumInputChannels()== 1 && getTotalNumOutputChannels() == 1 };
-    const auto stereoPluginsInMono{ properties->getBoolValue("stereoPluginsInMono", true) };
-    if (!stereoPluginsInMono && isMono && !AirwinRegistry::registry[curentProcessorIndex].isMono) {
+    const auto isMono{getTotalNumInputChannels() == 1 && getTotalNumOutputChannels() == 1};
+    const auto stereoPluginsInMono{properties->getBoolValue("stereoPluginsInMono", true)};
+    if (!stereoPluginsInMono && isMono && !AirwinRegistry::registry[curentProcessorIndex].isMono)
+    {
         const auto defaultName = "Chamber"; // Mono reverb from the recommended list
         setAWProcessorTo(AirwinRegistry::nameToIndex.at(defaultName), true);
     }
@@ -202,7 +206,8 @@ bool AWConsolidatedAudioProcessor::isBusesLayoutSupported(const BusesLayout &lay
     bool outputValid = (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo() ||
                         layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono());
 
-    bool testValid = layouts.getMainInputChannelSet().size() <= layouts.getMainOutputChannelSet().size();
+    bool testValid =
+        layouts.getMainInputChannelSet().size() <= layouts.getMainOutputChannelSet().size();
 
     return inputValid && outputValid && testValid;
 }
@@ -252,8 +257,9 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         return;
     }
 
-    auto& precisionProcessing{ getPrecisionDependantProcessing<T>()};
-    if (!precisionProcessing.isValid()) {
+    auto &precisionProcessing{getPrecisionDependantProcessing<T>()};
+    if (!precisionProcessing.isValid())
+    {
         isPlaying = false;
         return;
     }
@@ -262,13 +268,14 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     auto outBus = getBus(false, 0);
 
     if (inBus->getNumberOfChannels() == 0 || outBus->getNumberOfChannels() == 0 ||
-        buffer.getNumChannels() < std::max(inBus->getNumberOfChannels(), outBus->getNumberOfChannels()) )
+        buffer.getNumChannels() <
+            std::max(inBus->getNumberOfChannels(), outBus->getNumberOfChannels()))
     {
         isPlaying = false;
         return;
     }
 
-    for (int i = 0; i < nProcessorParams; ++i)
+    for (int i = 0; i < nProcessorParams && i < nAWParams; ++i)
     {
         awProcessor->setParameter(i, fxParams[i]->get());
     }
@@ -278,19 +285,24 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
         buffer.applyGain(inLev->getAmplitude<T>());
     }
 
-    // NOTE: Most Airwindows plugins take a copy of the L/R input sample before writing the output sample.
-    // But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes some issues,
-    // as the input buffer is overridden before the R channel is typically processed.
+    // NOTE: Most Airwindows plugins take a copy of the L/R input sample before writing the output
+    // sample. But some, like BitShiftPan, doesn't so giving the same buffer as both L and R causes
+    // some issues, as the input buffer is overridden before the R channel is typically processed.
     // In mono input mode, we therefor take a copy of the input and use that.
     if (inBus->getNumberOfChannels() == 1)
-        precisionProcessing.monoBuffer->copyFrom(0, 0, buffer, 0, 0, precisionProcessing.monoBuffer->getNumSamples());
+        precisionProcessing.monoBuffer->copyFrom(0, 0, buffer, 0, 0,
+                                                 precisionProcessing.monoBuffer->getNumSamples());
 
     const T *inputs[2];
     T *outputs[2];
     inputs[0] = buffer.getReadPointer(0);
-    inputs[1] = inBus->getNumberOfChannels() == 2 ? buffer.getReadPointer(1) : precisionProcessing.monoBuffer->getReadPointer(0);
+    inputs[1] = inBus->getNumberOfChannels() == 2
+                    ? buffer.getReadPointer(1)
+                    : precisionProcessing.monoBuffer->getReadPointer(0);
     outputs[0] = buffer.getWritePointer(0);
-    outputs[1] = outBus->getNumberOfChannels() == 2 ? buffer.getWritePointer(1) : precisionProcessing.monoBuffer->getWritePointer(0);
+    outputs[1] = outBus->getNumberOfChannels() == 2
+                     ? buffer.getWritePointer(1)
+                     : precisionProcessing.monoBuffer->getWritePointer(0);
 
     if (!(inputs[0] && inputs[1] && outputs[0] && outputs[1]))
     {
@@ -305,15 +317,18 @@ template <typename T> void AWConsolidatedAudioProcessor::processBlockT(juce::Aud
     }
     else
     {
-        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs, buffer.getNumSamples());
+        awProcessor->processDoubleReplacing((double **)inputs, (double **)outputs,
+                                            buffer.getNumSamples());
     }
-    if (outBus->getNumberOfChannels() == 1 && *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
+    if (outBus->getNumberOfChannels() == 1 &&
+        *monoBehaviourParameter == MonoBehaviourParameter::LeftRightSum)
     {
         // Output = L+R / 2
         buffer.addFrom(0, 0, *precisionProcessing.monoBuffer, 0, 0, buffer.getNumSamples());
         buffer.applyGain(0.5);
     }
-    // In LeftOnly mode, we don't need to do anything as the right monoBuffer is automatically discarded
+    // In LeftOnly mode, we don't need to do anything as the right monoBuffer is automatically
+    // discarded
 
     if (outLev->isAmplifiyingOrAttenuating())
     {
@@ -388,7 +403,7 @@ void AWConsolidatedAudioProcessor::setupParamDisplaysFromDisplayProcessor(int in
         auto rg = AirwinRegistry::registry[index];
 
         nProcessorParams = rg.nParams;
-        for (int i = 0; i < rg.nParams; ++i)
+        for (int i = 0; i < rg.nParams && i < nAWParams; ++i)
         {
             char txt[kVstMaxParamStrLen];
             awDisplayProcessor->getParameterName(i, txt);
@@ -506,19 +521,18 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
     }
 }
 
-template<typename T>
+template <typename T>
 void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::prepare(int samplesPerBlock)
 {
     monoBuffer.reset(new juce::AudioBuffer<T>(1, samplesPerBlock));
 }
 
-template<typename T>
-void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
+template <typename T> void AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::reset()
 {
     monoBuffer.reset();
 }
 
-template<typename T>
+template <typename T>
 bool AWConsolidatedAudioProcessor::PrecisionDependantProcessing<T>::isValid() const
 {
     return static_cast<bool>(monoBuffer);

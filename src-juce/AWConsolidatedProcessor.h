@@ -161,7 +161,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     void setupParamDisplaysFromDisplayProcessor(int index);
 
     std::atomic<bool> refreshUI{false},
-    rebuildUI{false}; // repaint vs re-setup everything. Value vs type
+        rebuildUI{false}; // repaint vs re-setup everything. Value vs type
 
     struct APFPublicDefault : public juce::AudioParameterFloat
     {
@@ -208,7 +208,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     struct CubicDBParam : public APFPublicDefault
     {
         static constexpr float maxDb{18.0};
-        static constexpr double maxLev{7.943282347242815}; // pow(10, maxDb/20)
+        static constexpr double maxLev{7.943282347242815};      // pow(10, maxDb/20)
         static constexpr double defaultVal{0.5011872336272724}; // 1.0 / cbrt(maxLeb)
         CubicDBParam(const juce::ParameterID &id, const juce::String &parameterName)
             : APFPublicDefault(id, parameterName, juce::NormalisableRange<float>(0.0, 1.0),
@@ -254,39 +254,44 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
         float getDefaultValue() const override { return defaultVal; }
 
-        template<typename T>
-        T getAmplitude() const {
+        template <typename T> T getAmplitude() const
+        {
             T lev = (T)get();
             lev = lev * lev * lev * maxLev;
             return lev;
         }
 
-        bool isAmplifiyingOrAttenuating() const
-        {
-            return std::fabs(get() - defaultVal) > 5e-6;
-        }
+        bool isAmplifiyingOrAttenuating() const { return std::fabs(get() - defaultVal) > 5e-6; }
     };
 
     struct MonoBehaviourParameter : public juce::AudioParameterInt
     {
-        enum MonoBehaviour {
+        enum MonoBehaviour
+        {
             LeftOnly,
             RightOnly,
             LeftRightSum,
             NumOfElements
         };
 
-        MonoBehaviourParameter(const juce::ParameterID& idToUse,
-                               const juce::String& nameToUse,
+        MonoBehaviourParameter(const juce::ParameterID &idToUse, const juce::String &nameToUse,
                                MonoBehaviour def,
-                              const juce::AudioParameterIntAttributes& attributes)
-            : juce::AudioParameterInt(idToUse, nameToUse, 0, MonoBehaviour::NumOfElements-1, static_cast<int>(def), attributes)
+                               const juce::AudioParameterIntAttributes &attributes)
+            : juce::AudioParameterInt(idToUse, nameToUse, 0, MonoBehaviour::NumOfElements - 1,
+                                      static_cast<int>(def), attributes)
         {
         }
 
-        MonoBehaviour get() const noexcept { return static_cast<MonoBehaviour>(juce::AudioParameterInt::get()); }
+        MonoBehaviour get() const noexcept
+        {
+            return static_cast<MonoBehaviour>(juce::AudioParameterInt::get());
+        }
         operator MonoBehaviour() const noexcept { return get(); }
-        MonoBehaviourParameter& operator= (MonoBehaviour newValue) { juce::AudioParameterInt::operator=(static_cast<int>(newValue)); return *this; };
+        MonoBehaviourParameter &operator=(MonoBehaviour newValue)
+        {
+            juce::AudioParameterInt::operator=(static_cast<int>(newValue));
+            return *this;
+        };
     };
 
     //==============================================================================
@@ -311,9 +316,8 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
 
     std::unique_ptr<juce::PropertiesFile> properties;
 
-private:
-    template<typename T>
-    struct PrecisionDependantProcessing
+  private:
+    template <typename T> struct PrecisionDependantProcessing
     {
         std::unique_ptr<juce::AudioBuffer<T>> monoBuffer;
 
@@ -324,16 +328,23 @@ private:
     PrecisionDependantProcessing<float> precisionProcessingFloat;
     PrecisionDependantProcessing<double> precisionProcessingDouble;
 
-    template<class T>
-    PrecisionDependantProcessing<T>& getPrecisionDependantProcessing();
+    template <class T> PrecisionDependantProcessing<T> &getPrecisionDependantProcessing();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AWConsolidatedAudioProcessor)
 };
 
-template <> inline
-AWConsolidatedAudioProcessor::PrecisionDependantProcessing<float>& AWConsolidatedAudioProcessor::getPrecisionDependantProcessing() { return precisionProcessingFloat; }
+template <>
+inline AWConsolidatedAudioProcessor::PrecisionDependantProcessing<float> &
+AWConsolidatedAudioProcessor::getPrecisionDependantProcessing()
+{
+    return precisionProcessingFloat;
+}
 
-template <> inline
-AWConsolidatedAudioProcessor::PrecisionDependantProcessing<double>& AWConsolidatedAudioProcessor::getPrecisionDependantProcessing() { return precisionProcessingDouble; }
+template <>
+inline AWConsolidatedAudioProcessor::PrecisionDependantProcessing<double> &
+AWConsolidatedAudioProcessor::getPrecisionDependantProcessing()
+{
+    return precisionProcessingDouble;
+}
 
 #endif // SURGE_SRC_SURGE_FX_SURGEFXPROCESSOR_H
