@@ -55,7 +55,10 @@ struct AirwinRegistry
         {
             std::cout << r.name << " / " << r.category << " missing what text" << std::endl;
         }
-        registry.emplace_back(r);
+        else
+        {
+            registry.emplace_back(r);
+        }
 
         return registry.size();
     }
