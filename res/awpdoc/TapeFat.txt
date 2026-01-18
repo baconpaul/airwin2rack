@@ -7,4 +7,3 @@ The reason this is interesting is, that tone control is completely bizarre. Itâ€
 You can hear it on the video, which has a number of things updated, not least this: the new audio is directly captured analog sorta-house music out of my livestreams. This way you ought to be able to really hear the way my plugins retain analog qualities, because now the demo music is essentially AAD: not products of other DAW mixes or digital synthesis, but source material.
 
 
-

@@ -1,11 +1,11 @@
 /* ========================================
- *  ConsoleX2Channel - ConsoleX2Channel.h
+ *  TapeHack2 - TapeHack2.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __ConsoleX2Channel_ConsoleX2Channel_H
-#define __ConsoleX2Channel_ConsoleX2Channel_H
+#ifndef __TapeHack2_TapeHack2_H
+#define __TapeHack2_TapeHack2_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,41 +15,25 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::ConsoleX2Channel {
+namespace airwinconsolidated::TapeHack2 {
 enum {
-	kParamTRM =0,
-	kParamMOR =1,
-	kParamHIG =2,
-	kParamHMG =3,
-	kParamLMG =4,
-	kParamBSG =5,
-	kParamHIF =6,
-	kParamHMF =7,
-	kParamLMF =8,
-	kParamBSF =9,
-	kParamTHR =10,
-	kParamATK =11,
-	kParamRLS =12,
-	kParamGAT =13,
-	kParamLOP =14,
-	kParamHIP =15,
-	kParamPAN =16,
-	kParamFAD =17,
-  kNumParameters = 18
+	kParamA =0,
+	kParamB =1,
+	kParamC =2,
+  kNumParameters = 3
 }; //
-const int dscBuf = 256;
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'cx2c';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'tha2';    //Change this to what the AU identity is!
 
-class ConsoleX2Channel : 
+class TapeHack2 : 
     public AudioEffectX 
 {
 public:
-    ConsoleX2Channel(audioMasterCallback audioMaster);
-    ~ConsoleX2Channel();
+    TapeHack2(audioMasterCallback audioMaster);
+    ~TapeHack2();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -72,95 +56,9 @@ private:
     char _programName[kVstMaxProgNameLen + 1];
     std::set< std::string > _canDo;
     
-    float TRM;
-    float MOR;
-    float HIG;
-    float HMG;
-    float LMG;
-    float BSG;
-    float HIF;
-    float HMF;
-    float LMF;
-    float BSF;
-    float THR;
-    float ATK;
-    float RLS;
-    float GAT;
-    float LOP;
-    float HIP;
-    float PAN;
-    float FAD;
-
-	enum {
-		biq_freq,
-		biq_reso,
-		biq_a0,
-		biq_a1,
-		biq_a2,
-		biq_b1,
-		biq_b2,
-		biq_sL1,
-		biq_sL2,
-		biq_sR1,
-		biq_sR2,
-		biq_total
-	}; //coefficient interpolating filter, stereo
-	double highA[biq_total];
-	double highB[biq_total];
-	double highC[biq_total];
-	double highLIIR;
-	double highRIIR;
-	
-	double midA[biq_total];
-	double midB[biq_total];
-	double midC[biq_total];
-	double midLIIR;
-	double midRIIR;
-	
-	double lowA[biq_total];
-	double lowB[biq_total];
-	double lowC[biq_total];
-	double lowLIIR;
-	double lowRIIR;
-	//SmoothEQ2
-	
-	enum {
-		bez_A,
-		bez_B,
-		bez_C,
-		bez_Ctrl,
-		bez_cycle,
-		bez_total
-	}; //the new undersampling. bez signifies the bezier curve reconstruction
-	double bezComp[bez_total];
-	double bezMax;
-	double bezMin;
-	double bezGate;
-	//Dynamics3
-	
-	double iirHPositionL[23];
-	double iirHAngleL[23];
-	double iirHPositionR[23];
-	double iirHAngleR[23];
-	bool hBypass;
-	double iirLPositionL[15];
-	double iirLAngleL[15];
-	double iirLPositionR[15];
-	double iirLAngleR[15];
-	bool lBypass;
-	double lFreqA;
-	double lFreqB; //the lowpass
-	double hFreqA;
-	double hFreqB; //the highpass
-	//Cabs2
-	
-	double dBaL[dscBuf+5];
-	double dBaPosL;
-	int dBaXL;
-	double dBaR[dscBuf+5];
-	double dBaPosR;
-	int dBaXR;
-	//Discontapeity
+    float A;
+    float B;
+    float C;
 	
 	double avg32L[33];
 	double avg32R[33];
@@ -186,12 +84,7 @@ private:
 	double lastDarkR;
 	int avgPos;
 	//preTapeHack
-	
-	double panA;
-	double panB;
-	double inTrimA;
-	double inTrimB;
-	
+
 	uint32_t fpdL;
 	uint32_t fpdR;
 	//default stuff

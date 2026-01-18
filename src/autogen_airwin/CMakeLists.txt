@@ -753,6 +753,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SoftClockProc.cpp
    src/autogen_airwin/SoftClock2.cpp
    src/autogen_airwin/SoftClock2Proc.cpp
+   src/autogen_airwin/SoftClock3.cpp
+   src/autogen_airwin/SoftClock3Proc.cpp
    src/autogen_airwin/SoftGate.cpp
    src/autogen_airwin/SoftGateProc.cpp
    src/autogen_airwin/SpatializeDither.cpp
@@ -823,6 +825,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/TapeFatProc.cpp
    src/autogen_airwin/TapeHack.cpp
    src/autogen_airwin/TapeHackProc.cpp
+   src/autogen_airwin/TapeHack2.cpp
+   src/autogen_airwin/TapeHack2Proc.cpp
    src/autogen_airwin/Texturize.cpp
    src/autogen_airwin/TexturizeProc.cpp
    src/autogen_airwin/TexturizeMS.cpp
