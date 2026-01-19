@@ -53,7 +53,7 @@ struct AirwinRegistry
     {
         if (r.whatText.empty())
         {
-            std::cout << r.name << " / " << r.category << " missing what text" << std::endl;
+            // std::cout << r.name << " / " << r.category << " missing what text" << std::endl;
         }
         else
         {
