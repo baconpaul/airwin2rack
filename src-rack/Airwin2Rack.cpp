@@ -19,7 +19,7 @@ rack::Plugin *pluginInstance;
 __attribute__((__visibility__("default"))) void init(rack::Plugin *p)
 {
     AirwinRegistry::filterAndRebuildRegistry(
-        [](auto &r) { return (size_t)r.nParams >= nAWRackParams; });
+        [](auto &r) { return (size_t)r.nParams > nAWRackParams; });
 
     pluginInstance = p;
 

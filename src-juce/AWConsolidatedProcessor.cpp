@@ -16,7 +16,7 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
                          .withInput("Input", juce::AudioChannelSet::stereo(), true)
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true))
 {
-    AirwinRegistry::filterAndRebuildRegistry([](auto &r) { return r.nParams >= nAWParams; });
+    AirwinRegistry::filterAndRebuildRegistry([](auto &r) { return r.nParams > nAWParams; });
     AirwinConsolidatedBase::defaultSampleRate = 48000;
 
     // Multiple calls to addParameter here
