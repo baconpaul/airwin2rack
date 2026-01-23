@@ -58,6 +58,12 @@ jobs:
         with:
           os: ${{ runner.os }}
 
+      # Allow 10.13
+      - uses: maxim-lobanov/setup-xcode@v1
+        if: runner.os == 'macOS'
+        with:
+          xcode-version: '16.2.0'
+
       - uses: apple-actions/import-codesign-certs@v3
         if: runner.os == 'macOS' && github.event_name != 'pull_request'
         with:
