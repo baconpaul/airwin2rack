@@ -7,4 +7,3 @@ This is NOT like a sampler model. It’s a whole other algorithm, putting weird 
 And then either soften or sharpen the hell out of the edge, to get tones that don’t really exist anywhere else. This is the alternate version of YNotch, except without control smoothing. That means it'll be slightly less CPU-hungry, and might be preferable for situations like use in VCV Rack at very small buffer sizes. So, use YNotNotch if you'd like slightly more CPU efficiency, if you run tiny buffers, if you are using it as a fixed filter sound, or if you want that 'neuro' glitchy zipper-noise sound, at which it'll be really good since it already has an aggressively unnatural filter tone :)
 
 
-

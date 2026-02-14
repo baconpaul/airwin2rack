@@ -1,0 +1,21 @@
+# ZAcidLowpass is like if an e6400 went insane and grew shark teeth.
+
+Okay, next week we can get normal :)
+
+This algorithm is less than a week old. It's what happened when I tried to extend my Quadratic Bezier Curve audio processing to Cubic Bezier Curve audio processing. And I'm not sure it's time to give up on that, but in the meantime, the experiment failed spectacularly.
+
+So, generating curves can follow various rules. The quadratic bezier curves are already breaking audio rules, as what they do has nothing to do with frequencies, or harmonics, or any audio concepts. They're drawing a continuous curve directed by the sample values and it turned out this is possible, but it doesn't have audio significance. It's quite good at handling control voltages, like in a compressor! But it's still kind of arbitrary, constructing a curve from the starting position of a previous sample.
+
+The cubic bezier curves proved much less manageable.
+
+In theory, you could get interesting results out of them since you get two independent control points, but it turned out weirder: there's this tendency to draw the curves, indeed make them be interesting curves with striking contours, but then jump around in the reconstruction. It'd not-randomly space out the curves with tiny straight lines like a sawtooth wave gone mad. Very pretty but never joining up the waves into something smooth and connected. The idea was to see where the extra control point took the reconstruction, but at least for now it took the reconstruction to crazy-town.
+
+And produced a horrible hybrid of a steep resonant ringy filter, and a ring modulator, and I don't know what else. I never heard anything like that, and so there was only one thing to do.
+
+Put the Z filters output stage on it so you could distort it wildly, and let people have it. What else?
+
+The cutoff is roughly what you'd expect, a frequency control. Over gives you highpassing, under gives you lowpassing, both gives you the original sound (this is a sort of crossover! somehow!). Meltdown does a specific thing: rather than feeding the filter with an averaged, darker input, you can feed it with the raw audio input and get aliasing and chaos fed into the points and control voltages, and this sounds wilder and dirtier. If you're using Over to produce highpassing, Meltdown is reversed, and setting it to 0 gives you the crazy overtones and harsh noises. Drive is like the other Z filters, and so is Output, and the distortion stage is the same as in the Z filters, so if you're using those and would like a contrast that's still tonally similar, this is the plugin for you.
+
+They can't all be ToTape9 :) if this suits you, have fun!
+
+

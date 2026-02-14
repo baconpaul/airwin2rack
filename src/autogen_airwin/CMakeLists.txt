@@ -55,6 +55,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/BeamProc.cpp
    src/autogen_airwin/BezEQ.cpp
    src/autogen_airwin/BezEQProc.cpp
+   src/autogen_airwin/BezEQ2.cpp
+   src/autogen_airwin/BezEQ2Proc.cpp
    src/autogen_airwin/BeziComp.cpp
    src/autogen_airwin/BeziCompProc.cpp
    src/autogen_airwin/BigAmp.cpp
@@ -925,6 +927,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/YNotNotchProc.cpp
    src/autogen_airwin/YNotch.cpp
    src/autogen_airwin/YNotchProc.cpp
+   src/autogen_airwin/ZAcidLowpass.cpp
+   src/autogen_airwin/ZAcidLowpassProc.cpp
    src/autogen_airwin/ZBandpass.cpp
    src/autogen_airwin/ZBandpassProc.cpp
    src/autogen_airwin/ZBandpass2.cpp
