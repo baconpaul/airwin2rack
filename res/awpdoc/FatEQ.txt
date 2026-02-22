@@ -1,0 +1,17 @@
+# FatEQ balances bands only with density.
+
+This experiment has always worked, but I'm not sure people understand why they gravitate to it.
+
+Usually when we do an EQ, we take frequency bands and turn them up and down, uniformly. A normal sound will get louder, a loud one louder still. Or, a sound will get quieter, a quieter sound quieter still.
+
+FatEQ uses the functions I use in Density (including an upgrade to negative Density settings) so that, if you're boosting, a normal sound will get louder, but a loud one will softclip. If you're cutting, to a certain extent a normal sound will get quieter but a quieter sound will get LOTS quieter. It uses variations on sin() functions to mess with the transfer functions in these ways that are tied to what you're doing with the slider.
+
+It's easy to hear what this does by just turning all the bands up. It's super-dense, overdriven, a multiband distortion, and you can totally do that.
+
+But as you do it, notice: doesn't everything also seem closer? That's the heart of FatEQ, more than its ability to just crank and overdrive stuff.
+
+The way these controls work, if you're making small adjustments you're not just making loudness changes. The softclips and antisaturations have the effect of moving sounds toward you, or farther away. Cutting any control to zero will totally remove that band, but smaller adjustments lean heavily into the 'we're attenuating the quiet detail/we're overdriving the loudest stuff'. As a result, you can EQ spatially: if you have unpleasant low-mids muddying things up, your adjustment can not only turn them down but make them step physically back. You can dial it in based on the sound coming into focus at a desired distance. Top-end too forward? Small adjustments to sit it at the position of the rest of the sound. Lows receding? Well, bring them right out until they're part of the instrument the way you wanted.
+
+It's a little unusual, but every time I've done anything like this, including just making EQ-like things that had saturation in 'em, people have loved the result. So, FatEQ just directly delivers what you might like in an EQ. See if it works out for you!
+
+
