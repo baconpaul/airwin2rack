@@ -1,0 +1,16 @@
+# BezEQ2 is a unique, subtle three-band shelving EQ.
+
+Turns out there's a reason BezEQ sounded so weird! Bugs. Both in the sense of 'what's that doing there' and 'hey, this could be very different and it just might work'. So now there's two BezEQs, the first one is still a strange strange beast, and this one is…
+
+…fugitive?
+
+It's hard to explain how different this became. It's still a three-band EQ made by crossing over filters in such a way that re-adding them produces perfect fidelity: that works great even on steep filters like SmoothEQ. It even works if you do funny things like heavy phase shifting in the filter… or if, like in this filter, you're delaying bands to more accurately cancel out bass frequencies. (This filter incurs a little bit of latency, depending on how the crossovers are set, because of these delays.)
+
+Far from the first BezEQ, this BezEQ2 has a special knack for hiding what it's doing. It can boost highs, boost bass, and the result is weirdly like no change was made. There's a quirk where if you cut the middle all the way to zero, the highs will also cut out (a side-effect of how the delays are set up). It's still not exactly normal.
+
+And then, perhaps a factor of how the bands are summed together, if you go to cut highs or lows, BezEQ does the opposite. It gives you a midrangey sound with a lot of punch and character. This, even though it's doing the opposite of last week's FatEQ, and isn't distorting anything. Something about how the Bezier curves handle transient impact, combined with the phase-altering delay lines, makes the plugin a heck of a secret weapon for heightening midrange drama and impact. Or, you can just set it up as first a mids cut, and then even more of a bass cut, and get a really articulate, natural-sounding energy lift that sounds remarkably unhyped for all the hype it sneaks into a track.
+
+I have a feeling this is gonna be a real 'sleeper' plugin. It seems to do anything I ask while sounding like nothing was done. Those who are trying to mix by adding color upon color to their sounds, probably won't get this at all. But those of a simpler, rawer approach might really be pleasantly surprised. Even startled, in the best possible way.
+
+
+
