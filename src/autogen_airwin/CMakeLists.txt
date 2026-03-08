@@ -163,6 +163,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ClearCoatProc.cpp
    src/autogen_airwin/ClipOnly2.cpp
    src/autogen_airwin/ClipOnly2Proc.cpp
+   src/autogen_airwin/ClipOnly3.cpp
+   src/autogen_airwin/ClipOnly3Proc.cpp
    src/autogen_airwin/ClipSoftly.cpp
    src/autogen_airwin/ClipSoftlyProc.cpp
    src/autogen_airwin/CloudCoat.cpp
@@ -277,6 +279,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DarkProc.cpp
    src/autogen_airwin/DarkNoise.cpp
    src/autogen_airwin/DarkNoiseProc.cpp
+   src/autogen_airwin/Dattorro.cpp
+   src/autogen_airwin/DattorroProc.cpp
    src/autogen_airwin/DeBess.cpp
    src/autogen_airwin/DeBessProc.cpp
    src/autogen_airwin/DeBez.cpp
@@ -843,6 +847,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ToTape7Proc.cpp
    src/autogen_airwin/ToTape8.cpp
    src/autogen_airwin/ToTape8Proc.cpp
+   src/autogen_airwin/ToTape9.cpp
+   src/autogen_airwin/ToTape9Proc.cpp
    src/autogen_airwin/ToVinyl4.cpp
    src/autogen_airwin/ToVinyl4Proc.cpp
    src/autogen_airwin/ToneSlant.cpp
