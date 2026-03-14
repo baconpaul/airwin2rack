@@ -337,6 +337,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DitherMeTimbersProc.cpp
    src/autogen_airwin/Ditherbox.cpp
    src/autogen_airwin/DitherboxProc.cpp
+   src/autogen_airwin/Donut.cpp
+   src/autogen_airwin/DonutProc.cpp
    src/autogen_airwin/DoublePaul.cpp
    src/autogen_airwin/DoublePaulProc.cpp
    src/autogen_airwin/Doublelay.cpp
@@ -905,6 +907,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/WiderProc.cpp
    src/autogen_airwin/Wolfbot.cpp
    src/autogen_airwin/WolfbotProc.cpp
+   src/autogen_airwin/WoodenBox.cpp
+   src/autogen_airwin/WoodenBoxProc.cpp
    src/autogen_airwin/X2Buss.cpp
    src/autogen_airwin/X2BussProc.cpp
    src/autogen_airwin/XBandpass.cpp
