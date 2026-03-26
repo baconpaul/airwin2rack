@@ -24,6 +24,22 @@
 #include <cctype>
 #include <memory>
 
+#ifndef AW_LV2_VERSION_MAJOR
+#define AW_LV2_VERSION_MAJOR 0
+#endif
+
+#ifndef AW_LV2_VERSION_MINOR
+#define AW_LV2_VERSION_MINOR 0
+#endif
+
+#ifndef AW_LV2_VERSION_MICRO
+#define AW_LV2_VERSION_MICRO 0
+#endif
+
+#ifndef AW_LV2_VERSION_TEXT
+#define AW_LV2_VERSION_TEXT "0.0.0"
+#endif
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -129,6 +145,7 @@ static bool writePluginTtl(const std::string& bundleDir,
     if (!f) { std::cerr << "Cannot write airwindows-individual.ttl\n"; return false; }
 
     f << "@prefix doap: <http://usefulinc.com/ns/doap#> .\n";
+    f << "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n";
     f << "@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .\n";
     f << "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\n";
 
@@ -155,10 +172,20 @@ static bool writePluginTtl(const std::string& bundleDir,
         f << "    a lv2:Plugin, " << categoryToLv2Type(r.category) << " ;\n";
         f << "    doap:name \"" << ttlEscape(r.name) << "\" ;\n";
         f << "    doap:license <https://opensource.org/licenses/MIT> ;\n";
+        f << "    doap:maintainer [\n";
+        f << "        a foaf:Person ;\n";
+        f << "        foaf:name \"Airwindows\" ;\n";
+        f << "        foaf:homepage <https://airwindows.com/> ;\n";
+        f << "        foaf:mbox <> ;\n";
+        f << "    ] ;\n";
+        f << "    doap:release [\n";
+        f << "        a doap:Version ;\n";
+        f << "        doap:revision \"" << AW_LV2_VERSION_TEXT << "\" ;\n";
+        f << "    ] ;\n";
         if (!r.whatText.empty())
             f << "    rdfs:comment \"" << ttlEscape(r.whatText) << "\" ;\n";
-        f << "    lv2:minorVersion 0 ;\n";
-        f << "    lv2:microVersion 0 ;\n";
+        f << "    lv2:minorVersion " << AW_LV2_VERSION_MINOR << " ;\n";
+        f << "    lv2:microVersion " << AW_LV2_VERSION_MICRO << " ;\n";
 
         // ---- Port list ----------------------------------------------------
         // Helper lambdas that emit port separators correctly.
