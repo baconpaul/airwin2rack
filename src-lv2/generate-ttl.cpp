@@ -170,7 +170,7 @@ static bool writePluginTtl(const std::string& bundleDir,
         // ---- Plugin header ------------------------------------------------
         f << "<https://airwindows.com/lv2/" << r.name << ">\n";
         f << "    a lv2:Plugin, " << categoryToLv2Type(r.category) << " ;\n";
-        f << "    doap:name \"" << ttlEscape(r.name) << "\" ;\n";
+        f << "    doap:name \"AW_" << ttlEscape(r.name) << "\" ;\n";
         f << "    doap:license <https://opensource.org/licenses/MIT> ;\n";
         f << "    doap:maintainer [\n";
         f << "        a foaf:Person ;\n";
