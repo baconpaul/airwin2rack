@@ -1,0 +1,50 @@
+name: Build LV2 Individual
+on:
+  push:
+    branches:
+      - test-lv2-individual-ci
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build_lv2_individual_linux:
+    name: LV2 Individual Build - ubuntu20-x64
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:20.04
+      options: --user root
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install LV2 build dependencies
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get install -y build-essential cmake ninja-build pkg-config lv2-dev
+
+      - name: Configure LV2 individual build
+        run: |
+          cmake -S . -B ./build-lv2-ind-ci -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_LV2_INDIVIDUAL=ON
+
+      - name: Build LV2 individual bundle
+        run: |
+          cmake --build ./build-lv2-ind-ci --target airwindows-individual-lv2 --parallel 3
+
+      - name: Show LV2 bundle contents
+        run: |
+          find ./build-lv2-ind-ci/airwindows-individual.lv2 -maxdepth 1 -type f -print
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: build-lv2-ind-ci/airwindows-individual.lv2
+          name: lv2-individual-linux
