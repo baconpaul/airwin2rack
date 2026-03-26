@@ -1,8 +1,12 @@
 # vi:set sw=2 et:
-project(airwindows-individual-lv2)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LV2 REQUIRED lv2)
+
+set(AW_LV2_VERSION_MAJOR "${Airwin2Rack_VERSION_MAJOR}")
+set(AW_LV2_VERSION_MINOR "${Airwin2Rack_VERSION_MINOR}")
+set(AW_LV2_VERSION_MICRO "${Airwin2Rack_VERSION_PATCH}")
+set(AW_LV2_VERSION_TEXT "${Airwin2Rack_VERSION}")
 
 set(AW_LV2_BUNDLE_DIR "${CMAKE_BINARY_DIR}/airwindows-individual.lv2")
 file(MAKE_DIRECTORY "${AW_LV2_BUNDLE_DIR}")
@@ -12,6 +16,12 @@ file(MAKE_DIRECTORY "${AW_LV2_BUNDLE_DIR}")
 # ------------------------------------------------------------------
 add_executable(airwindows-ttl-gen generate-ttl.cpp)
 target_link_libraries(airwindows-ttl-gen PRIVATE airwin-registry)
+target_compile_definitions(airwindows-ttl-gen PRIVATE
+  AW_LV2_VERSION_MAJOR=${AW_LV2_VERSION_MAJOR}
+  AW_LV2_VERSION_MINOR=${AW_LV2_VERSION_MINOR}
+  AW_LV2_VERSION_MICRO=${AW_LV2_VERSION_MICRO}
+  AW_LV2_VERSION_TEXT="${AW_LV2_VERSION_TEXT}"
+)
 
 if (NOT MSVC)
   target_compile_options(airwindows-ttl-gen PRIVATE
