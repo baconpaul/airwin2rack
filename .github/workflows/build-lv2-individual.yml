@@ -49,8 +49,13 @@ jobs:
         run: |
           find ./build-lv2-ind-ci/airwindows-individual.lv2 -maxdepth 1 -type f -print
 
+      - name: Stage LV2 artifact
+        run: |
+          mkdir -p ./artifact
+          cp -a ./build-lv2-ind-ci/airwindows-individual.lv2 ./artifact/
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: build-lv2-ind-ci/airwindows-individual.lv2
+          path: artifact
           name: lv2-individual-linux
