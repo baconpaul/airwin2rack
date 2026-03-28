@@ -59,6 +59,14 @@ add_library(airwindows-individual MODULE plugin.cpp)
 target_include_directories(airwindows-individual PRIVATE ${LV2_INCLUDE_DIRS})
 target_link_libraries(airwindows-individual PRIVATE airwin-registry)
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_options(airwindows-individual PRIVATE -static-libstdc++ -static-libgcc)
+  else()
+    message(STATUS "Linux LV2 builds use static libstdc++/libgcc when compiling with GCC; leaving the runtime dynamic for ${CMAKE_CXX_COMPILER_ID}")
+  endif()
+endif()
+
 if (NOT MSVC)
   target_compile_options(airwindows-individual PRIVATE
     -Wno-unused-function
