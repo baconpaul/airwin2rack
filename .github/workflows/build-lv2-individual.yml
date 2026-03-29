@@ -51,13 +51,31 @@ jobs:
         run: |
           curl -sSL -o /tmp/lv2-smoketest.tar.gz \
             "https://github.com/Joeboy/lv2-smoketest/releases/download/${LV2_SMOKETEST_VERSION}/lv2-smoketest-linux-x86_64.tar.gz"
-          tar -xzf /tmp/lv2-smoketest.tar.gz -C /tmp
-          install -m 0755 /tmp/lv2-smoketest /usr/local/bin/lv2-smoketest
-          lv2-smoketest --help >/dev/null
+          rm -rf /tmp/lv2-smoketest-extract
+          mkdir -p /tmp/lv2-smoketest-extract
+          tar -xzf /tmp/lv2-smoketest.tar.gz -C /tmp/lv2-smoketest-extract
+          smoketest_root="$(find /tmp/lv2-smoketest-extract -mindepth 1 -maxdepth 1 -type d -name lv2-smoketest -print -quit)"
+          if [[ -z "$smoketest_root" ]]; then
+            echo "ERROR: lv2-smoketest directory not found in release archive"
+            find /tmp/lv2-smoketest-extract -maxdepth 3 -print
+            exit 1
+          fi
+
+          smoketest_bin="$smoketest_root/lv2-smoketest"
+          if [[ ! -x "$smoketest_bin" ]]; then
+            echo "ERROR: lv2-smoketest binary not found in release archive"
+            exit 1
+          fi
+
+          echo "LV2_SMOKETEST_BIN=$smoketest_bin" >> "$GITHUB_ENV"
+          echo "LV2_SMOKETEST_LIB=$smoketest_root/lib" >> "$GITHUB_ENV"
+
+          LD_LIBRARY_PATH="$smoketest_root/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+            "$smoketest_bin" --help >/dev/null
 
       - name: Smoke test LV2 plugins
         env:
-          LV2_PATH: ${{ github.workspace }}/build-lv2-ind-ci
+          LV2_PATH: ${{ github.workspace }}/build-lv2-ind-ci:/usr/lib/lv2:/usr/local/lib/lv2
         run: |
           bundle_path="$(realpath ./build-lv2-ind-ci/airwindows-individual.lv2)/"
           if [[ ! -d "$bundle_path" ]]; then
@@ -65,7 +83,9 @@ jobs:
             exit 1
           fi
 
-          lv2-smoketest list-installed-plugins > /tmp/lv2-plugins.json
+          export LD_LIBRARY_PATH="$LV2_SMOKETEST_LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+          "$LV2_SMOKETEST_BIN" list-installed-plugins > /tmp/lv2-plugins.json
           echo "Discovered $(jq 'length' /tmp/lv2-plugins.json) total LV2 plugins"
 
           mapfile -t plugin_uris < <(
@@ -77,7 +97,7 @@ jobs:
           echo "Smoke testing ${#plugin_uris[@]} plugin URIs"
           for plugin_uri in "${plugin_uris[@]}"; do
             echo "Smoke testing: $plugin_uri"
-            lv2-smoketest test-plugin-run "$plugin_uri"
+            "$LV2_SMOKETEST_BIN" test-plugin-run "$plugin_uri"
           done
 
       - name: Show LV2 bundle contents
