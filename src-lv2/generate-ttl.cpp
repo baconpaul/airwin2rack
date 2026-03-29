@@ -128,11 +128,19 @@ static bool writeManifest(const std::string& bundleDir,
     f << "@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .\n";
     f << "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\n";
 
+#if defined(_WIN32)
+    const char* lv2BinaryExt = ".dll";
+#elif defined(__APPLE__)
+    const char* lv2BinaryExt = ".dylib";
+#else
+    const char* lv2BinaryExt = ".so";
+#endif
+
     for (const auto& r : registry)
     {
         f << "<https://airwindows.com/lv2/" << r.name << ">\n";
         f << "    a lv2:Plugin ;\n";
-        f << "    lv2:binary <airwindows-individual.so> ;\n";
+        f << "    lv2:binary <airwindows-individual" << lv2BinaryExt << "> ;\n";
         f << "    rdfs:seeAlso <airwindows-individual.ttl> .\n\n";
     }
     return true;
