@@ -35,7 +35,7 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           apt-get update
-          apt-get install -y build-essential cmake ninja-build pkg-config lv2-dev
+          apt-get install -y build-essential cmake ninja-build pkg-config lv2-dev curl ca-certificates jq
 
       - name: Configure LV2 individual build
         run: |
@@ -44,6 +44,41 @@ jobs:
       - name: Build LV2 individual bundle
         run: |
           cmake --build ./build-lv2-ind-ci --target airwindows-individual-lv2 --parallel 3
+
+      - name: Install lv2-smoketest
+        env:
+          LV2_SMOKETEST_VERSION: v0.1.0-test14
+        run: |
+          curl -sSL -o /tmp/lv2-smoketest.tar.gz \
+            "https://github.com/Joeboy/lv2-smoketest/releases/download/${LV2_SMOKETEST_VERSION}/lv2-smoketest-linux-x86_64.tar.gz"
+          tar -xzf /tmp/lv2-smoketest.tar.gz -C /tmp
+          install -m 0755 /tmp/lv2-smoketest /usr/local/bin/lv2-smoketest
+          lv2-smoketest --help >/dev/null
+
+      - name: Smoke test LV2 plugins
+        env:
+          LV2_PATH: ${{ github.workspace }}/build-lv2-ind-ci
+        run: |
+          bundle_path="$(realpath ./build-lv2-ind-ci/airwindows-individual.lv2)/"
+          if [[ ! -d "$bundle_path" ]]; then
+            echo "ERROR: Missing LV2 bundle directory at $bundle_path"
+            exit 1
+          fi
+
+          lv2-smoketest list-installed-plugins > /tmp/lv2-plugins.json
+          echo "Discovered $(jq 'length' /tmp/lv2-plugins.json) total LV2 plugins"
+
+          mapfile -t plugin_uris < <(
+            jq -r --arg bundle_path "$bundle_path" \
+              '.[] | select(.bundle_path == $bundle_path) | .uri' \
+              /tmp/lv2-plugins.json
+          )
+
+          echo "Smoke testing ${#plugin_uris[@]} plugin URIs"
+          for plugin_uri in "${plugin_uris[@]}"; do
+            echo "Smoke testing: $plugin_uri"
+            lv2-smoketest test-plugin-run "$plugin_uri"
+          done
 
       - name: Show LV2 bundle contents
         run: |
