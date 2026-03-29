@@ -74,8 +74,6 @@ jobs:
             "$smoketest_bin" --help >/dev/null
 
       - name: Smoke test LV2 plugins
-        env:
-          LV2_PATH: ${{ github.workspace }}/build-lv2-ind-ci:/usr/lib/lv2:/usr/local/lib/lv2
         run: |
           bundle_path="$(realpath ./build-lv2-ind-ci/airwindows-individual.lv2)/"
           if [[ ! -d "$bundle_path" ]]; then
@@ -83,13 +81,18 @@ jobs:
             exit 1
           fi
 
+          smoketest_lv2_root="$(mktemp -d)"
+          cp -a "$bundle_path" "$smoketest_lv2_root/"
+          test_bundle_path="$(realpath "$smoketest_lv2_root/airwindows-individual.lv2")/"
+
           export LD_LIBRARY_PATH="$LV2_SMOKETEST_LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          export LV2_PATH="$smoketest_lv2_root:/usr/lib/lv2:/usr/local/lib/lv2"
 
           "$LV2_SMOKETEST_BIN" list-installed-plugins > /tmp/lv2-plugins.json
           echo "Discovered $(jq 'length' /tmp/lv2-plugins.json) total LV2 plugins"
 
           mapfile -t plugin_uris < <(
-            jq -r --arg bundle_path "$bundle_path" \
+            jq -r --arg bundle_path "$test_bundle_path" \
               '.[] | select(.bundle_path == $bundle_path) | .uri' \
               /tmp/lv2-plugins.json
           )
