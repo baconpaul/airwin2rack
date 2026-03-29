@@ -28,7 +28,7 @@ jobs:
           apt-get install -y git
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
 
@@ -115,7 +115,7 @@ jobs:
           cp -a ./build-lv2-ind-ci/airwindows-individual.lv2 ./artifact/
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: artifact
           name: lv2-individual-linux
@@ -129,7 +129,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
 
@@ -230,7 +230,7 @@ jobs:
           cp -a ./build-lv2-ind-ci/airwindows-individual.lv2 ./artifact/
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: artifact
           name: lv2-individual-windows
@@ -241,13 +241,24 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
 
       - name: Install LV2 build dependencies
         run: |
-          brew install cmake ninja lv2 lilv pkg-config jq
+          deps=(cmake ninja lv2 lilv pkg-config jq)
+          missing=()
+          for dep in "${deps[@]}"; do
+            if ! brew list --formula "$dep" >/dev/null 2>&1; then
+              missing+=("$dep")
+            fi
+          done
+          if [[ ${#missing[@]} -gt 0 ]]; then
+            brew install "${missing[@]}"
+          else
+            echo "All Homebrew dependencies already installed"
+          fi
 
       - name: Configure LV2 individual build
         run: |
@@ -338,7 +349,7 @@ jobs:
           cp -a ./build-lv2-ind-ci/airwindows-individual.lv2 ./artifact/
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: artifact
           name: lv2-individual-macos
