@@ -6,6 +6,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  LV2_SMOKETEST_VERSION: v0.1.0
 
 defaults:
   run:
@@ -46,8 +47,6 @@ jobs:
           cmake --build ./build-lv2-ind-ci --target airwindows-individual-lv2 --parallel 3
 
       - name: Install lv2-smoketest
-        env:
-          LV2_SMOKETEST_VERSION: v0.1.0-test19
         run: |
           curl -sSL -o /tmp/lv2-smoketest.tar.gz \
             "https://github.com/Joeboy/lv2-smoketest/releases/download/${LV2_SMOKETEST_VERSION}/lv2-smoketest-linux-x86_64.tar.gz"
@@ -75,14 +74,14 @@ jobs:
 
       - name: Smoke test LV2 plugins
         run: |
-          bundle_path="$(realpath ./build-lv2-ind-ci/airwindows-individual.lv2)/"
+          bundle_path="$(realpath ./build-lv2-ind-ci/airwindows-individual.lv2)"
           if [[ ! -d "$bundle_path" ]]; then
             echo "ERROR: Missing LV2 bundle directory at $bundle_path"
             exit 1
           fi
 
           smoketest_lv2_root="$(mktemp -d)"
-          cp -a "$bundle_path" "$smoketest_lv2_root/"
+          cp -a "$bundle_path" "$smoketest_lv2_root/airwindows-individual.lv2"
           test_bundle_path="$(realpath "$smoketest_lv2_root/airwindows-individual.lv2")/"
 
           export LD_LIBRARY_PATH="$LV2_SMOKETEST_LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
@@ -91,7 +90,10 @@ jobs:
           "$LV2_SMOKETEST_BIN" list-installed-plugins > /tmp/lv2-plugins.json
           echo "Discovered $(jq 'length' /tmp/lv2-plugins.json) total LV2 plugins"
 
-          mapfile -t plugin_uris < <(
+          plugin_uris=()
+          while IFS= read -r plugin_uri; do
+            plugin_uris+=("$plugin_uri")
+          done < <(
             jq -r --arg bundle_path "$test_bundle_path" \
               '.[] | select(.bundle_path == $bundle_path) | .uri' \
               /tmp/lv2-plugins.json
@@ -117,3 +119,226 @@ jobs:
         with:
           path: artifact
           name: lv2-individual-linux
+
+  build_lv2_individual_windows:
+    name: LV2 Individual Build - windows-x64
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-lv2
+            mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-jq
+            unzip
+
+      - name: Configure LV2 individual build
+        run: |
+          cmake -S . -B ./build-lv2-ind-ci -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_LV2_INDIVIDUAL=ON
+
+      - name: Build LV2 individual bundle
+        run: |
+          cmake --build ./build-lv2-ind-ci --target airwindows-individual-lv2 --parallel 3
+
+      - name: Install lv2-smoketest
+        run: |
+          smoketest_url="https://github.com/Joeboy/lv2-smoketest/releases/download/${LV2_SMOKETEST_VERSION}/lv2-smoketest-windows-x86_64.zip"
+          curl -sSL -o /tmp/lv2-smoketest.zip "$smoketest_url"
+          rm -rf /tmp/lv2-smoketest-extract
+          mkdir -p /tmp/lv2-smoketest-extract
+          unzip_status=0
+          unzip -q /tmp/lv2-smoketest.zip -d /tmp/lv2-smoketest-extract || unzip_status=$?
+          if [[ "$unzip_status" -gt 1 ]]; then
+            echo "ERROR: unzip failed with status $unzip_status"
+            exit "$unzip_status"
+          fi
+          smoketest_root="$(find /tmp/lv2-smoketest-extract -mindepth 1 -maxdepth 1 -type d -name lv2-smoketest -print -quit)"
+          if [[ -z "$smoketest_root" ]]; then
+            echo "ERROR: lv2-smoketest directory not found in release archive"
+            find /tmp/lv2-smoketest-extract -maxdepth 3 -print
+            exit 1
+          fi
+
+          smoketest_bin="$smoketest_root/lv2-smoketest.exe"
+          if [[ ! -f "$smoketest_bin" ]]; then
+            echo "ERROR: lv2-smoketest binary not found in release archive"
+            exit 1
+          fi
+
+          echo "LV2_SMOKETEST_BIN=$smoketest_bin" >> "$GITHUB_ENV"
+          echo "LV2_SMOKETEST_LIB=$smoketest_root/lib" >> "$GITHUB_ENV"
+
+          PATH="$smoketest_root/lib:$PATH" "$smoketest_bin" --help >/dev/null
+
+      - name: Smoke test LV2 plugins
+        run: |
+          bundle_path="$(realpath ./build-lv2-ind-ci/airwindows-individual.lv2)"
+          if [[ ! -d "$bundle_path" ]]; then
+            echo "ERROR: Missing LV2 bundle directory at $bundle_path"
+            exit 1
+          fi
+
+          smoketest_lv2_root="$(mktemp -d)"
+          cp -a "$bundle_path" "$smoketest_lv2_root/airwindows-individual.lv2"
+          test_bundle_path="$(realpath "$smoketest_lv2_root/airwindows-individual.lv2")/"
+          smoketest_lv2_root_win="$(cygpath -wm "$smoketest_lv2_root")"
+
+          export PATH="$LV2_SMOKETEST_LIB:$PATH"
+          export LV2_PATH="$smoketest_lv2_root_win"
+
+          "$LV2_SMOKETEST_BIN" list-installed-plugins > /tmp/lv2-plugins.json
+          echo "Discovered $(jq 'length' /tmp/lv2-plugins.json) total LV2 plugins"
+
+          plugin_uris=()
+          while IFS= read -r plugin_uri; do
+            plugin_uri="${plugin_uri%$'\r'}"
+            plugin_uri="${plugin_uri%$'\n'}"
+            [[ -z "$plugin_uri" ]] && continue
+            plugin_uris+=("$plugin_uri")
+          done < <(
+            jq -r --arg bundle_path "$test_bundle_path" '.[] | select(.bundle_path == $bundle_path) | .uri' /tmp/lv2-plugins.json
+          )
+
+          echo "Smoke testing ${#plugin_uris[@]} plugin URIs"
+          for plugin_uri in "${plugin_uris[@]}"; do
+            echo "Smoke testing: '$plugin_uri'"
+            "$LV2_SMOKETEST_BIN" test-plugin-run "$plugin_uri"
+          done
+
+      - name: Show LV2 bundle contents
+        run: |
+          find ./build-lv2-ind-ci/airwindows-individual.lv2 -maxdepth 1 -type f -print
+
+      - name: Stage LV2 artifact
+        run: |
+          mkdir -p ./artifact
+          cp -a ./build-lv2-ind-ci/airwindows-individual.lv2 ./artifact/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: artifact
+          name: lv2-individual-windows
+
+  build_lv2_individual_macos:
+    name: LV2 Individual Build - macos-arm64
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install LV2 build dependencies
+        run: |
+          brew install cmake ninja lv2 lilv pkg-config jq
+
+      - name: Configure LV2 individual build
+        run: |
+          cmake -S . -B ./build-lv2-ind-ci -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_LV2_INDIVIDUAL=ON
+
+      - name: Build LV2 individual bundle
+        run: |
+          cmake --build ./build-lv2-ind-ci --target airwindows-individual-lv2 --parallel 3
+
+      - name: Install lv2-smoketest
+        run: |
+          curl -sSL -o /tmp/lv2-smoketest.tar.gz \
+            "https://github.com/Joeboy/lv2-smoketest/releases/download/${LV2_SMOKETEST_VERSION}/lv2-smoketest-macos-aarch64.tar.gz"
+          rm -rf /tmp/lv2-smoketest-extract
+          mkdir -p /tmp/lv2-smoketest-extract
+          tar -xzf /tmp/lv2-smoketest.tar.gz -C /tmp/lv2-smoketest-extract
+          smoketest_root="$(find /tmp/lv2-smoketest-extract -mindepth 1 -maxdepth 1 -type d -name lv2-smoketest -print -quit)"
+          if [[ -z "$smoketest_root" ]]; then
+            echo "ERROR: lv2-smoketest directory not found in release archive"
+            find /tmp/lv2-smoketest-extract -maxdepth 3 -print
+            exit 1
+          fi
+
+          smoketest_bin="$smoketest_root/lv2-smoketest"
+          if [[ ! -x "$smoketest_bin" ]]; then
+            echo "ERROR: lv2-smoketest binary not found in release archive"
+            exit 1
+          fi
+
+          dyld_paths="$smoketest_root/lib"
+          for pkg in lilv-0 sord-0 sratom-0 serd-0; do
+            if pkg-config --exists "$pkg"; then
+              libdir="$(pkg-config --variable=libdir "$pkg")"
+              dyld_paths="$dyld_paths:$libdir"
+            fi
+          done
+
+          echo "LV2_SMOKETEST_BIN=$smoketest_bin" >> "$GITHUB_ENV"
+          echo "LV2_SMOKETEST_DYLD_PATH=$dyld_paths" >> "$GITHUB_ENV"
+
+          DYLD_LIBRARY_PATH="$dyld_paths${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}" \
+            "$smoketest_bin" --help >/dev/null
+
+      - name: Smoke test LV2 plugins
+        run: |
+          bundle_path="$(realpath ./build-lv2-ind-ci/airwindows-individual.lv2)"
+          if [[ ! -d "$bundle_path" ]]; then
+            echo "ERROR: Missing LV2 bundle directory at $bundle_path"
+            exit 1
+          fi
+
+          smoketest_lv2_root="$(mktemp -d)"
+          cp -a "$bundle_path" "$smoketest_lv2_root/airwindows-individual.lv2"
+          test_bundle_path="$(realpath "$smoketest_lv2_root/airwindows-individual.lv2")/"
+
+          export DYLD_LIBRARY_PATH="$LV2_SMOKETEST_DYLD_PATH${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
+          export LV2_PATH="$smoketest_lv2_root"
+          echo "LV2_PATH=$LV2_PATH"
+          ls -la "$LV2_PATH"
+
+          "$LV2_SMOKETEST_BIN" list-installed-plugins > /tmp/lv2-plugins.json
+          echo "Discovered $(jq 'length' /tmp/lv2-plugins.json) total LV2 plugins"
+
+          plugin_uris=()
+          while IFS= read -r plugin_uri; do
+            plugin_uris+=("$plugin_uri")
+          done < <(
+            jq -r --arg bundle_path "$test_bundle_path" \
+              '.[] | select(.bundle_path == $bundle_path) | .uri' \
+              /tmp/lv2-plugins.json
+          )
+
+          echo "Smoke testing ${#plugin_uris[@]} plugin URIs"
+          for plugin_uri in "${plugin_uris[@]}"; do
+            echo "Smoke testing: $plugin_uri"
+            "$LV2_SMOKETEST_BIN" test-plugin-run "$plugin_uri"
+          done
+
+      - name: Show LV2 bundle contents
+        run: |
+          find ./build-lv2-ind-ci/airwindows-individual.lv2 -maxdepth 1 -type f -print
+
+      - name: Stage LV2 artifact
+        run: |
+          mkdir -p ./artifact
+          cp -a ./build-lv2-ind-ci/airwindows-individual.lv2 ./artifact/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: artifact
+          name: lv2-individual-macos

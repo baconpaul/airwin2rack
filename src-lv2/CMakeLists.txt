@@ -59,11 +59,11 @@ add_library(airwindows-individual MODULE plugin.cpp)
 target_include_directories(airwindows-individual PRIVATE ${LV2_INCLUDE_DIRS})
 target_link_libraries(airwindows-individual PRIVATE airwin-registry)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" OR WIN32)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_link_options(airwindows-individual PRIVATE -static-libstdc++ -static-libgcc)
   else()
-    message(STATUS "Linux LV2 builds use static libstdc++/libgcc when compiling with GCC; leaving the runtime dynamic for ${CMAKE_CXX_COMPILER_ID}")
+    message(STATUS "LV2 builds use static libstdc++/libgcc when compiling with GCC; leaving the runtime dynamic for ${CMAKE_CXX_COMPILER_ID}")
   endif()
 endif()
 
@@ -76,10 +76,15 @@ if (NOT MSVC)
   )
 endif()
 
-# LV2 .so names use no lib-prefix and no version suffix
+# LV2 binaries use no lib-prefix and no version suffix; extension is platform-specific
+if (WIN32)
+  set(_lv2_binary_suffix ".dll")
+else()
+  set(_lv2_binary_suffix ".so")
+endif()
 set_target_properties(airwindows-individual PROPERTIES
   PREFIX  ""
-  SUFFIX  ".so"
+  SUFFIX  "${_lv2_binary_suffix}"
   LIBRARY_OUTPUT_DIRECTORY "${AW_LV2_BUNDLE_DIR}"
 )
 
