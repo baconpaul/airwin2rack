@@ -407,10 +407,11 @@ jobs:
           set -euo pipefail
           tag_name="${GITHUB_REF_NAME}"
 
-          if ! gh release view "$tag_name" >/dev/null 2>&1; then
+          if ! gh release view "$tag_name" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release create "$tag_name" \
+              --repo "$GITHUB_REPOSITORY" \
               --title "$tag_name" \
               --notes "Automated LV2 individual bundle release for $tag_name"
           fi
 
-          gh release upload "$tag_name" ./release-dist/* --clobber
+          gh release upload "$tag_name" ./release-dist/* --clobber --repo "$GITHUB_REPOSITORY"
