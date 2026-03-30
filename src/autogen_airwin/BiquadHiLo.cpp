@@ -18,6 +18,11 @@ BiquadHiLo::BiquadHiLo(audioMasterCallback audioMaster) :
 {
 	A = 0.0;
 	B = 0.0;
+	
+	for (int x = 0; x < hilp_total; x++) {
+		highpass[x] = 0.0;
+		lowpass[x] = 0.0;
+	}	
 
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
