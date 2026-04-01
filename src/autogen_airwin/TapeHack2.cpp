@@ -26,7 +26,7 @@ TapeHack2::TapeHack2(audioMasterCallback audioMaster) :
 	for (int x = 0; x < 5; x++) {avg4L[x] = 0.0; post4L[x] = 0.0; avg4R[x] = 0.0; post4R[x] = 0.0;}
 	for (int x = 0; x < 3; x++) {avg2L[x] = 0.0; post2L[x] = 0.0; avg2R[x] = 0.0; post2R[x] = 0.0;}
 	avgPos = 0;
-	lastDarkL = 0.0; lastDarkL = 0.0;
+	lastDarkL = 0.0; lastDarkR = 0.0;
 	//preTapeHack
 	
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
