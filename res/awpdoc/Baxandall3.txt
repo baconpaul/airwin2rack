@@ -1,0 +1,23 @@
+# Baxandall3 is for new tone colors.
+
+The new Baxandall combines elements of Baxandall2, with things I'd left behind in Baxandall the original, to produce something that has tone colors which haven't been heard before.
+
+The catch is, it's because people don't go for these tone colors, or know how to get them, or what to do with them if they had them. But when has that ever stopped us? This could be your lucky day (or, a big waste of time :) )
+
+The new Baxandall adopts the technique from its predecessor, letting you apply larger boosts and cuts, and sweeping the frequencies so you're accentuating the extremes when you get extra aggressive. It's based on Bessel filter slopes, but it brings back interleaving (meaning that it'll take on odd and interesting flavors when you get aggressive with the highs, and it can only tilt so far).
+
+But most of all, it brings back the Console processing (tweaked for maximum sonic density) and it does it in a strange, backwards way.
+
+If you apply slight boosts, the loudness goes up… INSIDE the processing. This is the same as if you were playing with the DAW faders in a Console mix. It's 'Doing It Wrong', but wrong on purpose. What happens when you do this basic, fundamental thing wrong?
+
+Firstly, the filter becomes hypersensitive to near-flat settings. If you boost, you're not just increasing that frequency's level, you're also pushing it harder into the 'anti-saturation' and getting that much hotter a result. The calibration's off. It'll be expanded, peakier, more dynamic.
+
+If you cut, you're pulling it back before it reaches 'anti-saturation', so it's not only softer, it's also more distorted. The dynamic punch is flattened, because it's saturation that hasn't been counteracted. You step really hard on the presence and punchiness of whatever's being turned down.
+
+There's an input gain control so you can gain stage this, but it's all working off Treble and Bass being either exactly 0.5, or Bad Things happen. The fact that they're interleaved Bessel filters just means the things that happen are spread across a wider range. The tone shapings that can happen out of this are really interesting and bizarre.
+
+Thing is, there's a twist to the catch. Stuff being expanded and dynamic-ified when it gets louder? That behavior also makes things sound farther away. Suppressing and distorting stuff more when you turn it down? That tends to make things sound more close-up. So the most basic, fundamental operations of Baxandall3 simultaneously apply huge EQ curves, while also hiding them and making them shift spatially the opposite to what you'd expect. Normally when we push levels up we expect saturation to rise. In Console7, the first time I experimented with this mechanic, that's what you get: more is also closer, and it's very natural and easy to hear. This? This is backwards.
+
+I can't even imagine what people will make of this. If you're not being super-aggressive with it, you'll find that it responds to the tiniest adjustments. If you are getting super-aggressive with it, let me know what works and what doesn't because I'm still wrapping my head around how it even works. I assume there's going to be some sort of sound that Baxandall3 fits perfectly, and I'm not entirely sure what it'd be. But in its backward spatial tomfoolery, I'm sure it's the missing link for getting SOME kind of tone. Enjoy exploring!
+
+
