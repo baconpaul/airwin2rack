@@ -1,11 +1,11 @@
 /* ========================================
- *  Dynamics3 - Dynamics3.h
+ *  Suzan - Suzan.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Dynamics3_Dynamics3_H
-#define __Dynamics3_Dynamics3_H
+#ifndef __Suzan_Suzan_H
+#define __Suzan_Suzan_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,26 +15,25 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::Dynamics3 {
+namespace airwinconsolidated::Suzan {
 enum {
 	kParamA =0,
 	kParamB =1,
 	kParamC =2,
-	kParamD =3,
-  kNumParameters = 4
+  kNumParameters = 3
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'dyn3';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'suza';    //Change this to what the AU identity is!
 
-class Dynamics3 : 
+class Suzan : 
     public AudioEffectX 
 {
 public:
-    Dynamics3(audioMasterCallback audioMaster);
-    ~Dynamics3();
+    Suzan(audioMasterCallback audioMaster);
+    ~Suzan();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -60,20 +59,14 @@ private:
     float A;
     float B;
     float C;
-    float D;
 
-	enum {
-		bez_A,
-		bez_B,
-		bez_C,
-		bez_Ctrl,
-		bez_cycle,
-		bez_min,
-		bez_comp,
-		bez_total
-	}; //the new undersampling. bez signifies the bezier curve reconstruction
-	double bezComp[bez_total];
-	//Dynamics3
+	double lowAL, lowBL, lowCL;
+	double bandAL, bandBL, bandCL; //these are series poles
+	double lowAR, lowBR, lowCR;
+	double bandAR, bandBR, bandCR; //these are series poles
+	double freqA, freqB;
+	double resoA, resoB;
+	double outA, outB; //these are control smoothing
 	
 	uint32_t fpdL;
 	uint32_t fpdR;

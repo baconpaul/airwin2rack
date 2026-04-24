@@ -20,51 +20,43 @@ void Dynamics3::processReplacing(float **inputs, float **outputs, VstInt32 sampl
 	overallscale /= 44100.0;
 	overallscale *= getSampleRate();
 	
-	double bezThresh = pow(1.0-A, 4.0) * 8.0;
-	double bezRez = pow(1.0-B, 4.0) / overallscale; 
-	double sloRez = pow(1.0-C, 4.0) / overallscale;
-	double gate = pow(D,4.0);
-	bezRez = fmin(fmax(bezRez,0.0001),1.0);
-	sloRez = fmin(fmax(sloRez,0.0001),1.0);
-	
+	//begin Dynamics3
+	double bezThresh = pow(A+0.6180339887498949,2.0)*2.0;
+	double sqrThresh = sqrt(bezThresh);
+	double bezRez = fmax(pow((1.0-B)*0.5,4.0)/overallscale,0.0001); 
+	bezRez /= (2.0/pow(overallscale,0.5-((overallscale-1.0)*0.0375)));
+	double bezTrim = 1.0-pow(bezRez*0.5,1.0/(bezRez*0.5));
+	double sloRez = fmax(pow((1.0-C)*0.5,4.0)/overallscale,0.00001);
+	sloRez /= (2.0/pow(overallscale,0.5-((overallscale-1.0)*0.0375)));
+	double bezRatio = 1.0-pow(1.0-D,1.6180339887498949);
+	if (bezThresh > 5.236) bezRatio = 1.0;
+	//end Dynamics3	
+
     while (--sampleFrames >= 0)
     {
 		double inputSampleL = *in1;
 		double inputSampleR = *in2;
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
+		double drySampleL = inputSampleL;
+		double drySampleR = inputSampleR;
 		
-		if (fmax(fabs(inputSampleL),fabs(inputSampleR)) > gate) bezGate = overallscale/fmin(bezRez,sloRez);
-		else bezGate = bezGate = fmax(0.000001, bezGate-fmin(bezRez,sloRez));
-		
-		if (bezThresh > 0.0) {
-			inputSampleL *= (bezThresh+1.0);
-			inputSampleR *= (bezThresh+1.0);
-		}
-		
-		double ctrl = fmax(fabs(inputSampleL),fabs(inputSampleR));
-		bezMax = fmax(bezMax,ctrl);
-		bezMin = fmax(bezMin-sloRez,ctrl);
+		//begin Dynamics3
+		inputSampleL *= (bezComp[bez_comp]/bezThresh);
+		inputSampleR *= (bezComp[bez_comp]/bezThresh);
+		double ctrl = fmin(fmax(fabs(inputSampleL),fabs(inputSampleR)),sqrThresh*bezComp[bez_comp]*0.6180339887498949);
+		bezComp[bez_min] = fmax(bezComp[bez_min]-sloRez,ctrl);
+		bezComp[bez_Ctrl] += (bezComp[bez_min] * bezRez);
 		bezComp[bez_cycle] += bezRez;
-		bezComp[bez_Ctrl] += (bezMin * bezRez);
-		
-		if (bezComp[bez_cycle] > 1.0) {
-			if (bezGate < 1.0) bezComp[bez_Ctrl] /= bezGate;
-			bezComp[bez_cycle] -= 1.0;
-			bezComp[bez_C] = bezComp[bez_B];
-			bezComp[bez_B] = bezComp[bez_A];
-			bezComp[bez_A] = bezComp[bez_Ctrl];
-			bezComp[bez_Ctrl] = 0.0;
-			bezMax = 0.0;
-		}
-		double CB = (bezComp[bez_C]*(1.0-bezComp[bez_cycle]))+(bezComp[bez_B]*bezComp[bez_cycle]);
-		double BA = (bezComp[bez_B]*(1.0-bezComp[bez_cycle]))+(bezComp[bez_A]*bezComp[bez_cycle]);
-		double CBA = (bezComp[bez_B]+(CB*(1.0-bezComp[bez_cycle]))+(BA*bezComp[bez_cycle]))*0.5;
-		
-		if (bezThresh > 0.0) {
-			inputSampleL *= 1.0-(fmin(CBA*bezThresh,1.0));
-			inputSampleR *= 1.0-(fmin(CBA*bezThresh,1.0));
-		}
+		if (bezComp[bez_cycle] > 1.0) {bezComp[bez_cycle] -= 1.0;
+			bezComp[bez_C] = bezComp[bez_B]; bezComp[bez_B] = bezComp[bez_A];
+			bezComp[bez_A] = bezComp[bez_Ctrl]; bezComp[bez_Ctrl] = 0.0;}
+		double X = bezComp[bez_cycle]*bezTrim;
+		bezComp[bez_comp] = bezComp[bez_B]+(bezComp[bez_C]*(1.0-X)*(1.0-X))+(bezComp[bez_B]*2.0*(1.0-X)*X)+(bezComp[bez_A]*X*X);
+		bezComp[bez_comp] = ((1.0-(fmin(bezComp[bez_comp],1.0))));// /bezCeiling
+		inputSampleL = (drySampleL*bezRatio)+(inputSampleL*(1.0-bezRatio)*bezComp[bez_comp]*bezThresh);
+		inputSampleR = (drySampleR*bezRatio)+(inputSampleR*(1.0-bezRatio)*bezComp[bez_comp]*bezThresh);
+		//end Dynamics3
 		
 		//begin 32 bit stereo floating point dither
 		int expon; frexpf((float)inputSampleL, &expon);
@@ -95,52 +87,44 @@ void Dynamics3::processDoubleReplacing(double **inputs, double **outputs, VstInt
 	double overallscale = 1.0;
 	overallscale /= 44100.0;
 	overallscale *= getSampleRate();
-	
-	double bezThresh = pow(1.0-A, 4.0) * 8.0;
-	double bezRez = pow(1.0-B, 4.0) / overallscale; 
-	double sloRez = pow(1.0-C, 4.0) / overallscale;
-	double gate = pow(D,4.0);
-	bezRez = fmin(fmax(bezRez,0.0001),1.0);
-	sloRez = fmin(fmax(sloRez,0.0001),1.0);
-	
+
+	//begin Dynamics3
+	double bezThresh = pow(A+0.6180339887498949,2.0)*2.0;
+	double sqrThresh = sqrt(bezThresh);
+	double bezRez = fmax(pow((1.0-B)*0.5,4.0)/overallscale,0.0001); 
+	bezRez /= (2.0/pow(overallscale,0.5-((overallscale-1.0)*0.0375)));
+	double bezTrim = 1.0-pow(bezRez*0.5,1.0/(bezRez*0.5));
+	double sloRez = fmax(pow((1.0-C)*0.5,4.0)/overallscale,0.00001);
+	sloRez /= (2.0/pow(overallscale,0.5-((overallscale-1.0)*0.0375)));
+	double bezRatio = 1.0-pow(1.0-D,1.6180339887498949);
+	if (bezThresh > 5.236) bezRatio = 1.0;
+	//end Dynamics3	
+
     while (--sampleFrames >= 0)
     {
 		double inputSampleL = *in1;
 		double inputSampleR = *in2;
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
+		double drySampleL = inputSampleL;
+		double drySampleR = inputSampleR;
 		
-		if (fmax(fabs(inputSampleL),fabs(inputSampleR)) > gate) bezGate = overallscale/fmin(bezRez,sloRez);
-		else bezGate = bezGate = fmax(0.000001, bezGate-fmin(bezRez,sloRez));
-		
-		if (bezThresh > 0.0) {
-			inputSampleL *= (bezThresh+1.0);
-			inputSampleR *= (bezThresh+1.0);
-		}
-		
-		double ctrl = fmax(fabs(inputSampleL),fabs(inputSampleR));
-		bezMax = fmax(bezMax,ctrl);
-		bezMin = fmax(bezMin-sloRez,ctrl);
+		//begin Dynamics3
+		inputSampleL *= (bezComp[bez_comp]/bezThresh);
+		inputSampleR *= (bezComp[bez_comp]/bezThresh);
+		double ctrl = fmin(fmax(fabs(inputSampleL),fabs(inputSampleR)),sqrThresh*bezComp[bez_comp]*0.6180339887498949);
+		bezComp[bez_min] = fmax(bezComp[bez_min]-sloRez,ctrl);
+		bezComp[bez_Ctrl] += (bezComp[bez_min] * bezRez);
 		bezComp[bez_cycle] += bezRez;
-		bezComp[bez_Ctrl] += (bezMin * bezRez);
-		
-		if (bezComp[bez_cycle] > 1.0) {
-			if (bezGate < 1.0) bezComp[bez_Ctrl] /= bezGate;
-			bezComp[bez_cycle] -= 1.0;
-			bezComp[bez_C] = bezComp[bez_B];
-			bezComp[bez_B] = bezComp[bez_A];
-			bezComp[bez_A] = bezComp[bez_Ctrl];
-			bezComp[bez_Ctrl] = 0.0;
-			bezMax = 0.0;
-		}
-		double CB = (bezComp[bez_C]*(1.0-bezComp[bez_cycle]))+(bezComp[bez_B]*bezComp[bez_cycle]);
-		double BA = (bezComp[bez_B]*(1.0-bezComp[bez_cycle]))+(bezComp[bez_A]*bezComp[bez_cycle]);
-		double CBA = (bezComp[bez_B]+(CB*(1.0-bezComp[bez_cycle]))+(BA*bezComp[bez_cycle]))*0.5;
-		
-		if (bezThresh > 0.0) {
-			inputSampleL *= 1.0-(fmin(CBA*bezThresh,1.0));
-			inputSampleR *= 1.0-(fmin(CBA*bezThresh,1.0));
-		}
+		if (bezComp[bez_cycle] > 1.0) {bezComp[bez_cycle] -= 1.0;
+			bezComp[bez_C] = bezComp[bez_B]; bezComp[bez_B] = bezComp[bez_A];
+			bezComp[bez_A] = bezComp[bez_Ctrl]; bezComp[bez_Ctrl] = 0.0;}
+		double X = bezComp[bez_cycle]*bezTrim;
+		bezComp[bez_comp] = bezComp[bez_B]+(bezComp[bez_C]*(1.0-X)*(1.0-X))+(bezComp[bez_B]*2.0*(1.0-X)*X)+(bezComp[bez_A]*X*X);
+		bezComp[bez_comp] = ((1.0-(fmin(bezComp[bez_comp],1.0))));// /bezCeiling
+		inputSampleL = (drySampleL*bezRatio)+(inputSampleL*(1.0-bezRatio)*bezComp[bez_comp]*bezThresh);
+		inputSampleR = (drySampleR*bezRatio)+(inputSampleR*(1.0-bezRatio)*bezComp[bez_comp]*bezThresh);
+		//end Dynamics3
 		
 		//begin 64 bit stereo floating point dither
 		//int expon; frexp((double)inputSampleL, &expon);

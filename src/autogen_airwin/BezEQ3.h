@@ -1,11 +1,11 @@
 /* ========================================
- *  Dynamics3 - Dynamics3.h
+ *  BezEQ3 - BezEQ3.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Dynamics3_Dynamics3_H
-#define __Dynamics3_Dynamics3_H
+#ifndef __BezEQ3_BezEQ3_H
+#define __BezEQ3_BezEQ3_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,26 +15,30 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::Dynamics3 {
+namespace airwinconsolidated::BezEQ3 {
 enum {
 	kParamA =0,
 	kParamB =1,
 	kParamC =2,
 	kParamD =3,
-  kNumParameters = 4
+	kParamE =4,
+	kParamF =5,
+	kParamG =6,
+	kParamH =7,
+  kNumParameters = 8
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'dyn3';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'bzes';    //Change this to what the AU identity is!
 
-class Dynamics3 : 
+class BezEQ3 : 
     public AudioEffectX 
 {
 public:
-    Dynamics3(audioMasterCallback audioMaster);
-    ~Dynamics3();
+    BezEQ3(audioMasterCallback audioMaster);
+    ~BezEQ3();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -61,19 +65,21 @@ private:
     float B;
     float C;
     float D;
+    float E;
+    float F;
+    float G;
+    float H;
 
 	enum {
-		bez_A,
-		bez_B,
-		bez_C,
-		bez_Ctrl,
-		bez_cycle,
-		bez_min,
-		bez_comp,
+		bez_HMAL, bez_HMBL, bez_HMCL, bez_HMDL,
+		bez_MAL, bez_MBL, bez_MCL, bez_MDL,
+		bez_LMAL, bez_LMBL, bez_LMCL, bez_LMDL,
+		bez_HMAR, bez_HMBR, bez_HMCR, bez_HMDR, bez_HMcycle,
+		bez_MAR, bez_MBR, bez_MCR, bez_MDR, bez_Mcycle,
+		bez_LMAR, bez_LMBR, bez_LMCR, bez_LMDR, bez_LMcycle,
 		bez_total
 	}; //the new undersampling. bez signifies the bezier curve reconstruction
-	double bezComp[bez_total];
-	//Dynamics3
+	double bezEQ[bez_total][3];
 	
 	uint32_t fpdL;
 	uint32_t fpdR;

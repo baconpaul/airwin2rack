@@ -3,6 +3,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ADClip7Proc.cpp
    src/autogen_airwin/ADClip8.cpp
    src/autogen_airwin/ADClip8Proc.cpp
+   src/autogen_airwin/ADClip9.cpp
+   src/autogen_airwin/ADClip9Proc.cpp
    src/autogen_airwin/ADT.cpp
    src/autogen_airwin/ADTProc.cpp
    src/autogen_airwin/AQuickVoiceClip.cpp
@@ -57,6 +59,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/BezEQProc.cpp
    src/autogen_airwin/BezEQ2.cpp
    src/autogen_airwin/BezEQ2Proc.cpp
+   src/autogen_airwin/BezEQ3.cpp
+   src/autogen_airwin/BezEQ3Proc.cpp
    src/autogen_airwin/BeziComp.cpp
    src/autogen_airwin/BeziCompProc.cpp
    src/autogen_airwin/BigAmp.cpp
@@ -805,6 +809,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/SurgeProc.cpp
    src/autogen_airwin/SurgeTide.cpp
    src/autogen_airwin/SurgeTideProc.cpp
+   src/autogen_airwin/Suzan.cpp
+   src/autogen_airwin/SuzanProc.cpp
    src/autogen_airwin/SweetWide.cpp
    src/autogen_airwin/SweetWideProc.cpp
    src/autogen_airwin/Sweeten.cpp
@@ -999,6 +1005,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kPlateCProc.cpp
    src/autogen_airwin/kPlateD.cpp
    src/autogen_airwin/kPlateDProc.cpp
+   src/autogen_airwin/kRockstar.cpp
+   src/autogen_airwin/kRockstarProc.cpp
    src/autogen_airwin/kStation.cpp
    src/autogen_airwin/kStationProc.cpp
    src/autogen_airwin/kWoodRoom.cpp
