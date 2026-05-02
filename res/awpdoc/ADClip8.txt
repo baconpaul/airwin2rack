@@ -1,4 +1,4 @@
-# ADClip8 is the ultimate Airwindows loudenator/biggenator.
+# ADClip8 is a stacked-up Airwindows loudenator based on ClipOnly2.
 
 The last time we saw an Airwindows ADClip, the full version rather than a neat and tidy stripped-down version, was October 8… of 2017. It's been more than six years since the king of loudenators saw an update, in part because ClipOnly got followed by ClipOnly2, which was such a good high-sample-rate clipper that it was all I needed for years. ClipOnly2 is still the cleanest, purest way to take small amounts of peak clipping to your signal: it's great as a safety clip.
 

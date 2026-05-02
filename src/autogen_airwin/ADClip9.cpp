@@ -97,7 +97,7 @@ void ADClip9::getParameterName(VstInt32 index, char *text) {
 void ADClip9::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A*18.0, text, kVstMaxParamStrLen); break;
-        case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
+        case kParamB: float2string (B*18.0, text, kVstMaxParamStrLen); break;
         case kParamC: float2string (C, text, kVstMaxParamStrLen); break;
         case kParamD: float2string (D, text, kVstMaxParamStrLen); break;
         case kParamE: switch((VstInt32)( E * 2.999 )) {
@@ -140,7 +140,7 @@ bool ADClip9::getVendorString(char* text) {
 bool ADClip9::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); if (b) { value = value / (18.0); } return b; break; }
-    case kParamB: { auto b = string2float(text, value); return b; break; }
+    case kParamB: { auto b = string2float(text, value); if (b) { value = value / (18.0); } return b; break; }
     case kParamC: { auto b = string2float(text, value); return b; break; }
     case kParamD: { auto b = string2float(text, value); return b; break; }
 

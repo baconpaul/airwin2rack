@@ -1,0 +1,13 @@
+# ADClip9 is the ClipOnly3 version of a loudenator/biggenator.
+
+Update time! As promised, I'm putting out ClipOnly3 as an ADClip (the fundamental concepts are still ADClip, so that makes this ADClip9.)
+
+Multiple things have changed since ADClip8, more than two years ago. The way this one works there's no benefit to stacking up instances, so the colorful mode names like 'Apocalypse' go by the wayside… but more useful things in ADClip are retained or even expanded.
+
+The three modes are Boost, Match, and ClipOnly. That means you've got a 'pure loudenate' setting, a 'level matched' setting with its own dB-measured control (which kept me up late at night rebuilding everything for the Nth time because it applied the correct amount, but wasn't SHOWING the relevant dB in the interface) and a setting that's silent until you start clipping and then shows the delta: this one can be used if you're looking to not grind against musical content but only transient spikes.
+
+The remaining controls are Noise and Ceiling, and technically they're both thresholds. They are NOT measured in dB, they're made to give subtler and subtler control as you go nearer to clipping directly at 0dB. The default settings of 0.7 and 0.75 closely match what ClipOnly3 does, which gets intersample peaks as close to 0 as I dared. If you lower Noise, what you're doing is hitting the 'transition to noise' threshold sooner, without affecting the hard clip limit. If you lower Ceiling, you're lowering the hard clip limit. You'll probably end up moving both, but if you do it's up to you to find your own balance point. Don't expect it to become a 'replace the audio with noise and clip the rest' plugin: Silhouette might be your best bet for that, ADClip9 is still the Airwindows take on 'softening the edges of clips with noise' as found in ClipOnly3.
+
+It's been a couple years since I advanced the state of the art in 'unreasonable loudenation' and let people get their hands dirtier than with ClipOnly (which is always designed to be a transparent safety clipper with no controls that happens to behave perfectly.) So here you go, with a bit of luck this'll hold people while I work on the opposite extremes of dynamics :)
+
+
