@@ -1,0 +1,23 @@
+# BezEQ3 refines the concept into four vivid, unified bands.
+
+Persistence has its rewards…
+
+The idea was to see if BezEQ could be expanded into something I can use in a Console, for which I like having four bands and frequency sweep controls for each. But the delay lines built into BezEQ2 had to go, because I'd also want zero latency… and that would produce a phasier response, perhaps interactions between bands that would make it behave less normally. But normal's easy to come by, SmoothEQ2 exists, so what if we could get something worth having that's less normal?
+
+Enter BezEQ3. There's more improvements on getting it to filter smoothly, there's that needed 4th band, and the sweepable middle positions to the bands, but it's still very much BezEQ. It's refined that unusual tonality down, and is still using a filter topology where, set flat, it's literally perfectly transparent.
+
+And then it's perfectly transparent for any other setting, no matter how extreme… but how you GET to those settings is something else.
+
+Because removing the internal delay lines and making it be zero latency, derailed the filter bands in some peculiar way. If you boost a frequency, you're cutting something else. Everything's kind of interactive. It's not going to behave nicely if you think you can treat it like shelving filters with neat markings. No point EVEN marking it. This is not SmoothEQ2, which runs on DF1 biquad filters like a normal plugin.
+
+Instead, you voice it by using the bands and sweeps as suggestions, and you listen to what it's doing. Nothing will get a frequency band to separate out and act like a 'frequency band', and curiously nothing will get frequency bands to come forward or fall back (like FatEQ) either. It acts, more than any other EQ I've ever heard or made, like no EQ had been done, and like the sound was that way on recording.
+
+It's just that you can revoice things to a ridiculous degree and still have it sound like one coherent piece.
+
+This plugin will be very polarizing. You will likely love it or absolutely hate it. I suspect some of the other old-schoolers will like what they hear. I'm almost sure anybody with extensive modern-production expertise will be frustrated and confused. So very many people think in terms of taking all the sounds and decomposing them into distinct pieces and fitting them together like some mixing jigsaw puzzle. What are you going to do with an EQ that refuses to separate out anything, where you can never turn a sound into this band and that band and holes where the bad audio used to be?
+
+Meanwhile, the old school practitioners of mixing black arts are licking their chops and can't wait to turn a much smaller number of tracks into something huge and compelling… sneakily heightening rawness and energy, without ever seeming like they are EQing. It's more like voicing. Nothing needs to be aggressive, just voice everything until it hits right and sits in the right places, and the top-to-bottom, left-to-right, mixing jigsaw puzzle can stay in the box. With suitable use of compression and saturation you could use this to mix a whole thing in mono, sounding unequalized, and it'd still hit like a ton of bricks.
+
+BezEQ3 is currently on track to be the primary EQ in ConsoleX3. Many people will just get mad at it, most likely. I'm just gonna have to show people what this is about… but if something happens when you try this plugin, and it gets exactly the sound you crave and you want to use it on everything… well, you know who you are, and you're welcome :)
+
+

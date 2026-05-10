@@ -13,6 +13,8 @@ PurestConsole is like the dynamics encode/decode out of Console5, without the sl
 Channels: inputSample = sin(inputSample);
 Buss: inputSample = asin(inputSample);
 
+Note that the Channel version of this wavefolds. It doesn't stop at +1.0 -1.0, it will wrap around further. The Buss version does clip at that because otherwise the whole thing would crash.
+
 Without all the mojo and tone changing, that is IT. Anyone building a DAW can include this (channels post fader! And do not allow the asin() to see values that’ll break it, you can get NaN out of math functions if you break them!).
 
 PurestConsole has special properties, besides ‘being in the Console5 family so you can swap them out freely with any Console5 variation and get correct results’. Since the amplitude encode/decode is most important to the effect, stripping it down to THIS simple has an interesting property I demonstrate in the video.

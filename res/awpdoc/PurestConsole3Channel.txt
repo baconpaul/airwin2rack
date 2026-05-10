@@ -14,6 +14,10 @@ And it went from 5% CPU, with presumably 16x oversampling on all Console tracks 
 
 And it sounds… different! You'll hear it. You surely can do it. It's got its own sound. Not an Airwindows sound, I think. Sort of smoothed off and glossy. In the video I demonstrate this output, versus non-oversampled PurestConsole3, versus ConsoleZero. And, having heard all the original sounds off my instruments and modular, I think ConsoleZero is rawer and more accurate (that's sort of the idea). But now, if you have a great love for oversampled nonlinear plugins, PurestConsole3 is my little gift, an Airwindows Console version that's designed to work with, not against, what you like.
 
+I must add, however, that while this is interesting (a precursor to PurestSaturation and a lot of further work I did: this concept underlies my TapeHack algorithm), my little 'gift' is NOT safe under all circumstances. To make it oversample as high as possible, I stripped it of virtually any other code. That includes safety clipping. So if you wanted to use PurestConsole3 in total safety, you'd need to run a safety clipper like ClipOnly3 or ClipOnly2 (any version, really) because none of PurestConsole's algorithms clip. And where a normal 'sine' function will continue to do wavefolding and keep the output between -1 and 1 forever, this… very much won't.
+
+So be aware, PurestConsole3 is one of those experimental ones. So long as you keep the levels down, it's a very CPU-efficient way to fool with Console summing even at high oversamplings (or just use minimalist processing). But it can't handle excess gain.
+
 Have fun, and I'll keep new stuff coming as well as I can!
 
 

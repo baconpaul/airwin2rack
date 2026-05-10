@@ -529,6 +529,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/LilAmpProc.cpp
    src/autogen_airwin/Logical4.cpp
    src/autogen_airwin/Logical4Proc.cpp
+   src/autogen_airwin/Longhand.cpp
+   src/autogen_airwin/LonghandProc.cpp
    src/autogen_airwin/Loud.cpp
    src/autogen_airwin/LoudProc.cpp
    src/autogen_airwin/Lowpass.cpp
