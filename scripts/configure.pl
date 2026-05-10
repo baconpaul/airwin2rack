@@ -74,7 +74,11 @@ foreach my $fx (@plugins) {
     if (!grep(/$fx/, @forceIsMonoForPlugins)) {
         my $fn = $fx;
         $fn =~ s/Point$/Poynt/; # Fix for "weird" naming in MacAU/Point plugin
-        open (AU, "< libs/airwindows/plugins/MacAU/$fx/$fn.h") || die "Can't open what: $!";
+        unless (open (AU, "< libs/airwindows/plugins/MacAU/$fx/$fn.h")) {
+            warn "Can't open $fx/$fn.h: $!, Assuming stereo\n";
+            $isMonos{$fx} = 1;
+            next;
+        }
         while (<AU>) {
             $isMonos{$fx} = 0 if (m/SupportedNumChannels/);
         }
