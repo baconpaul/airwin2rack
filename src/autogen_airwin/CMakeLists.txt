@@ -681,6 +681,10 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PurestConsole3BussProc.cpp
    src/autogen_airwin/PurestConsole3Channel.cpp
    src/autogen_airwin/PurestConsole3ChannelProc.cpp
+   src/autogen_airwin/PurestConsole4Buss.cpp
+   src/autogen_airwin/PurestConsole4BussProc.cpp
+   src/autogen_airwin/PurestConsole4Channel.cpp
+   src/autogen_airwin/PurestConsole4ChannelProc.cpp
    src/autogen_airwin/PurestConsoleBuss.cpp
    src/autogen_airwin/PurestConsoleBussProc.cpp
    src/autogen_airwin/PurestConsoleChannel.cpp
@@ -991,6 +995,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kChamberARProc.cpp
    src/autogen_airwin/kCosmos.cpp
    src/autogen_airwin/kCosmosProc.cpp
+   src/autogen_airwin/kCyberCity.cpp
+   src/autogen_airwin/kCyberCityProc.cpp
    src/autogen_airwin/kGuitarHall.cpp
    src/autogen_airwin/kGuitarHallProc.cpp
    src/autogen_airwin/kGuitarHall2.cpp
