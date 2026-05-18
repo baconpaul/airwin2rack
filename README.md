@@ -49,6 +49,22 @@ cmake -Bignore/daw-plugin -DBUILD_JUCE_PLUGIN=TRUE -DCMAKE_BUILD_TYPE=Release
 cmake --build ignore/daw-plugin --target awcons-products
 ```
 
+## LV2 Separate Plugins Bundle
+
+By default, Juce creates a single LV2 plugin from which the individual effects can
+be selected. You can alternatively build a single LV2 bundle with the effects as
+separate plugins.
+
+### Build
+
+```bash
+cmake -Bbuild-lv2-ind -DBUILD_LV2_INDIVIDUAL=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build-lv2-ind --parallel
+```
+
+The plugin will be built in `build-lv2-ind/airwindows-individual.lv2/`.
+
+
 ## Updating the airwindows sub-library
 
 To update the airwindows library
