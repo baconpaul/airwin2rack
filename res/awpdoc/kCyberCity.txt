@@ -4,7 +4,7 @@ If you count the number of Airwindows reverbs, even just the ones with 'k' in fr
 
 And still, the best discoveries are the accidents.
 
-kCyberCity sounded, from the first, like rainy neon dsytopian futurism. Which is to say, it screamed 'Blade Runner', but it doesn't actually have a Lexicon algorithm in it… it's way more complex than that. It sounded like what I imagine Blade Runner sounded like. Specifically, I got a sense not of a big room, but of rainy city streets, washes of echo return, a particular sheen that felt like neon reflections on pavement sounds.
+kCyberCity sounded, from the first, like rainy neon dystopian futurism. Which is to say, it screamed 'Blade Runner', but it doesn't actually have a Lexicon algorithm in it… it's way more complex than that. It sounded like what I imagine Blade Runner sounded like. Specifically, I got a sense not of a big room, but of rainy city streets, washes of echo return, a particular sheen that felt like neon reflections on pavement sounds.
 
 But what really helped (in more practical terms) was developing a 'room tone' method that involved not only feeding 'VoiceOfTheStarship' noise into only the regeneration part of the reverb, but also coming up with a way to modulate that, where before I'd tried things like 'Discontinuity' in that position. What I got was special: where I got a hot intense sound in a reverb like kGuitarHall2, this time I got the ability to disrupt the deep reverb field as if listening into a live environment, with wind and atmosphere. And two separate ways to manipulate that, for defining the apparent size of the reverb space and for defining how still (or un-still) the air was in there. Oh, and also a feedback nonlinearity that tweaks the whole character of the space.
 
