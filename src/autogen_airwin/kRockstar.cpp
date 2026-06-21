@@ -18,7 +18,8 @@ kRockstar::kRockstar(audioMasterCallback audioMaster) :
 {
 	A = 0.5;
 	B = 1.0;
-	C = 0.5;
+	C = 1.0;
+	D = 0.5;
 
 	for(int x = 0; x < d3A+2; x++) {a3AL[x] = 0.0; a3AR[x] = 0.0;}
 	for(int x = 0; x < d3B+2; x++) {a3BL[x] = 0.0; a3BR[x] = 0.0;}
@@ -146,6 +147,7 @@ void kRockstar::setParameter(VstInt32 index, float value) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
         case kParamC: C = value; break;
+        case kParamD: D = value; break;
         default: break; // unknown parameter, shouldn't happen!
     }
 }
@@ -155,6 +157,7 @@ float kRockstar::getParameter(VstInt32 index) {
         case kParamA: return A; break;
         case kParamB: return B; break;
         case kParamC: return C; break;
+        case kParamD: return D; break;
         default: break; // unknown parameter, shouldn't happen!
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
@@ -163,7 +166,8 @@ void kRockstar::getParameterName(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "Regen", kVstMaxParamStrLen); break;
 		case kParamB: vst_strncpy (text, "Positin", kVstMaxParamStrLen); break;
-		case kParamC: vst_strncpy (text, "Dry/Wet", kVstMaxParamStrLen); break;
+		case kParamC: vst_strncpy (text, "DownRez", kVstMaxParamStrLen); break;
+		case kParamD: vst_strncpy (text, "Dry/Wet", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
@@ -173,6 +177,7 @@ void kRockstar::getParameterDisplay(VstInt32 index, char *text) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
         case kParamC: float2string (C, text, kVstMaxParamStrLen); break;
+        case kParamD: float2string (D, text, kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
@@ -182,6 +187,7 @@ void kRockstar::getParameterLabel(VstInt32 index, char *text) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamC: vst_strncpy (text, "", kVstMaxParamStrLen); break;
+        case kParamD: vst_strncpy (text, "", kVstMaxParamStrLen); break;
 		default: break; // unknown parameter, shouldn't happen!
     }
 }
@@ -207,6 +213,7 @@ bool kRockstar::parameterTextToValue(VstInt32 index, const char *text, float &va
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
     case kParamC: { auto b = string2float(text, value); return b; break; }
+    case kParamD: { auto b = string2float(text, value); return b; break; }
 
     }
     return false;
@@ -216,6 +223,7 @@ bool kRockstar::canConvertParameterTextToValue(VstInt32 index) {
         case kParamA: return true;
         case kParamB: return true;
         case kParamC: return true;
+        case kParamD: return true;
 
     }
     return false;

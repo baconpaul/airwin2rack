@@ -61,6 +61,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/BezEQ2Proc.cpp
    src/autogen_airwin/BezEQ3.cpp
    src/autogen_airwin/BezEQ3Proc.cpp
+   src/autogen_airwin/BezEQ4.cpp
+   src/autogen_airwin/BezEQ4Proc.cpp
    src/autogen_airwin/BeziComp.cpp
    src/autogen_airwin/BeziCompProc.cpp
    src/autogen_airwin/BigAmp.cpp
@@ -257,6 +259,12 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ConsoleX2ChannelProc.cpp
    src/autogen_airwin/ConsoleX2Pre.cpp
    src/autogen_airwin/ConsoleX2PreProc.cpp
+   src/autogen_airwin/ConsoleX3Buss.cpp
+   src/autogen_airwin/ConsoleX3BussProc.cpp
+   src/autogen_airwin/ConsoleX3Channel.cpp
+   src/autogen_airwin/ConsoleX3ChannelProc.cpp
+   src/autogen_airwin/ConsoleX3Pre.cpp
+   src/autogen_airwin/ConsoleX3PreProc.cpp
    src/autogen_airwin/ConsoleXBuss.cpp
    src/autogen_airwin/ConsoleXBussProc.cpp
    src/autogen_airwin/ConsoleXChannel.cpp
@@ -303,6 +311,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DeRez2Proc.cpp
    src/autogen_airwin/DeRez3.cpp
    src/autogen_airwin/DeRez3Proc.cpp
+   src/autogen_airwin/DeRez4.cpp
+   src/autogen_airwin/DeRez4Proc.cpp
    src/autogen_airwin/Deckwrecka.cpp
    src/autogen_airwin/DeckwreckaProc.cpp
    src/autogen_airwin/Density.cpp

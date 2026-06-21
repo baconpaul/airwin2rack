@@ -20,7 +20,8 @@ enum {
 	kParamA =0,
 	kParamB =1,
 	kParamC =2,
-  kNumParameters = 3
+	kParamD =3,
+  kNumParameters = 4
 }; //
 
 const int d3A = 1090; const int d3B = 1682; const int d3C = 1695;
@@ -66,6 +67,7 @@ private:
     float A;
     float B;
     float C;
+    float D;
 
 	double a3AL[d3A+5];
 	double a3BL[d3B+5];

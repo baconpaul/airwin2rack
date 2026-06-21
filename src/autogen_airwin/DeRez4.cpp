@@ -1,29 +1,29 @@
 /* ========================================
- *  Dynamics3 - Dynamics3.h
+ *  DeRez4 - DeRez4.h
  *  Copyright (c) airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __Dynamics3_H
-#include "Dynamics3.h"
+#ifndef __DeRez4_H
+#include "DeRez4.h"
 #endif
 #include <cmath>
 #include <cstdlib>
 #include <algorithm>
-namespace airwinconsolidated::Dynamics3 {
+namespace airwinconsolidated::DeRez4 {
 
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new Dynamics3(audioMaster);}
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {return new DeRez4(audioMaster);}
 
-Dynamics3::Dynamics3(audioMasterCallback audioMaster) :
+DeRez4::DeRez4(audioMasterCallback audioMaster) :
     AudioEffectX(audioMaster, kNumPrograms, kNumParameters)
 {
-	A = 1.0;
-	B = 0.382;
-	C = 0.618;
+	A = 0.618;
+	B = 0.618;
+	C = 0.382;
 	D = 1.0;
+	
+	for (int x = 0; x < bez_total; x++) {for (int y = 0; y < 2; y++) bezEQ[x][y] = 0.0;}
+	pointCycle = pointAL = pointBL = pointAR = pointBR = 0.0;
 
-	for (int x = 0; x < bez_total; x++) bezComp[x] = 0.0;
-	//Dynamics3
-		
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
 	//this is reset: values being initialized only once. Startup values, whatever they are.
@@ -40,10 +40,10 @@ Dynamics3::Dynamics3(audioMasterCallback audioMaster) :
     vst_strncpy (_programName, "Default", kVstMaxProgNameLen); // default program name
 }
 
-Dynamics3::~Dynamics3() {}
-VstInt32 Dynamics3::getVendorVersion () {return 1000;}
-void Dynamics3::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
-void Dynamics3::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
+DeRez4::~DeRez4() {}
+VstInt32 DeRez4::getVendorVersion () {return 1000;}
+void DeRez4::setProgramName(char *name) {vst_strncpy (_programName, name, kVstMaxProgNameLen);}
+void DeRez4::getProgramName(char *name) {vst_strncpy (name, _programName, kVstMaxProgNameLen);}
 //airwindows likes to ignore this stuff. Make your own programs, and make a different plugin rather than
 //trying to do versioning and preventing people from using older versions. Maybe they like the old one!
 
@@ -54,7 +54,7 @@ static float pinParameter(float data)
 	return data;
 }
 
-void Dynamics3::setParameter(VstInt32 index, float value) {
+void DeRez4::setParameter(VstInt32 index, float value) {
     switch (index) {
         case kParamA: A = value; break;
         case kParamB: B = value; break;
@@ -64,7 +64,7 @@ void Dynamics3::setParameter(VstInt32 index, float value) {
     }
 }
 
-float Dynamics3::getParameter(VstInt32 index) {
+float DeRez4::getParameter(VstInt32 index) {
     switch (index) {
         case kParamA: return A; break;
         case kParamB: return B; break;
@@ -74,17 +74,17 @@ float Dynamics3::getParameter(VstInt32 index) {
     } return 0.0; //we only need to update the relevant name, this is simple to manage
 }
 
-void Dynamics3::getParameterName(VstInt32 index, char *text) {
+void DeRez4::getParameterName(VstInt32 index, char *text) {
     switch (index) {
-        case kParamA: vst_strncpy (text, "Thresh", kVstMaxParamStrLen); break;
-		case kParamB: vst_strncpy (text, "Attack", kVstMaxParamStrLen); break;
-		case kParamC: vst_strncpy (text, "Release", kVstMaxParamStrLen); break;
-		case kParamD: vst_strncpy (text, "Inv/Wet", kVstMaxParamStrLen); break;
+        case kParamA: vst_strncpy (text, "DownRez", kVstMaxParamStrLen); break;
+		case kParamB: vst_strncpy (text, "Bright", kVstMaxParamStrLen); break;
+		case kParamC: vst_strncpy (text, "Bassis", kVstMaxParamStrLen); break;
+		case kParamD: vst_strncpy (text, "Output", kVstMaxParamStrLen); break;
         default: break; // unknown parameter, shouldn't happen!
     } //this is our labels for displaying in the VST host
 }
 
-void Dynamics3::getParameterDisplay(VstInt32 index, char *text) {
+void DeRez4::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: float2string (A, text, kVstMaxParamStrLen); break;
         case kParamB: float2string (B, text, kVstMaxParamStrLen); break;
@@ -94,7 +94,7 @@ void Dynamics3::getParameterDisplay(VstInt32 index, char *text) {
 	} //this displays the values and handles 'popups' where it's discrete choices
 }
 
-void Dynamics3::getParameterLabel(VstInt32 index, char *text) {
+void DeRez4::getParameterLabel(VstInt32 index, char *text) {
     switch (index) {
         case kParamA: vst_strncpy (text, "", kVstMaxParamStrLen); break;
         case kParamB: vst_strncpy (text, "", kVstMaxParamStrLen); break;
@@ -104,23 +104,23 @@ void Dynamics3::getParameterLabel(VstInt32 index, char *text) {
     }
 }
 
-VstInt32 Dynamics3::canDo(char *text) 
+VstInt32 DeRez4::canDo(char *text) 
 { return (_canDo.find(text) == _canDo.end()) ? -1: 1; } // 1 = yes, -1 = no, 0 = don't know
 
-bool Dynamics3::getEffectName(char* name) {
-    vst_strncpy(name, "Dynamics3", kVstMaxProductStrLen); return true;
+bool DeRez4::getEffectName(char* name) {
+    vst_strncpy(name, "DeRez4", kVstMaxProductStrLen); return true;
 }
 
-VstPlugCategory Dynamics3::getPlugCategory() {return kPlugCategEffect;}
+VstPlugCategory DeRez4::getPlugCategory() {return kPlugCategEffect;}
 
-bool Dynamics3::getProductString(char* text) {
-  	vst_strncpy (text, "airwindows Dynamics3", kVstMaxProductStrLen); return true;
+bool DeRez4::getProductString(char* text) {
+  	vst_strncpy (text, "airwindows DeRez4", kVstMaxProductStrLen); return true;
 }
 
-bool Dynamics3::getVendorString(char* text) {
+bool DeRez4::getVendorString(char* text) {
   	vst_strncpy (text, "airwindows", kVstMaxVendorStrLen); return true;
 }
-bool Dynamics3::parameterTextToValue(VstInt32 index, const char *text, float &value) {
+bool DeRez4::parameterTextToValue(VstInt32 index, const char *text, float &value) {
     switch(index) {
     case kParamA: { auto b = string2float(text, value); return b; break; }
     case kParamB: { auto b = string2float(text, value); return b; break; }
@@ -130,7 +130,7 @@ bool Dynamics3::parameterTextToValue(VstInt32 index, const char *text, float &va
     }
     return false;
 }
-bool Dynamics3::canConvertParameterTextToValue(VstInt32 index) {
+bool DeRez4::canConvertParameterTextToValue(VstInt32 index) {
     switch(index) {
         case kParamA: return true;
         case kParamB: return true;
