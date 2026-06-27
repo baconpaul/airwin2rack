@@ -1,0 +1,13 @@
+# LRConvolve3 gates one channel by the other, roughly or cleanly.
+
+So the LRConvolve plugins are all audio manglers, capable of doing awful things to a sound, or turning an innocent voice into the Swedish Chef just by inverting that voice at audio rates. It's inherent to the convolution that you can flip the phase of a sound with another sound, and this is where things get most gnarly, even if you're convolving stuff with simple sine tones.
+
+But what if you wanted to do that, but cleanly?
+
+Well, there's degrees of 'cleanly', but LRConvolve3 exists to sit alongside the other two, looking cute, for when the full convolution is just too intense. And it does just that: the same, but 'cleanly'. How? You pick one of the sides, and full-wave rectify it. There's another control simply named 'smooth' (not the same as the Bezier control-smoothers I've been coming up with, this is from the same time I was doing the original LRConvolve) and all it does is add a time constant, turning your sound from full-wave rectified into basically an envelope that decays.
+
+And that's all you need to get the effect of 'one side turns into the gate for the other', either responding very crisply with Smooth turned all the way down, or using Smooth to make it a trigger input for the gating of the other. I demo it on a guitar taking the shape of drums, and then on a racecar fly-by also taking the shape of drums. You'll probably look to more percussive sounds to supply the gating, but you can do whatever you like: for instance, do something extra through passing a sustained chord on the 'sound' side, and then routing a bass part or whatever into the gate, and you've got some extra overtones that are attached to the bass part and follow its attacks and dynamics. Or a drum spot mic, or a literal timing click: if you have to stretch a too-brief sound, that's what Smooth is for.
+
+While I work on more glamorous and dramatic plugins, it's nice to drop a little widget that just does what it's supposed to. Hope if it ever finds a need, it comes in handy. Like many utilities, LRConvolve3 could find many surprising uses, and it's nice how it ties its effects so completely to other sounds you have around. That helps make each use unique :)
+
+
