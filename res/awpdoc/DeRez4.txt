@@ -1,0 +1,17 @@
+# DeRez4 perfects retro digital tones.
+
+Still working like mad on Meter, but I've got something of a special treat.
+
+What if, rather than go to great lengths to emulate something super vintage and unobtainable, you just… did something else, that ended up pulling a lot of weight and being great at exactly what the vintage thing did, at its best?
+
+DeRez4 is the first retro digital tone-maker to do what it does without ANY bitcrushing. Seriously. It runs everything at full floating point resolution… double precision, where that's available such as in Reaper using the VST build. It's doing it all with a sort of frequency crushing… but not like any kind I've tried before. And while it makes use of my Bezier filters, the guts of it are totally made out of hard, pointy line segments laid end to end, which I'm not sure if that's been used for this purpose before (after all, everyone trying to get the retro digital thing starts with bitcrushing and goes from there to layer 'analog color' over it…)
+
+This one's radically different from all that. The underlying frequency crush can be used to resynthesize pointy transients on upsampled audio, in line with some of the scarier high end audiophile designs. It'll throw a layer of glitter onto anything you give it, but very much 'fake digital' in nature, not anything natural. That's the underlying engine. At much lower frequency crushes, it adds a characteristic edge.
+
+The other two controls, Bright and Bassis, are each double Bezier filters. One in front of the frequency crush, one behind. Bright is sort of able to resist aliasing but not really: its real strength lies in drawing neat little radiuses to round off every point the frequency-crush creates. Doesn't matter what sample rate you're at, it just helps it work better. Then Bassis functions as a Bezier highpass… and layered the way that it is, it brings a curious resonant quality to whatever you put through DeRez4. Then there's an output trim, because these things can lead to peaks becoming more punchy and energetic than the original sound.
+
+DeRez4 is able to make a strong claim for 'better at retro digital vibe than even modeling the heck out of real retro machines'. It's always possible to get real live raw hardware (at great cost) to go do this sort of thing for real and all… but in the absence of that, or if it's a lot of trouble to run with that authentic workflow, it turns out there's another path to consider.
+
+That's DeRez4: instead of emulating, do an entirely other thing, done at the highest possible resolution but generating a whole other kind of sound that turns out to do a startlingly similar job. Conveniently, and for free.
+
+
