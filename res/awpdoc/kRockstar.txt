@@ -1,0 +1,17 @@
+# kRockstar is a realistic hall reverb that blends very well.
+
+It's interesting to step back from all my Meter and Console struggles and check out where Airwindows reverb is at.
+
+kRockstar is named that because it's pretty much the highest performer on a new kind of measurement I got working with kCyberCity. But instead of stumbling across a vibe of rain-slick streets and neon, kRockstar is about very pure, very uncolored deep hall space. Not 'flat', because that doesn't sound nice, doesn't feel real. It's unusually resistant to funny overtones and gives a strangely flat response when activated with a particular test signal, while also having all the other stuff I try to build into reverbs.
+
+What's it for? kRockstar is for when the reverb is not the star.
+
+You can put a silly amount of it on, without distracting from the music, the focal point. kRockstar fills in the space and sits things just where you want them (Positin lets you tune where the music sits relative to the space behind it). But used properly, it's weirdly invisible. You end up getting a powerful sense of the size of the space (Regen helps control how sustainy that's meant to be) long before you can hear the reverb speaking up in obvious 'tails', the kind of stuff you expect to be up front and obvious.
+
+With kRockstar, by the time you can 'hear' it, you're already bathing in it. You have to sort of listen for the size behind everything, and go by your perception of how big that is. That's in line with the recommendations around truly world-class reverbs like Bricasti, except kRockstar is voiced quite differently: Bricasti's smooth and dark, but kRockstar pulls off the same smoothness without sacrificing air. This is done through the 6x6 Householder matrix allowing the highs to still be there without coming forward. Again, it's not 'flat' but compared to Bricasti air is just pouring out of it… but unlike a lot of reverbs not coming forward, even when it's intense highs.
+
+As a final touch, kRockstar has the same 'alive silence' thing I first added to kCyberCity, where the air in it is not frozen and still. Instead, the reverb breathes with a background space caused by the hall volume being activated by gentle air movement. It's too quiet to hear, but like properly applied dither, it alters the way you hear sounds drop beyond hearing. It's just that dither stops things from dropping into grit.
+
+With kRockstar, when sounds drop away they drop into a sense of place, that's felt more than heard. Kind of like things in the real world. And again, if you're hearing the reverb washes, that's all fine, but that also means you have it distractingly loud. See how it works when you balance the sense of how big things are, against the other elements in the mix, so that sense of hugeness is simply another presence alongside all the other things you're hearing. The sense of place you get from handling it that way might be just what you needed…
+
+
