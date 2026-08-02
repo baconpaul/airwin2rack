@@ -10,7 +10,7 @@ And then there's Pear.
 
 So this is basically a kinder, gentler version of PearEQ. It's way nicer than AngleFilter or PointyDeluxe, but it's still strong on character. It's got an ability to strongly shape frequency ranges, but tends to sound more cohesive and less clinical. It's softer and nicer than PearEQ (a six-band) and is easier to come to grips with, as it's just four nice-sounding bands.
 
-PearLiteEQ is for being friends with your sound. Though you can do pretty extreme EQ moves with it, it resists turning into total sound deconstruction, it hangs onto the basic tone of the sounds it's working on. It's not quite as invisible as a time-aligned BexEQ, but it also doesn't have to run latency. It's the sort of thing you might build into a console emulation or have on every track of your mix, and Pear will continue to find use as a kind of crossover in Airwindows EQ designs: neither so surgical that it's clinical, nor so 'character' that it's awkward and messy.
+PearLiteEQ is for being friends with your sound. Though you can do pretty extreme EQ moves with it, it resists turning into total sound deconstruction, it hangs onto the basic tone of the sounds it's working on. It's not quite as invisible as a time-aligned BezEQ, but it also doesn't have to run latency. It's the sort of thing you might build into a console emulation or have on every track of your mix, and Pear will continue to find use as a kind of crossover in Airwindows EQ designs: neither so surgical that it's clinical, nor so 'character' that it's awkward and messy.
 
 I hope PearLiteEQ brightens your day :)
 

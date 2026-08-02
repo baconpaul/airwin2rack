@@ -1,0 +1,15 @@
+# X2Buss is an updated version of the buss processing from ConsoleX2.
+
+Here's a sort of update. I've put a lot of work into the new Dynamics3, for the purpose of using it in ConsoleX3 when that's done. In doing that, I came up with some upgrades for the Bezier compression, and they weren't there when I did ConsoleX2 and ConsoleH… and on top of that, those used a very different sort of buss compression, which sort of speeded up rather than getting more intense. My idea with it had been to do a one-knob buss compressor that was really easy to dial in. I'll be replacing it with the full Dynamics3, vari-mu and expansion and all.
+
+So, what to do with the orphaned buss comp?
+
+Update it as a standalone. It no longer needs you to use the whole Console system, no longer has all the features in that, but there's one part it hangs on to: the ConsoleX2 EQ. So you get, not the BezEQ of the upcoming Console, but SmoothEQ2, based on more normal, traditional biquad filter EQ. Then, the cleaned-up version of the X2 buss comp, and then an output fader that's unity gain at the center, for gain trim.
+
+But one more thing: now the safety clipper after all this isn't ClipOnly2, like in ConsoleX2. It's ClipOnly3, with the little window of noise transitioning between unclipped and the edge of clipping… which itself is gentler than usual, like every version of ClipOnly.
+
+So, while I work on many other exciting things, here's a plugin that's like a previous Console's output stages, but with every detail slightly refined and polished, and in a standalone form so people can fool with it without having to go full Console. And it gives me time to work on some of the new plugins, and to test the new Meter, which needs a new video (already) because of how much it too has changed.
+
+X2Buss might serve as an interesting variation on 'loudenate', given the tone shaping possibilities, the unusual compression and the latest output clipping stage. Let me know if this fills a need :)
+
+
