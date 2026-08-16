@@ -33,8 +33,12 @@ PunchyDeluxe::PunchyDeluxe(audioMasterCallback audioMaster) :
 			angSR[x][y] = 0.0;angAR[x][y] = 0.0;
 		}
 	}
-	for(int y=0; y<14; y++) angG[y] = 0.0;
-
+	for(int y=0; y<14; y++) {
+		angG[y] = 0.0;
+		for (int x = 0; x < bip_total; x++) bip[x][y] = 0.0;
+	}
+	for (int x = 0; x < bip_total; x++) bop[x] = 0.0;
+	
 	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
 	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
 	//this is reset: values being initialized only once. Startup values, whatever they are.

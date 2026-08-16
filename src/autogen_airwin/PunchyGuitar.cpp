@@ -33,7 +33,10 @@ PunchyGuitar::PunchyGuitar(audioMasterCallback audioMaster) :
 			angSR[x][y] = 0.0;angAR[x][y] = 0.0;
 		}
 	}
-	for(int y=0; y<11; y++) angG[y] = 0.0;
+	for(int y=0; y<11; y++) {
+		angG[y] = 0.0;
+		for (int x = 0; x < bip_total; x++) bip[x][y] = 0.0;
+	}
 	for(int count = 0; count < 36; count++) {
 		iirHPositionL[count] = 0.0;
 		iirHAngleL[count] = 0.0;

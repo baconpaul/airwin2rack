@@ -1,11 +1,11 @@
 /* ========================================
- *  PunchyGuitar - PunchyGuitar.h
+ *  RetroBass - RetroBass.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __PunchyGuitar_PunchyGuitar_H
-#define __PunchyGuitar_PunchyGuitar_H
+#ifndef __RetroBass_RetroBass_H
+#define __RetroBass_RetroBass_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,32 +15,23 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::PunchyGuitar {
+namespace airwinconsolidated::RetroBass {
 enum {
 	kParamA =0,
-	kParamB =1,
-	kParamC =2,
-	kParamD =3,
-	kParamE =4,
-	kParamF =5,
-	kParamG =6,
-	kParamH =7,
-	kParamI =8,
-	kParamJ =9,
-  kNumParameters = 10
+  kNumParameters = 1
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'pugt';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'rtbs';    //Change this to what the AU identity is!
 
-class PunchyGuitar : 
+class RetroBass : 
     public AudioEffectX 
 {
 public:
-    PunchyGuitar(audioMasterCallback audioMaster);
-    ~PunchyGuitar();
+    RetroBass(audioMasterCallback audioMaster);
+    ~RetroBass();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -64,46 +55,14 @@ private:
     std::set< std::string > _canDo;
     
     float A;
-    float B;
-    float C;
-    float D;
-    float E;
-    float F;
-    float G;
-    float H;
-    float I;
-    float J;
 
+	double rbSampleL, rbSampleR;
 	enum {
-		bip_dvLA, bip_dvLB, bip_dvLC, bip_dvLD, bip_pvLA, bip_pvLB, bip_pvLC, bip_pvLD,
-		bip_dvRA, bip_dvRB, bip_dvRC, bip_dvRD, bip_pvRA, bip_pvRB, bip_pvRC, bip_pvRD,
+		bip_drbLA, bip_drbLB, bip_drbLC, bip_drbLD, bip_prbLA, bip_prbLB, bip_prbLC, bip_prbLD,
+		bip_drbRA, bip_drbRB, bip_drbRC, bip_drbRD, bip_prbRA, bip_prbRB, bip_prbRC, bip_prbRD,
 		bip_total //each distortion section can have one of these, it stacks well
 	}; //not remotely elliptic BLEP antialiasing, instead it is derivative BIP :D
-	double bip[bip_total][12];		
-
-	double angSL[18][12];
-	double angAL[18][12];
-	double iirHPositionL[37];
-	double iirHAngleL[37];
-	double iirBPositionL[37];
-	double iirBAngleL[37];
-	bool WasNegativeL;
-	int ZeroCrossL;
-	double gaterollerL;
-	double gateL;
-	
-	double angSR[18][12];
-	double angAR[18][12];
-	double iirHPositionR[37];
-	double iirHAngleR[37];
-	double iirBPositionR[37];
-	double iirBAngleR[37];
-	bool WasNegativeR;
-	int ZeroCrossR;
-	double gaterollerR;
-	double gateR;
-	
-	double angG[12];
+	double bip[bip_total];
 	
 	uint32_t fpdL;
 	uint32_t fpdR;

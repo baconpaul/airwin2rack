@@ -79,6 +79,7 @@ void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			}
 			inputSampleL += band;
 			inputSampleL *= drive;
+			double bip_delta = inputSampleL; //delta can be just local and re-used
 			inputSampleL = fmin(fmax(inputSampleL,-M_PI_2),M_PI_2);
 			long double X = inputSampleL; X *= X; //long double for even
 			long double temp = inputSampleL * X; //the initial multiplies
@@ -92,6 +93,14 @@ void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			inputSampleL += temp*0.00000000000000281145725434552076319; temp *= X;
 			inputSampleL -= temp*0.00000000000000000822063524662432971; temp *= X;
 			inputSampleL += temp*0.00000000000000000001957294106339126;
+			//retain mantissa of a long double increasing power function
+			//long double probably doesn't handle more than 36 digits or so
+			bip[bip_dvLA][x] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
+			bip[bip_dvLB][x] = bip[bip_pvLA][x]-bip[bip_dvLA][x]; bip[bip_pvLA][x] = bip[bip_dvLA][x];//velocity
+			bip[bip_dvLC][x] = bip[bip_pvLB][x]-bip[bip_dvLB][x]; bip[bip_pvLB][x] = bip[bip_dvLB][x];//acceleration
+			bip[bip_dvLD][x] = bip[bip_pvLC][x]-bip[bip_dvLC][x]; bip[bip_pvLC][x] = bip[bip_dvLC][x];//jerk
+			double bip_dvE = bip[bip_pvLD][x]-bip[bip_dvLD][x]; bip[bip_pvLD][x] = bip[bip_dvLD][x];//snap
+			inputSampleL *= (1.0+(fabs(bip[bip_dvLC][x])*0.0618)+(fabs(bip[bip_dvLD][x])*-0.05982)+(fabs(bip_dvE)*0.0206));
 			
 			fr = (0.92/overallscale)+(overallscale*0.01);
 			band = inputSampleR; inputSampleR = 0.0;
@@ -104,6 +113,7 @@ void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			}
 			inputSampleR += band;
 			inputSampleR *= drive;
+			bip_delta = inputSampleR; //delta can be just local and re-used
 			inputSampleR = fmin(fmax(inputSampleR,-M_PI_2),M_PI_2);
 			X = inputSampleR; X *= X; //long double for even
 			temp = inputSampleR * X; //the initial multiplies
@@ -119,6 +129,12 @@ void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			inputSampleR += temp*0.00000000000000000001957294106339126;
 			//retain mantissa of a long double increasing power function
 			//long double probably doesn't handle more than 36 digits or so
+			bip[bip_dvRA][x] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
+			bip[bip_dvRB][x] = bip[bip_pvRA][x]-bip[bip_dvRA][x]; bip[bip_pvRA][x] = bip[bip_dvRA][x];//velocity
+			bip[bip_dvRC][x] = bip[bip_pvRB][x]-bip[bip_dvRB][x]; bip[bip_pvRB][x] = bip[bip_dvRB][x];//acceleration
+			bip[bip_dvRD][x] = bip[bip_pvRC][x]-bip[bip_dvRC][x]; bip[bip_pvRC][x] = bip[bip_dvRC][x];//jerk
+			bip_dvE = bip[bip_pvRD][x]-bip[bip_dvRD][x]; bip[bip_pvRD][x] = bip[bip_dvRD][x];//snap
+			inputSampleR *= (1.0+(fabs(bip[bip_dvRC][x])*0.0618)+(fabs(bip[bip_dvRD][x])*-0.05982)+(fabs(bip_dvE)*0.0206));
 		}
 		
 		if (pad < 1.0) {
@@ -126,9 +142,8 @@ void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sa
 			inputSampleR *= pad;
 		}
 		
+		double bop_delta = inputSampleL; //delta can be just local and re-used
 		inputSampleL = fmin(fmax(inputSampleL,-M_PI_2),M_PI_2);
-		inputSampleR = fmin(fmax(inputSampleR,-M_PI_2),M_PI_2);
-
 		long double X = inputSampleL; X *= X; //long double for even
 		long double temp = inputSampleL * X; //the initial multiplies
 		inputSampleL -= temp*0.16666666666666666666666666666666666; temp *= X;
@@ -141,6 +156,17 @@ void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sa
 		inputSampleL += temp*0.00000000000000281145725434552076319; temp *= X;
 		inputSampleL -= temp*0.00000000000000000822063524662432971; temp *= X;
 		inputSampleL += temp*0.00000000000000000001957294106339126;
+		//retain mantissa of a long double increasing power function
+		//long double probably doesn't handle more than 36 digits or so
+		bop[bip_dvLA] = bop_delta - inputSampleL; // these are derivatives: raw clip is position
+		bop[bip_dvLB] = bop[bip_pvLA]-bop[bip_dvLA]; bop[bip_pvLA] = bop[bip_dvLA];//velocity
+		bop[bip_dvLC] = bop[bip_pvLB]-bop[bip_dvLB]; bop[bip_pvLB] = bop[bip_dvLB];//acceleration
+		bop[bip_dvLD] = bop[bip_pvLC]-bop[bip_dvLC]; bop[bip_pvLC] = bop[bip_dvLC];//jerk
+		double bop_dvE = bop[bip_pvLD]-bop[bip_dvLD]; bop[bip_pvLD] = bop[bip_dvLD];//snap
+		inputSampleL *= (1.0+(fabs(bop[bip_dvLC])*0.0618)+(fabs(bop[bip_dvLD])*-0.05982)+(fabs(bop_dvE)*0.0206));
+		
+		bop_delta = inputSampleR; //delta can be just local and re-used
+		inputSampleR = fmin(fmax(inputSampleR,-M_PI_2),M_PI_2);
 		X = inputSampleR; X *= X; //long double for even
 		temp = inputSampleR * X; //the initial multiplies
 		inputSampleR -= temp*0.16666666666666666666666666666666666; temp *= X;
@@ -155,6 +181,12 @@ void PunchyDeluxe::processReplacing(float **inputs, float **outputs, VstInt32 sa
 		inputSampleR += temp*0.00000000000000000001957294106339126;
 		//retain mantissa of a long double increasing power function
 		//long double probably doesn't handle more than 36 digits or so
+		bop[bip_dvRA] = bop_delta - inputSampleR; // these are derivatives: raw clip is position
+		bop[bip_dvRB] = bop[bip_pvRA]-bop[bip_dvRA]; bop[bip_pvRA] = bop[bip_dvRA];//velocity
+		bop[bip_dvRC] = bop[bip_pvRB]-bop[bip_dvRB]; bop[bip_pvRB] = bop[bip_dvRB];//acceleration
+		bop[bip_dvRD] = bop[bip_pvRC]-bop[bip_dvRC]; bop[bip_pvRC] = bop[bip_dvRC];//jerk
+		bop_dvE = bop[bip_pvRD]-bop[bip_dvRD]; bop[bip_pvRD] = bop[bip_dvRD];//snap
+		inputSampleR *= (1.0+(fabs(bop[bip_dvRC])*0.0618)+(fabs(bop[bip_dvRD])*-0.05982)+(fabs(bop_dvE)*0.0206));
 		
 		//begin 32 bit stereo floating point dither
 		int expon; frexpf((float)inputSampleL, &expon);
@@ -247,6 +279,7 @@ void PunchyDeluxe::processDoubleReplacing(double **inputs, double **outputs, Vst
 			}
 			inputSampleL += band;
 			inputSampleL *= drive;
+			double bip_delta = inputSampleL; //delta can be just local and re-used
 			inputSampleL = fmin(fmax(inputSampleL,-M_PI_2),M_PI_2);
 			long double X = inputSampleL; X *= X; //long double for even
 			long double temp = inputSampleL * X; //the initial multiplies
@@ -260,6 +293,14 @@ void PunchyDeluxe::processDoubleReplacing(double **inputs, double **outputs, Vst
 			inputSampleL += temp*0.00000000000000281145725434552076319; temp *= X;
 			inputSampleL -= temp*0.00000000000000000822063524662432971; temp *= X;
 			inputSampleL += temp*0.00000000000000000001957294106339126;
+			//retain mantissa of a long double increasing power function
+			//long double probably doesn't handle more than 36 digits or so
+			bip[bip_dvLA][x] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
+			bip[bip_dvLB][x] = bip[bip_pvLA][x]-bip[bip_dvLA][x]; bip[bip_pvLA][x] = bip[bip_dvLA][x];//velocity
+			bip[bip_dvLC][x] = bip[bip_pvLB][x]-bip[bip_dvLB][x]; bip[bip_pvLB][x] = bip[bip_dvLB][x];//acceleration
+			bip[bip_dvLD][x] = bip[bip_pvLC][x]-bip[bip_dvLC][x]; bip[bip_pvLC][x] = bip[bip_dvLC][x];//jerk
+			double bip_dvE = bip[bip_pvLD][x]-bip[bip_dvLD][x]; bip[bip_pvLD][x] = bip[bip_dvLD][x];//snap
+			inputSampleL *= (1.0+(fabs(bip[bip_dvLC][x])*0.0618)+(fabs(bip[bip_dvLD][x])*-0.05982)+(fabs(bip_dvE)*0.0206));
 			
 			fr = (0.92/overallscale)+(overallscale*0.01);
 			band = inputSampleR; inputSampleR = 0.0;
@@ -272,6 +313,7 @@ void PunchyDeluxe::processDoubleReplacing(double **inputs, double **outputs, Vst
 			}
 			inputSampleR += band;
 			inputSampleR *= drive;
+			bip_delta = inputSampleR; //delta can be just local and re-used
 			inputSampleR = fmin(fmax(inputSampleR,-M_PI_2),M_PI_2);
 			X = inputSampleR; X *= X; //long double for even
 			temp = inputSampleR * X; //the initial multiplies
@@ -287,6 +329,12 @@ void PunchyDeluxe::processDoubleReplacing(double **inputs, double **outputs, Vst
 			inputSampleR += temp*0.00000000000000000001957294106339126;
 			//retain mantissa of a long double increasing power function
 			//long double probably doesn't handle more than 36 digits or so
+			bip[bip_dvRA][x] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
+			bip[bip_dvRB][x] = bip[bip_pvRA][x]-bip[bip_dvRA][x]; bip[bip_pvRA][x] = bip[bip_dvRA][x];//velocity
+			bip[bip_dvRC][x] = bip[bip_pvRB][x]-bip[bip_dvRB][x]; bip[bip_pvRB][x] = bip[bip_dvRB][x];//acceleration
+			bip[bip_dvRD][x] = bip[bip_pvRC][x]-bip[bip_dvRC][x]; bip[bip_pvRC][x] = bip[bip_dvRC][x];//jerk
+			bip_dvE = bip[bip_pvRD][x]-bip[bip_dvRD][x]; bip[bip_pvRD][x] = bip[bip_dvRD][x];//snap
+			inputSampleR *= (1.0+(fabs(bip[bip_dvRC][x])*0.0618)+(fabs(bip[bip_dvRD][x])*-0.05982)+(fabs(bip_dvE)*0.0206));
 		}
 		
 		if (pad < 1.0) {
@@ -294,9 +342,9 @@ void PunchyDeluxe::processDoubleReplacing(double **inputs, double **outputs, Vst
 			inputSampleR *= pad;
 		}
 		
-		inputSampleL = fmin(fmax(inputSampleL,-M_PI_2),M_PI_2);
-		inputSampleR = fmin(fmax(inputSampleR,-M_PI_2),M_PI_2);
 		
+		double bop_delta = inputSampleL; //delta can be just local and re-used
+		inputSampleL = fmin(fmax(inputSampleL,-M_PI_2),M_PI_2);
 		long double X = inputSampleL; X *= X; //long double for even
 		long double temp = inputSampleL * X; //the initial multiplies
 		inputSampleL -= temp*0.16666666666666666666666666666666666; temp *= X;
@@ -309,6 +357,17 @@ void PunchyDeluxe::processDoubleReplacing(double **inputs, double **outputs, Vst
 		inputSampleL += temp*0.00000000000000281145725434552076319; temp *= X;
 		inputSampleL -= temp*0.00000000000000000822063524662432971; temp *= X;
 		inputSampleL += temp*0.00000000000000000001957294106339126;
+		//retain mantissa of a long double increasing power function
+		//long double probably doesn't handle more than 36 digits or so
+		bop[bip_dvLA] = bop_delta - inputSampleL; // these are derivatives: raw clip is position
+		bop[bip_dvLB] = bop[bip_pvLA]-bop[bip_dvLA]; bop[bip_pvLA] = bop[bip_dvLA];//velocity
+		bop[bip_dvLC] = bop[bip_pvLB]-bop[bip_dvLB]; bop[bip_pvLB] = bop[bip_dvLB];//acceleration
+		bop[bip_dvLD] = bop[bip_pvLC]-bop[bip_dvLC]; bop[bip_pvLC] = bop[bip_dvLC];//jerk
+		double bop_dvE = bop[bip_pvLD]-bop[bip_dvLD]; bop[bip_pvLD] = bop[bip_dvLD];//snap
+		inputSampleL *= (1.0+(fabs(bop[bip_dvLC])*0.0618)+(fabs(bop[bip_dvLD])*-0.05982)+(fabs(bop_dvE)*0.0206));
+		
+		bop_delta = inputSampleR; //delta can be just local and re-used
+		inputSampleR = fmin(fmax(inputSampleR,-M_PI_2),M_PI_2);
 		X = inputSampleR; X *= X; //long double for even
 		temp = inputSampleR * X; //the initial multiplies
 		inputSampleR -= temp*0.16666666666666666666666666666666666; temp *= X;
@@ -323,6 +382,12 @@ void PunchyDeluxe::processDoubleReplacing(double **inputs, double **outputs, Vst
 		inputSampleR += temp*0.00000000000000000001957294106339126;
 		//retain mantissa of a long double increasing power function
 		//long double probably doesn't handle more than 36 digits or so
+		bop[bip_dvRA] = bop_delta - inputSampleR; // these are derivatives: raw clip is position
+		bop[bip_dvRB] = bop[bip_pvRA]-bop[bip_dvRA]; bop[bip_pvRA] = bop[bip_dvRA];//velocity
+		bop[bip_dvRC] = bop[bip_pvRB]-bop[bip_dvRB]; bop[bip_pvRB] = bop[bip_dvRB];//acceleration
+		bop[bip_dvRD] = bop[bip_pvRC]-bop[bip_dvRC]; bop[bip_pvRC] = bop[bip_dvRC];//jerk
+		bop_dvE = bop[bip_pvRD]-bop[bip_dvRD]; bop[bip_pvRD] = bop[bip_dvRD];//snap
+		inputSampleR *= (1.0+(fabs(bop[bip_dvRC])*0.0618)+(fabs(bop[bip_dvRD])*-0.05982)+(fabs(bop_dvE)*0.0206));
 		
 		//begin 64 bit stereo floating point dither
 		//int expon; frexp((double)inputSampleL, &expon);

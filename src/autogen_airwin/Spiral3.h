@@ -1,11 +1,11 @@
 /* ========================================
- *  PunchyGuitar - PunchyGuitar.h
+ *  Spiral3 - Spiral3.h
  *  Created 8/12/11 by SPIAdmin 
  *  Copyright (c) Airwindows, Airwindows uses the MIT license
  * ======================================== */
 
-#ifndef __PunchyGuitar_PunchyGuitar_H
-#define __PunchyGuitar_PunchyGuitar_H
+#ifndef __Spiral3_Spiral3_H
+#define __Spiral3_Spiral3_H
 
 #ifndef __audioeffect__
 #include "../airwin_consolidated_base.h"
@@ -15,32 +15,25 @@
 #include <string>
 #include <math.h>
 
-namespace airwinconsolidated::PunchyGuitar {
+namespace airwinconsolidated::Spiral3 {
 enum {
 	kParamA =0,
 	kParamB =1,
 	kParamC =2,
-	kParamD =3,
-	kParamE =4,
-	kParamF =5,
-	kParamG =6,
-	kParamH =7,
-	kParamI =8,
-	kParamJ =9,
-  kNumParameters = 10
+  kNumParameters = 3
 }; //
 
 const int kNumPrograms = 0;
 const int kNumInputs = 2;
 const int kNumOutputs = 2;
-const unsigned long kUniqueId = 'pugt';    //Change this to what the AU identity is!
+const unsigned long kUniqueId = 'spi3';    //Change this to what the AU identity is!
 
-class PunchyGuitar : 
+class Spiral3 : 
     public AudioEffectX 
 {
 public:
-    PunchyGuitar(audioMasterCallback audioMaster);
-    ~PunchyGuitar();
+    Spiral3(audioMasterCallback audioMaster);
+    ~Spiral3();
     virtual bool getEffectName(char* name);                       // The plug-in name
     virtual VstPlugCategory getPlugCategory();                    // The general category for the plug-in
     virtual bool getProductString(char* text);                    // This is a unique plug-in string provided by Steinberg
@@ -66,44 +59,20 @@ private:
     float A;
     float B;
     float C;
-    float D;
-    float E;
-    float F;
-    float G;
-    float H;
-    float I;
-    float J;
-
+	enum {
+		bezierInput_A,bezierInput_B,bezierInput_C,bezierInput_Out,
+		bezierOutput_A,bezierOutput_B,bezierOutput_C,bezierOutput_Out,
+		bezier_cycle,
+		bezier_total
+	}; //control smoothing as basic use of bezier curves
+	double bezier[bezier_total];
+	
 	enum {
 		bip_dvLA, bip_dvLB, bip_dvLC, bip_dvLD, bip_pvLA, bip_pvLB, bip_pvLC, bip_pvLD,
 		bip_dvRA, bip_dvRB, bip_dvRC, bip_dvRD, bip_pvRA, bip_pvRB, bip_pvRC, bip_pvRD,
 		bip_total //each distortion section can have one of these, it stacks well
 	}; //not remotely elliptic BLEP antialiasing, instead it is derivative BIP :D
-	double bip[bip_total][12];		
-
-	double angSL[18][12];
-	double angAL[18][12];
-	double iirHPositionL[37];
-	double iirHAngleL[37];
-	double iirBPositionL[37];
-	double iirBAngleL[37];
-	bool WasNegativeL;
-	int ZeroCrossL;
-	double gaterollerL;
-	double gateL;
-	
-	double angSR[18][12];
-	double angAR[18][12];
-	double iirHPositionR[37];
-	double iirHAngleR[37];
-	double iirBPositionR[37];
-	double iirBAngleR[37];
-	bool WasNegativeR;
-	int ZeroCrossR;
-	double gaterollerR;
-	double gateR;
-	
-	double angG[12];
+	double bip[bip_total];
 	
 	uint32_t fpdL;
 	uint32_t fpdR;
