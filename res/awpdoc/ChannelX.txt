@@ -1,0 +1,19 @@
+# ChannelX translates Channel9 into a profusion of wild experiments.
+
+Everything's the same, and nothing is the same.
+
+It's quite hard to tell what will happen with this plugin update. To surface appearances it's exactly the same as Console9, right down to the slightly odd choices like a (lower slope) interleaved IIR filter for highpassing. The controls and what they do are exactly the same. It still has named 'modes' it operates in, still has a drive control that produces the Spiral saturator at 100% and Density at 200% and crossfades from dry to Spiral to Density, linearly. This is what Channel9 has had since 2021.
+
+It's not 2021 anymore… and Chris from Airwindows has been responding to the pressure of vibecode guys flooding the plugin market by trying new stuff more often… based on the existing Airwindows codebase, and pretty much nothing else. And Channel's number came up. (technically, letter, since X can be used for 10)
+
+Longhand was an experiment in using a Taylor series to make a sine function 'by hand' in case building it out of a single, continuous algorithm sounded better than the stock, optimized form. It seemed to sound nice. Both the sine part, and the Spiral part of ChannelX are now made that way, longhand, at very high precision.
+
+RetroBass came out just last week! It involves modulating even harmonics into the sound. ChannelX now includes this in its highpasses, but still uses the dielectric modulation from Capacitor, and also still uses interleaved filters, which RetroBass does NOT use.
+
+A stack of other plugins are being updated with an experiment I did inspired by elliptic BLEP antialiasing! But where that is established as a way to flawlessly synthesize a filtered result to any degree of high-order filter ripple, my experiments veered off to produce a tweak that operates over ONE sample, not to delete aliasing but to doctor it in such a way that high frequencies remain locked in place and do not 'come forward' in the way aliased highs seem to do. Totally other thing, seems to work, zero ripple or blur or SRC-like qualities. The directness is incredible. (people don't seem to go for this quality very often in 2026, which might be as good a reason as any to pursue it)
+
+So ChannelX is a wild mix of very new experiments under a familiar surface. There have been times I freaked out over how good it sounded compared to Channel9. There's also been times when I wondered 'is it working for this audio? Is it still good over these headphones? Is it too different, now?'
+
+Fortunately, old Channel9 from 2021 is still there, so nothing ventured nothing gained :)
+
+

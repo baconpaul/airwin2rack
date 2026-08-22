@@ -151,6 +151,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/Channel8Proc.cpp
    src/autogen_airwin/Channel9.cpp
    src/autogen_airwin/Channel9Proc.cpp
+   src/autogen_airwin/ChannelX.cpp
+   src/autogen_airwin/ChannelXProc.cpp
    src/autogen_airwin/ChimeyDeluxe.cpp
    src/autogen_airwin/ChimeyDeluxeProc.cpp
    src/autogen_airwin/ChimeyGuitar.cpp
@@ -309,6 +311,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DeRez3Proc.cpp
    src/autogen_airwin/DeRez4.cpp
    src/autogen_airwin/DeRez4Proc.cpp
+   src/autogen_airwin/DeRez5.cpp
+   src/autogen_airwin/DeRez5Proc.cpp
    src/autogen_airwin/Deckwrecka.cpp
    src/autogen_airwin/DeckwreckaProc.cpp
    src/autogen_airwin/Density.cpp

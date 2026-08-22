@@ -8,7 +8,7 @@ So, combining it with a simpler version of the highpass filter I use in Channel,
 
 And I observe that it produces this funny double bump of a distortion, but one way around the initial lobe of what was once a sine wave normalized to 1.0, is bigger, and what follows is both smaller and a tighter shape. It's acting like it's taking energy in the oscillating wave, and running out mid-oscillation. This is what analog circuits do, when their coupling capacitors run out of steam. It's just being done in a peculiar way.
 
-And dialing it in using the test waves, and then trying it out on lots of different things… I discover that it's RetroBuss. It's better than anything else I've had, for specifically making stuff bass-starved in a retro-seeming way. It sounds like old gear not designed for modern subs.
+And dialing it in using the test waves, and then trying it out on lots of different things… I discover that it's RetroBass. It's better than anything else I've had, for specifically making stuff bass-starved in a retro-seeming way. It sounds like old gear not designed for modern subs.
 
 Not only that, if I push it farther, it starts to get into those hot harmonic-rich zones that make some old vocals sound so intense. It's like a treble zing that is done through weakening the fundamental. Very handy.
 
