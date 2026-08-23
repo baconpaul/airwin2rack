@@ -151,7 +151,7 @@ int Channel8_unused = AirwinRegistry::registerAirwindow({"Channel8", "Tone Color
 #include "autogen_airwin/Channel9.h"
 int Channel9_unused = AirwinRegistry::registerAirwindow({"Channel9", "Tone Color", 425, true, "Channel9 is Channel8 with ultrasonic filtering, and new Teac and Mackie 'low end' settings.", airwinconsolidated::Channel9::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Channel9::Channel9>(0); }, -1, { }});
 #include "autogen_airwin/ChannelX.h"
-int ChannelX_unused = AirwinRegistry::registerAirwindow({"ChannelX", "Tone Color", 422, true, "ChannelX translates Channel9 into a profusion of wild experiments.", airwinconsolidated::ChannelX::kNumParameters, "2026-08-22", []() { return std::make_unique<airwinconsolidated::ChannelX::ChannelX>(0); }, -1, { "Latest" }});
+int ChannelX_unused = AirwinRegistry::registerAirwindow({"ChannelX", "Tone Color", 422, true, "ChannelX translates Channel9 into a profusion of wild experiments.", airwinconsolidated::ChannelX::kNumParameters, "2026-08-23", []() { return std::make_unique<airwinconsolidated::ChannelX::ChannelX>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/ChimeyDeluxe.h"
 int ChimeyDeluxe_unused = AirwinRegistry::registerAirwindow({"ChimeyDeluxe", "Amp Sims", 25, true, "ChimeyDeluxe is a very flexible compressed DI conditioner.", airwinconsolidated::ChimeyDeluxe::kNumParameters, "2025-11-07", []() { return std::make_unique<airwinconsolidated::ChimeyDeluxe::ChimeyDeluxe>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/ChimeyGuitar.h"

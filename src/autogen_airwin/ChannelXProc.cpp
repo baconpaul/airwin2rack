@@ -45,39 +45,24 @@ void ChannelX::processReplacing(float **inputs, float **outputs, VstInt32 sample
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
 		
-		double dielectricScaleL = fabs(2.0-((inputSampleL+nonLin)/nonLin));
-		double dielectricScaleR = fabs(2.0-((inputSampleR+nonLin)/nonLin));
+		double dielectricScale = fabs(2.0-((inputSampleL+nonLin)/nonLin));
 		if (flip) {
-			rbSampleLA = (rbSampleLA * (1.0-(rbAmount*dielectricScaleL)))+(inputSampleL*rbAmount*dielectricScaleL);
+			rbSampleLA = (rbSampleLA * (1.0-(rbAmount*dielectricScale)))+(inputSampleL*rbAmount*dielectricScale);
 			if (fabs(rbSampleLA)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLA*0.96;
 				inputSampleL = fma(((inputSampleL*inputSampleL) * -0.166666666666666),(inputSampleL*inputSampleL),inputSampleL);
 				inputSampleL /= rbSampleLA*0.96;
 				bip[bip_drbLA] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
-				bip[bip_drbLB] = bip[bip_prbLA]-bip[bip_drbLA]; bip[bip_prbLA] = bip[bip_drbLA];//velocity
-				bip[bip_drbLC] = bip[bip_prbLB]-bip[bip_drbLB]; bip[bip_prbLB] = bip[bip_drbLB];//acceleration
-				bip[bip_drbLD] = bip[bip_prbLC]-bip[bip_drbLC]; bip[bip_prbLC] = bip[bip_drbLC];//jerk
-				double bip_drbE = bip[bip_prbLD]-bip[bip_drbLD]; bip[bip_prbLD] = bip[bip_drbLD];//snap
+				bip[bip_drbLB] = bip[bip_praLA]-bip[bip_drbLA]; bip[bip_praLA] = bip[bip_drbLA];//velocity
+				bip[bip_drbLC] = bip[bip_praLB]-bip[bip_drbLB]; bip[bip_praLB] = bip[bip_drbLB];//acceleration
+				bip[bip_drbLD] = bip[bip_praLC]-bip[bip_drbLC]; bip[bip_praLC] = bip[bip_drbLC];//jerk
+				double bip_drbE = bip[bip_praLD]-bip[bip_drbLD]; bip[bip_praLD] = bip[bip_drbLD];//snap
 				inputSampleL *= (1.0+(fabs(bip[bip_drbLC])*0.0618)+(fabs(bip[bip_drbLD])*-0.05982)+(fabs(bip_drbE)*0.0206));
 			}
-			inputSampleR -= rbSampleRA*0.92;
-			rbSampleRA = (rbSampleRA * (1.0-(rbAmount*dielectricScaleR)))+(inputSampleR*rbAmount*dielectricScaleR);
-			if (fabs(rbSampleRA)>1.18e-37) {
-				double bip_delta = inputSampleR; //delta can be just local and re-used
-				inputSampleR *= rbSampleRA*0.96;
-				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
-				inputSampleR /= rbSampleRA*0.96;
-				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
-				bip[bip_drbRB] = bip[bip_prbRA]-bip[bip_drbRA]; bip[bip_prbRA] = bip[bip_drbRA];//velocity
-				bip[bip_drbRC] = bip[bip_prbRB]-bip[bip_drbRB]; bip[bip_prbRB] = bip[bip_drbRB];//acceleration
-				bip[bip_drbRD] = bip[bip_prbRC]-bip[bip_drbRC]; bip[bip_prbRC] = bip[bip_drbRC];//jerk
-				double bip_drbE = bip[bip_prbRD]-bip[bip_drbRD]; bip[bip_prbRD] = bip[bip_drbRD];//snap
-				inputSampleR *= (1.0+(fabs(bip[bip_drbRC])*0.0618)+(fabs(bip[bip_drbRD])*-0.05982)+(fabs(bip_drbE)*0.0206));
-			}
-			inputSampleR -= rbSampleRA*0.92;
+			inputSampleL -= rbSampleLA*0.92;
 		} else {
-			rbSampleLB = (rbSampleLB * (1.0-(rbAmount*dielectricScaleL)))+(inputSampleL*rbAmount*dielectricScaleL);
+			rbSampleLB = (rbSampleLB * (1.0-(rbAmount*dielectricScale)))+(inputSampleL*rbAmount*dielectricScale);
 			if (fabs(rbSampleLB)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLB*0.96;
@@ -91,7 +76,27 @@ void ChannelX::processReplacing(float **inputs, float **outputs, VstInt32 sample
 				inputSampleL *= (1.0+(fabs(bip[bip_drbLC])*0.0618)+(fabs(bip[bip_drbLD])*-0.05982)+(fabs(bip_drbE)*0.0206));
 			}
 			inputSampleL -= rbSampleLB*0.92;
-			rbSampleRB = (rbSampleRB * (1.0-(rbAmount*dielectricScaleR)))+(inputSampleR*rbAmount*dielectricScaleR);
+		}
+		//highpass section L including capacitor modeling nonlinearity
+		
+		dielectricScale = fabs(2.0-((inputSampleR+nonLin)/nonLin));
+		if (flip) {
+			rbSampleRA = (rbSampleRA * (1.0-(rbAmount*dielectricScale)))+(inputSampleR*rbAmount*dielectricScale);
+			if (fabs(rbSampleRA)>1.18e-37) {
+				double bip_delta = inputSampleR; //delta can be just local and re-used
+				inputSampleR *= rbSampleRA*0.96;
+				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
+				inputSampleR /= rbSampleRA*0.96;
+				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
+				bip[bip_drbRB] = bip[bip_praRA]-bip[bip_drbRA]; bip[bip_praRA] = bip[bip_drbRA];//velocity
+				bip[bip_drbRC] = bip[bip_praRB]-bip[bip_drbRB]; bip[bip_praRB] = bip[bip_drbRB];//acceleration
+				bip[bip_drbRD] = bip[bip_praRC]-bip[bip_drbRC]; bip[bip_praRC] = bip[bip_drbRC];//jerk
+				double bip_drbE = bip[bip_praRD]-bip[bip_drbRD]; bip[bip_praRD] = bip[bip_drbRD];//snap
+				inputSampleR *= (1.0+(fabs(bip[bip_drbRC])*0.0618)+(fabs(bip[bip_drbRD])*-0.05982)+(fabs(bip_drbE)*0.0206));
+			}
+			inputSampleR -= rbSampleRA*0.92;
+		} else {
+			rbSampleRB = (rbSampleRB * (1.0-(rbAmount*dielectricScale)))+(inputSampleR*rbAmount*dielectricScale);
 			if (fabs(rbSampleRB)>1.18e-37) {
 				double bip_delta = inputSampleR; //delta can be just local and re-used
 				inputSampleR *= rbSampleRB*0.96;
@@ -106,7 +111,7 @@ void ChannelX::processReplacing(float **inputs, float **outputs, VstInt32 sample
 			}
 			inputSampleR -= rbSampleRB*0.92;
 		}
-		//highpass section including capacitor modeling nonlinearity
+		//highpass section R including capacitor modeling nonlinearity
 		
 		double bip_delta = inputSampleL; //delta can be just local and re-used
 		double drySample = inputSampleL;
@@ -290,39 +295,24 @@ void ChannelX::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 		if (fabs(inputSampleL)<1.18e-23) inputSampleL = fpdL * 1.18e-17;
 		if (fabs(inputSampleR)<1.18e-23) inputSampleR = fpdR * 1.18e-17;
 		
-		double dielectricScaleL = fabs(2.0-((inputSampleL+nonLin)/nonLin));
-		double dielectricScaleR = fabs(2.0-((inputSampleR+nonLin)/nonLin));
+		double dielectricScale = fabs(2.0-((inputSampleL+nonLin)/nonLin));
 		if (flip) {
-			rbSampleLA = (rbSampleLA * (1.0-(rbAmount*dielectricScaleL)))+(inputSampleL*rbAmount*dielectricScaleL);
+			rbSampleLA = (rbSampleLA * (1.0-(rbAmount*dielectricScale)))+(inputSampleL*rbAmount*dielectricScale);
 			if (fabs(rbSampleLA)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLA*0.96;
 				inputSampleL = fma(((inputSampleL*inputSampleL) * -0.166666666666666),(inputSampleL*inputSampleL),inputSampleL);
 				inputSampleL /= rbSampleLA*0.96;
 				bip[bip_drbLA] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
-				bip[bip_drbLB] = bip[bip_prbLA]-bip[bip_drbLA]; bip[bip_prbLA] = bip[bip_drbLA];//velocity
-				bip[bip_drbLC] = bip[bip_prbLB]-bip[bip_drbLB]; bip[bip_prbLB] = bip[bip_drbLB];//acceleration
-				bip[bip_drbLD] = bip[bip_prbLC]-bip[bip_drbLC]; bip[bip_prbLC] = bip[bip_drbLC];//jerk
-				double bip_drbE = bip[bip_prbLD]-bip[bip_drbLD]; bip[bip_prbLD] = bip[bip_drbLD];//snap
+				bip[bip_drbLB] = bip[bip_praLA]-bip[bip_drbLA]; bip[bip_praLA] = bip[bip_drbLA];//velocity
+				bip[bip_drbLC] = bip[bip_praLB]-bip[bip_drbLB]; bip[bip_praLB] = bip[bip_drbLB];//acceleration
+				bip[bip_drbLD] = bip[bip_praLC]-bip[bip_drbLC]; bip[bip_praLC] = bip[bip_drbLC];//jerk
+				double bip_drbE = bip[bip_praLD]-bip[bip_drbLD]; bip[bip_praLD] = bip[bip_drbLD];//snap
 				inputSampleL *= (1.0+(fabs(bip[bip_drbLC])*0.0618)+(fabs(bip[bip_drbLD])*-0.05982)+(fabs(bip_drbE)*0.0206));
 			}
-			inputSampleR -= rbSampleRA*0.92;
-			rbSampleRA = (rbSampleRA * (1.0-(rbAmount*dielectricScaleR)))+(inputSampleR*rbAmount*dielectricScaleR);
-			if (fabs(rbSampleRA)>1.18e-37) {
-				double bip_delta = inputSampleR; //delta can be just local and re-used
-				inputSampleR *= rbSampleRA*0.96;
-				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
-				inputSampleR /= rbSampleRA*0.96;
-				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
-				bip[bip_drbRB] = bip[bip_prbRA]-bip[bip_drbRA]; bip[bip_prbRA] = bip[bip_drbRA];//velocity
-				bip[bip_drbRC] = bip[bip_prbRB]-bip[bip_drbRB]; bip[bip_prbRB] = bip[bip_drbRB];//acceleration
-				bip[bip_drbRD] = bip[bip_prbRC]-bip[bip_drbRC]; bip[bip_prbRC] = bip[bip_drbRC];//jerk
-				double bip_drbE = bip[bip_prbRD]-bip[bip_drbRD]; bip[bip_prbRD] = bip[bip_drbRD];//snap
-				inputSampleR *= (1.0+(fabs(bip[bip_drbRC])*0.0618)+(fabs(bip[bip_drbRD])*-0.05982)+(fabs(bip_drbE)*0.0206));
-			}
-			inputSampleR -= rbSampleRA*0.92;
+			inputSampleL -= rbSampleLA*0.92;
 		} else {
-			rbSampleLB = (rbSampleLB * (1.0-(rbAmount*dielectricScaleL)))+(inputSampleL*rbAmount*dielectricScaleL);
+			rbSampleLB = (rbSampleLB * (1.0-(rbAmount*dielectricScale)))+(inputSampleL*rbAmount*dielectricScale);
 			if (fabs(rbSampleLB)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLB*0.96;
@@ -336,7 +326,27 @@ void ChannelX::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 				inputSampleL *= (1.0+(fabs(bip[bip_drbLC])*0.0618)+(fabs(bip[bip_drbLD])*-0.05982)+(fabs(bip_drbE)*0.0206));
 			}
 			inputSampleL -= rbSampleLB*0.92;
-			rbSampleRB = (rbSampleRB * (1.0-(rbAmount*dielectricScaleR)))+(inputSampleR*rbAmount*dielectricScaleR);
+		}
+		//highpass section L including capacitor modeling nonlinearity
+		
+		dielectricScale = fabs(2.0-((inputSampleR+nonLin)/nonLin));
+		if (flip) {
+			rbSampleRA = (rbSampleRA * (1.0-(rbAmount*dielectricScale)))+(inputSampleR*rbAmount*dielectricScale);
+			if (fabs(rbSampleRA)>1.18e-37) {
+				double bip_delta = inputSampleR; //delta can be just local and re-used
+				inputSampleR *= rbSampleRA*0.96;
+				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
+				inputSampleR /= rbSampleRA*0.96;
+				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
+				bip[bip_drbRB] = bip[bip_praRA]-bip[bip_drbRA]; bip[bip_praRA] = bip[bip_drbRA];//velocity
+				bip[bip_drbRC] = bip[bip_praRB]-bip[bip_drbRB]; bip[bip_praRB] = bip[bip_drbRB];//acceleration
+				bip[bip_drbRD] = bip[bip_praRC]-bip[bip_drbRC]; bip[bip_praRC] = bip[bip_drbRC];//jerk
+				double bip_drbE = bip[bip_praRD]-bip[bip_drbRD]; bip[bip_praRD] = bip[bip_drbRD];//snap
+				inputSampleR *= (1.0+(fabs(bip[bip_drbRC])*0.0618)+(fabs(bip[bip_drbRD])*-0.05982)+(fabs(bip_drbE)*0.0206));
+			}
+			inputSampleR -= rbSampleRA*0.92;
+		} else {
+			rbSampleRB = (rbSampleRB * (1.0-(rbAmount*dielectricScale)))+(inputSampleR*rbAmount*dielectricScale);
 			if (fabs(rbSampleRB)>1.18e-37) {
 				double bip_delta = inputSampleR; //delta can be just local and re-used
 				inputSampleR *= rbSampleRB*0.96;
@@ -351,7 +361,7 @@ void ChannelX::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 			}
 			inputSampleR -= rbSampleRB*0.92;
 		}
-		//highpass section including capacitor modeling nonlinearity
+		//highpass section R including capacitor modeling nonlinearity
 		
 		double bip_delta = inputSampleL; //delta can be just local and re-used
 		double drySample = inputSampleL;

@@ -19,8 +19,7 @@ ChannelX::ChannelX(audioMasterCallback audioMaster) :
 	A = 0.0;
 	B = 0.0;
 	C = 1.0;
-	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
-	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
+	
 	rbSampleLA = 0.0;
 	rbSampleRA = 0.0;
 	rbSampleLB = 0.0;
@@ -29,6 +28,9 @@ ChannelX::ChannelX(audioMasterCallback audioMaster) :
 	lastSampleRA = lastSampleRB = lastSampleRC = 0.0;
 	flip = false;
 	for (int x = 0; x < bip_total; x++) bip[x] = 0.0;
+	
+	fpdL = 1.0; while (fpdL < 16386) fpdL = rand()*UINT32_MAX;
+	fpdR = 1.0; while (fpdR < 16386) fpdR = rand()*UINT32_MAX;
 	//this is reset: values being initialized only once. Startup values, whatever they are.
 	
     _canDo.insert("plugAsChannelInsert"); // plug-in can be used as a channel insert effect.

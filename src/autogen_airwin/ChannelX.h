@@ -70,8 +70,12 @@ private:
 	enum {
 		bip_dvLA, bip_dvLB, bip_dvLC, bip_dvLD, bip_pvLA, bip_pvLB, bip_pvLC, bip_pvLD,
 		bip_dvRA, bip_dvRB, bip_dvRC, bip_dvRD, bip_pvRA, bip_pvRB, bip_pvRC, bip_pvRD,
-		bip_drbLA, bip_drbLB, bip_drbLC, bip_drbLD, bip_prbLA, bip_prbLB, bip_prbLC, bip_prbLD,
-		bip_drbRA, bip_drbRB, bip_drbRC, bip_drbRD, bip_prbRA, bip_prbRB, bip_prbRC, bip_prbRD,
+		bip_drbLA, bip_drbLB, bip_drbLC, bip_drbLD, 
+		bip_praLA, bip_praLB, bip_praLC, bip_praLD,
+		bip_prbLA, bip_prbLB, bip_prbLC, bip_prbLD,
+		bip_drbRA, bip_drbRB, bip_drbRC, bip_drbRD, 
+		bip_praRA, bip_praRB, bip_praRC, bip_praRD,
+		bip_prbRA, bip_prbRB, bip_prbRC, bip_prbRD,
 		bip_total //each distortion section can have one of these, it stacks well
 	}; //not remotely elliptic BLEP antialiasing, instead it is derivative BIP :D
 	double bip[bip_total];
