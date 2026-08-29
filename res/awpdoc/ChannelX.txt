@@ -2,7 +2,7 @@
 
 Everything's the same, and nothing is the same.
 
-It's quite hard to tell what will happen with this plugin update. To surface appearances it's exactly the same as Console9, right down to the slightly odd choices like a (lower slope) interleaved IIR filter for highpassing. The controls and what they do are exactly the same. It still has named 'modes' it operates in, still has a drive control that produces the Spiral saturator at 100% and Density at 200% and crossfades from dry to Spiral to Density, linearly. This is what Channel9 has had since 2021.
+It's quite hard to tell what will happen with this plugin update. To surface appearances it's exactly the same as Channel9, right down to the slightly odd choices like a (lower slope) interleaved IIR filter for highpassing. The controls and what they do are exactly the same. It still has named 'modes' it operates in, still has a drive control that produces the Spiral saturator at 100% and Density at 200% and crossfades from dry to Spiral to Density, linearly. This is what Channel9 has had since 2021.
 
 It's not 2021 anymore… and Chris from Airwindows has been responding to the pressure of vibecode guys flooding the plugin market by trying new stuff more often… based on the existing Airwindows codebase, and pretty much nothing else. And Channel's number came up. (technically, letter, since X can be used for 10)
 
