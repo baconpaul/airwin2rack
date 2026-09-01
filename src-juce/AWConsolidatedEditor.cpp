@@ -336,6 +336,13 @@ void AWEffectPopupLookAndFeel::drawPopupMenuItem(
     }
 }
 
+struct ZoomFrame : juce::Component
+{
+    AWConsolidatedAudioProcessorEditor *editor{nullptr};
+    ZoomFrame(AWConsolidatedAudioProcessorEditor *e) : editor(e) {}
+    void paint(juce::Graphics &g) override { editor->paintContents(g); }
+};
+
 struct Picker : public juce::Component, public juce::TextEditor::Listener
 {
     struct Jog : public juce::Button
@@ -942,7 +949,7 @@ struct SettingsCog : public juce::Button
         const auto targetArea = juce::Rectangle<int>{}.withPosition(mousePos);
         pm.showMenuAsync(juce::PopupMenu::Options()
                              .withMaximumNumColumns(1)
-                             .withTargetComponent(editor)
+                             .withTargetComponent(editor->frame.get())
                              .withTargetScreenArea(targetArea));
     }
     bool keyPressed(const juce::KeyPress &p) override
@@ -1550,7 +1557,11 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
     unstreamFavorites();
 
-    setSize(baseWidth, baseHeight);
+    setSize(contentWidth, contentHeight);
+
+    frame = std::make_unique<ZoomFrame>(this);
+    addAndMakeVisible(*frame);
+    frame->setBounds(contentBounds());
 
     auto fs = awres::get_filesystem();
     try
@@ -1578,20 +1589,20 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
     auto margin{5};
     menuPicker = std::make_unique<Picker>(this);
-    addAndMakeVisible(*menuPicker);
-    menuPicker->setBounds(getLocalBounds().reduced(margin).withHeight(60));
+    frame->addAndMakeVisible(*menuPicker);
+    menuPicker->setBounds(contentBounds().reduced(margin).withHeight(60));
     idleTimer = std::make_unique<IdleTimer>(this);
     idleTimer->startTimer(1000 / 60);
 
     auto sz{40};
-    auto kb = getLocalBounds().withHeight(sz).withWidth(sz).translated(margin, 60 + 2 * margin);
+    auto kb = contentBounds().withHeight(sz).withWidth(sz).translated(margin, 60 + 2 * margin);
 
     for (int i = 0; i < AWConsolidatedAudioProcessor::nAWParams; ++i)
     {
         auto sl = std::make_unique<ParamKnob>(juce::String("kb") + std::to_string(i),
                                               processor.fxParams[i], processor.active[i], this, i);
         sl->setBounds(kb);
-        addAndMakeVisible(*sl);
+        frame->addAndMakeVisible(*sl);
 
         knobs[i] = std::move(sl);
 
@@ -1599,7 +1610,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
                                               processor.fxParams[i], processor.active[i], i, this);
         lb->isP0 = (i == 0);
         lb->setBounds(kb.withWidth(180).translated(sz + margin, 0));
-        addAndMakeVisible(*lb);
+        frame->addAndMakeVisible(*lb);
         labels[i] = std::move(lb);
 
         kb = kb.translated(0, sz + margin);
@@ -1609,16 +1620,16 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     inLevel->setAccessible(true);
     inLevel->showValueBelow = true;
     inLevel->showValuePrefix = "in";
-    addAndMakeVisible(*inLevel);
+    frame->addAndMakeVisible(*inLevel);
 
     outLevel = std::make_unique<ParamKnob>("outLevel", processor.outLev, outActive, this, -1);
     outLevel->setAccessible(true);
 
     outLevel->showValueBelow = true;
     outLevel->showValuePrefix = "out";
-    addAndMakeVisible(*outLevel);
+    frame->addAndMakeVisible(*outLevel);
 
-    docAreaRect = getLocalBounds()
+    docAreaRect = contentBounds()
                       .withTrimmedLeft(margin * 3 + sz + 180)
                       .withTrimmedRight(margin * 2)
                       .withTrimmedTop(60 + 2 * margin)
@@ -1626,7 +1637,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
 
     docBodyLabel = std::make_unique<DocHeader>(this);
     docBodyLabel->setTitle("Documentation Header");
-    addAndMakeVisible(*docBodyLabel);
+    frame->addAndMakeVisible(*docBodyLabel);
 
     docBodyEd = std::make_unique<juce::TextEditor>("Documentation");
     docBodyEd->setMultiLine(true);
@@ -1644,13 +1655,13 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
                          findColour(ColourIds::documentationStrokeFocused));
     docBodyEd->setColour(juce::TextEditor::ColourIds::textColourId,
                          findColour(ColourIds::documentationForeground));
-    addAndMakeVisible(*docBodyEd);
+    frame->addAndMakeVisible(*docBodyEd);
 
     settingsCog = std::make_unique<SettingsCog>(this);
-    addAndMakeVisible(*settingsCog);
+    frame->addAndMakeVisible(*settingsCog);
 
     bypassButton = std::make_unique<BypassButton>(this);
-    addAndMakeVisible(*bypassButton);
+    frame->addAndMakeVisible(*bypassButton);
 
     accessibleOrderWeakRefs.push_back(menuPicker.get());
     accessibleOrderWeakRefs.push_back(menuPicker->hamburger.get());
@@ -1674,8 +1685,8 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     auto cs = processor.properties->getIntValue("colorStrategy", (int)ColorStrategy::FOLLOW_SYSTEM);
     updateColorStrategy((ColorStrategy)cs, false);
 
-    resized();
-    sizeBasedOnDocAreaDisplay();
+    // this lays out and sizes us for the stored zoom and doc visibility
+    setZoomLevel(processor.properties->getIntValue("zoomLevel", 100), false);
 }
 
 AWConsolidatedAudioProcessorEditor::~AWConsolidatedAudioProcessorEditor()
@@ -1833,10 +1844,13 @@ void AWConsolidatedAudioProcessorEditor::resized()
         return;
     }
 
+    frame->setTransform(juce::AffineTransform::scale(zoomLevel / 100.f));
+    frame->setBounds(contentBounds());
+
     auto idd = isDocDisplayed();
     resizeDocArea();
 
-    menuPicker->setBounds(getLocalBounds().reduced(5).withHeight(60));
+    menuPicker->setBounds(contentBounds().reduced(5).withHeight(60));
 
     for (const auto &l : labels)
     {
@@ -1844,34 +1858,41 @@ void AWConsolidatedAudioProcessorEditor::resized()
             l->setSize(180, l->getHeight());
         else
         {
-            auto w = getWidth() - 5 - l->getX();
+            auto w = contentWidth - 5 - l->getX();
             l->setSize(w, l->getHeight());
         }
     }
 
-    auto ta = getLocalBounds()
-                  .withTrimmedTop(getHeight() - 40)
+    auto ta = contentBounds()
+                  .withTrimmedTop(contentHeight - 40)
                   .withTrimmedLeft(2)
                   .withWidth(40)
                   .reduced(4);
     settingsCog->setBounds(ta);
     inLevel->setBounds(ta.translated(ta.getWidth() + 4, 1));
-    ta = ta.translated(getWidth() - 40 - 4 - 2 - 2, 0);
+    ta = ta.translated(contentWidth - 40 - 4 - 2 - 2, 0);
     outLevel->setBounds(ta.translated(-ta.getWidth() - 4, 1));
     bypassButton->setBounds(ta);
 }
 
 void AWConsolidatedAudioProcessorEditor::paint(juce::Graphics &g)
 {
-    auto b = getLocalBounds();
-    auto gr =
-        juce::ColourGradient(findColour(ColourIds::gradientStart), {0.f, 0.f},
-                             findColour(ColourIds::gradientStop), {0.f, 1.f * getHeight()}, false);
+    // only shows in the rounding seam the scaled frame may leave
+    g.setColour(findColour(ColourIds::gradientStop));
+    g.fillAll();
+}
+
+void AWConsolidatedAudioProcessorEditor::paintContents(juce::Graphics &g)
+{
+    auto b = contentBounds();
+    auto gr = juce::ColourGradient(findColour(ColourIds::gradientStart), {0.f, 0.f},
+                                   findColour(ColourIds::gradientStop), {0.f, 1.f * contentHeight},
+                                   false);
     g.setGradientFill(gr);
     g.fillAll();
 
     static constexpr float footerHeight{40};
-    auto fa = b.withHeight(footerHeight).withY(getHeight() - footerHeight);
+    auto fa = b.withHeight(footerHeight).withY(contentHeight - footerHeight);
     g.setColour(findColour(ColourIds::footerBackground));
     g.fillRect(fa);
     g.setColour(findColour(ColourIds::footerStroke));
@@ -2145,7 +2166,7 @@ void AWConsolidatedAudioProcessorEditor::showEffectsMenu(bool justCurrentCategor
     const auto targetArea = juce::Rectangle<int>{}.withPosition(mousePos);
     p.showMenuAsync(juce::PopupMenu::Options()
                         .withMaximumNumColumns(1)
-                        .withTargetComponent(this)
+                        .withTargetComponent(frame.get())
                         .withTargetScreenArea(targetArea));
 }
 
@@ -2177,6 +2198,17 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
                            w->updateColorStrategy(ALWAYS_LIGHT, true);
                    });
     settingsMenu.addSubMenu("Color Scheme", csMenu);
+
+    auto zoomMenu = juce::PopupMenu();
+    for (auto z : zoomLevels)
+    {
+        zoomMenu.addItem(juce::String(z) + "%", true, zoomLevel == z,
+                         [z, w = juce::Component::SafePointer(this)]() {
+                             if (w)
+                                 w->setZoomLevel(z, true);
+                         });
+    }
+    settingsMenu.addSubMenu("Zoom", zoomMenu);
 
     auto fsMenu = juce::PopupMenu();
     int fontOffset = 0;
@@ -2531,15 +2563,25 @@ void AWConsolidatedAudioProcessorEditor::toggleDocDisplay()
 void AWConsolidatedAudioProcessorEditor::sizeBasedOnDocAreaDisplay()
 {
     resizeDocArea();
-    if (isDocDisplayed())
-    {
-        setSize(baseWidth, baseHeight);
-    }
-    else
-    {
-        setSize(baseWidth - 270, baseHeight);
-    }
+    contentWidth = isDocDisplayed() ? baseWidth : baseWidth - 270;
+    contentHeight = baseHeight;
+
+    auto z = zoomLevel / 100.f;
+    setSize(juce::roundToInt(contentWidth * z), juce::roundToInt(contentHeight * z));
+    resized();
     repaint();
+}
+
+void AWConsolidatedAudioProcessorEditor::setZoomLevel(int percent, bool writeProperties)
+{
+    if (std::find(zoomLevels.begin(), zoomLevels.end(), percent) == zoomLevels.end())
+        percent = 100;
+
+    zoomLevel = percent;
+    if (writeProperties)
+        processor.properties->setValue("zoomLevel", percent);
+
+    sizeBasedOnDocAreaDisplay();
 }
 
 void AWConsolidatedAudioProcessorEditor::addCurrentAsFavorite()

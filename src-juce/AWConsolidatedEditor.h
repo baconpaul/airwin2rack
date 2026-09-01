@@ -1,6 +1,8 @@
 #ifndef AWCONSOLIDATED_EDITOR_H
 #define AWCONSOLIDATED_EDITOR_H
 
+#include <array>
+
 #include "AWConsolidatedProcessor.h"
 #include "juce_gui_basics/juce_gui_basics.h"
 
@@ -13,6 +15,7 @@ struct Picker;
 struct SettingsCog;
 struct DocHeader;
 struct BypassButton;
+struct ZoomFrame;
 
 enum ColourIds
 {
@@ -157,6 +160,15 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     AWConsolidatedAudioProcessor &processor;
 
     static constexpr int baseWidth = 600, baseHeight = 600;
+    static constexpr std::array<int, 7> zoomLevels{75, 90, 100, 125, 150, 175, 200};
+
+    // the frame is laid out at content size and scaled by the zoom transform
+    void paintContents(juce::Graphics &);
+    juce::Rectangle<int> contentBounds() const { return {0, 0, contentWidth, contentHeight}; }
+    void setZoomLevel(int percent, bool writeProperties);
+
+    int contentWidth{baseWidth}, contentHeight{baseHeight};
+    int zoomLevel{100};
 
     struct IdleTimer : juce::Timer
     {
@@ -167,6 +179,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
     };
     void idle();
     std::unique_ptr<IdleTimer> idleTimer;
+    std::unique_ptr<ZoomFrame> frame;
     std::unique_ptr<Picker> menuPicker;
     std::array<std::unique_ptr<ParamKnob>, AWConsolidatedAudioProcessor::nAWParams> knobs;
     std::array<std::unique_ptr<ParamDisp>, AWConsolidatedAudioProcessor::nAWParams> labels;
