@@ -415,6 +415,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/ExciterProc.cpp
    src/autogen_airwin/Facet.cpp
    src/autogen_airwin/FacetProc.cpp
+   src/autogen_airwin/FastDistance.cpp
+   src/autogen_airwin/FastDistanceProc.cpp
    src/autogen_airwin/FatEQ.cpp
    src/autogen_airwin/FatEQProc.cpp
    src/autogen_airwin/FathomFive.cpp

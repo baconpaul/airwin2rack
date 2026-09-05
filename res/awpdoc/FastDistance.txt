@@ -1,0 +1,17 @@
+# FastDistance is a sort of ultra-efficient lowpass filter.
+
+This is work I'm doing in efforts to help the Godot game engine. Whether or not it's accepted by them, you get to have it now :)
+
+The idea of the distance filter is, something you can have on every sound source in a scene. It's gotta be efficient, because there can be an awful lot of them. It's gotta handle wild modulations, because who knows what might be happening there in the game engine. And it's gotta roll off high frequencies, because stuff that's far away doesn't sound as bright as stuff that's right next to you.
+
+Ideally (like with my previous Distance plugins) it's doing clever things to put across the sense of great distance, but how clever can you be if you might have to have hundreds of sound-makers all talking at once? And so, FastDistance specifically chooses forms of treble-filtering that are dirt simple. It's just a variation on an averaging filter crossed with an IIR. Need more? Layer on more of them. The IIR (infinite impulse response) is not there to be fancy, it's just there because it saves me allocating one extra variable. The way it uses more or less poles of filtering is literally jumping into a pile of them and letting them go. There's no way of controlling it other than just choosing how deeply you filter in this one particular way that's unreasonably efficient to calculate. In fact you don't 'calculate' it at all, you just use it directly.
+
+The weird thing is it actually sounds pretty awesome.
+
+Since it's so efficient to run, instead of doing three or four poles of filtering, you can do thirty or forty. They run about as quick as calculating the coefficients of a regular old filter. There's next to nothing to them. And when you take such a primitive filter and just do it more, what you get is increased cutoff steepness… but the cutoff is very high already, and it's not at all resonant. So the intense layering just gives you a very natural sounding darkening effect, combined with taking the highs and absolutely burying them an unthinkable number of dB down. It's just how it works. It's not really a 'steep cutoff' no matter how many poles you use, and is never the least bit resonant or filter-sweepy. Just a distance through air darkener.
+
+It's very likely that this will find other use but for now I'm gonna see if Godot likes it (and if it's competitive efficiency wise with the more traditional low shelf they're using). I'm working on a system for game engine reverb that I hope will be useful, also for Godot, and I'll have an ultra lightweight reverb soon that's teaching me many useful things I can incorporate into my flagship reverbs.
+
+And whatever else happens with all that, you have FastDistance as a free plugin, plus also as MIT licensed source code that you can use for anything so long as you credit. Enjoy the new lowpass :)
+
+
