@@ -903,6 +903,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/TubeDeskProc.cpp
    src/autogen_airwin/Ultralight.cpp
    src/autogen_airwin/UltralightProc.cpp
+   src/autogen_airwin/Ultralight2.cpp
+   src/autogen_airwin/Ultralight2Proc.cpp
    src/autogen_airwin/UltrasonX.cpp
    src/autogen_airwin/UltrasonXProc.cpp
    src/autogen_airwin/Ultrasonic.cpp
