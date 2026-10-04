@@ -1039,6 +1039,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/kPlateDProc.cpp
    src/autogen_airwin/kRockstar.cpp
    src/autogen_airwin/kRockstarProc.cpp
+   src/autogen_airwin/kRockstar2.cpp
+   src/autogen_airwin/kRockstar2Proc.cpp
    src/autogen_airwin/kStation.cpp
    src/autogen_airwin/kStationProc.cpp
    src/autogen_airwin/kWoodRoom.cpp
