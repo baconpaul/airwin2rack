@@ -389,6 +389,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/DynoProc.cpp
    src/autogen_airwin/EQ.cpp
    src/autogen_airwin/EQProc.cpp
+   src/autogen_airwin/Echojam.cpp
+   src/autogen_airwin/EchojamProc.cpp
    src/autogen_airwin/EdIsDim.cpp
    src/autogen_airwin/EdIsDimProc.cpp
    src/autogen_airwin/Edge.cpp
@@ -917,6 +919,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/UnBoxProc.cpp
    src/autogen_airwin/VariMu.cpp
    src/autogen_airwin/VariMuProc.cpp
+   src/autogen_airwin/VerbSevens.cpp
+   src/autogen_airwin/VerbSevensProc.cpp
    src/autogen_airwin/VerbSixes.cpp
    src/autogen_airwin/VerbSixesProc.cpp
    src/autogen_airwin/VerbThic.cpp
@@ -945,6 +949,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/WolfbotProc.cpp
    src/autogen_airwin/WoodenBox.cpp
    src/autogen_airwin/WoodenBoxProc.cpp
+   src/autogen_airwin/WoodenChest.cpp
+   src/autogen_airwin/WoodenChestProc.cpp
    src/autogen_airwin/X2Buss.cpp
    src/autogen_airwin/X2BussProc.cpp
    src/autogen_airwin/XBandpass.cpp
