@@ -26,6 +26,7 @@ option(BUILD_JUCE_PLUGIN "Build a JUCE plugin" OFF)
 option(USE_JUCE_PROGRAMS "Add effects as presets when building juce plugin" OFF)
 option(BUILD_RACK_PLUGIN "Build a VCV Rack plugin" OFF)
 option(COPY_PLUGIN_AFTER_BUILD "Copy plugin after build" OFF)
+option(BUILD_LV2_INDIVIDUAL "Build individual per-effect LV2 plugins (one descriptor per effect)" OFF)
 
 math(EXPR AW_BITNESS "${CMAKE_SIZEOF_VOID_P} * 8" OUTPUT_FORMAT DECIMAL)
 message(STATUS "Performing ${AW_BITNESS}-bit build")
@@ -102,4 +103,8 @@ if (${BUILD_JUCE_PLUGIN})
     cmrc_add_resource_library(awconsolidated_resources ${AWCON_RESOURCES_GLOB})
 
     add_subdirectory(src-juce)
+endif()
+
+if (${BUILD_LV2_INDIVIDUAL})
+    add_subdirectory(src-lv2)
 endif()
