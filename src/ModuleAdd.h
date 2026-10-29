@@ -151,7 +151,7 @@ int Channel8_unused = AirwinRegistry::registerAirwindow({"Channel8", "Tone Color
 #include "autogen_airwin/Channel9.h"
 int Channel9_unused = AirwinRegistry::registerAirwindow({"Channel9", "Tone Color", 433, true, "Channel9 is Channel8 with ultrasonic filtering, and new Teac and Mackie 'low end' settings.", airwinconsolidated::Channel9::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Channel9::Channel9>(0); }, -1, { }});
 #include "autogen_airwin/ChannelX.h"
-int ChannelX_unused = AirwinRegistry::registerAirwindow({"ChannelX", "Tone Color", 430, true, "ChannelX translates Channel9 into a profusion of wild experiments.", airwinconsolidated::ChannelX::kNumParameters, "2026-08-23", []() { return std::make_unique<airwinconsolidated::ChannelX::ChannelX>(0); }, -1, { "Latest" }});
+int ChannelX_unused = AirwinRegistry::registerAirwindow({"ChannelX", "Tone Color", 430, true, "ChannelX translates Channel9 into a profusion of wild experiments.", airwinconsolidated::ChannelX::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::ChannelX::ChannelX>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/ChimeyDeluxe.h"
 int ChimeyDeluxe_unused = AirwinRegistry::registerAirwindow({"ChimeyDeluxe", "Amp Sims", 26, true, "ChimeyDeluxe is a very flexible compressed DI conditioner.", airwinconsolidated::ChimeyDeluxe::kNumParameters, "2025-11-07", []() { return std::make_unique<airwinconsolidated::ChimeyDeluxe::ChimeyDeluxe>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/ChimeyGuitar.h"
@@ -389,7 +389,7 @@ int Dyno_unused = AirwinRegistry::registerAirwindow({"Dyno", "Saturation", 381, 
 #include "autogen_airwin/EQ.h"
 int EQ_unused = AirwinRegistry::registerAirwindow({"EQ", "Filter", 285, true, "EQ is just the EQ parts of CStrip.", airwinconsolidated::EQ::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::EQ::EQ>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Echojam.h"
-int Echojam_unused = AirwinRegistry::registerAirwindow({"Echojam", "Ambience", 0, false, "Echojam is an echo effect that is secretly a reverb.", airwinconsolidated::Echojam::kNumParameters, "2026-10-17", []() { return std::make_unique<airwinconsolidated::Echojam::Echojam>(0); }, -1, { "Latest" }});
+int Echojam_unused = AirwinRegistry::registerAirwindow({"Echojam", "Ambience", 0, false, "Echojam is an echo effect that is secretly a reverb.", airwinconsolidated::Echojam::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::Echojam::Echojam>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/EdIsDim.h"
 int EdIsDim_unused = AirwinRegistry::registerAirwindow({"EdIsDim", "Utility", 473, false, "EdIsDim is mid/side conversion utility plugins.", airwinconsolidated::EdIsDim::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::EdIsDim::EdIsDim>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Edge.h"
@@ -721,7 +721,7 @@ int PurestWarm_unused = AirwinRegistry::registerAirwindow({"PurestWarm", "Subtle
 #include "autogen_airwin/PurestWarm2.h"
 int PurestWarm2_unused = AirwinRegistry::registerAirwindow({"PurestWarm2", "Subtlety", 407, true, "PurestWarm2 adds dual dry/wet controls for each side of the waveform.", airwinconsolidated::PurestWarm2::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::PurestWarm2::PurestWarm2>(0); }, -1, { "Basic" }});
 #include "autogen_airwin/PurestWarm3.h"
-int PurestWarm3_unused = AirwinRegistry::registerAirwindow({"PurestWarm3", "Subtlety", 398, true, "PurestWarm3 is a subtle tone shaper and warmth adder.", airwinconsolidated::PurestWarm3::kNumParameters, "2026-08-16", []() { return std::make_unique<airwinconsolidated::PurestWarm3::PurestWarm3>(0); }, -1, { "Recommended", "Latest" }});
+int PurestWarm3_unused = AirwinRegistry::registerAirwindow({"PurestWarm3", "Subtlety", 398, true, "PurestWarm3 is a subtle tone shaper and warmth adder.", airwinconsolidated::PurestWarm3::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::PurestWarm3::PurestWarm3>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Pyewacket.h"
 int Pyewacket_unused = AirwinRegistry::registerAirwindow({"Pyewacket", "Dynamics", 198, false, "Pyewacket is an old school compressor for high definition transients. Adds no fatness, just energy.", airwinconsolidated::Pyewacket::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Pyewacket::Pyewacket>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/RawGlitters.h"
@@ -737,7 +737,7 @@ int ResEQ_unused = AirwinRegistry::registerAirwindow({"ResEQ", "Filter", 289, tr
 #include "autogen_airwin/ResEQ2.h"
 int ResEQ2_unused = AirwinRegistry::registerAirwindow({"ResEQ2", "Filter", 270, true, "ResEQ2 is a single, sharp, sonorous mid peak.", airwinconsolidated::ResEQ2::kNumParameters, "2023-09-17", []() { return std::make_unique<airwinconsolidated::ResEQ2::ResEQ2>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/RetroBass.h"
-int RetroBass_unused = AirwinRegistry::registerAirwindow({"RetroBass", "Filter", 249, true, "RetroBass is a special kind of highpass.", airwinconsolidated::RetroBass::kNumParameters, "2026-08-16", []() { return std::make_unique<airwinconsolidated::RetroBass::RetroBass>(0); }, -1, { "Recommended", "Latest" }});
+int RetroBass_unused = AirwinRegistry::registerAirwindow({"RetroBass", "Filter", 249, true, "RetroBass is a special kind of highpass.", airwinconsolidated::RetroBass::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::RetroBass::RetroBass>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/Reverb.h"
 int Reverb_unused = AirwinRegistry::registerAirwindow({"Reverb", "Reverb", 366, true, "Reverb is simplified and tuned MatrixVerb, adjusting everything for each optimum verb size.", airwinconsolidated::Reverb::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::Reverb::Reverb>(0); }, -1, { }});
 #include "autogen_airwin/Righteous4.h"
@@ -903,9 +903,9 @@ int Tube2_unused = AirwinRegistry::registerAirwindow({"Tube2", "Saturation", 375
 #include "autogen_airwin/TubeDesk.h"
 int TubeDesk_unused = AirwinRegistry::registerAirwindow({"TubeDesk", "Subtlety", 417, true, "TubeDesk is a tube recording console type tone coloring.", airwinconsolidated::TubeDesk::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::TubeDesk::TubeDesk>(0); }, -1, { }});
 #include "autogen_airwin/Ultralight.h"
-int Ultralight_unused = AirwinRegistry::registerAirwindow({"Ultralight", "Reverb", 367, true, "Ultralight is the most low-CPU matrix reverb I can make.", airwinconsolidated::Ultralight::kNumParameters, "2026-09-18", []() { return std::make_unique<airwinconsolidated::Ultralight::Ultralight>(0); }, -1, { }});
+int Ultralight_unused = AirwinRegistry::registerAirwindow({"Ultralight", "Reverb", 367, true, "Ultralight is the most low-CPU matrix reverb I can make.", airwinconsolidated::Ultralight::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::Ultralight::Ultralight>(0); }, -1, { }});
 #include "autogen_airwin/Ultralight2.h"
-int Ultralight2_unused = AirwinRegistry::registerAirwindow({"Ultralight2", "Reverb", 356, true, "Ultralight2 is more of the most low-CPU matrix reverb I can make.", airwinconsolidated::Ultralight2::kNumParameters, "2026-09-18", []() { return std::make_unique<airwinconsolidated::Ultralight2::Ultralight2>(0); }, -1, { "Latest" }});
+int Ultralight2_unused = AirwinRegistry::registerAirwindow({"Ultralight2", "Reverb", 356, true, "Ultralight2 is more of the most low-CPU matrix reverb I can make.", airwinconsolidated::Ultralight2::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::Ultralight2::Ultralight2>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/UltrasonX.h"
 int UltrasonX_unused = AirwinRegistry::registerAirwindow({"UltrasonX", "Brightness", 87, true, "UltrasonX is a method for rolling your own Console-type systems with total control over your ultrasonic filtering.", airwinconsolidated::UltrasonX::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::UltrasonX::UltrasonX>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/Ultrasonic.h"
@@ -919,7 +919,7 @@ int UnBox_unused = AirwinRegistry::registerAirwindow({"UnBox", "Saturation", 383
 #include "autogen_airwin/VariMu.h"
 int VariMu_unused = AirwinRegistry::registerAirwindow({"VariMu", "Dynamics", 193, true, "VariMu is a more organic variation on Pressure (a compressor)", airwinconsolidated::VariMu::kNumParameters, "2022-11-21", []() { return std::make_unique<airwinconsolidated::VariMu::VariMu>(0); }, -1, { }});
 #include "autogen_airwin/VerbSevens.h"
-int VerbSevens_unused = AirwinRegistry::registerAirwindow({"VerbSevens", "Reverb", 326, false, "VerbSevens is a calibrated reference reverb plugin for reverb matrices.", airwinconsolidated::VerbSevens::kNumParameters, "2026-10-17", []() { return std::make_unique<airwinconsolidated::VerbSevens::VerbSevens>(0); }, -1, { "Latest" }});
+int VerbSevens_unused = AirwinRegistry::registerAirwindow({"VerbSevens", "Reverb", 326, false, "VerbSevens is a calibrated reference reverb plugin for reverb matrices.", airwinconsolidated::VerbSevens::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::VerbSevens::VerbSevens>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/VerbSixes.h"
 int VerbSixes_unused = AirwinRegistry::registerAirwindow({"VerbSixes", "Reverb", 338, false, "VerbSixes is a calibrated reference reverb plugin for Householder matrices.", airwinconsolidated::VerbSixes::kNumParameters, "2025-06-14", []() { return std::make_unique<airwinconsolidated::VerbSixes::VerbSixes>(0); }, -1, { }});
 #include "autogen_airwin/VerbThic.h"
@@ -949,7 +949,7 @@ int Wolfbot_unused = AirwinRegistry::registerAirwindow({"Wolfbot", "Amp Sims", 3
 #include "autogen_airwin/WoodenBox.h"
 int WoodenBox_unused = AirwinRegistry::registerAirwindow({"WoodenBox", "Tone Color", 431, false, "WoodenBox is like a miniature reverb for converting DI to acoustic.", airwinconsolidated::WoodenBox::kNumParameters, "2026-03-14", []() { return std::make_unique<airwinconsolidated::WoodenBox::WoodenBox>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/WoodenChest.h"
-int WoodenChest_unused = AirwinRegistry::registerAirwindow({"WoodenChest", "Unclassified", -1, false, "", airwinconsolidated::WoodenChest::kNumParameters, "2026-10-17", []() { return std::make_unique<airwinconsolidated::WoodenChest::WoodenChest>(0); }, -1, { }});
+int WoodenChest_unused = AirwinRegistry::registerAirwindow({"WoodenChest", "Unclassified", -1, false, "", airwinconsolidated::WoodenChest::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::WoodenChest::WoodenChest>(0); }, -1, { }});
 #include "autogen_airwin/X2Buss.h"
 int X2Buss_unused = AirwinRegistry::registerAirwindow({"X2Buss", "Dynamics", 186, false, "X2Buss is an updated version of the buss processing from ConsoleX2.", airwinconsolidated::X2Buss::kNumParameters, "2026-06-20", []() { return std::make_unique<airwinconsolidated::X2Buss::X2Buss>(0); }, -1, { "Latest" }});
 #include "autogen_airwin/XBandpass.h"
@@ -1045,7 +1045,7 @@ int kPlateD_unused = AirwinRegistry::registerAirwindow({"kPlateD", "Reverb", 347
 #include "autogen_airwin/kRockstar.h"
 int kRockstar_unused = AirwinRegistry::registerAirwindow({"kRockstar", "Reverb", 345, false, "kRockstar is a realistic hall reverb that blends very well.", airwinconsolidated::kRockstar::kNumParameters, "2026-06-20", []() { return std::make_unique<airwinconsolidated::kRockstar::kRockstar>(0); }, -1, { }});
 #include "autogen_airwin/kRockstar2.h"
-int kRockstar2_unused = AirwinRegistry::registerAirwindow({"kRockstar2", "Reverb", 327, false, "kRockstar2 is a realistic hall reverb using a new matrix!", airwinconsolidated::kRockstar2::kNumParameters, "2026-10-03", []() { return std::make_unique<airwinconsolidated::kRockstar2::kRockstar2>(0); }, -1, { "Recommended", "Latest" }});
+int kRockstar2_unused = AirwinRegistry::registerAirwindow({"kRockstar2", "Reverb", 327, false, "kRockstar2 is a realistic hall reverb using a new matrix!", airwinconsolidated::kRockstar2::kNumParameters, "2026-10-29", []() { return std::make_unique<airwinconsolidated::kRockstar2::kRockstar2>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/kStation.h"
 int kStation_unused = AirwinRegistry::registerAirwindow({"kStation", "Reverb", 330, false, "kStation is a realistic small room modeled after David Bowie's vocal reverb.", airwinconsolidated::kStation::kNumParameters, "2025-09-20", []() { return std::make_unique<airwinconsolidated::kStation::kStation>(0); }, -1, { "Recommended", "Latest" }});
 #include "autogen_airwin/kWoodRoom.h"

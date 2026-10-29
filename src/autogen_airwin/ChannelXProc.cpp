@@ -51,7 +51,7 @@ void ChannelX::processReplacing(float **inputs, float **outputs, VstInt32 sample
 			if (fabs(rbSampleLA)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLA*0.96;
-				inputSampleL = fma(((inputSampleL*inputSampleL) * -0.166666666666666),(inputSampleL*inputSampleL),inputSampleL);
+				inputSampleL = ((inputSampleL*inputSampleL) * -0.166666666666666)*(inputSampleL*inputSampleL) + inputSampleL;
 				inputSampleL /= rbSampleLA*0.96;
 				bip[bip_drbLA] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
 				bip[bip_drbLB] = bip[bip_praLA]-bip[bip_drbLA]; bip[bip_praLA] = bip[bip_drbLA];//velocity
@@ -66,7 +66,7 @@ void ChannelX::processReplacing(float **inputs, float **outputs, VstInt32 sample
 			if (fabs(rbSampleLB)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLB*0.96;
-				inputSampleL = fma(((inputSampleL*inputSampleL) * -0.166666666666666),(inputSampleL*inputSampleL),inputSampleL);
+				inputSampleL = ((inputSampleL*inputSampleL) * -0.166666666666666)*(inputSampleL*inputSampleL) + inputSampleL;
 				inputSampleL /= rbSampleLB*0.96;
 				bip[bip_drbLA] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
 				bip[bip_drbLB] = bip[bip_prbLA]-bip[bip_drbLA]; bip[bip_prbLA] = bip[bip_drbLA];//velocity
@@ -85,7 +85,7 @@ void ChannelX::processReplacing(float **inputs, float **outputs, VstInt32 sample
 			if (fabs(rbSampleRA)>1.18e-37) {
 				double bip_delta = inputSampleR; //delta can be just local and re-used
 				inputSampleR *= rbSampleRA*0.96;
-				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
+				inputSampleR = ((inputSampleR*inputSampleR) * -0.166666666666666)*(inputSampleR*inputSampleR) + inputSampleR;
 				inputSampleR /= rbSampleRA*0.96;
 				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
 				bip[bip_drbRB] = bip[bip_praRA]-bip[bip_drbRA]; bip[bip_praRA] = bip[bip_drbRA];//velocity
@@ -100,7 +100,7 @@ void ChannelX::processReplacing(float **inputs, float **outputs, VstInt32 sample
 			if (fabs(rbSampleRB)>1.18e-37) {
 				double bip_delta = inputSampleR; //delta can be just local and re-used
 				inputSampleR *= rbSampleRB*0.96;
-				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
+				inputSampleR = ((inputSampleR*inputSampleR) * -0.166666666666666)*(inputSampleR*inputSampleR) + inputSampleR;
 				inputSampleR /= rbSampleRB*0.96;
 				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
 				bip[bip_drbRB] = bip[bip_prbRA]-bip[bip_drbRA]; bip[bip_prbRA] = bip[bip_drbRA];//velocity
@@ -301,7 +301,7 @@ void ChannelX::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 			if (fabs(rbSampleLA)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLA*0.96;
-				inputSampleL = fma(((inputSampleL*inputSampleL) * -0.166666666666666),(inputSampleL*inputSampleL),inputSampleL);
+				inputSampleL = ((inputSampleL*inputSampleL) * -0.166666666666666)*(inputSampleL*inputSampleL) + inputSampleL;
 				inputSampleL /= rbSampleLA*0.96;
 				bip[bip_drbLA] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
 				bip[bip_drbLB] = bip[bip_praLA]-bip[bip_drbLA]; bip[bip_praLA] = bip[bip_drbLA];//velocity
@@ -316,7 +316,7 @@ void ChannelX::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 			if (fabs(rbSampleLB)>1.18e-37) {
 				double bip_delta = inputSampleL; //delta can be just local and re-used
 				inputSampleL *= rbSampleLB*0.96;
-				inputSampleL = fma(((inputSampleL*inputSampleL) * -0.166666666666666),(inputSampleL*inputSampleL),inputSampleL);
+				inputSampleL = ((inputSampleL*inputSampleL) * -0.166666666666666)*(inputSampleL*inputSampleL) + inputSampleL;
 				inputSampleL /= rbSampleLB*0.96;
 				bip[bip_drbLA] = bip_delta - inputSampleL; // these are derivatives: raw clip is position
 				bip[bip_drbLB] = bip[bip_prbLA]-bip[bip_drbLA]; bip[bip_prbLA] = bip[bip_drbLA];//velocity
@@ -335,7 +335,7 @@ void ChannelX::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 			if (fabs(rbSampleRA)>1.18e-37) {
 				double bip_delta = inputSampleR; //delta can be just local and re-used
 				inputSampleR *= rbSampleRA*0.96;
-				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
+				inputSampleR = ((inputSampleR*inputSampleR) * -0.166666666666666)*(inputSampleR*inputSampleR) + inputSampleR;
 				inputSampleR /= rbSampleRA*0.96;
 				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
 				bip[bip_drbRB] = bip[bip_praRA]-bip[bip_drbRA]; bip[bip_praRA] = bip[bip_drbRA];//velocity
@@ -350,7 +350,7 @@ void ChannelX::processDoubleReplacing(double **inputs, double **outputs, VstInt3
 			if (fabs(rbSampleRB)>1.18e-37) {
 				double bip_delta = inputSampleR; //delta can be just local and re-used
 				inputSampleR *= rbSampleRB*0.96;
-				inputSampleR = fma(((inputSampleR*inputSampleR) * -0.166666666666666),(inputSampleR*inputSampleR),inputSampleR);
+				inputSampleR = ((inputSampleR*inputSampleR) * -0.166666666666666)*(inputSampleR*inputSampleR) + inputSampleR;
 				inputSampleR /= rbSampleRB*0.96;
 				bip[bip_drbRA] = bip_delta - inputSampleR; // these are derivatives: raw clip is position
 				bip[bip_drbRB] = bip[bip_prbRA]-bip[bip_drbRA]; bip[bip_prbRA] = bip[bip_drbRA];//velocity
