@@ -1044,6 +1044,108 @@ struct BypassButton : public juce::ToggleButton
     }
 };
 
+struct AutoGainButton : public juce::ToggleButton
+{
+    AWConsolidatedAudioProcessorEditor *editor;
+    AutoGainButton(AWConsolidatedAudioProcessorEditor *p)
+        : juce::ToggleButton(juce::String("AutoGain")), editor(p)
+    {
+        setAccessible(true);
+        setTitle("Auto Gain Link");
+    }
+
+    void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
+                     bool shouldDrawButtonAsDown) override
+    {
+        auto bounds = getLocalBounds().toFloat().reduced(2.0f);
+        auto c = bounds.getCentre();
+        auto rad = std::min(bounds.getWidth(), bounds.getHeight()) * 0.48f;
+
+        bool isLinked = getToggleState();
+        bool hovered = isOver();
+
+        juce::Colour bgCol;
+        if (isLinked)
+        {
+            bgCol = hovered ? editor->lnf->findColour(bypassButtonOnHover)
+                            : editor->lnf->findColour(bypassButtonOn);
+        }
+        else
+        {
+            bgCol = hovered ? editor->lnf->findColour(settingCogHover)
+                            : editor->lnf->findColour(settingCogFill);
+        }
+
+        g.setColour(bgCol);
+        g.fillEllipse(c.x - rad, c.y - rad, rad * 2.0f, rad * 2.0f);
+
+        auto outlineCol = editor->lnf->findColour(settingCogOutline);
+        g.setColour(outlineCol);
+        g.drawEllipse(c.x - rad, c.y - rad, rad * 2.0f, rad * 2.0f, 1.0f);
+
+        // Chain link icon rotated at 45 degrees
+        auto gState = juce::Graphics::ScopedSaveState(g);
+        g.addTransform(
+            juce::AffineTransform::rotation(-juce::MathConstants<float>::pi * 0.25f, c.x, c.y));
+
+        juce::Colour iconCol =
+            isLinked ? outlineCol : editor->lnf->findColour(footerForeground);
+        g.setColour(iconCol);
+
+        float loopW = rad * 0.72f;
+        float loopH = rad * 0.44f;
+        float corner = loopH * 0.5f;
+        float sep = isLinked ? rad * 0.22f : rad * 0.44f;
+
+        juce::Path leftLoop, rightLoop;
+        leftLoop.addRoundedRectangle(c.x - sep - loopW * 0.5f, c.y - loopH * 0.5f, loopW, loopH,
+                                     corner, corner);
+        rightLoop.addRoundedRectangle(c.x + sep - loopW * 0.5f, c.y - loopH * 0.5f, loopW, loopH,
+                                      corner, corner);
+
+        g.strokePath(leftLoop, juce::PathStrokeType(1.6f));
+        g.strokePath(rightLoop, juce::PathStrokeType(1.6f));
+
+        if (isLinked)
+        {
+            g.drawLine(c.x - sep * 0.5f, c.y, c.x + sep * 0.5f, c.y, 2.0f);
+        }
+    }
+
+    void buttonStateChanged() override
+    {
+        repaint();
+
+        if (editor->processor.autoGainLink &&
+            getToggleState() != editor->processor.autoGainLink->get())
+        {
+            editor->processor.autoGainLink->beginChangeGesture();
+            editor->processor.autoGainLink->setValueNotifyingHost(getToggleState());
+            editor->processor.autoGainLink->endChangeGesture();
+
+            if (getToggleState() && editor->processor.inLev && editor->processor.outLev)
+            {
+                auto inv = AWConsolidatedAudioProcessor::computeInverseGain(
+                    editor->processor.inLev->get());
+                editor->processor.outLev->beginChangeGesture();
+                editor->processor.outLev->setValueNotifyingHost(inv);
+                editor->processor.outLev->endChangeGesture();
+            }
+        }
+    }
+
+    bool keyPressed(const juce::KeyPress &p) override
+    {
+        if (p.getKeyCode() == juce::KeyPress::returnKey ||
+            p.getKeyCode() == juce::KeyPress::spaceKey)
+        {
+            setToggleState(!getToggleState(), juce::NotificationType::sendNotification);
+            return true;
+        }
+        return false;
+    }
+};
+
 struct ParamDisp : juce::Component, juce::TextEditor::Listener
 {
     AWConsolidatedAudioProcessor::AWParam *weakParam{nullptr};
@@ -1283,8 +1385,65 @@ struct ParamKnob : juce::Component
             std::string txt = weakParam->getCurrentValueAsText().toStdString();
             g.drawText(txt, getLocalBounds(), juce::Justification::centredBottom);
 
-            g.setColour(findColour(ColourIds::paramKnobLabelWithin));
+            bool isLinked = (editor && editor->processor.autoGainLink &&
+                             editor->processor.autoGainLink->get() &&
+                             (this == editor->inLevel.get() || this == editor->outLevel.get()));
+            if (isLinked)
+                g.setColour(findColour(ColourIds::paramKnobHovered));
+            else
+                g.setColour(findColour(ColourIds::paramKnobLabelWithin));
             g.drawText(showValuePrefix, knobHandle, juce::Justification::centred);
+        }
+    }
+
+    void repaintLinkedKnob()
+    {
+        if (editor && editor->processor.autoGainLink && editor->processor.autoGainLink->get())
+        {
+            if (this == editor->inLevel.get() && editor->outLevel)
+                editor->outLevel->repaint();
+            else if (this == editor->outLevel.get() && editor->inLevel)
+                editor->inLevel->repaint();
+        }
+    }
+
+    void syncLinkedValue(float newSourceVal)
+    {
+        if (editor && editor->processor.autoGainLink && editor->processor.autoGainLink->get())
+        {
+            auto inv = AWConsolidatedAudioProcessor::computeInverseGain(newSourceVal);
+            if (this == editor->inLevel.get() && editor->outLevel && editor->outLevel->weakParam)
+            {
+                editor->outLevel->weakParam->setValueNotifyingHost(inv);
+                editor->outLevel->repaint();
+            }
+            else if (this == editor->outLevel.get() && editor->inLevel && editor->inLevel->weakParam)
+            {
+                editor->inLevel->weakParam->setValueNotifyingHost(inv);
+                editor->inLevel->repaint();
+            }
+        }
+    }
+
+    void beginLinkedGesture()
+    {
+        if (editor && editor->processor.autoGainLink && editor->processor.autoGainLink->get())
+        {
+            if (this == editor->inLevel.get() && editor->outLevel && editor->outLevel->weakParam)
+                editor->outLevel->weakParam->beginChangeGesture();
+            else if (this == editor->outLevel.get() && editor->inLevel && editor->inLevel->weakParam)
+                editor->inLevel->weakParam->beginChangeGesture();
+        }
+    }
+
+    void endLinkedGesture()
+    {
+        if (editor && editor->processor.autoGainLink && editor->processor.autoGainLink->get())
+        {
+            if (this == editor->inLevel.get() && editor->outLevel && editor->outLevel->weakParam)
+                editor->outLevel->weakParam->endChangeGesture();
+            else if (this == editor->outLevel.get() && editor->inLevel && editor->inLevel->weakParam)
+                editor->inLevel->weakParam->endChangeGesture();
         }
     }
 
@@ -1293,9 +1452,14 @@ struct ParamKnob : juce::Component
     {
         mousePos = event.position;
         weakParam->beginChangeGesture();
+        beginLinkedGesture();
     }
 
-    void mouseUp(const juce::MouseEvent &event) override { weakParam->endChangeGesture(); }
+    void mouseUp(const juce::MouseEvent &event) override
+    {
+        weakParam->endChangeGesture();
+        endLinkedGesture();
+    }
 
     void mouseDrag(const juce::MouseEvent &event) override
     {
@@ -1310,6 +1474,7 @@ struct ParamKnob : juce::Component
 
         weakParam->setValueNotifyingHost(nv);
         repaint();
+        syncLinkedValue(nv);
     }
 
     void mouseWheelMove(const juce::MouseEvent &event,
@@ -1329,8 +1494,11 @@ struct ParamKnob : juce::Component
 
         auto nv = std::clamp(weakParam->get() + amt, 0., 1.);
         weakParam->beginChangeGesture();
+        beginLinkedGesture();
         weakParam->setValueNotifyingHost(nv);
+        syncLinkedValue(nv);
         weakParam->endChangeGesture();
+        endLinkedGesture();
         repaint();
     }
 
@@ -1396,15 +1564,19 @@ struct ParamKnob : juce::Component
             amt = 0.01;
         if (key.getKeyCode() == juce::KeyPress::upKey)
         {
-            setValue(std::clamp((double)getValue() + amt, 0., 1.));
+            auto nv = (float)std::clamp((double)getValue() + amt, 0., 1.);
+            setValue(nv);
             repaint();
+            syncLinkedValue(nv);
             return true;
         }
 
         if (key.getKeyCode() == juce::KeyPress::downKey)
         {
-            setValue(std::clamp((double)getValue() - amt, 0., 1.));
+            auto nv = (float)std::clamp((double)getValue() - amt, 0., 1.);
+            setValue(nv);
             repaint();
+            syncLinkedValue(nv);
             return true;
         }
 
@@ -1412,6 +1584,7 @@ struct ParamKnob : juce::Component
         {
             setValue(1.);
             repaint();
+            syncLinkedValue(1.0f);
             return true;
         }
 
@@ -1419,13 +1592,16 @@ struct ParamKnob : juce::Component
         {
             setValue(0.);
             repaint();
+            syncLinkedValue(0.0f);
             return true;
         }
 
         if (key.getKeyCode() == juce::KeyPress::deleteKey && weakParam)
         {
-            setValue(weakParam->getDefaultValue());
+            auto nv = weakParam->getDefaultValue();
+            setValue(nv);
             repaint();
+            syncLinkedValue(nv);
             return true;
         }
 
@@ -1444,8 +1620,10 @@ struct ParamKnob : juce::Component
     {
         if (weakParam)
         {
-            setValue(weakParam->getDefaultValue());
+            auto nv = weakParam->getDefaultValue();
+            setValue(nv);
             repaint();
+            syncLinkedValue(nv);
         }
     }
 
@@ -1663,6 +1841,12 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     bypassButton = std::make_unique<BypassButton>(this);
     frame->addAndMakeVisible(*bypassButton);
 
+    autoGainButton = std::make_unique<AutoGainButton>(this);
+    if (processor.autoGainLink)
+        autoGainButton->setToggleState(processor.autoGainLink->get(),
+                                       juce::NotificationType::dontSendNotification);
+    frame->addAndMakeVisible(*autoGainButton);
+
     accessibleOrderWeakRefs.push_back(menuPicker.get());
     accessibleOrderWeakRefs.push_back(menuPicker->hamburger.get());
     accessibleOrderWeakRefs.push_back(menuPicker->heartButton.get());
@@ -1674,6 +1858,7 @@ AWConsolidatedAudioProcessorEditor::AWConsolidatedAudioProcessorEditor(
     accessibleOrderWeakRefs.push_back(docBodyEd.get());
     accessibleOrderWeakRefs.push_back(settingsCog.get());
     accessibleOrderWeakRefs.push_back(inLevel.get());
+    accessibleOrderWeakRefs.push_back(autoGainButton.get());
     accessibleOrderWeakRefs.push_back(outLevel.get());
     accessibleOrderWeakRefs.push_back(bypassButton.get());
 
@@ -1772,6 +1957,13 @@ void AWConsolidatedAudioProcessorEditor::idle()
     {
         bypassButton->setToggleState(processor.bypassParam->get(),
                                      juce::NotificationType::dontSendNotification);
+        if (autoGainButton && processor.autoGainLink)
+            autoGainButton->setToggleState(processor.autoGainLink->get(),
+                                           juce::NotificationType::dontSendNotification);
+        if (inLevel)
+            inLevel->repaint();
+        if (outLevel)
+            outLevel->repaint();
         repaint();
     }
 }
@@ -1870,6 +2062,8 @@ void AWConsolidatedAudioProcessorEditor::resized()
                   .reduced(4);
     settingsCog->setBounds(ta);
     inLevel->setBounds(ta.translated(ta.getWidth() + 4, 1));
+    if (autoGainButton)
+        autoGainButton->setBounds(ta.translated((ta.getWidth() + 4) * 2, 0));
     ta = ta.translated(contentWidth - 40 - 4 - 2 - 2, 0);
     outLevel->setBounds(ta.translated(-ta.getWidth() - 4, 1));
     bypassButton->setBounds(ta);
@@ -1901,6 +2095,15 @@ void AWConsolidatedAudioProcessorEditor::paintContents(juce::Graphics &g)
     g.setFont(lnf->lookupFont(airwindowsFooter));
     g.setColour(findColour(ColourIds::footerBrightLabel));
     g.drawText("Airwindows", fa.withTrimmedTop(0), juce::Justification::centredTop);
+
+    if (processor.autoGainLink && processor.autoGainLink->get())
+    {
+        auto linkY = (float)(contentHeight - footerHeight * 0.5f);
+        g.setColour(findColour(ColourIds::paramKnobHovered).withAlpha(0.4f));
+        float dashPattern[] = {4.0f, 4.0f};
+        g.drawDashedLine(juce::Line<float>(114.0f, linkY, 210.0f, linkY), dashPattern, 2, 1.5f);
+        g.drawDashedLine(juce::Line<float>(390.0f, linkY, 522.0f, linkY), dashPattern, 2, 1.5f);
+    }
 
     g.setFont(lnf->lookupFont(dateFooter));
     g.setColour(findColour(ColourIds::footerForeground));
@@ -2235,6 +2438,17 @@ juce::PopupMenu AWConsolidatedAudioProcessorEditor::makeSettingsMenu(bool withHe
                          [w = juce::Component::SafePointer(this)]() {
                              if (w)
                                  w->toggleDocDisplay();
+                         });
+
+    settingsMenu.addItem("Auto Gain Link (In/Out)", true,
+                         processor.autoGainLink && processor.autoGainLink->get(),
+                         [w = juce::Component::SafePointer(this)]() {
+                             if (!w || !w->processor.autoGainLink)
+                                 return;
+                             auto cur = w->processor.autoGainLink->get();
+                             w->processor.autoGainLink->beginChangeGesture();
+                             w->processor.autoGainLink->setValueNotifyingHost(!cur);
+                             w->processor.autoGainLink->endChangeGesture();
                          });
 
     settingsMenu.addSeparator();

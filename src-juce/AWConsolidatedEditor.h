@@ -15,6 +15,7 @@ struct Picker;
 struct SettingsCog;
 struct DocHeader;
 struct BypassButton;
+struct AutoGainButton;
 struct ZoomFrame;
 
 enum ColourIds
@@ -186,6 +187,7 @@ class AWConsolidatedAudioProcessorEditor : public juce::AudioProcessorEditor,
 
     std::atomic<bool> inActive{true}, outActive{true};
     std::unique_ptr<ParamKnob> inLevel, outLevel;
+    std::unique_ptr<AutoGainButton> autoGainButton;
     std::unique_ptr<juce::Drawable> clipperIcon;
     std::unique_ptr<juce::Drawable> monoIcon, stereoIcon;
 
