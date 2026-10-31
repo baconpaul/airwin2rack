@@ -6,7 +6,7 @@ The idea is, do an echo effect like in many Pink Floyd, U2 etc etc. records, but
 
 And it totally can.
 
-If you use a lot of regeneration, it will absolutely turn into a reverb watch. If you pick certain Select options (there are 17) you'll get a wild stereo effect, but it's no simple ping-pong. What you get is a scattering of 256 individual echoes not really lining up, not doing anything specific in stereo, but often doing very striking things in stereo.
+If you use a lot of regeneration, it will absolutely turn into a reverb wash. If you pick certain Select options (there are 17) you'll get a wild stereo effect, but it's no simple ping-pong. What you get is a scattering of 256 individual echoes not really lining up, not doing anything specific in stereo, but often doing very striking things in stereo.
 
 There is basically no proper speed control so that can't be adjusted. There is a speed control, but it's sample-locked Bezier undersampling, so it's got an okay tone (still a little odd when very undersampled) but there are only so many positions you can use. Not only that, there is no adjustment for sample rate this time, so you'll be setting it based on your sample rate meaning if you're at 96k (or 192k!) you'll have more speed options because they are subdivisions of the native sample rate. If you're at 44.1k you probably still have working echojam times on tap.
 

@@ -419,6 +419,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/FacetProc.cpp
    src/autogen_airwin/FastDistance.cpp
    src/autogen_airwin/FastDistanceProc.cpp
+   src/autogen_airwin/FastDistance2.cpp
+   src/autogen_airwin/FastDistance2Proc.cpp
    src/autogen_airwin/FatEQ.cpp
    src/autogen_airwin/FatEQProc.cpp
    src/autogen_airwin/FathomFive.cpp
@@ -867,6 +869,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/TapeHackProc.cpp
    src/autogen_airwin/TapeHack2.cpp
    src/autogen_airwin/TapeHack2Proc.cpp
+   src/autogen_airwin/TapeHack3.cpp
+   src/autogen_airwin/TapeHack3Proc.cpp
    src/autogen_airwin/Texturize.cpp
    src/autogen_airwin/TexturizeProc.cpp
    src/autogen_airwin/TexturizeMS.cpp
@@ -907,6 +911,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/UltralightProc.cpp
    src/autogen_airwin/Ultralight2.cpp
    src/autogen_airwin/Ultralight2Proc.cpp
+   src/autogen_airwin/Ultralight3.cpp
+   src/autogen_airwin/Ultralight3Proc.cpp
    src/autogen_airwin/UltrasonX.cpp
    src/autogen_airwin/UltrasonXProc.cpp
    src/autogen_airwin/Ultrasonic.cpp
