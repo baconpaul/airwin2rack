@@ -659,6 +659,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PointProc.cpp
    src/autogen_airwin/PointyDeluxe.cpp
    src/autogen_airwin/PointyDeluxeProc.cpp
+   src/autogen_airwin/PointyDeluxe2.cpp
+   src/autogen_airwin/PointyDeluxe2Proc.cpp
    src/autogen_airwin/PointyGuitar.cpp
    src/autogen_airwin/PointyGuitarProc.cpp
    src/autogen_airwin/Pop.cpp
@@ -685,6 +687,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/PrimeFIRProc.cpp
    src/autogen_airwin/PunchyDeluxe.cpp
    src/autogen_airwin/PunchyDeluxeProc.cpp
+   src/autogen_airwin/PunchyDeluxe2.cpp
+   src/autogen_airwin/PunchyDeluxe2Proc.cpp
    src/autogen_airwin/PunchyGuitar.cpp
    src/autogen_airwin/PunchyGuitarProc.cpp
    src/autogen_airwin/PurestAir.cpp

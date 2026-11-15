@@ -1,0 +1,17 @@
+# PunchyDeluxe2 is more useable PunchyDeluxe.
+
+No more fiddling with little sliders unless you actually want to!
+
+PunchyDeluxe2 is hot on the heels of PunchyDeluxe, because I found some stuff to do that made it a lot better.
+
+Instead of a Hell (as in, Slipperman called this band 'road to hell, lose a windshield up here') there's a Top control. Instead of Rarely (Slipperman said 'never say never, just say rarely') there's a Bottom control. And they still control the bands they used to control.
+
+Only now, they set up a baseline where all the other controls start… and that changes everything.
+
+If you want some top boost and bright crunchiness, you can start by just increasing Top. It'll take care of everything. Lows too intense, need to rein them in? Previously a headache, now you can just turn Bottom down. It'll scale anything else you had set up, letting you just bring it into focus.
+
+PunchyDeluxe2 uses fewer gain stages than PunchyDeluxe did. That's partly to cut back on the CPU hungriness slightly, but it's also because the new version lends itself to traditional amp sounds. Since its saturation is so extremely smooth, this gives you a more useable adjustment range for all the controls, making it easier to dial in less high-saturation sounds.
+
+It's still the 'ten band crazy guitar amp monstrosity' at heart, but now through making the bands simply be offsets on a giant tilt EQ set up by Top and Bottom, everything gets way easier to dial in. And of course once you've got the basic idea roughed in, you can still go bonkers adjusting every little band. But now it's way quicker to get started, and easier to find where you were going :)
+
+
