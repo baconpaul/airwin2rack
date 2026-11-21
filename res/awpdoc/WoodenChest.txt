@@ -1,0 +1,19 @@
+# WoodenChest is like a slightly larger reverb for converting DI to acoustic.
+
+The request was for a plugin like WoodenBox to improve the sound of an upright bass, presumably recorded without enough oomph, perhaps through a piezo bridge pickup.
+
+Thing is, WoodenBox wasn't simply a 'acoustic guitar-ifier'. It doesn't specifically have any guitar-body elements. It's not an IR. It's a tiny ambience… so tiny, it's like a room the size of a large box. It's not even wooden, technically! That would be a limiting factor, but there isn't anything but ambience, done the way I do small reverbs.
+
+Going slightly larger wasn't a challenge… but it unlocked some very interesting spaces.
+
+It's not surprising that it takes bad DAW pianos and makes them sound more physical. What I didn't expect was taking DI Fender Rhodes, a real one, and making that sound like a record. I think of DI Rhodes as already being an acceptable sound, even a great one, but the next thing you know it sounds realer, more like itself, solid.
+
+I tried already-miked amp tones. They turned floofier, peeled themselves off the speakers and picked up a texture that was like what I'd expect a miked amp's speaker to sound like. I could make it lose all definition, or bring it as much as I liked, just with the dry/wet control.
+
+Tried it with PunchyDeluxe2 last week. By itself, all the super-highs came through. In conjunction with Cabs2, I got a sound that was as amp-like as anything I've ever made, including miking real amps. I feel certain that if I need to hunt down an EVH-like tone to test out a future Sunset Chamber sound, I'd be using this as part of the recipe.
+
+But it doesn't stop there. I've got some odd little synth sound-makers. Bastl Kastles and Drums, a preview of the sndstation: anything like that, no matter how crass its raw tone is, you just throw WoodenChest on it and find a size/tone you like. Suddenly it has a new shape and physicality that sits alongside other recordings more gracefully, even if they're good. I could take a wooden tray with a piezo, drum on it with my fingers, and turn that into a proper percussion instrument with WoodenChest. I could tap on a tiny aluminum box with a piezo and turn that into an amazing, powerful kick drum with WoodenChest.
+
+And it still wouldn't necessarily sound 'wooden', but it'll sound cool :)
+
+
