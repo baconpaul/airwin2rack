@@ -124,8 +124,18 @@ jobs:
 
 
   build_plugin_docker:
-    name: Docker Build Ubuntu20 ${{ matrix.name }}
-    runs-on: ubuntu-latest
+    name: Docker Build Ubuntu22 ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            os: ubuntu-latest
+            image: ghcr.io/surge-synthesizer/sst-dockerimages/ubuntu22_gcc12:main
+
+          - arch: arm64
+            os: ubuntu-24.04-arm
+            image: ghcr.io/surge-synthesizer/sst-dockerimages/ubuntu22_gcc12_arm64:main
 
     steps:
       - name: Checkout code
@@ -136,7 +146,7 @@ jobs:
       - name: Build in Docker
         uses: surge-synthesizer/sst-githubactions/cmake-in-docker@main
         with:
-          image: ghcr.io/surge-synthesizer/sst-dockerimages/ubuntu20_gcc11:main
+          image: ${{ matrix.image }}
           username: ${{ github.actor }}
           token: ${{ secrets.GITHUB_TOKEN }}
           cmakeArgs: -DCMAKE_BUILD_TYPE=Release -GNinja -DBUILD_JUCE_PLUGIN=TRUE
@@ -147,11 +157,18 @@ jobs:
         run: |
           ls -l ./build/installer
 
+      - name: Check glibc
+        uses: surge-synthesizer/sst-githubactions/check-glibc@main
+        with:
+          path: ./build/awcons-products
+          maxGlibc: "2.35"
+          maxGlibcxx: "3.4.30"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           path: build/installer
-          name: build-docker-linux
+          name: build-docker-linux-${{ matrix.arch }}
 
   publish-dawplugin-nightly:
     name: Publish DAWPlugin
