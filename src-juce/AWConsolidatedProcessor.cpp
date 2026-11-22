@@ -71,6 +71,10 @@ AWConsolidatedAudioProcessor::AWConsolidatedAudioProcessor()
     addParameter(inLev);
     addParameter(outLev);
 
+    autoGainLink = new juce::AudioParameterBool({"autogain", 1}, "Auto Gain", false);
+    autoGainLink->addListener(this);
+    addParameter(autoGainLink);
+
     monoBehaviourParameter = new MonoBehaviourParameter(
         {"monoBehaviour", 3}, "Mono Behaviour", MonoBehaviourParameter::LeftOnly,
         juce::AudioParameterIntAttributes().withAutomatable(false));
@@ -365,6 +369,10 @@ void AWConsolidatedAudioProcessor::parameterValueChanged(int parameterIndex, flo
     refreshUI = true;
 }
 
+void AWConsolidatedAudioProcessor::parameterGestureChanged(int parameterIndex, bool isStarting)
+{
+}
+
 void AWConsolidatedAudioProcessor::setAWProcessorTo(int registryIndex, bool initDisplay)
 {
     curentProcessorIndex = registryIndex;
@@ -447,6 +455,8 @@ void AWConsolidatedAudioProcessor::getStateInformation(juce::MemoryBlock &destDa
     }
     xml->setAttribute("inlev", inLev->get());
     xml->setAttribute("outlev", outLev->get());
+    if (autoGainLink)
+        xml->setAttribute("autogain", autoGainLink->get());
 
     xml->setAttribute("monoBehaviour", monoBehaviourParameter->get());
 
@@ -476,10 +486,17 @@ void AWConsolidatedAudioProcessor::setStateInformation(const void *data, int siz
                 fxParams[i]->setValueNotifyingHost(f);
             }
 
+            isUpdatingLinkedGain.store(true);
             auto il = xmlState->getDoubleAttribute("inlev", CubicDBParam::defaultVal);
             inLev->setValueNotifyingHost(il);
             auto ol = xmlState->getDoubleAttribute("outlev", CubicDBParam::defaultVal);
             outLev->setValueNotifyingHost(ol);
+            if (autoGainLink)
+            {
+                auto ag = xmlState->getBoolAttribute("autogain", false);
+                autoGainLink->setValueNotifyingHost(ag);
+            }
+            isUpdatingLinkedGain.store(false);
 
             auto mono = xmlState->getIntAttribute("monoBehaviour");
             *monoBehaviourParameter = static_cast<MonoBehaviourParameter::MonoBehaviour>(mono);

@@ -121,7 +121,7 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     void setStateInformation(const void *data, int sizeInBytes) override;
 
     void parameterValueChanged(int parameterIndex, float newValue) override;
-    void parameterGestureChanged(int parameterIndex, bool isStarting) override {}
+    void parameterGestureChanged(int parameterIndex, bool isStarting) override;
     void handleAsyncUpdate() override {}
 
     struct ResetTypeMsg
@@ -301,6 +301,18 @@ class AWConsolidatedAudioProcessor : public juce::AudioProcessor,
     std::array<std::atomic<bool>, nAWParams> active;
 
     CubicDBParam *inLev, *outLev;
+    juce::AudioParameterBool *autoGainLink{nullptr};
+    std::atomic<bool> isUpdatingLinkedGain{false};
+
+    static float computeInverseGain(float v)
+    {
+        static constexpr double defVal = CubicDBParam::defaultVal;
+        static constexpr double defValSq = defVal * defVal;
+        if (v <= 1e-6f)
+            return 1.0f;
+        double target = defValSq / (double)v;
+        return (float)std::clamp(target, 0.0, 1.0);
+    }
 
     juce::AudioParameterBool *bypassParam{nullptr};
     juce::AudioProcessorParameter *getBypassParameter() const override { return bypassParam; }
