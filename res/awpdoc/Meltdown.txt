@@ -1,0 +1,29 @@
+# Meltdown is a tech demo of an insane limiter idea.
+
+This is an experiment. Do not use on real music or anything important. I'm not done making a proper one, but I wanted to put something out real quick after getting it to work, because it's a bit of a wild idea.
+
+Meltdown is a zero latency lookahead limiter.
+
+Repeat, Meltdown is a zero latency lookahead limiter. Really.
+
+What's the catch?
+
+The catch is that you can't control it, and this version has a sort of gnarly noise that gets involved. I'm pretty sure that'll be the first thing I fix, but I will NOT be able to fix the uncontrollability, but I'm going to start working with this and very likely related things right away, now that I've proved it works. So how can that even be remotely true, to have a zero latency lookahead limiter? Does this not cheat time itself?
+
+Not at all. It doesn't do anything mean to your DAW, either. As a plugin it's normal in every way. The trick here is that zero latency itself is a bit of a lie, and that there are limits to how well this can work, and having limits tends to make audio developers run away screaming rather than try something seriously unusual. For instance, I'm pretty sure you won't get any AI to come up with this, as it violates expectations too much.
+
+When your plugin processes something, it's given a buffer of samples. Few operate sample-by-sample. (VCV Rack does by necessity, and Meltdown will not operate properly in its VCV Rack form unless its internal buffer is set a lot higher than just a few samples.) Typically if you're going for low latency you're trying to force the DAW and interface buffers to be as small as possible, and this will interfere with Meltdown. On the other hand if you have a weak computer that can't play audio much, you might have it using very large buffers, suffering more latency by default, and Meltdown will tend to be more effective.
+
+Meltdown simply does its lookahead by doing a pre-scan of the same buffer it's going to process, marks the point where the highest sample will be, and then does another pass to process with its limiting. That's all. The code is tiny. It's a bit odd even so, because of a side-effect to how it interpolates gain: it's just doing a linear ramp down to the lowest gain to accomodate a peak. That means two things. Firstly, at full crank it is infinite gain on anything that isn't literal silence, just because it can. If it's at an insanely high gain, and then ramps down to not clip a peak, it's easy for stuff early in the buffer to still end up insanely loud, and so there's a clipping factor put in to catch those.
+
+Secondly, there's an issue with how it goes from loudest peak to loudest peak in each buffer. Remember, it can scan ahead to look for the loudest point, and it measures WHERE that is in the buffer. But what if it's just the first sample? Whoops. So that's a limitation. But beyond that, suppose you've got to that loudest point. It should ramp again, to wherever the next high point would be… but how? That next buffer doesn't exist yet. So once it reaches its highest peak, it then has to stay there to the end of the buffer (not the only possibility, but it has to go to something). There is no further data for it to consult. Another limitation.
+
+I can smooth it further, I can give it a response speed or let it release at a more sensible speed, I can put in a 'boost' control so it can operate like a regular limiter where you get to pump up the gain going into it. I can't work around those issues, though, because they're fundamental factors of how the idea even works. It'll never be able to reliably, flawlessly, do lookaheads while running zero latency.
+
+When I try other things, like a zero latency lookahead pop/proximity suppressor, I won't be able to make those always flawlessly work either. It's possible such a thing wouldn't work quite the same way twice, meaning you could end up running it until it catches all the pops, if it does. (same problem: prescan to see if there's massive zero-cross disparities, aggressively highpass only those buffers, done, with zero latency)
+
+But Meltdown is proof that you KIND of can look into the future (because there's almost always a buffer of some sort in a DAW), you just can't control it very well without tinkering with your DAW buffers. Now you can hear what that would be (in a worst-case, most radical and gratituous way) and figure out whether it'd be any use to you in a more manageable form.
+
+Or you can just take stuff and crank it infinitely into a zero latency limiter. Right now, if it pleases you. Have fun!
+
+

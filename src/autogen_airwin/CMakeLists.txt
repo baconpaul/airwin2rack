@@ -573,6 +573,8 @@ set(AIRWIN_SOURCES
    src/autogen_airwin/MatrixVerbProc.cpp
    src/autogen_airwin/Melt.cpp
    src/autogen_airwin/MeltProc.cpp
+   src/autogen_airwin/Meltdown.cpp
+   src/autogen_airwin/MeltdownProc.cpp
    src/autogen_airwin/MidAmp.cpp
    src/autogen_airwin/MidAmpProc.cpp
    src/autogen_airwin/MidSide.cpp
